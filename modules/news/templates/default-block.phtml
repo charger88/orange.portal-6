@@ -1,0 +1,12 @@
+<?php if ($list){ ?>
+<ul class="news news-block">
+    <?php foreach ($list as $item) { ?>
+        <li><span class="news-item-date"><?php echo $this->getDate($item->get('content_time_published')); ?></span> <a href="<?php $this->ee(OP_WWW.'/'.$item->getSlug()); ?>"><?php $this->ee($item->get('content_title')); ?></a></li>
+    <?php } ?>
+</ul>
+<?php } ?>
+<?php if ($digestlink && $category->id){ ?>
+<div class="navigation news-digest-list">
+    <a href="<?php $this->ee(OP_WWW.'/'.$category->getSlug()); ?>"><?php $this->el('NEWS_MORE_ITEMS'); ?></a>
+</div>
+<?php }

@@ -1,0 +1,3 @@
+<?php if ($errors): ?><ul><?php endif; foreach ($errors as $key => $error): ?>
+<li><?php if (!is_numeric($key)): ?><label for="<?php $this->ee($key); ?>"><?php endif; ?><?php $this->ee($error); ?><?php if (!is_numeric($key)): ?></label><?php endif; ?></li>
+<?php endforeach; if ($errors): ?></ul><?php endif; ?>

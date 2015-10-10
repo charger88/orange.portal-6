@@ -1,0 +1,41 @@
+<?php
+$areas_list = array_unique(array_merge(array_keys($areas),array_keys($list)));
+foreach ($areas_list as $area_code){ ?>
+<h3><?php $this->ee(isset($areas[$area_code]) ? $areas[$area_code] : $area_code . ' ('.OPAL_Lang::t('UNDEFINED_IN_THEME').')'); ?><a href="<?php echo OP_WWW.'/admin/blocks/new?area='.$area_code; ?>" class="header-inline-button"><?php $this->el('ADMIN_ADD_BLOCK'); ?></a></h3>
+<div class="content-special-list-wrapper">
+	<ul>
+<?php
+		if (!empty($list[$area_code])){
+			foreach ($list[$area_code] as $item){
+				echo '<li><div class="page-in-tree-wrapper content_status_'.$this->esc($item->get('content_status')).'">';
+				echo '<a href="'.OP_WWW.'/admin/blocks/edit/'.$item->id.'/">'.$this->esc($item->get('content_title')).'</a>';
+				if ($item->get('content_lang')){
+					echo ' <span class="lang-flag lang-flag-'.$this->esc($item->get('content_lang')).'" title="'.$this->esc($item->get('content_lang')).'">'.$this->esc($item->get('content_lang')).'</span>';
+				}
+				echo '<div>';
+				echo $this->esc($refs['content_status'][$item->get('content_status')]);
+				echo ' &bullet; ';
+				echo $this->esc($refs['content_on_site_mode'][$item->get('content_on_site_mode')]);
+				if ($groups = $item->get('content_access_groups')){
+					echo ' &bullet; ';
+					$this->el('ADMIN_ACCESS_FOR_GROUPS');
+					$first = true;
+					foreach ($groups as $group){
+						if ($first){ $first = false; echo ': '; } else { echo ', '; }
+						echo $this->esc($refs['content_access_groups'][$group]);
+					}
+				}
+				echo '</div></div>';
+				if (isset($tree[$item->id])){
+					default_admin_pages_tree($item->id,$tree,$refs,$this,$slug);
+				}
+				echo '</li>';
+			}
+		}
+?>
+	</ul>
+</div>
+<?php } ?>
+<div class="buttons-area">
+    <a href="<?php echo OP_WWW.'/'.$slug.'/new'; ?>" class="admin-button admin-button-new"><?php $this->el('ADMIN_ADD_NEW'); ?></a>
+</div>

@@ -1,0 +1,32 @@
+<form action="<?php $this->ee(OP_WWW.'/'.$slug.'/save'); ?>" method="post" enctype="multipart/form-data" class="form-default">
+    <table class="op-admin-list-table">
+        <thead>
+            <tr>
+                <th style="width: 35%;"><?php $this->el('ADMIN_PRIVILEGE'); ?></th>
+                <th class="table-th-checkbox" style="width: <?php $this->ee(65/(count($groups)+1)); ?>%;"><?php $this->el('USER_GROUP_EVERYBODY'); ?></th>
+                <?php foreach ($groups as $group) { ?>
+                    <th class="table-th-checkbox" style="width: <?php $this->ee(65/(count($groups)+1)); ?>%;"><?php $this->el($group->get('group_name')); ?></th>
+                <?php } ?>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($privileges as $privilege) { ?>
+            <tr>
+                <td style="font-weight: bold;"><?php $this->el($privilege); ?></td>
+                <td class="table-td-checkbox"><label><input type="checkbox" <?php if (!empty($privileges_data[0]) && in_array($privilege, $privileges_data[0])){ ?>checked="checked"<?php } ?> name="p[<?php $this->ee(0); ?>][]" value="<?php $this->ee($privilege); ?>"></label></td>
+                <?php foreach ($groups as $group) {
+                    $readonly = ($group->id == OPAM_User::GROUP_ADMIN);
+                    $checked = $readonly || (!empty($privileges_data[$group->id]) && in_array($privilege, $privileges_data[$group->id]));
+                    ?>
+                    <td class="table-td-checkbox"><label><input type="checkbox" <?php if ($checked){ ?>checked="checked"<?php } ?> <?php if ($readonly){ ?>readonly="readonly" disabled="disabled"<?php } ?> name="p[<?php $this->ee($group->id); ?>][]" value="<?php $this->ee($privilege); ?>"></label></td>
+                <?php } ?>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <div class="form-area form-area-buttons">
+        <div class="form-element-wrapper form-element-button-wrapper form-element-submit-wrapper" id="opmx_system_privileges-privileges_submit-wrapper">
+            <button id="opmx_system_privileges-privileges_submit" type="submit" value="" name="privileges_submit" data-id="privileges_submit" class="form-element form-element-button form-element-submit"><?php $this->el('ADMIN_SAVE'); ?></button>
+        </div>
+    </div>
+</form>

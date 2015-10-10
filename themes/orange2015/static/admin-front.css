@@ -1,0 +1,51 @@
+html {
+    padding-top: 2.4em;
+    box-sizing: border-box;
+}
+
+#admin-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 9999;
+	background: rgba(0,0,0,0.85);
+	padding: 0.8em 2.4em;
+	color: #ffffff;
+	font-family: sans-serif;
+	height: 0.8em;
+	line-height: 0.8em;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+#admin-bar ul {
+	font-size: 0.9em;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#admin-bar ul li {
+	float: left;
+    padding: 0;
+	line-height: 1em;
+	height: 1em;
+    margin: 0 0 0 1em;
+}
+
+#admin-bar ul li:nth-child(2) {
+	margin-left: 0;
+}
+
+#admin-bar ul li#admin-bar-logout {
+	float: right;
+	margin-left: 0;
+}
+
+#admin-bar a {
+	color: inherit;
+}
+
+#admin-bar a:hover {
+	text-decoration: none;	
+}

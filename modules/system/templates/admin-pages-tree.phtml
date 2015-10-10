@@ -1,0 +1,65 @@
+<?php
+
+if (!function_exists('default_admin_pages_tree')){
+	function default_admin_pages_tree($root,&$tree,&$refs,&$templater,&$slug){
+		$pages = array($root);
+		echo '<ul>';
+		foreach ($tree[$root] as $item){
+			echo '<li><div class="page-in-tree-wrapper content_status_'.$templater->esc($item->get('content_status')).'">';
+			echo '<a href="'.OP_WWW.'/'.$slug.'/edit/'.$item->id.'">'.$templater->esc($item->get('content_title')).'</a>';
+			if ($item->get('content_lang')){
+				echo ' <span class="lang-flag lang-flag-'.$templater->esc($item->get('content_lang')).'" title="'.$templater->esc($item->get('content_lang')).'">'.$templater->esc($item->get('content_lang')).'</span>';
+			}
+			echo '<div>';
+			echo $templater->esc($refs['content_status'][$item->get('content_status')]);
+			echo ' &bullet; ';
+			echo $templater->esc($refs['content_on_site_mode'][$item->get('content_on_site_mode')]);
+			if ($groups = $item->get('content_access_groups')){
+				echo ' &bullet; ';
+				$templater->el('ADMIN_ACCESS_FOR_GROUPS');
+				$first = true;
+				foreach ($groups as $group){
+					if ($first){ $first = false; echo ': '; } else { echo ', '; }
+					echo $templater->esc($refs['content_access_groups'][$group]);
+				}
+			}
+			echo '</div></div>';
+			if (isset($tree[$item->id])){
+				$pages = array_merge($pages,default_admin_pages_tree($item->id,$tree,$refs,$templater,$slug));
+			}
+			echo '</li>';
+		}
+		echo '</ul>';
+		return $pages;
+	}
+}
+
+$pages = array();
+
+if (isset($tree[0])){
+	echo '<div class="content-special-list-wrapper" id="pages-tree">';
+	$pages = default_admin_pages_tree(0,$tree,$refs,$this,$slug);
+	echo '</div>';
+}
+
+if (count($pages) != count($tree)){
+
+	echo '<h3>';
+	$this->el('ADMIN_PAGES_OUT_OF_STRUCTURE');
+	echo '</h3>';
+	echo '<div class="content-special-list-wrapper" id="pages-tree">';
+
+	foreach ($tree as $oosRoot => $oosTree){
+		if (!in_array($oosRoot, $pages)){
+			$pages += default_admin_pages_tree($oosRoot,$tree,$refs,$this,$slug);
+		}
+	}
+	
+	echo '</div>';
+	
+}
+
+?>
+<div class="buttons-area">
+	<a href="<?php echo OP_WWW.'/'.$slug.'/new'; ?>" class="admin-button admin-button-new"><?php $this->el('ADMIN_ADD_NEW'); ?></a>
+</div>

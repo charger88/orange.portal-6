@@ -1,0 +1,9 @@
+<ul>
+	<li>&copy; <?php if ($year_opened){ $this->ee($year_opened); if ($year_opened != date('Y')){ echo '&ndash;'; $this->ee(date('Y')); } } ?> <?php $this->ee($copyright); ?></li>
+	<?php if (!empty($theme['designer'])){ ?>
+	<li><?php $this->el('DESIGNED_BY'); ?> <?php if (!empty($theme['url'])){ ?><a href="<?php $this->ee($theme['url']); ?>"><?php $this->ee($theme['designer']); ?></a><?php } else { ?><?php $this->ee($theme['designer']); ?><?php } ?></li>
+	<?php } else if (!empty($theme['name'])) { ?>
+	<li><?php $this->el('THEME'); ?> <?php if (!empty($theme['url'])){ ?><a href="<?php $this->ee($theme['url']); ?>"><?php $this->ee($theme['name']); ?></a><?php } else { ?><?php $this->ee($theme['name']); ?><?php } ?></li>
+	<?php } ?>
+	<li><?php $this->el('POWERED_BY'); ?> <a href="http://cms.b-web.ru">Orange.Portal 6</a></li>
+</ul>

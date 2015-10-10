@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head><?php
+			OPAL_Theme::addStyleFile('modules/system/static/css/installer.css');
+			OPAL_Theme::addScriptFile('modules/system/static/js/jquery.mkajax.js');
+			echo $this->fetch('head.phtml',array('content' => $content));
+		?>
+	</head>
+	<body>
+		<header><?php $this->ee($content->get('content_title')); ?></header>
+		<section>
+			<?php echo $response; ?>
+		</section>
+	</body>
+</html>

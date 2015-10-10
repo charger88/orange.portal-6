@@ -1,0 +1,15 @@
+<?php $label = $field['label']; unset($field['label']); ?>
+<?php $value = isset($field['value']) ? $field['value'] : ''; unset($field['value']); ?>
+<?php $options = isset($field['options']) ? $field['options'] : array(); unset($field['options']); ?>
+<?php $multiple = isset($field['multiple']) && ($field['multiple'] == 'multiple'); ?>
+<?php if ($multiple && isset($field['name'])){
+	$field['name'] .= '[]';
+} ?>
+<select <?php foreach ($field as $attr_key => $attr_value){ if (!is_array($attr_value)){ echo $this->esc($attr_key).'="'.$this->esc($attr_value).'" '; }} ?>>
+<?php if (!(isset($field['required']) && ($field['required'] == 'required') && isset($options[$value])) && !$multiple){ ?>
+<option></option>
+<?php } ?>
+<?php if ($options){ foreach ($options as $opt_value => $opt_label){ ?>
+<option value="<?php $this->ee($opt_value); ?>" <?php if ( ( is_array($value) && in_array($opt_value, $value)) || ( !is_array($value) && ($value == $opt_value) ) ): ?>selected="selected"<?php endif; ?>><?php $this->ee($opt_label); ?></option>
+<?php }} ?>
+</select>

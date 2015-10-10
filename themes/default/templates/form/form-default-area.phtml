@@ -1,0 +1,107 @@
+<?php 
+
+$type_templates = array(
+	'textarea' => 'textarea',
+	'wysiwyg'  => 'textarea',
+	'checkbox' => 'checkbox',
+	'select'   => 'select',
+	'radio'    => 'radio',
+	'submit'   => 'button',
+	'button'   => 'button',
+	'reset'    => 'button',
+);
+
+$type_nolabel = array(
+	'checkbox',
+	'submit',
+	'button',
+	'reset',
+	'hidden',
+);
+
+
+foreach ($elements as $element){
+	if ($element[0] == 'field'){
+		$field = $fields[$element[1]];
+		if ($field['type'] != 'virtual'){
+			$classes = 'form-element form-element-'.$this->esc(isset($type_templates[$field['type']]) ? $type_templates[$field['type']] : 'input').' form-element-'.$this->esc($field['type']).' ';
+			if (isset($field['required']) && ($field['required'] == 'required')){
+				$classes .= 'form-element-required ';
+			}
+			if (!isset($field['name'])){
+				if (strpos($field['id'], ':') !== false){
+					$field['name'] = explode(':', $field['id']);
+					$field['name'] = $field['name'][0].'['.$field['name'][1].'][]';
+				} else {
+					$field['name'] = $field['id'];
+				}
+			}
+			$field['data-id'] = $field['id'];
+			$field['id'] = ($formname ? $formname.'-' : '').$field['id'];
+			echo '<div class="'.trim(str_replace(' ', '-wrapper ', $classes)).'" id="'.$this->esc($field['id']).'-wrapper">';
+			if (!empty($field['label'])){
+				if (!in_array($field['type'], $type_nolabel)){
+					echo '<label class="form-label" for="'.$this->esc($field['id']).'">'.$this->esc($field['label']).'</label>';
+				}
+			}
+			$field['class'] = isset($field['class']) ? ($classes . $field['class']) : trim($classes);
+			echo $this->fetch('form-default-'.( isset($type_templates[$field['type']]) ? $type_templates[$field['type']] : 'input' ).'.phtml',array(
+				'field' => $field,
+			));
+			if (!empty($errors[$field['data-id']])){
+				echo '<ul class="form-element-error">';
+				foreach ($errors[$field['data-id']] as $error){
+					echo '<li>'.$this->esc($error).'</li>';
+				}
+				echo '</ul>';
+			}
+			echo '</div>';
+		}
+	} else if ($element[0] == 'fieldset') {
+		if (!is_null($element[1])){
+			echo '<fieldset'.($element[2] ? ' id="'.$this->esc($element[2]).'"' : '').'><legend>'.$this->esc($element[1]).'</legend><div class="form-fieldset-data-holder">';
+		} else {
+			echo '</div></fieldset>';
+		}
+	} else if ($element[0] == 'template') {
+		echo $this->fetch($element[1],array('fields' => $fields));
+	} else if ($element[0] == 'multirow') {
+		$field_name = rtrim($element[1],'[]');
+		$multirow = isset($fields[$field_name]) ? $fields[$field_name]['value'] : array();
+		$multirow[] = array();
+		echo '<h3>'.OPAL_Lang::t(rtrim($element[1],'[]')).'</h3>';
+		echo '<div class="form-multirow"'.($element[1] ? ' id="multirow-'.$this->esc(rtrim($element[1],'[]')).'"' : '').'>';
+		foreach ($multirow as $multirow_id => $multirow_values){
+			foreach ($areas[$element[1]] as $multirow_field){
+				if ($multirow_field[0] == 'field'){
+					$multirow_field_id = explode(':', $multirow_field[1]);
+					if ($multirow_field_id[1] == '_'){
+						$fields[$multirow_field[1]]['value'] = !empty($multirow_id) ? $multirow_id : '';
+					} else if ($multirow_field_id[1] == '*'){
+						$fields[$multirow_field[1]]['value'] = isset($fields[$multirow_field_id[0]]['value'][$multirow_id])
+							? $fields[$multirow_field_id[0]]['value'][$multirow_id]
+							: ''
+						;
+					} else {
+						$fields[$multirow_field[1]]['value'] = isset($fields[$multirow_field_id[0]]['value'][$multirow_id][$multirow_field_id[1]])
+							? $fields[$multirow_field_id[0]]['value'][$multirow_id][$multirow_field_id[1]]
+							: ''
+						;
+					}
+				}
+			}
+			echo '<div class="form-multirow-row">';
+			echo $this->fetch('form-default-area.phtml',array(
+				'fields'   => $fields,
+				'areas'    => $areas,
+				'area_id'  => $element[1],
+				'elements' => $areas[$element[1]],
+				'formname' => $formname,
+			));
+			echo '</div>';
+		}
+		echo '</div>';
+	} else {
+		echo $element[1];
+	}
+}

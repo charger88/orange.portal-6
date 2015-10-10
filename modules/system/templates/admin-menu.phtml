@@ -1,0 +1,23 @@
+<?php
+
+if (!function_exists('default_admin_menu')){
+	function default_admin_menu($sub,&$templater){
+		usort($sub, function($a, $b){
+		    return $a['order'] - $b['order'];
+		});
+		echo '<ul>';
+		foreach ($sub as $item){
+			echo '<li>';
+			echo '<a href="'.OP_WWW.$templater->esc($item['url']).'" style="background-image: url('.OP_WWW.'/'.$templater->esc($item['icon'] ? $item['icon'] : 'modules/system/static/icons/default.png').');" >'.OPAL_Lang::t($item['name']).'</a>';
+			if (!empty($item['sub'])){
+				default_admin_menu($item['sub'],$templater);
+			}
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+}
+
+echo '<nav>';
+default_admin_menu($menu,$this);
+echo '</nav>';

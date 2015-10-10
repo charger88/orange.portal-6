@@ -1,0 +1,415 @@
+#filemanager tbody tr {
+    cursor: pointer;
+}
+
+.mk-filemanager-ico {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: url('../icons/filetypes/file.png') 50% 50% no-repeat;
+    background-size: contain;
+}
+
+.mk-filemanager-ico.mk-filemanager-tree {
+    background-image: url('../icons/files.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-upper {
+    background-image: url('../icons/filetypes/upper.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dir {
+    background-image: url('../icons/filetypes/folder.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-3gp {
+    background-image: url('../icons/filetypes/file_extension_3gp.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-7z {
+    background-image: url('../icons/filetypes/file_extension_7z.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ace {
+    background-image: url('../icons/filetypes/file_extension_ace.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ai {
+    background-image: url('../icons/filetypes/file_extension_ai.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-aif {
+    background-image: url('../icons/filetypes/file_extension_aif.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-aiff {
+    background-image: url('../icons/filetypes/file_extension_aiff.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-amr {
+    background-image: url('../icons/filetypes/file_extension_amr.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-asf {
+    background-image: url('../icons/filetypes/file_extension_asf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-asx {
+    background-image: url('../icons/filetypes/file_extension_asx.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-bat {
+    background-image: url('../icons/filetypes/file_extension_bat.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-bin {
+    background-image: url('../icons/filetypes/file_extension_bin.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-bmp {
+    background-image: url('../icons/filetypes/file_extension_bmp.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-bup {
+    background-image: url('../icons/filetypes/file_extension_bup.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-cab {
+    background-image: url('../icons/filetypes/file_extension_cab.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-cbr {
+    background-image: url('../icons/filetypes/file_extension_cbr.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-cda {
+    background-image: url('../icons/filetypes/file_extension_cda.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-cdl {
+    background-image: url('../icons/filetypes/file_extension_cdl.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-cdr-dir {
+    background-image: url('../icons/filetypes/file_extension_cdr.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-chm {
+    background-image: url('../icons/filetypes/file_extension_chm.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dat {
+    background-image: url('../icons/filetypes/file_extension_dat.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-divx {
+    background-image: url('../icons/filetypes/file_extension_divx.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dll {
+    background-image: url('../icons/filetypes/file_extension_dll.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dmg {
+    background-image: url('../icons/filetypes/file_extension_dmg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-doc {
+    background-image: url('../icons/filetypes/file_extension_doc.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dss {
+    background-image: url('../icons/filetypes/file_extension_dss.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dvf {
+    background-image: url('../icons/filetypes/file_extension_dvf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-dwg {
+    background-image: url('../icons/filetypes/file_extension_dwg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-eml {
+    background-image: url('../icons/filetypes/file_extension_eml.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-eps {
+    background-image: url('../icons/filetypes/file_extension_eps.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-exe {
+    background-image: url('../icons/filetypes/file_extension_exe.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-fla {
+    background-image: url('../icons/filetypes/file_extension_fla.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-flv {
+    background-image: url('../icons/filetypes/file_extension_flv.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-gif {
+    background-image: url('../icons/filetypes/file_extension_gif.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-gz {
+    background-image: url('../icons/filetypes/file_extension_gz.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-hqx {
+    background-image: url('../icons/filetypes/file_extension_hqx.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-htm {
+    background-image: url('../icons/filetypes/file_extension_htm.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-html {
+    background-image: url('../icons/filetypes/file_extension_html.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ifo {
+    background-image: url('../icons/filetypes/file_extension_ifo.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-indd {
+    background-image: url('../icons/filetypes/file_extension_indd.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-iso {
+    background-image: url('../icons/filetypes/file_extension_iso.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-jar {
+    background-image: url('../icons/filetypes/file_extension_jar.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-jpeg {
+    background-image: url('../icons/filetypes/file_extension_jpeg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-jpg {
+    background-image: url('../icons/filetypes/file_extension_jpg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-lnk {
+    background-image: url('../icons/filetypes/file_extension_lnk.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-log {
+    background-image: url('../icons/filetypes/file_extension_log.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-m4a {
+    background-image: url('../icons/filetypes/file_extension_m4a.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-m4b {
+    background-image: url('../icons/filetypes/file_extension_m4b.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-m4p {
+    background-image: url('../icons/filetypes/file_extension_m4p.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-m4v {
+    background-image: url('../icons/filetypes/file_extension_m4v.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mcd {
+    background-image: url('../icons/filetypes/file_extension_mcd.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mdb {
+    background-image: url('../icons/filetypes/file_extension_mdb.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mid {
+    background-image: url('../icons/filetypes/file_extension_mid.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mov {
+    background-image: url('../icons/filetypes/file_extension_mov.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mp2 {
+    background-image: url('../icons/filetypes/file_extension_mp2.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mp4 {
+    background-image: url('../icons/filetypes/file_extension_mp4.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mpeg {
+    background-image: url('../icons/filetypes/file_extension_mpeg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mpg {
+    background-image: url('../icons/filetypes/file_extension_mpg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-msi {
+    background-image: url('../icons/filetypes/file_extension_msi.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-mswmm {
+    background-image: url('../icons/filetypes/file_extension_mswmm.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ogg {
+    background-image: url('../icons/filetypes/file_extension_ogg.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-pdf {
+    background-image: url('../icons/filetypes/file_extension_pdf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-png {
+    background-image: url('../icons/filetypes/file_extension_png.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-pps {
+    background-image: url('../icons/filetypes/file_extension_pps.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ps {
+    background-image: url('../icons/filetypes/file_extension_ps.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-psd {
+    background-image: url('../icons/filetypes/file_extension_psd.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-pst {
+    background-image: url('../icons/filetypes/file_extension_pst.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ptb {
+    background-image: url('../icons/filetypes/file_extension_ptb.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-pub {
+    background-image: url('../icons/filetypes/file_extension_pub.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-qbb {
+    background-image: url('../icons/filetypes/file_extension_qbb.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-qbw {
+    background-image: url('../icons/filetypes/file_extension_qbw.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-qxd {
+    background-image: url('../icons/filetypes/file_extension_qxd.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ram {
+    background-image: url('../icons/filetypes/file_extension_ram.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-rar {
+    background-image: url('../icons/filetypes/file_extension_rar.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-rm {
+    background-image: url('../icons/filetypes/file_extension_rm.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-rmvb {
+    background-image: url('../icons/filetypes/file_extension_rmvb.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-rtf {
+    background-image: url('../icons/filetypes/file_extension_rtf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-sea {
+    background-image: url('../icons/filetypes/file_extension_sea.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ses {
+    background-image: url('../icons/filetypes/file_extension_ses.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-sit {
+    background-image: url('../icons/filetypes/file_extension_sit.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-sitx {
+    background-image: url('../icons/filetypes/file_extension_sitx.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ss {
+    background-image: url('../icons/filetypes/file_extension_ss.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-swf {
+    background-image: url('../icons/filetypes/file_extension_swf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-tgz {
+    background-image: url('../icons/filetypes/file_extension_tgz.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-thm {
+    background-image: url('../icons/filetypes/file_extension_thm.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-tif {
+    background-image: url('../icons/filetypes/file_extension_tif.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-tmp {
+    background-image: url('../icons/filetypes/file_extension_tmp.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-torrent {
+    background-image: url('../icons/filetypes/file_extension_torrent.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-ttf {
+    background-image: url('../icons/filetypes/file_extension_ttf.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-txt {
+    background-image: url('../icons/filetypes/file_extension_txt.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-vcd {
+    background-image: url('../icons/filetypes/file_extension_vcd.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-vob {
+    background-image: url('../icons/filetypes/file_extension_vob.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-wav {
+    background-image: url('../icons/filetypes/file_extension_wav.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-wma {
+    background-image: url('../icons/filetypes/file_extension_wma.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-wmv {
+    background-image: url('../icons/filetypes/file_extension_wmv.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-wps {
+    background-image: url('../icons/filetypes/file_extension_wps.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-xls {
+    background-image: url('../icons/filetypes/file_extension_xls.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-xpi {
+    background-image: url('../icons/filetypes/file_extension_xpi.png');
+}
+
+.mk-filemanager-ico.mk-filemanager-zip {
+    background-image: url('../icons/filetypes/file_extension_zip.png');
+}

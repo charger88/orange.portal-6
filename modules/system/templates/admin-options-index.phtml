@@ -1,0 +1,5 @@
+<ul class="workspace-menu">
+	<?php foreach ($options as $option){ ?>
+	<li><a href="<?php $this->ee(OP_WWW.$option['url']); ?>"><?php $this->el($option['name']); ?></a></li>
+	<?php } ?>
+</ul>

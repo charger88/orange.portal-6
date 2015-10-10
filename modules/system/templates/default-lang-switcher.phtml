@@ -1,0 +1,13 @@
+<?php if (count($languages) > 1){ ?>
+<ul class="lang-switcher">
+<?php foreach ($languages as $lang_code => $lang_title){ ?>
+	<li><a href="<?php $this->ee(
+		isset($pages[$lang_code])
+			? $pages[$lang_code] : ( isset($pages[''])
+				? $pages[''].( strpos($pages[''],'?') === false ? '?' : '&' ).'lang='.$lang_code
+				: OP_WWW.'/'.$lang_code
+			)
+		); ?>" class="lang-<?php $this->ee($lang_code); ?>" title="<?php $this->ee($lang_title); ?>" lang="<?php $this->ee($lang_code); ?>"><?php $this->ee($lang_title); ?></a></li>
+<?php } ?>
+</ul>
+<?php } ?>

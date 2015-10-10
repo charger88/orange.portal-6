@@ -1,0 +1,45 @@
+<form action="<?php $this->ee(OP_WWW.'/admin/files/upload'); ?>" class="form-default" id="files-upload">
+    <input type="file" name="upload" multiple="multiple"  class="mk-filemanager-files" />
+    <input type="hidden" name="path" value="" class="mk-filemanager-path" />
+    <div class="buttons-area"><button class="form-element-submit"><?php $this->el('ADMIN_UPLOAD'); ?></button></div>
+</form>
+<div id="files-newfolder-wrapper"><a href="<?php $this->ee(OP_WWW.'/admin/files/newfolder'); ?>" id="files-newfolder"><?php $this->el('ADMIN_FILES_NEW_FOLDER'); ?></a></div>
+<table class="op-admin-list-table" id="filemanager">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="clickable" style="width: 60%;" onclick="$filemanager.sortFiles('name');"><?php $this->el('ADMIN_FILE_NAME'); ?></th>
+            <th class="clickable" style="width: 15%;" onclick="$filemanager.sortFiles('size');"><?php $this->el('ADMIN_FILE_SIZE'); ?></th>
+            <th class="clickable" style="width: 25%;" onclick="$filemanager.sortFiles('time');"><?php $this->el('ADMIN_FILE_MTIME'); ?></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="files-contaner">
+
+    </tbody>
+    <tfoot>
+        <tr id="file-template">
+            <td><span class="mk-filemanager-ico"></span></td>
+            <td class="mk-filemanager-name"></td>
+            <td class="mk-filemanager-size"></td>
+            <td class="mk-filemanager-mtime"></td>
+            <td class="icon icon-edit"><a href="<?php $this->ee(OP_WWW.'/admin/files/edit'); ?>" class="mk-filemanager-edit" title="<?php $this->el('ADMIN_EDIT'); ?>"><?php $this->el('ADMIN_EDIT'); ?></a></td>
+            <td class="icon icon-delete"><a href="<?php $this->ee(OP_WWW.'/admin/files/delete'); ?>" class="mk-filemanager-delete" title="<?php $this->el('ADMIN_DELETE'); ?>"><?php $this->el('ADMIN_DELETE'); ?></a></td>
+        </tr>
+    </tfoot>
+</table>
+<?php
+    OPAL_Theme::addScriptFile('modules/system/static/js/jquery.mkfilemanager.js');
+    OPAL_Theme::addStyleFile('modules/system/static/css/custom.mkfilemanager.css');
+?>
+<script type="text/javascript">
+    var $filemanager = $('#filemanager').mkfilemanager({
+        getDirDataURL: '<?php $this->ee(OP_WWW.'/admin/files/readdir'); ?>',
+        filesDataContainerID: '#files-contaner',
+        fileTemplateElementID: '#file-template',
+        newFolderLinkID: '#files-newfolder',
+        uploadFormID: '#files-upload',
+        textAreYouSure: '<?php $this->el('ADMIN_ARE_YOU_SURE'); ?>',
+    });
+</script>

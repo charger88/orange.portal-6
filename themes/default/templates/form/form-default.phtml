@@ -1,0 +1,36 @@
+<?php 
+
+echo '<form action="'.$this->esc($action).'" method="'.$this->esc($method).'" enctype="multipart/form-data" class="form form-default" id="form-'.$this->esc($formname).'">';
+
+if ($areas){
+	foreach ($areas as $area_id => $elements){
+		if (strpos($area_id, '[]') === false){
+			if ($area_id){
+				echo '<div class="form-area form-area-'.$this->esc($area_id).'">';
+			}
+			echo $this->fetch('form-default-area.phtml',array(
+				'fields'   => $fields,
+				'areas'    => $areas,
+				'area_id'  => $area_id,
+				'elements' => $elements,
+				'formname' => $formname,
+			));
+			if ($area_id){
+				echo '</div>';
+			}
+		}
+	}
+}
+
+echo '</form>';
+
+if ($addafter){
+	foreach ($addafter as $a){
+		if ($a[0] == 'html'){
+			echo $a[1];
+		} elseif ($a[0] == 'template'){
+			echo $this->fetch($a[1],$a[2]);
+		}
+	}
+	
+}

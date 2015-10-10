@@ -1,0 +1,9 @@
+<div class="alert alert-<?php $this->ee($status); ?>"><?php $this->ee($message); ?></div>
+<?php if ($redirect){ ?>
+<div class="redirect"><a href="<?php $this->ee($redirect); ?>" id="redirect"><?php $this->ee($redirect); ?></a></div>
+<script type="text/javascript">
+setTimeout(function(){
+	document.location = $('#redirect').attr('href');
+},5000);
+</script>
+<?php } ?>

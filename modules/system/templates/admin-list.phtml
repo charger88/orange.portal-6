@@ -1,0 +1,99 @@
+<table class="op-admin-list-table">
+	<thead>
+		<tr>
+			<?php foreach ($columns as $column => $column_params){ ?>
+				<th <?php if (isset($column_params['width'])){ ?>style="width: <?php $this->ee($column_params['width']); ?>%"<?php } ?>><?php if (isset($column_params['title'])){
+						if ($column_params['title']){
+							$this->ee($column_params['title']);
+						} else {
+							echo '<br/>';
+						}
+					} else {
+						$this->el($column);
+					} ?></th>
+			<?php } ?>
+		</tr>
+	</thead>
+	<?php if ($list){ ?>
+	<tbody>
+		<?php foreach ($list as $item){ ?>
+		<tr <?php if (isset($class_fields) && $class_fields){ ?>class="<?php foreach ($class_fields as $field){ echo $this->esc($field).'_'.$this->esc($item->get($field)).' '; } ?>"<?php } ?>>
+			<?php foreach ($columns as $column => $column_params){ 
+			
+				$val = $column{0} != '_' ? $item->get($column) : null;
+				
+				echo '<td class="op-admin-list-table-td-'.$this->esc($column).(isset($column_params['class']) ? ' '.$this->esc($column_params['class']) : '').'">';
+				
+				if (!isset($column_params['link']) && !empty($column_params['filter'])){
+					$link = '?'.$this->esc($column).'='.($val ? urlencode($val) : '');
+				} else if (isset($column_params['link'])) {
+					$link = $column_params['link']{0} == '_' ? $columns[$column_params['link']]['link'] : $column_params['link'];
+					$link = OP_WWW.str_replace('%id%', $item->id, $link);
+				} else {
+					$link = null;
+				}
+				
+				if ($link){
+					if (!isset($column_params['hint']) && isset($column_params['link']) && isset($columns[$column_params['link']]['hint'])){
+						$column_params['hint'] = $columns[$column_params['link']]['hint'];
+					}
+					echo '<a href="'.$this->esc($link).'" '.( isset($column_params['hint']) ? 'title="'.$this->esc($column_params['hint']).'"' : '' ).' '.($link{0} == '?' ? 'class="filter-link"' : '').'>';
+				}
+				
+				if (isset($column_params['text'])){
+					echo $this->esc($column_params['text']);
+				} else {
+					$colValue = $item->get($column);
+					if (is_array($colValue)){
+						if (isset($refs[$column])){
+							foreach ($colValue as $i => $colValueItem){
+								if (isset($refs[$column][$colValueItem])){
+									$colValue[$i] = $refs[$column][$colValueItem];
+								}
+							}
+						}
+                        if (isset($refs[$column])){
+                            foreach ($colValue as $i => $colValueData){
+                                $colValue[$i] = OPAL_Lang::t($colValueData);
+                            }
+
+                        }
+						$this->ee(implode(', ', $colValue));
+					} else {
+						echo isset($refs[$column])
+							? ( isset($refs[$column][$item->get($column)])
+								? $this->esc($refs[$column][$item->get($column)])
+								: ( $val ? $this->esc($val) : '&mdash;' )
+							)
+							: $item->get($column)
+						;
+					} 
+				}
+				
+				if (isset($column_params['link'])){
+					echo '</a>';	
+				}
+				
+				echo '</td>';
+				
+			} ?>
+		</tr>
+		<?php } ?>
+	</tbody>
+	<?php } ?>
+</table>
+<?php if (isset($offset) && ($offset || $list)){ ?>
+<div class="op-admin-arrow-paginator">
+	<?php if ($offset){ ?>
+	<a href="?offset=<?php echo $offset - 1; ?>" class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></a>
+	<?php } else { ?>
+	<span class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></span>
+	<?php } ?>
+	<span>[<?php echo ($offset * $limit) + 1; ?>-<?php echo ($offset * $limit) + count($list); ?>]</span>
+	<?php if ($limit == count($list)){ ?>
+	<a href="?offset=<?php echo $offset + 1; ?>" class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</a>
+	<?php } else { ?>
+	<span class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</span>
+	<?php } ?>
+</div>
+<?php } ?>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
+	<head><?php
+			OPAL_Theme::addStyleFile('modules/system/static/css/admin.css');
+			OPAL_Theme::addScriptFile('modules/system/static/js/admin.js');
+			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
+			echo $this->fetch('head.phtml',array('content' => $content));
+		?>
+	</head>
+	<body>
+		<header>
+			<div class="aside" id="logo"><a href="<?php echo OP_WWW.'/admin'; ?>">Orange.Portal 6</a></div>
+			<h1><?php echo OPAL_Lang::t($content->get('content_title')); ?></h1>
+		</header>
+		<aside id="column">
+			<?php echo $portal->blockDirect('system/admin-center/menu'); ?>
+		</aside>
+		<section id="workspace">
+			<?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?>
+		</section>
+	</body>
+</html>

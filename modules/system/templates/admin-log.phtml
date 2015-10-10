@@ -1,0 +1,18 @@
+<dl>
+    <dt><?php $this->el('log_log'); ?></dt>
+    <dd><?php $this->el($log->get('log_log')); ?></dd>
+    <dt><?php $this->el('log_status'); ?></dt>
+    <dd><?php $this->el($refs['log_status'][$log->get('log_status')]); ?></dd>
+    <dt><?php $this->el('log_time'); ?></dt>
+    <dd><?php $this->ee($log->get('log_time')); ?></dd>
+    <dt><?php $this->el('log_uri'); ?></dt>
+    <dd><?php $this->ee($log->get('log_uri')); ?></dd>
+    <dt><?php $this->el('log_ip'); ?></dt>
+    <dd><?php $this->ee($log->get('log_ip')); ?></dd>
+    <dt><?php $this->el('log_useragent'); ?></dt>
+    <dd><?php $this->ee($log->get('log_useragent')); ?></dd>
+    <dt><?php $this->el('log_user_id'); ?></dt>
+    <dd><a href="<?php echo OP_WWW.'/admin/users/edit/'.$user->id; ?>"><?php $this->ee($user->get('user_login')); ?></a></dd>
+    <dt><?php $this->el('log_message'); ?></dt>
+    <dd><?php $this->ee(OPAL_Lang::t($log->get('log_message'),$log->get('log_vars'))); ?></dd>
+</dl>

@@ -1,0 +1,5 @@
+<?php $label = $field['label']; ?>
+<?php unset($field['label']); ?>
+<?php $value = $field['value']; ?>
+<?php unset($field['value']); ?>
+<textarea <?php foreach ($field as $attr_key => $attr_value){ if (!is_array($attr_value)){ echo $this->esc($attr_key).'="'.$this->esc($attr_value).'" '; }} ?>><?php $this->ee($value); ?></textarea>

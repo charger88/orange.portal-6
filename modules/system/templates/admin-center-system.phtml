@@ -1,0 +1,15 @@
+<h3><?php $this->el('ADMIN_SYSTEM_CMS'); ?></h3>
+<dl>
+	<dt><?php $this->el('ADMIN_VERSION'); ?></dt>
+	<dd><?php $this->ee($version); ?></dd>
+	<dt><?php $this->el('ADMIN_LICENSE'); ?></dt>
+	<dd><a href="<?php echo OP_WWW.'/admin/center/license'; ?>"><?php $this->el('ADMIN_READ'); ?></a></dd>
+</dl>
+<h3><?php $this->el('ADMIN_SYSTEM_SERVER'); ?></h3>
+<dl>
+	<?php $server = explode(' ', str_replace(' (', '(', $server)); ?>
+	<?php foreach ($server as $soft) { $soft = explode('/', $soft); ?>
+		<dt><?php $this->ee($soft[0]); ?></dt>
+		<dd><?php $this->ee(isset($soft[1]) ? str_replace('(', ' (', $soft[1]) : 'N/A'); ?></dd>
+	<?php } ?>
+</dl>

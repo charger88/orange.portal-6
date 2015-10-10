@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
+	<head><?php
+			OPAL_Theme::addStyleFile('themes/default/static/error.css');
+			echo $this->fetch('head.phtml',array('content' => $content));
+		?>
+	</head>
+	<body>
+		<header></header>
+		<section>
+			<?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?>
+		</section>
+	</body>
+</html>

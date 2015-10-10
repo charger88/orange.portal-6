@@ -1,0 +1,120 @@
+/*
+YUI 3.14.1 (build 63049cb)
+Copyright 2013 Yahoo! Inc. All rights reserved.
+Licensed under the BSD License.
+http://yuilibrary.com/license/
+*/
+
+html{color:#000;background:#FFF}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal}ol,ul{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}q:before,q:after{content:''}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;*font-size:100%}legend{color:#000}#yui3-css-stamp.cssreset{display:none}
+
+/* Theme */
+
+html {	
+	background: #00264d;
+	background: -moz-linear-gradient(top,  #00264d 0%, #2e6be5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#00264d), color-stop(100%,#2e6be5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #00264d 0%,#2e6be5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #00264d 0%,#2e6be5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #00264d 0%,#2e6be5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #00264d 0%,#2e6be5 100%); /* W3C */
+	background-attachment: fixed;
+}
+
+body {
+	font-family: 'Tahoma', sans-serif;
+	color: #ffffff;
+}
+
+body > header {
+	width: 100%;
+	z-index: 100;
+	color: #ffffff;
+	background: #f27318;
+	text-shadow: 1px 1px 0 rgba(0,0,0,0.25);
+	box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+	height: 60px;
+	line-height: 60px;
+	font-family: 'Georgia', sans-serif;
+	font-size: 2em;
+	text-align: center;
+}
+
+body > section {
+	width: 60%;
+	margin: 40px auto;
+	background: rgba(255,255,255,0.1);
+	padding: 30px 42px;
+}
+
+body > section .form-element-wrapper {
+	margin-bottom: 7px;
+}
+
+body > section .form-element-submit-wrapper {
+	text-align: right;
+}
+
+body > section .form-area {
+	margin-bottom: 28px;
+}
+
+body > section .form-area-step-last,
+body > section .form-area-step-last .form-element-wrapper {
+	margin-bottom: 0;
+}
+
+body > section .form-element-required-wrapper label:after {
+	content: '*';
+	color: #f27318;
+	margin-left: 0.15em;
+}
+
+body > section h3 {
+	padding-bottom: 7px;
+	margin-bottom: 7px;
+	font-size: 1.4em;
+	text-align: center;
+	border-bottom: 1px dotted;
+	line-height: 100%;
+}
+
+body > section label {
+	display: block;
+	width: 30%;
+	float: left;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 7px 0;
+}
+
+body > section input,
+body > section select {
+	display: block;
+	width: 70%;
+	clear: right;
+	background-color: rgba(255,255,255,0.25);
+	border: 0;
+	padding: 7px;
+	font-weight: bold;
+	font-size: 0.8em;
+	outline: none;
+	box-sizing: border-box;
+}
+
+body > section .form-element-error {
+	width: 70%;
+	color: #f27318;
+	font-size: 0.8em;
+	margin-left: 30%;
+}
+
+body > section input:focus,
+body > section select:focus {
+	background-color: #ffffff;
+}
+
+body > section button {
+	font-size: 1.5em;
+	cursor: pointer;
+	padding: 7px 14px;
+}

@@ -1,0 +1,55 @@
+<?php //TODO RSS
+		$hidden = $content->field('seo_hidden');
+		$title = $content->field('seo_title') ? $content->field('seo_title') : (OPAL_Portal::config('system_sitename',null) ? $content->get('content_title') . ' - ' . OPAL_Portal::config('system_sitename') : $content->get('content_title') );
+		$name = $content->field('seo_title') ? $content->field('seo_title') : $content->get('content_title');
+		$description = $content->field('seo_description') ? $content->field('seo_description') : ( $content->text('story')->get('content_text_value') ? strip_tags($content->text('story')->get('content_text_value')) : OPAL_Portal::config('system_seo_description','') );
+		$keywords = $content->field('seo_keywords') ? $content->field('seo_keywords') : ( OPAL_Portal::config('system_seo_keywords','') );
+		$author = OPAL_Portal::config('system_copyright','');
+		$url = count(OPAL_Portal::getInstance()->getRequest()) <= 1 ? ( $content->field('seo_canonical') ? $content->field('seo_canonical') : OP_WWW.'/'.$content->getSlug(OPAL_Portal::config('system_default_lang')) ) : null;
+		$image = OP_WWW.'/'.$content->getImageUrl('m');
+		$alternate = (count(OPAL_Portal::config('system_enabled_langs',array())) > 1)
+			? $content->getLanguagePages(OPAL_Portal::config('system_default_lang',''),OPAL_Portal::getInstance()->user)
+			: array()
+		;
+	?>
+	
+		<title><?php $this->ee($title); ?></title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="Orange Portal 6" />
+		<meta property="og:type" content="<?php echo strlen($content->text()->get('content_text_value')) > 100 ? 'article' : 'website'; ?>" />
+		<meta property="og:title" content="<?php $this->ee($name); ?>" />
+<?php if ($description){ ?>
+		<meta property="og:description" content="<?php $this->ee($description); ?>" />
+		<meta name="description" content="<?php $this->ee($description); ?>" />
+<?php } ?>
+<?php if ($keywords){ ?>
+		<meta name="keywords" content="<?php $this->ee($keywords); ?>" />
+<?php } ?>
+<?php if ($author){ ?>
+		<meta name="author" content="<?php $this->ee($author); ?>" />
+<?php } ?>
+<?php if ($url){ ?>
+		<meta name="original-source" content="<?php $this->ee($url); ?>" />
+		<link rel="canonical" href="<?php $this->ee($url); ?>" />
+<?php } ?>
+<?php if ($alternate){ foreach ($alternate as $alternate_lang => $alternate_url){ ?>
+		<link rel="alternate" href="<?php $this->ee($alternate_url); ?>" hreflang="<?php $this->ee($alternate_lang); ?>" />
+<?php }} ?>
+		<meta name="robots" content="<?php echo $hidden ? 'noindex, follow' : 'all'; ?>" />
+<?php if ($image){ ?>
+		<meta property="og:image" content="<?php $this->ee($image); ?>" />
+		<link rel="image_src" href="<?php $this->ee($image); ?>" />
+<?php } ?>
+<?php if ($files = $this->theme->getHeadStyleFiles()){ foreach ($files as $file){ 
+	$ext = explode('.',$file);
+	$ext = array_pop($ext);
+	if ($ext == 'less'){ ?>
+		<link rel="stylesheet/less" href="<?php $this->ee($file); ?>" type="text/css" />
+	<?php } else { ?>
+		<link rel="stylesheet" href="<?php $this->ee($file); ?>" type="text/css" />
+<?php } ?>
+<?php }} ?>
+<?php if ($files = $this->theme->getHeadScriptFiles()){ foreach ($files as $file){ ?>
+		<script type="text/javascript" src="<?php $this->ee($file); ?>"></script>
+<?php }} ?>
+		<link rel="shortcut icon" href="<?php echo OP_WWW.'/favicon.ico'; ?>" />

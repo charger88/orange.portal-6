@@ -1,0 +1,17 @@
+<?php 
+	OPAL_Theme::addStyleFile('modules/system/static/css/jquery.mkmedia.css');
+	OPAL_Theme::addScriptFile('modules/system/static/js/jquery.mkmedia.js');
+?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.op-media').mkmedia({
+			listURL:   '<?php echo OP_WWW.'/admin/media/'; ?>',
+			oneURL:    '<?php echo OP_WWW.'/admin/media/one/'; ?>',
+			uploadURL: '<?php echo OP_WWW.'/admin/media/upload/'; ?>',
+			updateURL: '<?php echo OP_WWW.'/admin/media/update/'; ?>',
+			deleteURL: '<?php echo OP_WWW.'/admin/media/delete/'; ?>',
+			selectTxt: '<?php $this->el('Select media file'); ?>',
+			uploadTxt: '<?php $this->el('Upload'); ?>'
+		});
+	});
+</script>

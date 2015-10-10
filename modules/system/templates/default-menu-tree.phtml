@@ -1,0 +1,26 @@
+<?php
+
+if (!function_exists('default_default_menu')){
+	function default_default_menu(&$menu,$root,&$templater){
+		if (!empty($menu[$root])) {
+			echo '<ul>';
+			foreach ($menu[$root] as $page) {
+				echo '<li>';
+				$url = OP_WWW . '/' . $templater->esc($page->getSlug(OPAL_Portal::config('system_default_lang')));
+				if ($page->get('content_lang') != OPAL_Portal::$sitelang) {
+					$url .= '?lang=' . $templater->esc(OPAL_Portal::$sitelang);
+				}
+				echo '<a href="' . $url . '">' . $templater->esc($page->get('content_title')) . '</a>';
+				if (!empty($menu[$page->id])) {
+					default_default_menu($menu, $page->id, $templater);
+				}
+				echo '</li>';
+			}
+			echo '</ul>';
+		}
+	}
+}
+
+echo '<nav class="menu menu-default menu-tree">';
+default_default_menu($menu,$root,$this);
+echo '</nav>';
