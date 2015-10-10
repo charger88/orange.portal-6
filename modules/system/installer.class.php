@@ -267,7 +267,7 @@ class OPMI_System extends OPAL_Installer {
 	
 	private function createContent(){
 		$result = true;
-		$lang = OPAL_Portal::$sitelang;
+		$lang = OPAL_Portal::config('system_default_lang','en');
 		$content_data = array(
 			array(
 				'content_type'           => 'page',
