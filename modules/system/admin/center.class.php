@@ -9,7 +9,7 @@ class OPMA_System_Center extends OPAL_Controller {
 	}
 	
 	public function licenseAction(){
-		$license = new OPAL_File('license.txt','config');
+		$license = new OPAL_File('license.txt');
 		return $this->templater->fetch('system/admin-center-license.phtml',array(
 			'license' => $license->getData(),
 		));
