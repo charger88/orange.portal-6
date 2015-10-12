@@ -63,14 +63,14 @@ class OPAM_Content extends OPDB_Object {
 		if ($fields = $type->get('content_type_fields')) {
 			$this->loadFields();
 			foreach($fields as $field_id => $field){
-				$fieldObject = OPAM_Content_Field::getObject($id, $field_id );
-				$value = isset($this->fields [$field_id])? $this->fields [$field_id] : '';
-				if (($fieldObject->get('content_field_type')!= $field ['type']) || ($fieldObject->get('content_field_value')!= $value)) {
-					$fieldObject->set('content_field_type', $field ['type'] );
+				$fieldObject = OPAM_Content_Field::getObject($id, $field_id);
+				$value = isset($this->fields[$field_id]) ? $this->fields[$field_id] : '';
+                if (($fieldObject->get('content_field_type') != $field['type']) || ($fieldObject->get('content_field_value') != $value)) {
+					$fieldObject->set('content_field_type', $field['type']);
 					$fieldObject->set('content_field_value', $value );
-					$field_IDs [] = $fieldObject->save();
+					$field_IDs[] = $fieldObject->save();
 				} else {
-					$field_IDs [] = $fieldObject->id;
+					$field_IDs[] = $fieldObject->id;
 				}
 			}
 		}
@@ -137,7 +137,7 @@ class OPAM_Content extends OPDB_Object {
 		$select->addWhere(new OPDB_Clause('content_id', '=', $this->id));
 		$select->addField('content_field_name');
 		$select->addField('content_field_value');
-		$this->fields = array_merge($this->fields, $select->execQuery()->getResultArray(true));
+		$this->fields = array_merge($select->execQuery()->getResultArray(true),$this->fields);
 	}
 
     /**
@@ -149,9 +149,9 @@ class OPAM_Content extends OPDB_Object {
 			$this->loadFields();
 		}
 		if (!array_key_exists($field, $this->fields)) {
-			$this->fields [$field] = null;
+			$this->fields[$field]= null;
 		}
-		return $this->fields [$field];
+		return $this->fields[$field];
 	}
 
     /**
@@ -205,25 +205,25 @@ class OPAM_Content extends OPDB_Object {
      * @return OPAM_Content[]|array
      */
     public static function getList($params = array(), $classname = null, $select_base = null) {
-		$IDs = isset($params['IDs'])? $params['IDs'] : null;
-		$exclude = isset($params['exclude'])? $params['exclude'] : null;
-		$types = isset($params['types'])? $params['types'] : null;
-		$search = isset($params['search'])? $params['search'] : null;
-		$searchmode = isset($params['searchmode'])? $params['searchmode'] : 0;
-		$status_min = isset($params['status_min'])? $params['status_min'] : null;
-		$status_max = isset($params['status_max'])? $params['status_max'] : null;
-		$access_user = isset($params['access_user'])? $params['access_user'] : null;
-		$lang = isset($params['lang'])? $params['lang'] : null;
-		$on_site_mode = isset($params['on_site_mode'])? $params['on_site_mode'] : null;
-		$time_published_from = isset($params['time_published_from'])? $params['time_published_from'] : null;
-		$time_published_to = isset($params['time_published_to'])? $params['time_published_to'] : null;
-		$user_id = isset($params['user_id'])? $params['user_id'] : null;
-		$parent_id = isset($params['parent_id'])? $params['parent_id'] : null;
+		$IDs = isset($params['IDs'])? $params['IDs']: null;
+		$exclude = isset($params['exclude'])? $params['exclude']: null;
+		$types = isset($params['types'])? $params['types']: null;
+		$search = isset($params['search'])? $params['search']: null;
+		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;
+		$status_min = isset($params['status_min'])? $params['status_min']: null;
+		$status_max = isset($params['status_max'])? $params['status_max']: null;
+		$access_user = isset($params['access_user'])? $params['access_user']: null;
+		$lang = isset($params['lang'])? $params['lang']: null;
+		$on_site_mode = isset($params['on_site_mode'])? $params['on_site_mode']: null;
+		$time_published_from = isset($params['time_published_from'])? $params['time_published_from']: null;
+		$time_published_to = isset($params['time_published_to'])? $params['time_published_to']: null;
+		$user_id = isset($params['user_id'])? $params['user_id']: null;
+		$parent_id = isset($params['parent_id'])? $params['parent_id']: null;
 		
-		$limit = isset($params['limit'])? $params['limit'] : 30;
-		$offset = isset($params['offset'])? $params['offset'] : 0;
-		$order = isset($params['order'])? $params['order'] : 'content_time_published';
-		$desc = isset($params['desc'])? $params['desc'] : false;
+		$limit = isset($params['limit'])? $params['limit']: 30;
+		$offset = isset($params['offset'])? $params['offset']: 0;
+		$order = isset($params['order'])? $params['order']: 'content_time_published';
+		$desc = isset($params['desc'])? $params['desc']: false;
 		
 		$select = is_null($select_base)? new OPDB_Select(self::$table): $select_base;
 		
@@ -267,7 +267,7 @@ class OPAM_Content extends OPDB_Object {
 		
 		if (!is_null($access_user) && ($access_user instanceof OPAM_User)) {
 			$groups = $access_user->get('user_groups');
-			$groups [] = 0;
+			$groups[]= 0;
 			$f = true;
 			$select->addWhereAnd();
 			$select->addWhereBracket(true );
@@ -387,7 +387,7 @@ class OPAM_Content extends OPDB_Object {
 		$url = '';
 		if ($iid = $this->get('content_image')) {
 			$media = new OPMM_System_Media($iid );
-			$url = $media->getDir($th). '/' . $media->get('media_file');
+			$url = $media->getDir($th).'/'.$media->get('media_file');
 		}
 		return $url;
 	}
@@ -439,11 +439,11 @@ class OPAM_Content extends OPDB_Object {
 					'access_user' => $user
 			), null, $select)) {
 				foreach($pages as $page){
-					$links [$page->get('content_lang' )] = OP_WWW . '/' . $page->getSlug($default_lang );
+					$links[$page->get('content_lang' )]= OP_WWW . '/' . $page->getSlug($default_lang );
 				}
 			}
 		} else {
-			$links [''] = '';
+			$links['']= '';
 		}
 		return $links;
 	}

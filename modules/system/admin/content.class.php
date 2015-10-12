@@ -34,7 +34,7 @@ class OPMA_System_Content extends OPAL_Controller {
 		$params['access_level'] = $this->user->get('user_status');
 		$params['list']    = OPAM_Content::getList($params,$type->getClass());
 		$listMoreData      = OPAM_Content::getListMoreData();
-		$params['class_fields']    = $this->list_class_fields;
+		$params['class_fields'] = $this->list_class_fields;
 		if (isset($this->list_columns['content_user_id'])){
 			$params['refs']['content_user_id'] = OPAM_User::loadByIDs($listMoreData['content_user_id'],'user_name');
 		}
@@ -158,7 +158,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				$values = $form->getValues();
 				$item->setFromArray($values);
 				$item->set('content_slug',urlencode($item->get('content_slug')));
-					
+
 				if ($fields = $type->get('content_type_fields')){
 					foreach ($fields as $field_id => $field){
 						$item->setField($field_id,$values['content_field_'.$field_id]);
@@ -166,7 +166,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				}
 				
 				if (!$errors){
-						
+
 					if ($id = $item->save()){
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){

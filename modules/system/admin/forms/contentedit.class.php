@@ -106,7 +106,7 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 					}
 					$this->addFieldset($this->lng($field['group']), 'column', 'fieldset-'.md5($field['group']));
 				}
-				switch ($field['type']) {
+				switch ($field['type']){
 					case 'boolean':
 						$field_type = 'checkbox';
 					break;
@@ -116,8 +116,9 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 					default:
 						$field_type = 'text';
 					break;
-				} 
-				$this->addField('content_field_'.$field_id, $field_type, $this->lng($field['title']), array(), 'column');
+				}
+                $field_params = $field_type == 'checkbox' ? array('value' => 1) : array();
+				$this->addField('content_field_'.$field_id, $field_type, $this->lng($field['title']), $field_params, 'column');
 				$last_field_group = $field['group'];
 			}
 			if ($last_field_group){
