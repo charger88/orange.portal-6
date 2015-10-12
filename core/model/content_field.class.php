@@ -27,4 +27,12 @@ class OPAM_Content_Field extends OPDB_Object {
 		return $fieldObject;
 	}
 	
+	public static function getContentIDs($name,$value){
+		$select = new OPDB_Select(self::$table);
+		$select->addWhere(new OPDB_Clause('content_field_name','=',$name));
+		$select->addWhereAnd(new OPDB_Clause('content_field_value','=',$value));
+		$select->addField('content_id');
+		return $select->execQuery()->getResultArray(true);
+	}
+	
 }
