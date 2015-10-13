@@ -117,7 +117,7 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 						$field_type = 'text';
 					break;
 				}
-                $field_params = $field_type == 'checkbox' ? array('value' => 1) : array();
+				$field_params = $field_type == 'checkbox' ? array('value' => 1) : array();
 				$this->addField('content_field_'.$field_id, $field_type, $this->lng($field['title']), $field_params, 'column');
 				$last_field_group = $field['group'];
 			}

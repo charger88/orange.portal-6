@@ -478,8 +478,8 @@ class OPAL_Portal {
 						$result[] = $commandResult;
 					}
 				} else {
-					$this->lastExecuteContentStatus = 'notfound';
-					$controller = new OPAL_Controller($content,$this->user,$this->templater,array());
+					$this->lastExecuteContentStatus = 'not-found';
+                    $controller = new OPAL_Controller($content,$this->user,$this->templater,array());
 					$controller->alert('PORTAL_MODULE_NOT_FOUND');
 				}
 			}
@@ -522,30 +522,32 @@ class OPAL_Portal {
 			if (class_exists($classname)){
                 /** @var OPAL_Controller $controller */
                 $controller = new $classname($content,$this->user,$this->templater,$arguments);
-				if (method_exists($controller,$methodname)){
+				$controllerReflection = new ReflectionClass($controller);
+				try {
+					$methodReflection = $controllerReflection->getMethod($methodname);
 					$cache_loaded = false;
 					$method_result = '';
-					$is_method_cacheable = self::config('system_cache_method',false) && $controller->isMethodCacheable($methodname);
-					if ($is_method_cacheable){
-						$method_result = $controller->getMethodCache($methodname,$request);
-						if (!is_null($method_result)){
+					$is_method_cacheable = self::config('system_cache_method', false) && $controller->isMethodCacheable($methodname);
+					if ($is_method_cacheable) {
+						$method_result = $controller->getMethodCache($methodname, $request);
+						if (!is_null($method_result)) {
 							$cache_loaded = true;
 						}
 					}
-					if (!$cache_loaded){
-						OPAL_Lang::load('modules/'.$module.'/lang', self::$sitelang);
-						$method_result = call_user_func_array(array($controller, $methodname),$request);
-						if ($is_method_cacheable){
-							$controller->setMethodCache($methodname,$request,$method_result);
+					if (!$cache_loaded) {
+						OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+						$method_result = $methodReflection->invokeArgs($controller, $request);
+						if ($is_method_cacheable) {
+							$controller->setMethodCache($methodname, $request, $method_result);
 						}
 					}
 					$result = $method_result;
 					$execStatus = 'success';
-				} else {
+				} catch (ReflectionException $e){
 					$execStatus = 'not-found';
 				}
 			} else {
-				$execStatus = 'notfound';
+				$execStatus = 'not-found';
 				$controller = new OPAL_Controller($content,$this->user,$this->templater,array());
 				$controller->alert('PORTAL_%s_CONTROLLER_NOT_FOUND',array($classname));
 			}

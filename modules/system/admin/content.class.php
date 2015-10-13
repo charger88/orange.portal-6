@@ -229,8 +229,17 @@ class OPMA_System_Content extends OPAL_Controller {
 			$options['content_access_groups'][$key] = OPAL_Lang::t($value);
 		}
 		if ($item){
-			$options['content_parent_id'] = method_exists($item, 'getParentsRef') ? call_user_func_array(array($item,'getParentsRef'), array()) : null;
-			$options['content_default_lang_id'] = method_exists($item, 'getDefaultLanguageRef') ? call_user_func_array(array($item, 'getDefaultLanguageRef'), array(OPAL_Portal::config('system_default_lang'))) : null;
+			$controllerReflection = new ReflectionClass($item);
+			try {
+				$options['content_parent_id'] = $controllerReflection->getMethod('getParentsRef')->invokeArgs($item, array());
+			} catch (ReflectionException $e){
+				$options['content_parent_id'] = null;
+			}
+			try {
+				$options['content_default_lang_id'] = $controllerReflection->getMethod('getDefaultLanguageRef')->invokeArgs($item, array( OPAL_Portal::config('system_default_lang') ));
+			} catch (ReflectionException $e){
+				$options['content_default_lang_id'] = null;
+			}
 			$options['content_area'] = (strpos($item->get('content_slug'),'admin/') === 0 ? $this->templater->theme->getAdminAreas() : $this->templater->theme->getThemeAreas());
 			foreach ($options as $key => &$ref){
 				if ($key != 'content_text_format'){
