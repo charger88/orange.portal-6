@@ -238,8 +238,7 @@ class OPAM_Content extends OPDB_Object {
 		}
 		
 		if (!is_null($types)) {
-			$select->addWhereAnd($types ? new OPDB_Clause('content_type', 'IN', is_array($types)? $types : array(
-					$types 
+			$select->addWhereAnd($types ? new OPDB_Clause('content_type', 'IN', is_array($types)? $types : array($types
 			)): new OPDB_Clause('id', '=', 0));
 		}
 		
@@ -307,15 +306,11 @@ class OPAM_Content extends OPDB_Object {
 		}
 		
 		if (!is_null($user_id)) {
-			$select->addWhereAnd(new OPDB_Clause('content_user_id', 'IN', is_array($user_id)? $user_id : array(
-					$user_id 
-			)));
+			$select->addWhereAnd(new OPDB_Clause('content_user_id', 'IN', is_array($user_id)? $user_id : array($user_id)));
 		}
 		
 		if (!is_null($parent_id)) {
-			$select->addWhereAnd(new OPDB_Clause('content_parent_id', 'IN', is_array($parent_id)? $parent_id : array(
-					$parent_id 
-			)));
+			$select->addWhereAnd(new OPDB_Clause('content_parent_id', 'IN', is_array($parent_id)? $parent_id : array($parent_id)));
 		}
 		
 		if (!is_null($order)) {
@@ -447,5 +442,26 @@ class OPAM_Content extends OPDB_Object {
 		}
 		return $links;
 	}
+
+    /**
+     * @param OPAM_Content[] $list
+     * @return array
+     */
+    public static function getRssData($list){
+        $rss = array();
+        if ($list){
+            foreach ($list as $item){
+                $image = new OPMM_System_Media($item->get('content_image'));
+                $rss[] = array(
+                    'title' => $item->get('content_title'),
+                    'link' => OP_WWW . '/' . $item->getSlug(),
+                    'time' => $item->get('content_time_published'),
+                    'image_url' => $image->id ? $image->getURL('m') : '',
+                    'image_type' => $image->id ? $image->getMimeType(): '',
+                );
+            }
+        }
+        return $rss;
+    }
 
 }

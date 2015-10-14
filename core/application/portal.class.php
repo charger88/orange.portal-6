@@ -314,7 +314,10 @@ class OPAL_Portal {
 	
 	private function processPage(){
         OPAL_Lang::load('modules/system/lang', self::$sitelang);
-		if (!$this->install_mode){
+        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){ //TODO Add here install mode too
+            OPAL_Lang::load('modules/system/lang/admin', self::$sitelang);
+        }
+        if (!$this->install_mode){
 			if (!empty($this->request[0]) && ($this->request[0] == 'module') && (count($this->request) >= 4)){
 				list($status,$output) = $this->processContentDirect();
 			} else {
@@ -364,7 +367,7 @@ class OPAL_Portal {
 		array_shift($this->request);
 		$module = array_shift($this->request);
 		$this->content = new OPAM_Page();
-		$this->content->set('content_title','MOD_'.strtoupper($module));
+		$this->content->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$this->content->set('content_type','module');
 		$this->content->set('content_slug',implode('/', $this->request));
 		$this->content->set('content_lang',self::$sitelang);
@@ -381,7 +384,7 @@ class OPAL_Portal {
 		$request = explode('/',$request);
 		$module = array_shift($request);
 		$block = new OPAM_Block();
-		$block->set('content_title','MOD_'.strtoupper($module));
+		$block->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$block->set('content_type','module');
 		$block->set('content_slug',implode('/', $request));
 		$block->set('content_lang',self::$sitelang);
@@ -536,6 +539,9 @@ class OPAL_Portal {
 					}
 					if (!$cache_loaded) {
 						OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){
+                            OPAL_Lang::load('modules/' . $module . '/lang/admin', self::$sitelang);
+                        }
 						$method_result = $methodReflection->invokeArgs($controller, $request);
 						if ($is_method_cacheable) {
 							$controller->setMethodCache($methodname, $request, $method_result);

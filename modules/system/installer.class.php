@@ -151,7 +151,7 @@ class OPMI_System extends OPAL_Installer {
 		$module = new OPAM_Module();
 		$module->setFromArray(array(
 			'module_code'   => 'system',
-			'module_title'  => 'MOD_SYSTEM',
+			'module_title'  => 'MODULE_SYSTEM',
 			'module_status' => true,
 		));
 		$id = $module->save();

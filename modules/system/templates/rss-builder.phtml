@@ -1,0 +1,50 @@
+<?php
+
+$rss = new DOMDocument("1.0","UTF-8");
+
+$rsstag = $rss->createElement("rss");
+$rsstag->setAttribute("version","2.0");
+$rsstag->setAttribute("xmlns","http://backend.userland.com/rss2");
+
+$channel = $rss->createElement("channel");
+
+$channel->appendChild($rss->createElement("title",OPAL_Portal::config('system_sitename','')));
+$channel->appendChild($rss->createElement("link",OP_WWW));
+
+foreach ($digest as $item){
+
+    $itemTag = $rss->createElement("item");
+
+    if (!empty($item['title'])){
+        $itemTag->appendChild($rss->createElement("title", $this->esc($item['title'])));
+    }
+    if (!empty($item['link'])) {
+        $itemTag->appendChild($rss->createElement("link", $this->esc($item['link'])));
+    }
+    if (!empty($item['description'])) {
+        $itemTag->appendChild($rss->createElement("description", $this->esc($item['description'])));
+    }
+    if (!empty($item['time'])){
+        $itemTag->appendChild($rss->createElement("pubDate",date("r",strtotime($item['time']))));
+    }
+
+    if (!empty($item['image_url'])) {
+        $imageObj = $rss->createElement("enclosure");
+        $imageObj->setAttribute("url", $item['image_url']);
+        $imageObj->setAttribute("type", !empty($item['image_type']) ? $item['image_type'] : 'image/jpeg');
+        $itemTag->appendChild($imageObj);
+    }
+
+    $channel->appendChild($itemTag);
+
+}
+
+
+$channel->appendChild($rss->createElement("lastBuildDate",date("r")));
+
+$rsstag->appendChild($channel);
+$rss->appendChild($rsstag);
+
+echo $rss->saveXML();
+
+?>

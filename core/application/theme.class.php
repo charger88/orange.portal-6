@@ -27,6 +27,10 @@ abstract class OPAL_Theme {
      * @var array
      */
     protected static $head_scripts = array();
+    /**
+     * @var array
+     */
+    protected static $rss_channels = array();
 
     /**
      * Constructor
@@ -75,8 +79,16 @@ abstract class OPAL_Theme {
      * @param bool $external
      */
     public static function addScriptFile($filename,$external = false){
-		self::$head_scripts[] = $external ? $filename : OP_WWW.'/'.$filename;
-	}
+        self::$head_scripts[] = $external ? $filename : OP_WWW.'/'.$filename;
+    }
+
+    /**
+     * @param string $filename
+     * @param bool $external
+     */
+    public static function addRSSChannel($url,$title,$external = false){
+        self::$rss_channels[$external ? $url : OP_WWW.'/'.$url] = $title;
+    }
 
     /**
      * @return array
@@ -110,22 +122,29 @@ abstract class OPAL_Theme {
      * @return array
      */
     public function getHeadScriptFiles(){
-		if (self::$head_scripts && OPAL_Portal::config('system_cache_js',false)){
-			$filename = 'tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
-			$file = new OPAL_File($filename);
-			$data = '';
-			if (!$file->file){
-				foreach (self::$head_scripts as $js_filename){
-					if ($js = OPAL_Downloader::download($js_filename)){
-						$data .= "/* File: $js_filename */\n\n".$js."\n\n";
-					}
-				}				
-				$file->saveData(trim($data));
-			}
-			self::$head_scripts = array(OP_WWW.'/'.$filename);
-		}
-		return self::$head_scripts;
-	}
+        if (self::$head_scripts && OPAL_Portal::config('system_cache_js',false)){
+            $filename = 'tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
+            $file = new OPAL_File($filename);
+            $data = '';
+            if (!$file->file){
+                foreach (self::$head_scripts as $js_filename){
+                    if ($js = OPAL_Downloader::download($js_filename)){
+                        $data .= "/* File: $js_filename */\n\n".$js."\n\n";
+                    }
+                }
+                $file->saveData(trim($data));
+            }
+            self::$head_scripts = array(OP_WWW.'/'.$filename);
+        }
+        return self::$head_scripts;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRSSChannels(){
+        return self::$rss_channels;
+    }
 
     /**
      * @param string $prefix

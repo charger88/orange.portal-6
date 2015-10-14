@@ -39,6 +39,27 @@ class OPMM_System_Media extends OPDB_Object {
     public function getURL($th = null){
         return OP_WWW.'/'.$this->getDir($th).'/'.$this->get('media_file');
     }
+
+    public function getMimeType(){
+        $ext = explode('.',$this->get('media_file'));
+        $ext = strtolower(array_pop($ext));
+        switch ($ext){
+            case 'jpg':
+            case 'jpg':
+                $type = 'image/jpeg';
+                break;
+            case 'png':
+                $type = 'image/png';
+                break;
+            case 'gif':
+                $type = 'image/gif';
+                break;
+            default:
+                $type = '';
+                break;
+        }
+        return $type;
+    }
 	
 	public function create($org_name,$data,$tmp_name,$user_id,$params = array()){
 
