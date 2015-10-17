@@ -76,8 +76,7 @@ class OPAM_Module extends OPDB_Object {
      */
     public function getModuleObject(){
 		if ($classname = $this->get('module_code')){
-			$classname{0} = strtoupper($classname{0});
-			$classname = 'OPMO_'.$classname;
+			$classname = 'OPMO_'.ucfirst($classname);
 			return new $classname($this->getDataArray());
 		} else {
 			return null;

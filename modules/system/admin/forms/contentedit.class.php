@@ -107,10 +107,10 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 					$this->addFieldset($this->lng($field['group']), 'column', 'fieldset-'.md5($field['group']));
 				}
 				switch ($field['type']){
-					case 'boolean':
+					case 'BOOLEAN':
 						$field_type = 'checkbox';
 					break;
-					case 'nllist':
+					case 'NLLIST':
 						$field_type = 'textarea';
 					break;
 					default:

@@ -12,80 +12,65 @@
  * OPMM - Orange.Portal Module Model
  */
 
-	function __autoload($class_name) {
-		
-		$prefix = substr($class_name,0,4);
-		$classname = strtolower(substr($class_name,5));
-		$filename = '';
-		
-		if ($prefix{0}.$prefix{1} == 'OP'){
-			if ($prefix{2}.$prefix{3} == 'DB'){
+	function __autoload($orgclassname) {
+		if ( (strpos($orgclassname,'OP') === 0) && (($plen = strpos($orgclassname,'_')) !== false) ){
+            $classname = strtolower(substr($orgclassname,$plen + 1));
+			if (strpos($orgclassname,'DB') === 2){
 				$filename = 'core/opdb/'.$classname.'.class.php';
 				if (!is_file(OP_SYS_ROOT.$filename)) {
 					$filename = 'core/opdb/'.OPDB_Config::$DBType.'/'.$classname.'.class.php';
 					//TODO Make something with database - it is not so beautiful
 				}
-			} elseif ($prefix{2}.$prefix{3} == 'AL') {
+			} elseif (strpos($orgclassname,'AL') === 2) {
 				$filename = 'core/application/'.$classname.'.class.php';
-			//} elseif ($prefix{2}.$prefix{3} == 'AC') {
-			//	$filename = 'core/controllers/'.$classname.'.class.php';
-			//} elseif ($prefix{2}.$prefix{3} == 'CF') {
-			//	$filename = 'core/controllers/forms/'.$classname.'.class.php';
-			//} elseif ($prefix{2}.$prefix{3} == 'AA') {
-			//	$filename = 'core/admin/'.$classname.'.class.php';
-			//} elseif ($prefix{2}.$prefix{3} == 'AF') {
-			//	$filename = 'core/admin/forms/'.$classname.'.class.php';
-			} elseif ($prefix{2}.$prefix{3} == 'AM') {
+			} elseif (strpos($orgclassname,'AM') === 2) {
 				$filename = 'core/model/'.$classname.'.class.php';
-			} elseif ($prefix{2}.$prefix{3} == 'LC') {
+			} elseif (strpos($orgclassname,'LC') === 2) {
 				$filename = 'core/libs/'.$classname.'.class.php';
-			} elseif ($prefix{2}.$prefix{3} == 'TF') {
+			} elseif (strpos($orgclassname,'TF') === 2) {
 				$filename = 'themes/'.$classname.'/'.$classname.'.class.php';
-			} elseif ($prefix{2} == 'M') {
-				
+			} elseif ($orgclassname{2} === 'M') {
 				$separator = strpos($classname,'_');
-				
 				if ($separator > 0){
 					$modname = substr($classname,0,$separator);
 					$classname = substr($classname,$separator+1);
 				} else {
 					$modname = $classname;
 				}
-				
-				if ($prefix{3} == 'C') {
+				if ($orgclassname{3} === 'C') {
 					$filename = 'modules/'.$modname.'/controllers/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'F') {
+				} elseif ($orgclassname{3} === 'F') {
 					$filename = 'modules/'.$modname.'/controllers/forms/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'M') {
+				} elseif ($orgclassname{3} === 'M') {
 					$filename = 'modules/'.$modname.'/model/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'O') {
+				} elseif ($orgclassname{3} === 'O') {
 					$filename = 'modules/'.$modname.'/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'L') {
+				} elseif ($orgclassname{3} === 'L') {
 					$filename = 'modules/'.$modname.'/libs/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'A') {
+				} elseif ($orgclassname{3} === 'A') {
 					$filename = 'modules/'.$modname.'/admin/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'X') {
+				} elseif ($orgclassname{3} === 'X') {
 					$filename = 'modules/'.$modname.'/admin/forms/'.$classname.'.class.php';
-				} elseif ($prefix{3} == 'I') {
+				} elseif ($orgclassname{3} === 'I') {
 					$filename = 'modules/'.$modname.'/installer.class.php';
 				} else {
-					
-				}
-				
+                    $filename = '';
+                }
 			} else {
-				
-			}
-			
-			if ($filename && is_file(OP_SYS_ROOT.$filename)){
-				require_once OP_SYS_ROOT.$filename;
-			} else {
-				if (is_file($filename = OP_SYS_ROOT.'core/libs/'.$classname.'.class.php')){
-					require_once $filename;
-				} else {
-					// Here will be thrown Fatal error.
-				}
-			}
-			
-		}
-		
+                $filename = '';
+            }
+		} else {
+            $classname = $orgclassname;
+            $filename = '';
+        }
+
+        if ($filename && is_file(OP_SYS_ROOT.$filename)){
+            require_once OP_SYS_ROOT.$filename;
+        } else {
+            if (is_file($libname = OP_SYS_ROOT . 'core/libs/' . $classname . '.class.php')) {
+                require_once $libname;
+            } else {
+                die('Class ' . htmlspecialchars($orgclassname) . ' was not found in files: ' . htmlspecialchars($filename ? substr($filename, strlen(OP_SYS_ROOT)) . ', ' : '') . htmlspecialchars(substr($libname, strlen(OP_SYS_ROOT))) . '.');
+            }
+        }
 	}

@@ -154,19 +154,15 @@ class OPMA_System_Content extends OPAL_Controller {
 					'type'    => $type,
 				));
 				$errors = $form->setValues(null,true);
-			
 				$values = $form->getValues();
 				$item->setFromArray($values);
 				$item->set('content_slug',urlencode($item->get('content_slug')));
-
 				if ($fields = $type->get('content_type_fields')){
 					foreach ($fields as $field_id => $field){
 						$item->setField($field_id,$values['content_field_'.$field_id]);
 					}
 				}
-				
 				if (!$errors){
-
 					if ($id = $item->save()){
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){
@@ -176,7 +172,6 @@ class OPMA_System_Content extends OPAL_Controller {
 								$textObject->save();
 							}
 						}
-				
 						$cacheids[] = $item->id;
 						$cacheids[] = $item->get('content_parent_id');
 						$this->deleteRelatedCache($cacheids);
@@ -279,11 +274,7 @@ class OPMA_System_Content extends OPAL_Controller {
 		return (
 			($type->get('content_type_type') == $this->allowed_type_type) 
 			&& (
-				($this->allowed_type_type == 1)
-				||
-				($this->allowed_type_type == 2)
-				||
-				($this->allowed_type_type == 4)
+				in_array($this->allowed_type_type,array(1,2,4))
 				||
 				($this->content_type == $type->get('content_type_code'))
 			)	

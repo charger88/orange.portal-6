@@ -67,12 +67,7 @@ abstract class OPDB_Object {
 		}
 		foreach ($this->data as $field => $value){
 			if ($field != 'id') {
-				if (static::$schema[$field][1] == 'ARRAY'){
-					$value = !is_array($value) ? $value : ($value ? json_encode($value) : '');
-				} else if (static::$schema[$field][1] == 'LIST'){
-					$value = !is_array($value) ? $value : ($value ? '|'.implode('|',$value).'|' : '');
-				}
-				$save->addField($field,$value);
+				$save->addField($field,$this->compositeValueToString($value, static::$schema[$field][1]));
 			}
 		}
 		$result = $save->execQuery();
@@ -173,7 +168,7 @@ abstract class OPDB_Object {
 		}
 	}
 	
-	protected function valueOfType($value,$typeName,$typeSize = null) {
+	protected static function valueOfType($value,$typeName,$typeSize = null) {
 		if (in_array($typeName,array('ID','INTEGER','TINYINT','SMALLINT','MEDIUMINT','INT'))){
 			$value = intval(str_replace(' ', '', $value));
 		} else if ($typeName == 'BIGINT'){
@@ -186,7 +181,7 @@ abstract class OPDB_Object {
 		} else if (($typeName == 'BOOL')||($typeName == 'BOOLEAN')){
 			$value = ($value) ? 1 : 0;
 		} else if (($typeName == 'CHAR')||($typeName == 'VARCHAR')){
-			$value = (strlen($value) > $typeSize) ? substr(''.$value, 0, $typeSize) : ''.$value;
+			$value = !is_null($typeSize) && (strlen($value) > $typeSize) ? substr(''.$value, 0, $typeSize) : ''.$value;
 		} else if (($typeName == 'TIMESTAMP')||($typeName == 'DATETIME')){
 			$value = date('Y-m-d H:i:s', ( is_numeric($value) ? $value : strtotime($value) ) );
 		} else if ($typeName == 'DATE'){
@@ -203,6 +198,15 @@ abstract class OPDB_Object {
 		}
 		return $value;
 	}
+
+    protected static function compositeValueToString($value,$type){
+        if ($type == 'ARRAY'){
+            $value = !is_array($value) ? $value : ($value ? json_encode($value) : '');
+        } else if ($type == 'LIST'){
+            $value = !is_array($value) ? $value : ($value ? '|'.implode('|',$value).'|' : '');
+        }
+        return $value;
+    }
 	
 	public function testField($field){
 		return array_key_exists($field,static::$schema);

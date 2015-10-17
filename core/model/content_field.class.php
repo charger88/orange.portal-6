@@ -14,8 +14,26 @@ class OPAM_Content_Field extends OPDB_Object {
 	
 	protected static $indexes = array('content_id');
 	protected static $uniq = array(array('content_id','content_field_name'));
-	
-	public static function getObject($content_id,$field){
+
+    public function set($field, $value){
+        if ($field === 'content_field_value'){
+            $value = $this->compositeValueToString($value,$this->get('content_field_type'));
+        }
+        return parent::set($field, $value);
+    }
+
+    public function save(){
+        $this->set(
+            'content_field_value',
+            $this->compositeValueToString(
+                $this->valueOfType($this->get('content_field_value'),$this->get('content_field_type'),self::$schema['content_field_value'][2]),
+                $this->get('content_field_type')
+            )
+        );
+        return parent::save();
+    }
+
+    public static function getObject($content_id,$field){
 		$select = new OPDB_Select('content_field');
 		$select->addWhere(new OPDB_Clause('content_id', '=', $content_id));
 		$fieldObject = new OPAM_Content_Field($select->execQuery()->getNext());

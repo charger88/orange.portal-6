@@ -569,9 +569,7 @@ class OPAL_Portal {
 			$classname = $command['module'] ? 'OPM' : 'OPA';
 			$classname .= (strpos($command['controller'], 'admin-') === 0) ? 'A' : 'C';
 			if ($command['module']){
-				$module = $command['module'];
-				$module{0} = strtoupper($module{0});
-				$classname .= '_'.$module;
+				$classname .= '_'.ucfirst($command['module']);
 			}
 			if ($command['controller'] && ($command['module'] != $command['controller'])){
 				$controller = $command['controller'];

@@ -67,7 +67,7 @@ class OPAM_Content extends OPDB_Object {
 				$value = isset($this->fields[$field_id]) ? $this->fields[$field_id] : '';
                 if (($fieldObject->get('content_field_type') != $field['type']) || ($fieldObject->get('content_field_value') != $value)) {
 					$fieldObject->set('content_field_type', $field['type']);
-					$fieldObject->set('content_field_value', $value );
+					$fieldObject->set('content_field_value', $value);
 					$field_IDs[] = $fieldObject->save();
 				} else {
 					$field_IDs[] = $fieldObject->id;
@@ -176,24 +176,24 @@ class OPAM_Content extends OPDB_Object {
      * @return mixed
      */
     public static function getContent($type = null, $lang = null, $slug = null) {
-		$select = new OPDB_Select(self::$table );
+		$select = new OPDB_Select(self::$table);
 		$select->addWhere(new OPDB_Clause('id', '>', 0));
 		if (!is_null($type)) {
 			$select->addWhereAnd(new OPDB_Clause('content_type', 'LIKE', $type));
 		}
 		if (!is_null($lang)) {
 			$select->addWhereAnd();
-			$select->addWhereBracket(true );
+			$select->addWhereBracket(true);
 			$select->addWhere(new OPDB_Clause('content_lang', 'LIKE', $lang));
 			$select->addWhereOr(new OPDB_Clause('content_lang', 'LIKE', ''));
-			$select->addWhereBracket(false );
-			$select->setOrder('content_lang', true );
+			$select->addWhereBracket(false);
+			$select->setOrder('content_lang', true);
 		}
 		if (!is_null($slug)) {
 			$select->addWhereAnd(new OPDB_Clause('content_slug', 'LIKE', $slug));
 		}
-		$select->setLimit(1 );
-		$typeObject = new OPAM_Content_Type('content_type_code', $type );
+		$select->setLimit(1);
+		$typeObject = new OPAM_Content_Type('content_type_code', $type);
 		$classname = $typeObject->getClass();
 		return new $classname($select->execQuery()->getNext());
 	}
@@ -210,6 +210,8 @@ class OPAM_Content extends OPDB_Object {
 		$types = isset($params['types'])? $params['types']: null;
 		$search = isset($params['search'])? $params['search']: null;
 		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;
+        $fields = isset($params['fields'])? $params['fields'] : null;
+        $fieldsmode_or = !empty($params['fieldsmode_or']);
 		$status_min = isset($params['status_min'])? $params['status_min']: null;
 		$status_max = isset($params['status_max'])? $params['status_max']: null;
 		$access_user = isset($params['access_user'])? $params['access_user']: null;
@@ -219,33 +221,54 @@ class OPAM_Content extends OPDB_Object {
 		$time_published_to = isset($params['time_published_to'])? $params['time_published_to']: null;
 		$user_id = isset($params['user_id'])? $params['user_id']: null;
 		$parent_id = isset($params['parent_id'])? $params['parent_id']: null;
-		
+
 		$limit = isset($params['limit'])? $params['limit']: 30;
 		$offset = isset($params['offset'])? $params['offset']: 0;
 		$order = isset($params['order'])? $params['order']: 'content_time_published';
 		$desc = isset($params['desc'])? $params['desc']: false;
-		
+
 		$select = is_null($select_base)? new OPDB_Select(self::$table): $select_base;
-		
+
 		if (!is_null($IDs)&& $IDs) {
 			$select->addWhere(new OPDB_Clause('id', 'IN', $IDs));
 		} else {
 			$select->addWhere(new OPDB_Clause('id', '>', 0));
 		}
-		
+
 		if (!is_null($exclude)&& $exclude) {
 			$select->addWhereAnd(new OPDB_Clause('id', 'NOT IN', $exclude));
 		}
-		
+
 		if (!is_null($types)) {
 			$select->addWhereAnd($types ? new OPDB_Clause('content_type', 'IN', is_array($types)? $types : array($types
 			)): new OPDB_Clause('id', '=', 0));
 		}
-		
+
+        if ($fields){
+            $fieldsSelect = new OPDB_Select('content_field');
+            $fieldsSelect->addField('content_id');
+            $first = true;
+            foreach ($fields as $param => $value){
+                if ($first){
+                    $first = false;
+                } else {
+                    if ($fieldsmode_or){
+                        $fieldsSelect->addWhereOr();
+                    } else {
+                        $fieldsSelect->addWhereAnd();
+                    }
+                }
+                $fieldsSelect->addWhere(new OPDB_Clause('content_field_name','=',$param));
+                $fieldsSelect->addWhereAnd(new OPDB_Clause('content_field_value',strpos($value,'%') !== false ? 'LIKE' : '=',$value));
+
+            }
+            $select->addWhereAnd(new OPDB_Clause('id','IN',$fieldsSelect));
+        }
+
 		if (!is_null($search)) {
 			$select->addWhereAnd(new OPDB_Clause('content_template', 'LIKE', 'main-%'));
 			$select->addWhereAnd();
-			$select->addWhereBracket(true );
+			$select->addWhereBracket(true);
 			if (($searchmode == 0) || ($searchmode == 1)) {
 				$select->addWhere(new OPDB_Clause('content_title', 'LIKE', '%' . $search . '%'));
 			}
@@ -261,15 +284,15 @@ class OPAM_Content extends OPDB_Object {
 				$textsSelect->addField('content_id');
 				$select->addWhere(new OPDB_Clause('id', 'IN', $textsSelect));
 			}
-			$select->addWhereBracket(false );
+			$select->addWhereBracket(false);
 		}
-		
+
 		if (!is_null($access_user) && ($access_user instanceof OPAM_User)) {
 			$groups = $access_user->get('user_groups');
 			$groups[]= 0;
 			$f = true;
 			$select->addWhereAnd();
-			$select->addWhereBracket(true );
+			$select->addWhereBracket(true);
 			foreach($groups as $n => $group_id){
 				if (!$f) {
 					$select->addWhereOr();
@@ -278,57 +301,57 @@ class OPAM_Content extends OPDB_Object {
 				}
 				$select->addWhere(new OPDB_Clause('content_access_groups', 'LIKE', '%|' . $group_id . '|%'));
 			}
-			$select->addWhereBracket(false );
+			$select->addWhereBracket(false);
 		}
-		
+
 		if (!is_null($lang)) {
 			$select->addWhereAnd(new OPDB_Clause('content_lang', is_array($lang)? 'IN' : 'LIKE', $lang));
 		}
-		
+
 		if (!is_null($on_site_mode)) {
 			$select->addWhereAnd($on_site_mode ? new OPDB_Clause('content_on_site_mode', 'IN', $on_site_mode): new OPDB_Clause('id', '=', 0));
 		}
-		
+
 		if (!is_null($status_min)) {
 			$select->addWhereAnd(new OPDB_Clause('content_status', '>=', $status_min));
 		}
-		
+
 		if (!is_null($status_max)) {
 			$select->addWhereAnd(new OPDB_Clause('content_status', '<=', $status_max));
 		}
-		
+
 		if (!is_null($time_published_from)) {
 			$select->addWhereAnd(new OPDB_Clause('content_time_published', '>=', OPDB_Functions::getTime(strtotime($time_published_from))));
 		}
-		
+
 		if (!is_null($time_published_to)) {
 			$select->addWhereAnd(new OPDB_Clause('content_time_published', '<', OPDB_Functions::getTime(strtotime($time_published_to))));
 		}
-		
+
 		if (!is_null($user_id)) {
 			$select->addWhereAnd(new OPDB_Clause('content_user_id', 'IN', is_array($user_id)? $user_id : array($user_id)));
 		}
-		
+
 		if (!is_null($parent_id)) {
 			$select->addWhereAnd(new OPDB_Clause('content_parent_id', 'IN', is_array($parent_id)? $parent_id : array($parent_id)));
 		}
-		
+
 		if (!is_null($order)) {
-			$select->setOrder($order, $desc );
+			$select->setOrder($order, $desc);
 		}
-		
+
 		if (!is_null($limit)) {
-			$select->setLimit($limit, $offset * $limit );
+			$select->setLimit($limit, $offset * $limit);
 		}
-		
+
 		if (is_array($classname)) {
 			foreach($classname as $field){
-				$select->addField($field );
+				$select->addField($field);
 			}
 		}
-		
+
 		$select->execQuery();
-		
+
 		self::$listMoreData = array(
             'content_image' => array(),
             'content_user_id' => array()
@@ -371,7 +394,7 @@ class OPAM_Content extends OPDB_Object {
 		), array(
             'id',
             'content_title'
-		) );
+		));
 	}
 
     /**
@@ -381,7 +404,7 @@ class OPAM_Content extends OPDB_Object {
     public function getImageUrl($th = null) {
 		$url = '';
 		if ($iid = $this->get('content_image')) {
-			$media = new OPMM_System_Media($iid );
+			$media = new OPMM_System_Media($iid);
 			$url = $media->getDir($th).'/'.$media->get('media_file');
 		}
 		return $url;
@@ -392,9 +415,9 @@ class OPAM_Content extends OPDB_Object {
      * @return bool
      */
     public function isEditable($user_groups) {
-		return ($this->id > 0) && $this->isAllowedForGroups($user_groups );
+		return ($this->id > 0) && $this->isAllowedForGroups($user_groups);
 	}
-	
+
 	// TODO Possible to make some type restrictions
     /**
      * @return bool
@@ -412,23 +435,23 @@ class OPAM_Content extends OPDB_Object {
 		$links = array();
 		$id_def = (!$this->get('content_lang')|| ($this->get('content_lang')== $default_lang)) ? $this->id : $this->get('content_default_lang_id');
 		if ($id_def) {
-			$select = new OPDB_Select(self::$table );
-			$select->addWhereBracket(true );
-			$select->addWhereBracket(true );
+			$select = new OPDB_Select(self::$table);
+			$select->addWhereBracket(true);
+			$select->addWhereBracket(true);
 			$select->addWhere(new OPDB_Clause('content_lang', 'LIKE', $default_lang));
 			$select->addWhereAnd(new OPDB_Clause('id', '=', $id_def));
-			$select->addWhereBracket(false );
+			$select->addWhereBracket(false);
 			$select->addWhereOr();
-			$select->addWhereBracket(true );
+			$select->addWhereBracket(true);
 			$select->addWhere(new OPDB_Clause('content_lang', 'LIKE', ''));
 			$select->addWhereAnd(new OPDB_Clause('id', '=', $id_def));
-			$select->addWhereBracket(false );
+			$select->addWhereBracket(false);
 			$select->addWhereOr();
-			$select->addWhereBracket(true );
+			$select->addWhereBracket(true);
 			$select->addWhere(new OPDB_Clause('content_lang', 'NOT LIKE', $default_lang));
 			$select->addWhereAnd(new OPDB_Clause('content_default_lang_id', '=', $id_def));
-			$select->addWhereBracket(false );
-			$select->addWhereBracket(false );
+			$select->addWhereBracket(false);
+			$select->addWhereBracket(false);
 			$select->addWhereAnd();
 			if ($pages = self::getList(array(
 					'access_user' => $user
