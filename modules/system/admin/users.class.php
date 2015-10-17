@@ -91,8 +91,7 @@ class OPMA_System_Users extends OPAL_Controller {
         $groups = $this->getPost('user_groups');
         $item->set('user_groups',$groups);
         if (!empty($data['user_password_new'])){
-            $user_password_new = $data['user_password_new'];
-            $item->set('user_password',md5($user_password_new));
+            $item->setPassword($data['user_password_new']);
         }
         $item->save();
         $this->log('USER_%s_SAVED', array($item->get('user_login')), 'LOG_CONTENT', self::STATUS_OK, $item);

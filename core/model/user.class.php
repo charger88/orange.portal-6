@@ -22,7 +22,7 @@ class OPAM_User extends OPDB_Object {
 		'id'               => array(0 ,'ID'),
 		'user_login'       => array('','VARCHAR',256),
 		'user_email'       => array('','VARCHAR',256),
-		'user_pwdhash'     => array('','CHAR',32),
+		'user_pwdhash'     => array('','VARCHAR',256),
 		'user_status'      => array(0 ,'BOOLEAN'),
 		'user_groups'      => array(array(),'LIST', 256),
 		'user_provider'    => array(0 ,'SMALLINT'),
@@ -51,11 +51,18 @@ class OPAM_User extends OPDB_Object {
 
     /**
      * @param $password
-     * @return string
      */
-    public static function makePasswordHash($password){
-		return md5($password);
+    public function setPassword($password){
+		$this->set('user_pwdhash', password_hash($password, PASSWORD_DEFAULT));
 	}
+
+    /**
+     * @param $password
+     * @return boolean
+     */
+    public function verifyPassword($password){
+        return password_verify($password, $this->get('user_pwdhash'));
+    }
 
     /**
      * @param array $params

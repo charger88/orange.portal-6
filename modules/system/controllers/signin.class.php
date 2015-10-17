@@ -40,7 +40,7 @@ class OPMC_System_Signin extends OPAL_Controller {
 		if (!is_null($signin_login) && !is_null($signin_password)){
 			$user = new OPAM_User('user_login',$signin_login);
 			if ($user->id){
-				if ($user->get('user_pwdhash') === OPAM_User::makePasswordHash($signin_password)){
+				if ($user->verifyPassword($signin_password)){
 					if ($user->get('user_status') > 0){
 						OPAL_Portal::getInstance()->user = $user;
 						$return = true;

@@ -189,13 +189,13 @@ class OPMI_System extends OPAL_Installer {
 		$user->setFromArray(array(
 			'user_login'    => $this->params['admin_username'],
 			'user_email'    => $this->params['admin_email'],
-			'user_pwdhash'  => md5($this->params['admin_password']),
 			'user_status'   => 1,
 			'user_groups'   => array(OPAM_User::GROUP_ADMIN,OPAM_User::GROUP_MANAGER,OPAM_User::GROUP_USER),
 			'user_provider' => 0,
 			'user_phone'    => '',
 			'user_name'     => $this->params['admin_username'],
 		));
+        $user->setPassword($this->params['admin_password']);
 		$id = $user->save();
 		if ($id !== 1){
 			$result = false;
