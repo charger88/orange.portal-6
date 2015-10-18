@@ -83,7 +83,7 @@ class OPAL_Templater {
 		return $templateFilename;
 	}
 	private function checkFilename($filename){
-		return !empty($filename) &&(strpos($filename, '/') === false) &&(strpos($filename, '\\') === false) &&($filename{0} != '.');
+		return ! empty($filename) &&(strpos($filename, '/') === false) &&(strpos($filename, '\\') === false) &&($filename{0} != '.');
 	}
 	public function esc($text, $nl2br = false){
 		if (is_array($text)){

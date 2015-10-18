@@ -183,7 +183,12 @@ abstract class OPAL_Theme {
 				$template = 'content-'.$type->get('content_type_code').'.phtml';
 				break;
 			}
-		}		
+		}
+        if (is_null($template)){
+            if (is_file(OP_SYS_ROOT.'modules/'.$module.'/templates/content-'.$type->get('content_type_code').'.phtml')){
+                $template = 'content-'.$type->get('content_type_code').'.phtml';
+            }
+        }
 		if (is_null($template)){
             $module = 'system';
 			if ($type->get('content_type_type') == 2){
