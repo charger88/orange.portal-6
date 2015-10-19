@@ -112,6 +112,14 @@ class OPAL_Controller {
 	}
 
     /**
+     * @param string $name
+     * @return array|null
+     */
+    protected function getFile($name){
+        return isset($_FILES[$name]) ? $_FILES[$name] : null;
+    }
+
+    /**
      * @param $name
      * @param string|null $default
      * @return string|null
@@ -122,20 +130,31 @@ class OPAL_Controller {
 
     /**
      * @param string $name
-     * @return array|null
-     */
-    protected function getFile($name){
-		return isset($_FILES[$name]) ? $_FILES[$name] : null;
-	}
-
-    /**
-     * @param string $name
      * @param string $value
      */
     protected function setCookie($name,$value){
 		$_COOKIE[$name] = $value;
 		setcookie($name,$value,strtotime('+60 days'));
 	}
+
+    /**
+     * @param $name
+     * @param string|null $default
+     * @return string|null
+     */
+    protected function getSession($name,$default = null){
+        OPAL_Portal::getInstance()->startSession();
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : $default;
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     */
+    protected function setSession($name,$value){
+        OPAL_Portal::getInstance()->startSession();
+        $_SESSION[$name] = $value;
+    }
 
     /**
      * @return string

@@ -66,18 +66,6 @@ class OPAL_Portal {
 	private $request = array();
 	
 	/**
-	 * Time of system initialization
-	 * @var integer
-	 */
-	private $start_time = 0;
-	
-	/**
-	 * Destroy session
-	 * @var boolean
-	 */
-	private $destroySession = false;
-	
-	/**
 	 * Name of file from folder /themes/yourtheme/ with name like main-html.phtml
 	 * @var string
 	 */
@@ -112,14 +100,13 @@ class OPAL_Portal {
 		}
 		return self::$portal;
 	}
-	
+
 	/**
-	 * Class contructor
+	 * Class constructor
 	 */
 	private function __construct(){
-		$this->start_time = microtime(true);
 	}
-	
+
 	/**
 	 * Class destructor
 	 */
@@ -129,7 +116,7 @@ class OPAL_Portal {
 		}
 		$this->echoDebugData();
 	}
-	
+
 	/**
 	 * Init system
 	 */
@@ -141,7 +128,6 @@ class OPAL_Portal {
 		$this->templater = new OPAL_Templater(self::config('system_theme'));
 		self::$sitelang = isset($_GET['lang']) && (strlen(trim($_GET['lang'])) == 2) ? trim($_GET['lang']) : self::config('system_default_lang',self::$sitelang);
 		if (!$this->install_mode){
-			$this->startSession();
 			$this->initModules();
 			$this->initUser();
 		}
@@ -194,24 +180,35 @@ class OPAL_Portal {
 	/**
 	 * Start session
 	 */
-	private function startSession(){
-		$timeout = 2592000;
-		session_set_cookie_params($timeout, '/');
-		ini_set('session.gc_maxlifetime', $timeout);
-		ini_set('session.name', 'OPSESSION');
-		session_start();
+    public function startSession(){
+        if (session_status() !== PHP_SESSION_ACTIVE){
+            $timeout = 2592000;
+            session_set_cookie_params($timeout, '/');
+            ini_set('session.gc_maxlifetime', $timeout);
+            ini_set('session.name', 'OPSESSION');
+            ini_set('session.cookie_httponly', 'On');
+            ini_set('session.hash_function', 'sha256');
+            session_start();
+        }
 	}
 	
 	/**
 	 * Close session
 	 */
-	private function closeSession(){
-		if ($this->destroySession){
-			session_destroy();
-		} else {
-			session_commit();
-		}
+    public function closeSession(){
+        if (session_status() === PHP_SESSION_ACTIVE){
+            session_commit();
+        }
 	}
+
+    /**
+     * Destroy session
+     */
+    public function destroySession(){
+        if (session_status() === PHP_SESSION_ACTIVE){
+            session_destroy();
+        }
+    }
 	
 	/**
 	 * Load and init enabled modules
@@ -255,11 +252,15 @@ class OPAL_Portal {
 		if (self::env('cli',false)){
 			$this->user = new OPAM_User(isset($_SERVER['argv'][2]) ? intval($_SERVER['argv'][2]) : null);
 		} else {
+            if (!empty($_COOKIE['OPSESSION'])){
+                $this->startSession();
+            }
 			if (isset($_SESSION['uid'])){
 				$this->user = new OPAM_User(intval($_SESSION['uid']));
 			} else {
 				$this->processHooks('initUser_noUID');
 				if ($this->user && $this->user->id){
+                    $this->startSession();
 					$_SESSION['uid'] = $this->user->id;
 				} else {
 					$this->user = new OPAM_User();
@@ -606,7 +607,7 @@ class OPAL_Portal {
 		$response = '';
 		if (self::config('system_debug')){
 			if ($this->data_type == 'text/html'){
-				$response = '<!-- Generate time: '.sprintf("%.4f",microtime(true) - $this->start_time).' sec | Memory usage: '.sprintf("%.2f", memory_get_usage()/1048576).' mb  | Peak memory usage: '.sprintf("%.2f", memory_get_peak_usage()/1048576).' mb -->';
+				$response = '<!-- Generate time: '.sprintf("%.4f",microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).' sec | Memory usage: '.sprintf("%.2f", memory_get_usage()/1048576).' MB | Peak memory usage: '.sprintf("%.2f", memory_get_peak_usage()/1048576).' MB -->';
 			}
 		}
 		echo $response;
