@@ -139,7 +139,9 @@ $lang = array(
 	'CONTENT_FIELD_SEO_KEYWORDS'    => 'Keywords',
 	'CONTENT_FIELD_SEO_CANONICAL'   => 'Canonical link',
 	'CONTENT_FIELD_SEO_HIDDEN'      => 'Hide for search engines',
-		
+
+    'ADMIN_CONTENT_REORDERED'    => 'Content was reordered',
+
 	'ADMIN_CONTENT_TEXT_STORY'   => 'Story',
 	'ADMIN_CONTENT_TEXT_CONTENT' => 'Content',
 		

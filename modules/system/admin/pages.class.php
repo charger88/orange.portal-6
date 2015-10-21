@@ -38,5 +38,11 @@ class OPMA_System_Pages extends OPMA_System_Content {
 		$options['content_on_site_mode'] = array(OPAL_Lang::t('PAGE_MODE_DONT_SHOW'),OPAL_Lang::t('PAGE_MODE_SHOW_LINE'),OPAL_Lang::t('PAGE_MODE_SHOW_TREE'),OPAL_Lang::t('PAGE_MODE_SHOW_ALWAYS'));
 		return $options;
 	}
+
+    public function reorderAjax(){
+        $updated = OPAM_Page::reorder($root = $this->getPost('root'),$this->getPost('order'),$this->user);
+        //TODO Clear cache
+        return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK);
+    }
 	
 }

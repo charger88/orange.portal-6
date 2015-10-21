@@ -180,16 +180,23 @@ aside#column nav ul li:hover ul {
 .content-special-list-wrapper > ul li {
 	margin-bottom: 7px;
 	font-size: 90%;
+    cursor: move;
 }
 
 .content-special-list-wrapper > ul > li {
 	font-size: 100%;	
 }
 
-.content-special-list-wrapper > ul > li > ul {
-	margin-top: 7px;
-	margin-left: 21px;
-	margin-bottom: 7px;
+.content-special-list-wrapper > ul > li ul {
+    margin-left: 21px;
+    margin-right: 7px;
+    margin-top: 3px;
+    padding-top: 4px;
+    box-sizing: border-box;
+}
+
+.content-special-list-wrapper.op-sortable > ul li ul:empty {
+    background: #e6b522;
 }
 
 .content-special-list-wrapper > ul li > div > div {
@@ -519,7 +526,8 @@ aside#column nav ul li:hover ul {
 .form-default .form-multirow .form-multirow-row {
 	margin-bottom: 21px;
 	display: flex;
-	flex-direction:row;
+	flex-direction: row;
+    cursor: move;
 }
 
 .form-default .form-multirow .form-element-wrapper {

@@ -50,7 +50,8 @@ class OPAM_Page extends OPAM_Content {
 		$grouped = array();
 		$pages = self::getList(array(
 			'access_user' => $user,
-			'types'        => !is_null($types) ? $types : OPAM_Content_Type::getPageTypes(),
+            'order'       => 'content_order',
+			'types'       => !is_null($types) ? $types : OPAM_Content_Type::getPageTypes(),
 		), __CLASS__);
 		if ($pages){
 			foreach ($pages as $item){
@@ -101,5 +102,30 @@ class OPAM_Page extends OPAM_Content {
 		}
 		return $menu;
 	}
+
+
+    /**
+     * @param int $root
+     * @param array $order
+     * @param OPAM_User $access_user
+     */
+    public function reorder($root,$order,$access_user){
+        $updated = array();
+        if ($order){
+            if ($list = self::getList(array('IDs' => $order,'access_user' => $access_user), __CLASS__)){
+                foreach ($order as $ord => $id){
+                    if (isset($list[$id])){
+                        $item = $list[$id];
+                        if ( ($item->get('content_order') != $ord) || ($item->get('content_parent_id') != $root) ){
+                            $item->set('content_order',$ord);
+                            $item->set('content_parent_id',$root);
+                            $item->save();
+                            $updated[] = $item->id;
+                        }
+                    }
+                }
+            }
+        }
+    }
 	
 }

@@ -21,6 +21,10 @@ $(document).ready(function(){
 			return false;
 		});
 	});
+
+    $('.form-multirow').sortable({
+        axis: 'y'
+    });
 	
 });
 

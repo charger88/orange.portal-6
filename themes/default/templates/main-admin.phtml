@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
 	<head><?php
+            OPAL_Theme::addScriptFile('modules/system/static/js/jquery-ui.min.js');
 			OPAL_Theme::addStyleFile('modules/system/static/css/admin.css');
 			OPAL_Theme::addScriptFile('modules/system/static/js/admin.js');
 			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
