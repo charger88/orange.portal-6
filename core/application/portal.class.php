@@ -43,11 +43,16 @@ class OPAL_Portal {
 	 * @var OPAM_Content
 	 */
 	public $content;
-	
+
 	/**
 	 * @var OPAM_User
 	 */
 	public $user;
+
+    /**
+     * @var OPAL_SessionInterface
+     */
+    public $session;
 	
 	/**
 	 * @var string
@@ -112,7 +117,7 @@ class OPAL_Portal {
 	 */
 	public function __destruct(){
 		if (!$this->install_mode){
-			$this->closeSession();
+			$this->session->close();
 		}
 		$this->echoDebugData();
 	}
@@ -125,7 +130,9 @@ class OPAL_Portal {
 		$this->initEnvironment();
 		$this->loadConfig();
 		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$_SERVER["HTTP_HOST"]) . (($bdir = self::config('system_base_dir',trim($_SERVER["REQUEST_URI"],'/'))) ? '/'.$bdir : ''));
-		$this->templater = new OPAL_Templater(self::config('system_theme'));
+        $sessionclass = $this->config('sessionclass','OPAL_Session');
+        $this->session = new $sessionclass();
+        $this->templater = new OPAL_Templater(self::config('system_theme'));
 		self::$sitelang = isset($_GET['lang']) && (strlen(trim($_GET['lang'])) == 2) ? trim($_GET['lang']) : self::config('system_default_lang',self::$sitelang);
 		if (!$this->install_mode){
 			$this->initModules();
@@ -176,40 +183,7 @@ class OPAL_Portal {
 			$this->install_mode = true;
 		}
 	}
-	
-	/**
-	 * Start session
-	 */
-    public function startSession(){
-        if (session_status() !== PHP_SESSION_ACTIVE){
-            $timeout = 2592000;
-            session_set_cookie_params($timeout, '/');
-            ini_set('session.gc_maxlifetime', $timeout);
-            ini_set('session.name', 'OPSESSION');
-            ini_set('session.cookie_httponly', 'On');
-            ini_set('session.hash_function', 'sha256');
-            session_start();
-        }
-	}
-	
-	/**
-	 * Close session
-	 */
-    public function closeSession(){
-        if (session_status() === PHP_SESSION_ACTIVE){
-            session_commit();
-        }
-	}
 
-    /**
-     * Destroy session
-     */
-    public function destroySession(){
-        if (session_status() === PHP_SESSION_ACTIVE){
-            session_destroy();
-        }
-    }
-	
 	/**
 	 * Load and init enabled modules
 	 */
@@ -252,16 +226,12 @@ class OPAL_Portal {
 		if (self::env('cli',false)){
 			$this->user = new OPAM_User(isset($_SERVER['argv'][2]) ? intval($_SERVER['argv'][2]) : null);
 		} else {
-            if (!empty($_COOKIE['OPSESSION'])){
-                $this->startSession();
-            }
-			if (isset($_SESSION['uid'])){
-				$this->user = new OPAM_User(intval($_SESSION['uid']));
+			if ($this->session->cookieExists() && !is_null($this->session->get('uid'))){
+				$this->user = new OPAM_User(intval($this->session->get('uid')));
 			} else {
 				$this->processHooks('initUser_noUID');
 				if ($this->user && $this->user->id){
-                    $this->startSession();
-					$_SESSION['uid'] = $this->user->id;
+                    $this->session->set('uid',$this->user->id);
 				} else {
 					$this->user = new OPAM_User();
 				}
@@ -483,7 +453,7 @@ class OPAL_Portal {
 					}
 				} else {
 					$this->lastExecuteContentStatus = 'not-found';
-                    $controller = new OPAL_Controller($content,$this->user,$this->templater,array());
+                    $controller = new OPAL_Controller($content,$this->user,$this->session,$this->templater,array());
 					$controller->alert('PORTAL_MODULE_NOT_FOUND');
 				}
 			}
@@ -525,7 +495,7 @@ class OPAL_Portal {
 		if ($privilegeCheck){
 			if (class_exists($classname)){
                 /** @var OPAL_Controller $controller */
-                $controller = new $classname($content,$this->user,$this->templater,$arguments);
+                $controller = new $classname($content,$this->user,$this->session,$this->templater,$arguments);
 				$controllerReflection = new ReflectionClass($controller);
 				try {
 					$methodReflection = $controllerReflection->getMethod($methodname);
@@ -555,7 +525,7 @@ class OPAL_Portal {
 				}
 			} else {
 				$execStatus = 'not-found';
-				$controller = new OPAL_Controller($content,$this->user,$this->templater,array());
+				$controller = new OPAL_Controller($content,$this->user,$this->session,$this->templater,array());
 				$controller->alert('PORTAL_%s_CONTROLLER_NOT_FOUND',array($classname));
 			}
 		} else {

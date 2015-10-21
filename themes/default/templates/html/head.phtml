@@ -43,7 +43,7 @@
 <?php if ($channels = $this->theme->getRSSChannels()){ foreach ($channels as $channel_url => $channel_title){ ?>
 		<link rel="alternate" type="application/rss+xml" title="<?php $this->ee($channel_title); ?>" href="<?php $this->ee($channel_url); ?>" />
 <?php }} ?>
-<?php if ($files = $this->theme->getHeadStyleFiles()){ foreach ($files as $file){ 
+<?php if ($files = $this->theme->getHeadStyleFiles()){ foreach ($files as $file){
 	$ext = explode('.',$file);
 	$ext = array_pop($ext);
 	if ($ext == 'less'){ ?>

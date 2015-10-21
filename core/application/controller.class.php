@@ -22,6 +22,11 @@ class OPAL_Controller {
 	 * @var OPAM_User
 	 */
 	protected $user;
+
+    /**
+     * @var OPAL_SessionInterface
+     */
+    protected $session;
 	
 	/**
 	 * @var OPAL_Templater
@@ -49,7 +54,7 @@ class OPAL_Controller {
 	 * @param OPAL_Templater $templater
 	 * @param array $args
 	 */
-	public function __construct($content,$user,$templater,$args = array()){
+	public function __construct($content,$user,$session,$templater,$args = array()){
 		$this->content = $content;
 		$this->user = $user;
 		$this->templater = $templater;
@@ -136,25 +141,6 @@ class OPAL_Controller {
 		$_COOKIE[$name] = $value;
 		setcookie($name,$value,strtotime('+60 days'));
 	}
-
-    /**
-     * @param $name
-     * @param string|null $default
-     * @return string|null
-     */
-    protected function getSession($name,$default = null){
-        OPAL_Portal::getInstance()->startSession();
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : $default;
-    }
-
-    /**
-     * @param string $name
-     * @param string $value
-     */
-    protected function setSession($name,$value){
-        OPAL_Portal::getInstance()->startSession();
-        $_SESSION[$name] = $value;
-    }
 
     /**
      * @return string
