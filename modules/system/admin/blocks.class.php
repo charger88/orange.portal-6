@@ -52,5 +52,10 @@ class OPMA_System_Blocks extends OPMA_System_Content {
 		$options['content_area'] = $this->templater->theme->getThemeAreas();
 		return $options;
 	}
+
+    public function reorderAjax(){
+        $updated = OPAM_Block::reorder($area = $this->getPost('root'),$this->getPost('order'),'content_area',$this->user);
+        return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK, null, array('IDs' => $updated));
+    }
 	
 }

@@ -43,7 +43,6 @@ class OPMA_System_Log extends OPAL_Controller {
     }
 	
 	public function lastHook(){
-		OPAL_Theme::addScriptFile('modules/system/static/js/admin-log-widget.js');
 		return $this->templater->fetch('system/admin-log-last.phtml',array(
 			'log' => OPAM_Log::loadLog(array(
 				'date_start' => $this->getCookie('admin_log_dismiss_date'),

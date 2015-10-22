@@ -484,6 +484,32 @@ class OPAM_Content extends OPDB_Object {
 	}
 
     /**
+     * @param int $root
+     * @param array $order
+     * @param string $group_field
+     * @param OPAM_User $access_user
+     */
+    public static function reorder($root,$order,$group_field,$access_user){
+        $updated = array();
+        if ($order){
+            if ($list = self::getList(array('IDs' => $order,'access_user' => $access_user), __CLASS__)){
+                foreach ($order as $ord => $id){
+                    if (isset($list[$id])){
+                        $item = $list[$id];
+                        if ( ($item->get('content_order') != $ord) || ($item->get($group_field) != $root) ){
+                            $item->set('content_order',$ord);
+                            $item->set($group_field,$root);
+                            $item->save();
+                            $updated[] = $item->id;
+                        }
+                    }
+                }
+            }
+        }
+        return $updated;
+    }
+
+    /**
      * @param OPAM_Content[] $list
      * @return array
      */

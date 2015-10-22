@@ -46,14 +46,17 @@ class OPAM_Page extends OPAM_Content {
      * @param array|null $types
      * @return array
      */
-    public static function getPagesByParents($user,$types = null){
+    public static function getPagesByParents($user,$ignoreOnSiteMode = false){
 		$grouped = array();
-		$pages = self::getList(array(
-			'access_user' => $user,
+        $params = array(
+            'access_user' => $user,
             'order'       => 'content_order',
-			'types'       => !is_null($types) ? $types : OPAM_Content_Type::getPageTypes(),
-            'on_site_mode' => array(2,3),
-		), __CLASS__);
+            'types'       => OPAM_Content_Type::getPageTypes(),
+        );
+        if (!$ignoreOnSiteMode) {
+            $params['on_site_mode'] = array(2,3);
+        }
+		$pages = self::getList($params, __CLASS__);
 		if ($pages){
 			foreach ($pages as $item){
 				if (!isset($grouped[$item->get('content_parent_id')])){
@@ -105,28 +108,4 @@ class OPAM_Page extends OPAM_Content {
 		return $menu;
 	}
 
-    /**
-     * @param int $root
-     * @param array $order
-     * @param OPAM_User $access_user
-     */
-    public function reorder($root,$order,$access_user){
-        $updated = array();
-        if ($order){
-            if ($list = self::getList(array('IDs' => $order,'access_user' => $access_user), __CLASS__)){
-                foreach ($order as $ord => $id){
-                    if (isset($list[$id])){
-                        $item = $list[$id];
-                        if ( ($item->get('content_order') != $ord) || ($item->get('content_parent_id') != $root) ){
-                            $item->set('content_order',$ord);
-                            $item->set('content_parent_id',$root);
-                            $item->save();
-                            $updated[] = $item->id;
-                        }
-                    }
-                }
-            }
-        }
-    }
-	
 }

@@ -34,6 +34,11 @@ img {
     cursor: pointer;
 }
 
+.ui-sortable-placeholder {
+    box-shadow: 0 0 14px rgba(0,0,0,0.5) inset;
+    visibility: visible !important;
+}
+
 header {
 	position: fixed;
 	top: 0;
@@ -235,6 +240,24 @@ aside#column nav ul li:hover ul {
 
 .content_status_7, .content_status_7 a {
 	font-weight: bold;
+}
+
+#blocks-list h3 {
+    margin-top: 35px;
+    margin-bottom: 14px;
+}
+
+#blocks-list h3:first-child {
+    margin-top: 0;
+}
+
+#blocks-list ul:empty {
+    margin-bottom: 7px;
+    padding-bottom: 14px;
+}
+
+#blocks-list.op-sortable ul:empty {
+    background: #e6b522;
 }
 
 .workspace-menu {

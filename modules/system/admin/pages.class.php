@@ -9,7 +9,7 @@ class OPMA_System_Pages extends OPMA_System_Content {
 		return $this->wrapContentWithTemplate(
 			$this->wrapper,
 			$this->templater->fetch('system/admin-pages-tree.phtml',array(
-				'tree' => OPAM_Page::getPagesByParents($this->user),
+				'tree' => OPAM_Page::getPagesByParents($this->user,true),
 				'refs' => $this->getFormOptions(),
 				'slug' => $this->content->getSlug(),
 			))
@@ -40,9 +40,9 @@ class OPMA_System_Pages extends OPMA_System_Content {
 	}
 
     public function reorderAjax(){
-        $updated = OPAM_Page::reorder($root = $this->getPost('root'),$this->getPost('order'),$this->user);
+        $updated = OPAM_Page::reorder($root = $this->getPost('root'),$this->getPost('order'),'content_parent_id',$this->user);
         //TODO Clear cache
-        return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK);
+        return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK, null, array('IDs' => $updated));
     }
 	
 }
