@@ -52,6 +52,7 @@ class OPAM_Page extends OPAM_Content {
 			'access_user' => $user,
             'order'       => 'content_order',
 			'types'       => !is_null($types) ? $types : OPAM_Content_Type::getPageTypes(),
+            'on_site_mode' => array(2,3),
 		), __CLASS__);
 		if ($pages){
 			foreach ($pages as $item){
@@ -74,6 +75,7 @@ class OPAM_Page extends OPAM_Content {
 			'types' => OPAM_Content_Type::getPageTypes(),
 			'access_user' => $user,
 			'parent_id' => $root,
+            'on_site_mode' => array(1,3),
 		);
 		return self::getList($params,__CLASS__);
 	}
@@ -102,7 +104,6 @@ class OPAM_Page extends OPAM_Content {
 		}
 		return $menu;
 	}
-
 
     /**
      * @param int $root

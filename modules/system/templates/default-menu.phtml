@@ -2,12 +2,8 @@
 echo '<nav class="menu menu-default menu-line">';
 echo '<ul>';
 		foreach ($menu as $page){
-			$url = OP_WWW.'/'.$templater->esc($page->getSlug(OPAL_Portal::config('system_default_lang')));
-			if ($page->get('content_lang') != OPAL_Portal::$sitelang){
-				$url .= '?lang='.$this->esc(OPAL_Portal::$sitelang);
-			}
 			echo '<li>';
-			echo '<a href="'.$url.'">'.$templater->esc($page->get('content_title')).'</a>';
+			echo '<a href="'.$page->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang).'">'.$this->esc($page->get('content_title')).'</a>';
 			echo '</li>';
 		}
 		echo '</ul>';

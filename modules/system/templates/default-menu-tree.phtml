@@ -6,11 +6,7 @@ if (!function_exists('default_default_menu')){
 			echo '<ul>';
 			foreach ($menu[$root] as $page) {
 				echo '<li>';
-				$url = OP_WWW . '/' . $templater->esc($page->getSlug(OPAL_Portal::config('system_default_lang')));
-				if ($page->get('content_lang') != OPAL_Portal::$sitelang) {
-					$url .= '?lang=' . $templater->esc(OPAL_Portal::$sitelang);
-				}
-				echo '<a href="' . $url . '">' . $templater->esc($page->get('content_title')) . '</a>';
+				echo '<a href="' . $page->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang) . '">' . $templater->esc($page->get('content_title')) . '</a>';
 				if (!empty($menu[$page->id])) {
 					default_default_menu($menu, $page->id, $templater);
 				}

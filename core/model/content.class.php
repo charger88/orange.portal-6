@@ -170,6 +170,23 @@ class OPAM_Content extends OPDB_Object {
 	}
 
     /**
+     * @param null $default_lang
+     * @param null $current_lang
+     * @return string
+     */
+    public function getURL($default_lang = null,$current_lang = null) {
+        $url = OP_WWW . '/' . $this->getSlug($default_lang);
+        if (
+            ($this->get('content_lang') || ($current_lang != $default_lang))
+            &&
+            ($this->get('content_lang') != $current_lang)
+        ){
+            $url .= '?lang=' . $current_lang;
+        }
+        return $url;
+    }
+
+    /**
      * @param null $type
      * @param null $lang
      * @param null $slug
