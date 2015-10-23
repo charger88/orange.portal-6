@@ -35,7 +35,8 @@ class OPAM_Content_Field extends OPDB_Object {
 
     public static function getObject($content_id,$field){
 		$select = new OPDB_Select('content_field');
-		$select->addWhere(new OPDB_Clause('content_id', '=', $content_id));
+        $select->addWhere(new OPDB_Clause('content_id', '=', $content_id));
+        $select->addWhereAnd(new OPDB_Clause('content_field_name', '=', $field));
 		$fieldObject = new OPAM_Content_Field($select->execQuery()->getNext());
 		if (!$fieldObject->id){
 			$fieldObject->set('content_id',$content_id);
