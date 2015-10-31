@@ -40,6 +40,7 @@ class OPMI_News extends OPAL_Installer {
 				'content_type_hidden'     => array('content_order','content_area','content_on_site_mode','content_time_modified','content_user_id'),
 				'content_type_fields'     => array(),
 				'content_type_texts'      => array('excerpt' => 'ADMIN_MODULE_NEWS_EXCERPT','text' => 'ADMIN_MODULE_NEWS_TEXT'),
+                'content_type_sitemap_priority' => 50,
 			),
 		);
 		foreach ($content_types_data as $data){
@@ -69,7 +70,6 @@ class OPMI_News extends OPAL_Installer {
         foreach ($content_data as $data){
             $content = new OPAM_Content();
             $content->setFromArray($data);
-            $content->set('content_time_modified', OPDB_Functions::getTime());
             $content->set('content_time_published', OPDB_Functions::getTime());
             $content->set('content_user_id', 1);
             $id = $content->save();

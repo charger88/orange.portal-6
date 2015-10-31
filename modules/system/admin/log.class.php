@@ -46,7 +46,7 @@ class OPMA_System_Log extends OPAL_Controller {
 		return $this->templater->fetch('system/admin-log-last.phtml',array(
 			'log' => OPAM_Log::loadLog(array(
 				'date_start' => $this->getCookie('admin_log_dismiss_date'),
-				'limit'      => $this->arg('limit', 10),
+				'limit'      => $this->arg('limit', 8),
 				'max_status' => $this->arg('maxstatus', self::STATUS_WARNING),
 			)),
 		));

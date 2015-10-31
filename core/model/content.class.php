@@ -57,6 +57,7 @@ class OPAM_Content extends OPDB_Object {
 		if (!strtotime($this->get('content_time_published'))) {
 			$this->set('content_time_published', OPDB_Functions::getTime());
 		}
+        $this->set('content_time_modified', OPDB_Functions::getTime());
 		$id = parent::save();
 		$type = new OPAM_Content_Type('content_type_code', $this->get('content_type'));
 		$field_IDs = array();
@@ -166,7 +167,7 @@ class OPAM_Content extends OPDB_Object {
      * @return string
      */
     public function getSlug($default_lang = null) {
-		return trim((!is_null($default_lang)&& $this->get('content_lang')&& ($this->get('content_lang')!= $default_lang) ? $this->get('content_lang'): '') . '/' . ($this->get('content_status')< 7 ? str_replace('%2F', '/', $this->get('content_slug')) : ''), '/');
+		return trim((!is_null($default_lang) && $this->get('content_lang')&& ($this->get('content_lang')!= $default_lang) ? $this->get('content_lang'): '') . '/' . ($this->get('content_status') >= 5 ? str_replace('%2F', '/', $this->get('content_slug')) : ''), '/');
 	}
 
     /**
@@ -228,7 +229,7 @@ class OPAM_Content extends OPDB_Object {
 		$search = isset($params['search'])? $params['search']: null;
 		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;
         $fields = isset($params['fields'])? $params['fields'] : null;
-        $fieldsmode_or = !empty($params['fieldsmode_or']);
+        $fields_not = !empty($params['fields_not']);
 		$status_min = isset($params['status_min'])? $params['status_min']: null;
 		$status_max = isset($params['status_max'])? $params['status_max']: null;
 		$access_user = isset($params['access_user'])? $params['access_user']: null;
@@ -269,17 +270,13 @@ class OPAM_Content extends OPDB_Object {
                 if ($first){
                     $first = false;
                 } else {
-                    if ($fieldsmode_or){
-                        $fieldsSelect->addWhereOr();
-                    } else {
-                        $fieldsSelect->addWhereAnd();
-                    }
+                    $fieldsSelect->addWhereOr();
                 }
                 $fieldsSelect->addWhere(new OPDB_Clause('content_field_name','=',$param));
                 $fieldsSelect->addWhereAnd(new OPDB_Clause('content_field_value',strpos($value,'%') !== false ? 'LIKE' : '=',$value));
 
             }
-            $select->addWhereAnd(new OPDB_Clause('id','IN',$fieldsSelect));
+            $select->addWhereAnd(new OPDB_Clause('id',$fields_not ? 'NOT IN' : 'IN',$fieldsSelect));
         }
 
 		if (!is_null($search)) {
@@ -306,7 +303,7 @@ class OPAM_Content extends OPDB_Object {
 
 		if (!is_null($access_user) && ($access_user instanceof OPAM_User)) {
 			$groups = $access_user->get('user_groups');
-			$groups[]= 0;
+			$groups[] = 0;
 			$f = true;
 			$select->addWhereAnd();
 			$select->addWhereBracket(true);
@@ -523,7 +520,7 @@ class OPAM_Content extends OPDB_Object {
                     'link' => OP_WWW . '/' . $item->getSlug(),
                     'time' => $item->get('content_time_published'),
                     'image_url' => $image->id ? $image->getURL('m') : '',
-                    'image_type' => $image->id ? $image->getMimeType(): '',
+                    'image_type' => $image->id ? $image->getMimeType() : '',
                 );
             }
         }

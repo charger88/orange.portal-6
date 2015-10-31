@@ -67,7 +67,7 @@ abstract class OPAL_Module extends OPAM_Module {
 
     protected abstract function doUninstall();
 
-    protected abstract function getAdminMenu();
+    public abstract function getAdminMenu();
 
 	protected $privileges = array();
 

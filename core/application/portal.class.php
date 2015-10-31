@@ -257,7 +257,10 @@ class OPAL_Portal {
 			self::$sitelang = array_shift($request);
 		
 		}
-		$this->request = $request;
+        $alias = array(
+            'sitemap.xml' => array('module','system','system','sitemap'),
+        );
+		$this->request = isset($alias[implode('/',$request)]) ? $alias[implode('/',$request)] : $request;
 	}
 	
 	public function execute(){

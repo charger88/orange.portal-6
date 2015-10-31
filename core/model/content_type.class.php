@@ -14,16 +14,17 @@ class OPAM_Content_Type extends OPDB_Object {
      * @var array
      */
     protected static $schema = array(
-		'id'                      => array(0 ,'ID'),
-		'content_type_name'       => array('','VARCHAR',64),
-		'content_type_code'       => array('','VARCHAR',32),
-		'content_type_status'     => array(0 ,'BOOLEAN'),
-		'content_type_type'       => array(0 ,'TINYINT'), // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
-		'content_type_multilang'  => array(0 ,'BOOLEAN'),
-		'content_type_class'      => array('','VARCHAR',32),
-		'content_type_hidden'     => array(array(),'ARRAY',2048),
-		'content_type_fields'     => array(array(),'ARRAY'),
-		'content_type_texts'      => array(array(),'ARRAY',1024),
+		'id'                            => array(0 ,'ID'),
+		'content_type_name'             => array('','VARCHAR',64),
+		'content_type_code'             => array('','VARCHAR',32),
+		'content_type_status'           => array(0 ,'BOOLEAN'),
+		'content_type_type'             => array(0 ,'TINYINT'), // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
+		'content_type_multilang'        => array(0 ,'BOOLEAN'),
+		'content_type_class'            => array('','VARCHAR',32),
+		'content_type_hidden'           => array(array(),'ARRAY',2048),
+		'content_type_fields'           => array(array(),'ARRAY'),
+		'content_type_texts'            => array(array(),'ARRAY',1024),
+        'content_type_sitemap_priority' => array(0 ,'TINYINT'),
 	);
 
     /**
@@ -83,6 +84,17 @@ class OPAM_Content_Type extends OPDB_Object {
     public static function getCustomTypes($output = 'codes'){
 		return self::getTypes(4,null,$output);
 	}
+
+    /**
+     * @return array
+     */
+    public static function getTypesForSitemap(){
+        $select = new OPDB_Select(self::$table);
+        $select->addWhere(new OPDB_Clause('content_type_status', '=', 1));
+        $select->addField('content_type_code');
+        $select->addField('content_type_sitemap_priority');
+        return $select->execQuery()->getResultArray(true);
+    }
 
     /**
      * @return array

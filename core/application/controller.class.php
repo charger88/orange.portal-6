@@ -57,6 +57,7 @@ class OPAL_Controller {
 	public function __construct($content,$user,$session,$templater,$args = array()){
 		$this->content = $content;
 		$this->user = $user;
+        $this->session = $session;
 		$this->templater = $templater;
 		$this->args = $args;
 		foreach ($this->args as $key => $value){

@@ -57,7 +57,7 @@ header > * {
 	padding-top: 6px;
 	line-height: 36px;
 	height: 36px;
-	font-size: 0.9em;
+	font-size: 0.9rem;
 	color: #ffffff;
 	text-transform: uppercase;
 }
@@ -113,7 +113,7 @@ aside#column a {
 }
 
 aside#column nav {
-	font-size: 0.8em;
+	font-size: 0.8rem;
 }
 
 aside#column nav a {
@@ -131,10 +131,10 @@ aside#column nav ul li {
 
 aside#column nav ul li a {
 	display: block;
-	padding: 6px 21px 6px 3.2em;
+	padding: 6px 21px 6px 3.2rem;
 	line-height: 24px;
-	background: 0.8em 50% no-repeat;
-	background-size: 1.8em 1.8em;
+	background: 0.8rem 50% no-repeat;
+	background-size: 1.6rem 1.6rem;
 }
 
 aside#column nav li:hover,
@@ -335,16 +335,16 @@ aside#column nav ul li:hover ul {
 
 .redirect {
     padding: 0 14px;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }
 
 .header-inline-button {
     float: right;
     display: block;
     text-decoration: none;
-    font-size: 0.8em;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    padding-top: 0.2em;
+    padding-top: 0.2rem;
 }
 
 /* Admin index widgets */
@@ -356,7 +356,7 @@ aside#column nav ul li:hover ul {
 }
 
 #admin-index > div.block {
-	font-size: 0.8em;
+	font-size: 0.8rem;
 	float: left;
 	width: 32%;
 	margin-right: 2%;
@@ -413,16 +413,17 @@ aside#column nav ul li:hover ul {
 
 #admin-index > div.block table {
     width: 100%;
+    margin-top: -3px;
 	overflow: hidden;
 }
 
 #admin-index > div.block table tr {
 	border-bottom: 1px dotted #c0c0c0;
-	font-size: 0.9em;
+	font-size: 0.8rem;
 } 
 
 #admin-index > div.block table tr td {
-	padding: 0 3px 3px 3px;
+	padding: 3px;
 	margin-bottom: 3px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -480,7 +481,7 @@ aside#column nav ul li:hover ul {
 	padding: 6px 21px;
 	line-height: 36px;
 	height: 42px;
-	font-size: 0.9em;
+	font-size: 0.9rem;
 	color: #ffffff;
 	text-transform: uppercase;
 	background: #22b5e6;
@@ -493,7 +494,7 @@ aside#column nav ul li:hover ul {
 	display: block;
 	margin-bottom: 5px;
 	font-weight: bold;
-	font-size: 0.8em;
+	font-size: 0.8rem;
 }
 
 .form-default .form-area-buttons,
@@ -566,7 +567,7 @@ aside#column nav ul li:hover ul {
 }
 
 .input-title {
-	font-size: 1.4em;
+	font-size: 1.4rem;
 }
 
 .table-th-checkbox {
@@ -604,7 +605,7 @@ aside#column nav ul li:hover ul {
 
 .op-admin-list-table th {
 	padding: 0 2px 8px 2px;
-	font-size: 0.8em;
+	font-size: 0.8rem;
 	font-weight: bold;
 	vertical-align: middle;
 	line-height: 110%;
@@ -612,7 +613,7 @@ aside#column nav ul li:hover ul {
 
 .op-admin-list-table td {
 	padding: 5px 2px;
-	font-size: 0.9em;
+	font-size: 0.9rem;
 }
 
 .op-admin-list-table tbody tr:nth-child(even) {
@@ -661,7 +662,7 @@ aside#column nav ul li:hover ul {
 .op-admin-arrow-paginator {
 	box-shadow: 0 2px 0 rgba(0,0,0,0.1) inset;
 	height: 32px;
-	font-size: 0.8em;
+	font-size: 0.8rem;
 	text-shadow: -1px -1px 0 rgba(255,255,255,0.5);
 	text-transform: uppercase;
 }
@@ -720,11 +721,11 @@ aside#column nav ul li:hover ul {
 }
 
 #mk-media-forms-container form input[type="file"] {
-	font-size: 0.8em;
+	font-size: 0.8rem;
 }
 
 #mk-media-forms-container ul {
-	font-size: 0.8em;
+	font-size: 0.8rem;
 	text-shadow: 1px 1px 0 rgba(255,255,255,1);
 }
 
@@ -788,5 +789,5 @@ aside#column nav ul li:hover ul {
     text-align: right;
     margin-top: -7px;
     margin-bottom: 14px;
-    font-size: 0.9em;
+    font-size: 0.9rem;
 }

@@ -74,6 +74,7 @@ $lang = array(
 	'content_type_status'     => 'Enabled',
 	'content_type_type'       => 'Type',
 	'content_type_multilang'  => 'Support content translations',
+    'content_type_sitemap_priority' => 'Sitemap priority (0-100)',
 	'content_type_class'      => 'Class (default OPAM_Content)',
 	'content_type_hidden'     => 'Disabled fields',
 	'content_type_fields'     => 'Custom fields',
@@ -139,6 +140,7 @@ $lang = array(
 	'CONTENT_FIELD_SEO_KEYWORDS'    => 'Keywords',
 	'CONTENT_FIELD_SEO_CANONICAL'   => 'Canonical link',
 	'CONTENT_FIELD_SEO_HIDDEN'      => 'Hide for search engines',
+    'CONTENT_FIELD_SEO_SITEMAP_PRIORITY' => 'Custom sitemap priority (0-100)',
 
     'ADMIN_CONTENT_REORDERED'    => 'Content was reordered',
 
@@ -211,6 +213,9 @@ $lang = array(
     'ADMIN_VERSION'           => 'Version',
     'ADMIN_LICENSE'           => 'License',
     'ADMIN_SYSTEM_SERVER'     => 'Server info',
+    'ADMIN_SYSTEM_SITEMAP_REBUILD_TIME' => 'Sitemap files status',
+    'ADMIN_REBUILD'           => 'Rebuild',
+    'SITEMAP_WAS_REBUILT'     => 'Sitemap was rebuilt',
 
     'ADMIN_CACHE_NOT_DELETED' => 'Cache was not cleared',
 

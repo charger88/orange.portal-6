@@ -1,0 +1,11 @@
+<h3><?php $this->el('ADMIN_SYSTEM_SITEMAP_REBUILD_TIME'); ?></h3>
+<table>
+    <?php foreach ($files as $file => $info) { ?>
+    <tr>
+        <td><?php $this->ee($file); ?></td>
+        <td><?php $this->ee($info['items']); ?></td>
+        <td><?php echo $this->getTime($info['time']); ?></td>
+    </tr>
+    <?php } ?>
+</table>
+<div><a href="<?php echo OP_WWW.'/admin/sitemap/rebuild'; ?>"><?php $this->el('ADMIN_REBUILD'); ?></a></div>

@@ -6,7 +6,6 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 		
 		$this->addField('content_type_name', 'text', OPAL_Lang::t('content_type_name'), array());
 		$this->addField('content_type_code', 'text', OPAL_Lang::t('content_type_code'), array());
-		$this->addField('content_type_status', 'checkbox', OPAL_Lang::t('content_type_status'), array('value' => 1));
 		$this->addField('content_type_type', 'select', OPAL_Lang::t('content_type_type'), array('required' => 'required', 'options' => array(
 			0 => OPAL_Lang::t('ADMIN_TYPE_TYPE_SYSTEM'),
 			1 => OPAL_Lang::t('ADMIN_TYPE_TYPE_PAGE'),
@@ -14,9 +13,9 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 			3 => OPAL_Lang::t('ADMIN_TYPE_TYPE_MODULE'),
 			4 => OPAL_Lang::t('ADMIN_TYPE_TYPE_CUSTOM'),
 		)));
-		$this->addField('content_type_multilang', 'checkbox', OPAL_Lang::t('content_type_multilang'), array('value' => 1));
-		$this->addField('content_type_class', 'text', OPAL_Lang::t('content_type_class'), array());
-		
+        $this->addField('content_type_sitemap_priority', 'text', OPAL_Lang::t('content_type_sitemap_priority'));
+        $this->addField('content_type_class', 'text', OPAL_Lang::t('content_type_class'), array());
+
 		$content_type_hidden_options = array(
 			'content_title'           => OPAL_Lang::t('content_title'),
 			'content_parent_id'       => OPAL_Lang::t('content_parent_id'),
@@ -35,6 +34,8 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 		
 		$this->addField('content_type_hidden', 'select', OPAL_Lang::t('content_type_hidden'), array('options' => $content_type_hidden_options, 'multiple' => 'multiple'));
 
+        $this->addField('content_type_multilang', 'checkbox', OPAL_Lang::t('content_type_multilang'), array('value' => 1));
+        $this->addField('content_type_status', 'checkbox', OPAL_Lang::t('content_type_status'), array('value' => 1));
 		
 		$this->addField('content_type_fields:_', 'text', OPAL_Lang::t('content_type_fields:_'), array(), 'content_type_fields[]');
 		$this->addField('content_type_fields:type', 'text', OPAL_Lang::t('content_type_fields:type'), array(), 'content_type_fields[]');
@@ -45,10 +46,8 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 		$this->addField('content_type_texts:_', 'text', OPAL_Lang::t('content_type_texts:_'), array(), 'content_type_texts[]');
 		$this->addField('content_type_texts:*', 'text', OPAL_Lang::t('content_type_texts:*'), array(), 'content_type_texts[]');
 		$this->addMultirow('content_type_texts');
-		
-		
-		
-		$this->addField('type_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
+
+        $this->addField('type_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
 		
 	}
 		

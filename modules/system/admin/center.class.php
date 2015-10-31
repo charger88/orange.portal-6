@@ -14,7 +14,7 @@ class OPMA_System_Center extends OPAL_Controller {
 			'license' => $license->getData(),
 		));
 	}
-	
+
 	public function systemHook(){
 		$version = new OPAL_File('version.txt','config');
 		return $this->templater->fetch('system/admin-center-system.phtml',array(

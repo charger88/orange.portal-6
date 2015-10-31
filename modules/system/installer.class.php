@@ -62,6 +62,9 @@ class OPMI_System extends OPAL_Installer {
         if (empty($this->errors)){
             $this->createPrivileges();
         }
+        if (empty($this->errors)){
+            $this->createFiles();
+        }
 		return $this->errors;
 	}
 	
@@ -237,13 +240,15 @@ class OPMI_System extends OPAL_Installer {
 				'content_type_class'      => 'OPAM_Page',
 				'content_type_hidden'     => array('content_type','content_area','content_order',),
 				'content_type_fields'     => array(
-					'seo_title'       => array('type' => 'VARCHAR','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_TITLE'),
-					'seo_description' => array('type' => 'VARCHAR','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_DESCRIPTION'),
-					'seo_keywords'    => array('type' => 'VARCHAR','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_KEYWORDS'),
-					'seo_canonical'   => array('type' => 'VARCHAR','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_CANONICAL'),
-					'seo_hidden'      => array('type' => 'BOOLEAN','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_HIDDEN'),
+					'seo_title'            => array('type' => 'TEXT','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_TITLE'),
+					'seo_description'      => array('type' => 'TEXT','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_DESCRIPTION'),
+					'seo_keywords'         => array('type' => 'TEXT','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_KEYWORDS'),
+					'seo_canonical'        => array('type' => 'TEXT','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_CANONICAL'),
+                    'seo_sitemap_priority' => array('type' => 'INTEGER','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_SITEMAP_PRIORITY'),
+                    'seo_hidden'           => array('type' => 'BOOLEAN','group' => 'SEO','title' => 'CONTENT_FIELD_SEO_HIDDEN'),
 				),
 				'content_type_texts'      => array('text' => 'ADMIN_CONTENT_TEXT_CONTENT'),
+                'content_type_sitemap_priority' => 75,
 			),
 			array(
 				'content_type_name'       => 'TYPE_BLOCK',
@@ -475,17 +480,28 @@ class OPMI_System extends OPAL_Installer {
 				'content_commands'       => array( array( 'module' => 'system', 'controller' => 'admin-log', 'method' => '', 'static' => false, 'args' => array() ), ),
 				'content_template'       => 'main-admin.phtml',
 			),
-			array(
-				'content_type'           => 'admin',
-				'content_title'          => 'ADMIN_CACHE',
-				'content_access_groups'  => array(1),
-				'content_lang'           => '',
-				'content_slug'           => 'admin/cache',
-				'content_on_site_mode'   => 0,
-				'content_status'         => 6,
-				'content_commands'       => array( array( 'module' => 'system', 'controller' => 'admin-cache', 'method' => '', 'static' => false, 'args' => array() ), ),
-				'content_template'       => 'main-admin.phtml',
-			),
+            array(
+                'content_type'           => 'admin',
+                'content_title'          => 'ADMIN_CACHE',
+                'content_access_groups'  => array(1),
+                'content_lang'           => '',
+                'content_slug'           => 'admin/cache',
+                'content_on_site_mode'   => 0,
+                'content_status'         => 6,
+                'content_commands'       => array( array( 'module' => 'system', 'controller' => 'admin-cache', 'method' => '', 'static' => false, 'args' => array() ), ),
+                'content_template'       => 'main-admin.phtml',
+            ),
+            array(
+                'content_type'           => 'admin',
+                'content_title'          => 'ADMIN_SITEMAP',
+                'content_access_groups'  => array(1),
+                'content_lang'           => '',
+                'content_slug'           => 'admin/sitemap',
+                'content_on_site_mode'   => 0,
+                'content_status'         => 6,
+                'content_commands'       => array( array( 'module' => 'system', 'controller' => 'admin-sitemap', 'method' => '', 'static' => false, 'args' => array() ), ),
+                'content_template'       => 'main-admin.phtml',
+            ),
 			array(
 				'content_type'           => 'admin',
 				'content_title'          => 'ADMIN_CONTENT',
@@ -556,7 +572,6 @@ class OPMI_System extends OPAL_Installer {
 		foreach ($content_data as $data){
 			$content = new OPAM_Content();
 			$content->setFromArray($data);
-			$content->set('content_time_modified', OPDB_Functions::getTime());
 			$content->set('content_time_published', OPDB_Functions::getTime());
 			$content->set('content_user_id', 1);
 			$id = $content->save();
@@ -587,6 +602,15 @@ class OPMI_System extends OPAL_Installer {
         $priv->set('privilege_name','METHOD_SYSTEM_SEARCH_RESULTS');
         $priv->set('user_group_id',OPAM_User::GROUP_EVERYBODY);
         $priv->save();
+    }
+
+    private function createFiles(){
+        $file = new OPAL_File('robots.txt','files/root');
+        $file->saveData("User-agent: *\nAllow: /");
+        $file = new OPAL_File('favicon.ico','files/root');
+        $file->saveData(base64_decode('AAABAAMAMDACAAEAAQAwAwAANgAAACAgAgABAAEAMAEAAGYDAAAQEAIAAQABALAAAACWBAAAKAAAADAAAABgAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'));
+        $file = new OPAL_File('sitemap.xml','files/root');
+        $file->saveData((new OPAL_Sitemap(true))->get());
     }
 	
 }
