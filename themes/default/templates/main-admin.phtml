@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<header>
-			<div class="aside" id="logo"><a href="<?php echo OP_WWW.'/admin'; ?>">Orange.Portal 6</a></div>
+			<div class="aside" id="logo"><a href="<?php echo $content->get('content_slug') == 'admin/center' ? OP_WWW : OP_WWW.'/admin'; ?>">Orange.Portal 6</a></div>
 			<h1><?php echo OPAL_Lang::t($content->get('content_title')); ?></h1>
 		</header>
 		<aside id="column">

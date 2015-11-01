@@ -59,7 +59,7 @@ class OPMA_System_Privileges extends OPAL_Controller {
             }
             OPAM_Privilege::massPrivilegesAdding($add);
         }
-        return $this->msg(OPAL_Lang::t('%s_PRIVILEGES_ADDED__%s_PRIVILEGES_DELETED',array($addCounter, $deleteCounter)),self::STATUS_OK,OP_WWW.'/'.$this->content->getSlug());
+        return $this->msg(OPAL_Lang::t('%s_PRIVILEGES_ADDED__%s_PRIVILEGES_DELETED',array($addCounter, $deleteCounter)),self::STATUS_OK,$this->content->getURL());
     }
 
 }

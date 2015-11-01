@@ -100,7 +100,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			$params = $this->edit_form_params;
 			$params['options'] = $this->getFormOptions($item);
 			$params['type'] = $type;
-			$form = new OPMX_System_ContentEdit(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id,'post',$params);
+			$form = new OPMX_System_ContentEdit($this->content->getURL().'/save/'.$item->id,'post',$params);
 			$values = $item->getDataArray();
 			if ($texts = $type->get('content_type_texts')){
 				foreach ($texts as $text_id => $text_name){
@@ -118,7 +118,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 		} else {
 			$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-			return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, OP_WWW.'/'.$this->content->getSlug());
+			return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
 		}
 	}
 	
@@ -149,7 +149,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			}
 			$type = new OPAM_Content_Type('content_type_code',$item->get('content_type'));
 			if ($this->checkIsTypeAllowed($type)){
-				$form = new OPMX_System_ContentEdit(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id,'post',array(
+				$form = new OPMX_System_ContentEdit($this->content->getURL().'/save/'.$item->id,'post',array(
 					'options' => $this->getFormOptions($item),
 					'type'    => $type,
 				));
@@ -176,21 +176,21 @@ class OPMA_System_Content extends OPAL_Controller {
 						$cacheids[] = $item->get('content_parent_id');
 						$this->deleteRelatedCache($cacheids);
 						$this->log('CONTENT_%s_SAVED', array($item->get('content_title')), 'LOG_CONTENT', self::STATUS_OK, $item);
-						return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, OP_WWW.'/'.$this->content->getSlug().'/edit/'.$item->id);
+						return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);
 					} else {
 						$this->log('CONTENT_SAVING_FAILED', array(), 'LOG_CONTENT', self::STATUS_ALERT);
-						return $this->msg(OPAL_Lang::t('ADMIN_UNEXPECTED_ERROR'), self::STATUS_ALERT, OP_WWW.'/'.$this->content->getSlug());
+						return $this->msg(OPAL_Lang::t('ADMIN_UNEXPECTED_ERROR'), self::STATUS_ALERT, $this->content->getURL());
 					}
 				} else {
 					return $this->edit($item,$type,true);
 				}
 			} else {
 				$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-				return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, OP_WWW.'/'.$this->content->getSlug());
+				return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
 			}
 		} else {
 			$this->log('CONTENT_NEW_NOT_ALLOWED', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-			return $this->msg(OPAL_Lang::t('CONTENT_NEW_NOT_ALLOWED'), self::STATUS_ERROR, OP_WWW.'/'.$this->content->getSlug());
+			return $this->msg(OPAL_Lang::t('CONTENT_NEW_NOT_ALLOWED'), self::STATUS_ERROR, $this->content->getURL());
 		}
 	}
 

@@ -58,5 +58,10 @@ class OPMC_System_Signin extends OPAL_Controller {
 		}
 		return $return;
 	}
+
+    public function offActionDirect(){
+        OPAL_Portal::getInstance()->session->set('uid',null);
+        return $this->redirect(OP_WWW);
+    }
 	
 }

@@ -167,7 +167,14 @@ class OPAM_Content extends OPDB_Object {
      * @return string
      */
     public function getSlug($default_lang = null) {
-		return trim((!is_null($default_lang) && $this->get('content_lang')&& ($this->get('content_lang')!= $default_lang) ? $this->get('content_lang'): '') . '/' . ($this->get('content_status') >= 5 ? str_replace('%2F', '/', $this->get('content_slug')) : ''), '/');
+        $slug = '';
+        if (!is_null($default_lang) && $this->get('content_lang') && ($this->get('content_lang') != $default_lang)){
+            $slug = $this->get('content_lang');
+        }
+        if ($this->get('content_status') < 7){
+            $slug .= '/'.str_replace('%2F', '/', $this->get('content_slug'));
+        }
+		return trim($slug, '/');
 	}
 
     /**
@@ -471,7 +478,7 @@ class OPAM_Content extends OPDB_Object {
 					'access_user' => $user
 			), null, $select)) {
 				foreach($pages as $page){
-					$links[$page->get('content_lang' )]= OP_WWW . '/' . $page->getSlug($default_lang );
+					$links[$page->get('content_lang')]= $page->getURL($default_lang);
 				}
 			}
 		} else {
@@ -517,7 +524,7 @@ class OPAM_Content extends OPDB_Object {
                 $image = new OPMM_System_Media($item->get('content_image'));
                 $rss[] = array(
                     'title' => $item->get('content_title'),
-                    'link' => OP_WWW . '/' . $item->getSlug(),
+                    'link' => $item->getURL(),
                     'time' => $item->get('content_time_published'),
                     'image_url' => $image->id ? $image->getURL('m') : '',
                     'image_type' => $image->id ? $image->getMimeType() : '',
