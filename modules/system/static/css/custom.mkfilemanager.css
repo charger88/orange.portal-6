@@ -4,8 +4,8 @@
 
 .mk-filemanager-ico {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 1.6rem;
+    height: 1.6rem;
     background: url('../icons/filetypes/file.png') 50% 50% no-repeat;
     background-size: contain;
 }

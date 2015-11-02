@@ -35,7 +35,7 @@ img {
 }
 
 .ui-sortable-placeholder {
-    box-shadow: 0 0 14px rgba(0,0,0,0.5) inset;
+    box-shadow: 0 0 0.9rem rgba(0,0,0,0.5) inset;
     visibility: visible !important;
 }
 
@@ -53,24 +53,24 @@ input, select, textarea {
 }
 
 header > * {
-	box-shadow: 0 8px 0 rgba(0,0,0,0.1) inset;
-	padding-top: 6px;
-	line-height: 36px;
-	height: 36px;
+	box-shadow: 0 0.3rem 0 rgba(0,0,0,0.1) inset;
+	padding-top: 0.4rem;
+	line-height: 2.4rem;
+	height: 2.4rem;
 	font-size: 0.9rem;
 	color: #ffffff;
 	text-transform: uppercase;
 }
 
 header > h1 {
-	margin-left: 200px;
-	padding-left: 42px;
-	padding-right: 42px;
+	margin-left: 14rem;
+	padding-left: 2.4rem;
+	padding-right: 2.4rem;
 }
 
 h3 {
-    margin-top: 42px;
-    margin-bottom: 21px;
+    margin-top: 2.4rem;
+    margin-bottom: 1.6rem;
 	font-weight: normal;
 	border-bottom: 1px dotted #000000;
 }
@@ -80,7 +80,7 @@ h3:first-child {
 }
 
 #logo {
-	width: 200px;
+	width: 14rem;
 	float: left;
 	background: #e6b522;
 	text-align: center;
@@ -97,12 +97,12 @@ header > h1, #logo, aside#column {
 }
 
 aside#column {
-	width: 200px;
+	width: 14rem;
 	float: left;
 	color: #ffffff;
 	background: #262626;
 	position: fixed;
-	top: 42px;
+	top: 2.8rem;
 	left: 0;
 	bottom: 0;
 	z-index: 200;
@@ -121,18 +121,18 @@ aside#column nav a {
 }
 
 aside#column nav ul {
-	width: 200px;
-	padding: 4px 0;
+	width: 14rem;
+	padding: 0.15rem 0;
 }
 
 aside#column nav ul li {
-	height: 36px;
+	height: 2.4rem;
 }
 
 aside#column nav ul li a {
 	display: block;
-	padding: 6px 21px 6px 3.2rem;
-	line-height: 24px;
+	padding: 0.4rem 2.2rem 0.4rem 3.2rem;
+	line-height: 1.6rem;
 	background: 0.8rem 50% no-repeat;
 	background-size: 1.6rem 1.6rem;
 }
@@ -149,8 +149,8 @@ aside#column nav ul li a:hover {
 aside#column nav ul li ul {
 	display: none;
 	position: absolute;
-	margin-top: -40px;
-	margin-left: 200px;
+	margin-top: -2.5rem;
+	margin-left: 14rem;
 	background: #000000;
 }
 
@@ -160,17 +160,17 @@ aside#column nav ul li:hover ul {
 
 #workspace {
 	position: absolute;
-	top: 42px;
-	left: 200px;
+	top: 2.8rem;
+	left: 14rem;
 	right: 0;
-	padding: 21px 42px;
+	padding: 1.6rem 2.4rem;
 }
 
 .lang-flag {
 	border: 1px solid;
 	padding: 2px;
-	font-size: 10px;
-	line-height: 7px;
+	font-size: 0.5rem;
+	line-height: 0.5rem;
 	text-transform: uppercase;
 	font-weight: bold;
 	display: inline-block;
@@ -188,14 +188,13 @@ aside#column nav ul li:hover ul {
 }
 
 .content-special-list-wrapper > ul > li {
-	font-size: 100%;	
+	font-size: 100%;
 }
 
 .content-special-list-wrapper > ul > li ul {
-    margin-left: 21px;
-    margin-right: 7px;
-    margin-top: 3px;
-    padding-top: 4px;
+    margin-left: 1.6rem;
+    margin-top: 0.1rem;
+    padding-top: 0.15rem;
     box-sizing: border-box;
 }
 
@@ -204,7 +203,7 @@ aside#column nav ul li:hover ul {
 }
 
 .content-special-list-wrapper > ul li > div {
-    margin-bottom: 7px;
+    margin-bottom: 0.5rem;
 }
 
 .content-special-list-wrapper > ul li > div > div {
@@ -218,7 +217,7 @@ aside#column nav ul li:hover ul {
 .content-special-list-wrapper > ul li > div.page-in-tree-wrapper:hover {
 	color: #262626;
 	background: #edf0f2;
-	box-shadow: 0 0 0 3px #edf0f2;
+	box-shadow: 0 0 0 0.1rem #edf0f2;
 }
 
 .content_status_0, .content_status_0 a,
@@ -246,8 +245,8 @@ aside#column nav ul li:hover ul {
 }
 
 #blocks-list h3 {
-    margin-top: 35px;
-    margin-bottom: 14px;
+    margin-top: 2.4rem;
+    margin-bottom: 0.9rem;
 }
 
 #blocks-list h3:first-child {
@@ -255,8 +254,8 @@ aside#column nav ul li:hover ul {
 }
 
 #blocks-list ul:empty {
-    margin-bottom: 7px;
-    padding-bottom: 14px;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.9rem;
 }
 
 #blocks-list.op-sortable ul:empty {
@@ -270,7 +269,7 @@ aside#column nav ul li:hover ul {
 
 .workspace-menu li a {
 	display: block;
-	padding: 14px;
+	padding: 0.9rem;
 	border-bottom: 1px dotted #000000;
 	text-decoration: none;
 }
@@ -294,28 +293,28 @@ aside#column nav ul li:hover ul {
     float: left;
     color: #848484;
     border-top: 1px dotted #c0c0c0;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 }
 
 #workspace dl dd {
     width: 70%;
     margin-left: 30%;
     border-top: 1px dotted #c0c0c0;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 }
 
 .alert {
     color: #ffffff;
     background: #c0c0c0;
     border: 1px solid #c0c0c0;
-    box-shadow: 0 8px 0 rgba(0,0,0,0.1) inset;
+    box-shadow: 0 0.3rem 0 rgba(0,0,0,0.1) inset;
     text-shadow: -1px -1px 0 rgba(0,0,0,0.25);
-    padding: 6px 14px 0 14px;
-    line-height: 36px;
-    height: 36px;
-    margin-bottom: 7px;
+    padding: 0.4rem 0.9rem 0 0.9rem;
+    line-height: 2.4rem;
+    height: 2.4rem;
+    margin-bottom: 0.5rem;
 }
 
 .alert.alert--1,
@@ -337,7 +336,7 @@ aside#column nav ul li:hover ul {
 }
 
 .redirect {
-    padding: 0 14px;
+    padding: 0 0.9rem;
     font-size: 0.9rem;
 }
 
@@ -353,8 +352,8 @@ aside#column nav ul li:hover ul {
 /* Admin index widgets */
 
 #admin-index {
-	margin: -21px -42px 0 -42px;
-	padding: 21px 42px;
+	margin: -1.6rem -2.4rem 0 -2.4rem;
+	padding: 1.6rem 2.4rem;
 	background: #edf0f2;
 }
 
@@ -363,10 +362,10 @@ aside#column nav ul li:hover ul {
 	float: left;
 	width: 32%;
 	margin-right: 2%;
-	margin-top: 21px;
-	min-height: 240px;
-	padding: 7px;
-	border: 7px solid rgba(0,0,0,0.1);
+	margin-top: 1.2rem;
+	min-height: 16rem;
+	padding: 0.5rem;
+	border: 0.5rem solid rgba(0,0,0,0.1);
 	background: #ffffff;
 	box-sizing: border-box;
 	overflow: hidden;
@@ -383,8 +382,8 @@ aside#column nav ul li:hover ul {
 }
 
 #admin-index > div.block h3 {
-	margin-top: 14px;
-	margin-bottom: 3px;
+	margin-top: 0.9rem;
+	margin-bottom: 0.1rem;
 	font-weight: bold;
 }
 
@@ -393,7 +392,7 @@ aside#column nav ul li:hover ul {
 }
 
 #admin-index > div.block dl {
-    margin-top: -3px;
+    margin-top: -0.1rem;
 }
 
 #admin-index > div.block dl dt {
@@ -416,28 +415,28 @@ aside#column nav ul li:hover ul {
 
 #admin-index > div.block table {
     width: 100%;
-    margin-top: -3px;
+    margin-top: -0.1rem;
 	overflow: hidden;
 }
 
 #admin-index > div.block table tr {
 	border-bottom: 1px dotted #c0c0c0;
 	font-size: 0.8rem;
-} 
+}
 
 #admin-index > div.block table tr td {
-	padding: 3px;
-	margin-bottom: 3px;
+	padding: 0.1rem;
+	margin-bottom: 0.1rem;
 	white-space: nowrap;
 	overflow: hidden;
 }
 
 #admin-index > div.block table tr td:first-child {
-	padding-left: 0;	
+	padding-left: 0;
 }
 
 #admin-index > div.block table tr td:last-child {
-	padding-right: 0;	
+	padding-right: 0;
 }
 
 
@@ -450,7 +449,7 @@ aside#column nav ul li:hover ul {
 /* Forms */
 
 .form-default fieldset {
-	padding: 36px 0 0 0;
+	padding: 2.4rem 0 0 0;
 	background: #edf0f2;
 	position: relative;
 	display: block;
@@ -459,20 +458,20 @@ aside#column nav ul li:hover ul {
 .form-default fieldset > legend {
 	background: rgba(0,0,0,0.1);
 	position: absolute;
-	height: 36px;
-	line-height: 22px;
+	height: 2.4rem;
+	line-height: 1.6rem;
 	display: block;
 	top: 0;
 	left: 0;
 	right: 0;
 	width: 100%;
 	box-sizing: border-box;
-	padding: 7px 21px;
+	padding: 0.5rem 1.2rem;
 	cursor: pointer;
 }
 
 .form-default fieldset > div {
-	padding: 21px;	
+	padding: 1.2rem;
 }
 
 .form-default .form-element-submit,
@@ -480,10 +479,10 @@ aside#column nav ul li:hover ul {
 	border: 0;
 	outline: none;
 	cursor: pointer;
-	box-shadow: 0 8px 0 rgba(0,0,0,0.1) inset;
-	padding: 6px 21px;
-	line-height: 36px;
-	height: 42px;
+	box-shadow: 0 0.3rem 0 rgba(0,0,0,0.1) inset;
+	padding: 0.4rem 2.2rem;
+	line-height: 2.4rem;
+	height: 2.8rem;
 	font-size: 0.9rem;
 	color: #ffffff;
 	text-transform: uppercase;
@@ -495,7 +494,7 @@ aside#column nav ul li:hover ul {
 
 .form-default .form-label {
 	display: block;
-	margin-bottom: 5px;
+	margin-bottom: 0.25rem;
 	font-weight: bold;
 	font-size: 0.8rem;
 }
@@ -504,17 +503,17 @@ aside#column nav ul li:hover ul {
 .buttons-area {
 	position: fixed;
 	top: 0;
-	right: 42px;
+	right: 2.4rem;
 	z-index: 300;
 }
 
 .form-default fieldset,
 .form-default .form-element-wrapper {
-	margin-bottom: 21px;
+	margin-bottom: 2.2rem;
 }
 
 .form-default .form-element-wrapper.form-element-checkbox-wrapper {
-	margin-bottom: 7px;
+	margin-bottom: 0.5rem;
 }
 
 .form-default fieldset:last-child,
@@ -526,18 +525,18 @@ aside#column nav ul li:hover ul {
 .form-default .form-element-select,
 .form-default .form-element-textarea {
 	outline: none;
-	padding: 7px;
+	padding: 0.5rem;
 	width: 100%;
 	border: 1px solid #848484;
 	background: #ffffff;
 }
 
 .form-default .form-element-textarea {
-    height: 180px;
+    height: 12rem;
 }
 
 .form-default .form-element-textarea.full-text {
-    height: 360px;
+    height: 24rem;
 }
 
 .form-default .form-element-input:focus,
@@ -547,18 +546,18 @@ aside#column nav ul li:hover ul {
 }
 
 .form-default .form-multirow {
-	margin-bottom: 21px;
+	margin-bottom: 2.2rem;
 }
 
 .form-default .form-multirow .form-multirow-row {
-	margin-bottom: 21px;
+	margin-bottom: 2.2rem;
 	display: flex;
 	flex-direction: row;
     cursor: move;
 }
 
 .form-default .form-multirow .form-element-wrapper {
-	margin-left: 14px;
+	margin-left: 0.9rem;
 	margin-bottom: 0;
 	box-sizing: border-box;
     width: 100%;
@@ -566,7 +565,7 @@ aside#column nav ul li:hover ul {
 
 
 .form-default .form-multirow .form-element-wrapper:first-child {
-	margin-left: 0;	
+	margin-left: 0;
 }
 
 .input-title {
@@ -584,16 +583,17 @@ aside#column nav ul li:hover ul {
 /* Form special */
 
 .form-area-top {
-	margin-bottom: 21px;
+	margin-bottom: 2.2rem;
 }
 
 .form-area-main {
-	margin-right: 261px;
+	margin-right: 16rem;
+    padding-right: 1.6rem;
 }
 
 .form-area-column {
 	float: right;
-	width: 240px;
+	width: 16rem;
 }
 
 /* List */
@@ -607,7 +607,7 @@ aside#column nav ul li:hover ul {
 }
 
 .op-admin-list-table th {
-	padding: 0 2px 8px 2px;
+	padding: 0 2px 0.3rem 2px;
 	font-size: 0.8rem;
 	font-weight: bold;
 	vertical-align: middle;
@@ -615,7 +615,7 @@ aside#column nav ul li:hover ul {
 }
 
 .op-admin-list-table td {
-	padding: 5px 2px;
+	padding: 0.3rem 2px;
 	font-size: 0.9rem;
 }
 
@@ -625,9 +625,9 @@ aside#column nav ul li:hover ul {
 
 .op-admin-list-table td.icon a {
 	display: block;
-	text-indent: -10000px;
-	width: 16px;
-	height: 16px;
+	text-indent: -999rem;
+	width: 1.2em;
+	height: 1.2em;
     background: 50% 50% no-repeat;
     background-size: contain;
 }
@@ -664,16 +664,16 @@ aside#column nav ul li:hover ul {
 
 .op-admin-arrow-paginator {
 	box-shadow: 0 2px 0 rgba(0,0,0,0.1) inset;
-	height: 32px;
+	height: 2.4rem;
 	font-size: 0.8rem;
 	text-shadow: -1px -1px 0 rgba(255,255,255,0.5);
 	text-transform: uppercase;
 }
 
 .op-admin-arrow-paginator > * {
-	padding: 0 7px;
-	line-height: 32px;
-	height: 32px;
+	padding: 0 0.5rem;
+	line-height: 2.4rem;
+	height: 2.4rem;
 	display: block;
 	float: left;
 	box-shadow: 0 2px 0 rgba(0,0,0,0.1) inset;
@@ -685,12 +685,12 @@ aside#column nav ul li:hover ul {
 }
 
 .op-admin-arrow-paginator > .op-admin-arrow {
-	width: 100px;
+	width: 7.2rem;
 	text-align: center;
 }
 
 .op-admin-arrow-paginator > a {
-	box-shadow: 0 8px 0 rgba(0,0,0,0.1) inset;
+	box-shadow: 0 0.3rem 0 rgba(0,0,0,0.1) inset;
 	background: #22b5e6;
 	color: #ffffff;
 	text-shadow: -1px -1px 0 rgba(0,0,0,0.25);
@@ -700,15 +700,15 @@ aside#column nav ul li:hover ul {
 /* Customize jquery.mkmedia.js */
 
 #mk-media {
-	top: 42px;
-	left: 42px;
-	right: 42px;
-	bottom: 42px;
-	box-shadow: 0 0 0 42px rgba(0,0,0,0.75);
+	top: 2.8rem;
+	left: 2.8rem;
+	right: 2.8rem;
+	bottom: 2.8rem;
+	box-shadow: 0 0 0 2.8rem rgba(0,0,0,0.75);
 }
 
 #mk-media.mk-media-drag-over {
-	box-shadow: 0 0 0 42px rgba(255,255,255,0.75);
+	box-shadow: 0 0 0 2.8rem rgba(255,255,255,0.75);
 }
 
 #mk-media.mk-media-drag-over:before {
@@ -716,11 +716,11 @@ aside#column nav ul li:hover ul {
 }
 
 #mk-media-forms-container {
-	width: 240px;
+	width: 16rem;
 }
 
 #mk-media-forms-container form {
-	padding: 21px;	
+	padding: 2.2rem;
 }
 
 #mk-media-forms-container form input[type="file"] {
@@ -733,7 +733,7 @@ aside#column nav ul li:hover ul {
 }
 
 #mk-media-forms-container form > * {
-	margin-bottom: 7px;
+	margin-bottom: 0.5rem;
 }
 
 .mk-media-uploads-process {
@@ -749,7 +749,7 @@ aside#column nav ul li:hover ul {
 }
 
 #mk-media-list {
-	right: 240px;	
+	right: 16rem;
 }
 
 .mk-media-list-item:hover {
@@ -761,36 +761,36 @@ aside#column nav ul li:hover ul {
 }
 
 .mk-media-input-wrapper h6 {
-	margin-bottom: 7px;
+	margin-bottom: 0.5rem;
 }
-	
+
 .mk-media-input-wrapper img {
 	display: block;
 	width: 100%;
-	margin-bottom: 7px;
+	margin-bottom: 0.5rem;
 }
 
 .mk-media-close {
-	width: 42px;
-	height: 42px;
-	line-height: 42px;
+	width: 2.8rem;
+	height: 2.8rem;
+	line-height: 2.8rem;
 }
 
 /* File manager */
 
 #files-upload {
     background: #edf0f2;
-    padding: 18px 21px 14px 21px;
-    margin-top: -21px;
-    margin-bottom: 21px;
+    padding: 1rem 1.6rem 0.9rem 1.6rem;
+    margin-top: -1.6rem;
+    margin-bottom: 1.2rem;
     border: 2px solid #22b5e6;
     border-top: 0;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.1) inset;
+    box-shadow: 0 0.15rem 0 rgba(0,0,0,0.1) inset;
 }
 
 #files-newfolder-wrapper {
     text-align: right;
-    margin-top: -7px;
-    margin-bottom: 14px;
+    margin-top: -0.5rem;
+    margin-bottom: 0.9rem;
     font-size: 0.9rem;
 }

@@ -373,7 +373,8 @@ class OPAL_Portal {
 	}
 	
 	private function install(){
-		$system = new OPMO_System(null);
+        OPAL_Lang::load('modules/system/lang/admin', self::$sitelang);
+        $system = new OPMO_System(null);
 		$form = $system->getInstallForm();
 		if (count($_POST) == 0){
 			$response = $form->getHTML($this->templater);
