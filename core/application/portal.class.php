@@ -300,10 +300,12 @@ class OPAL_Portal {
 			if ($status == 'not-found'){
 				header('HTTP/1.0 404 Not Found');
 				$this->content = OPAM_Content::getContent('error','','error/not-found');
+                $this->content->set('content_title',OPAL_Lang::t($this->content->get('content_title')));
 				$output = $this->executeContent($this->content);
 			} else if ($status == 'unauthorized'){
 				header('HTTP/1.0 401 Unauthorized');
 				$this->content = OPAM_Content::getContent('error','','error/unauthorized');
+                $this->content->set('content_title',OPAL_Lang::t($this->content->get('content_title')));
 				$output = $this->executeContent($this->content);
 			}
 			$this->main_template = $this->content->get('content_template');

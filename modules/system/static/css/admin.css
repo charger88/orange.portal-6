@@ -183,7 +183,6 @@ aside#column nav ul li:hover ul {
 }
 
 .content-special-list-wrapper > ul li {
-	margin-bottom: 7px;
 	font-size: 90%;
     cursor: move;
 }
@@ -202,6 +201,10 @@ aside#column nav ul li:hover ul {
 
 .content-special-list-wrapper.op-sortable > ul li ul:empty {
     background: #e6b522;
+}
+
+.content-special-list-wrapper > ul li > div {
+    margin-bottom: 7px;
 }
 
 .content-special-list-wrapper > ul li > div > div {

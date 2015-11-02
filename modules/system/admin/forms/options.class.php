@@ -20,8 +20,14 @@ class OPMX_System_Options extends OPAL_Form {
 		$this->addField('system_cache_css', 'checkbox', OPAL_Lang::t('OPT_system_cache_css'), array('value' => 1));
 		$this->addField('system_cache_js', 'checkbox', OPAL_Lang::t('OPT_system_cache_js'), array('value' => 1));
 		$this->addField('system_cache_method', 'checkbox', OPAL_Lang::t('OPT_system_cache_method'), array('value' => 1));
-		
-		$this->addField('content_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
+
+        $this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_IMAGE').'</h3>');
+        $languages = OPAL_Lang::langs();
+        $this->addField('system_default_lang', 'text', OPAL_Lang::t('INSTALL_LANGUAGE_DEF'), array('options' => $languages, 'value' => 'en', 'required' => 'required'));
+        $this->addField('system_enabled_langs', 'text', OPAL_Lang::t('INSTALL_LANGUAGES'), array('options' => $languages, 'multiple' => 'multiple', 'required' => 'required'));
+
+
+        $this->addField('content_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
 		
 	}
 	
