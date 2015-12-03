@@ -86,6 +86,14 @@ class OPAM_Content_Type extends OPDB_Object {
 	}
 
     /**
+     * @param string $output
+     * @return array
+     */
+    public static function getSearchableTypes($output = 'codes'){
+        return self::getTypes(array(1,3,4),null,$output);
+    }
+
+    /**
      * @return array
      */
     public static function getTypesForSitemap(){
@@ -106,18 +114,21 @@ class OPAM_Content_Type extends OPDB_Object {
 	}
 
     /**
-     * @param int|null $type
+     * @param int|array|null $type
      * @param string|null $type_name
      * @param string $output
      * @return array|OPAM_Content_Type[]
      */
     public static function getTypes($type = null,$type_name = null,$output = 'codes'){
+        if ($type && !is_array($type)){
+            $type = array($type);
+        }
 		$select = new OPDB_Select(self::$table);
 		$select->addWhere(new OPDB_Clause('content_type_status', '=', 1));
 		if (!is_null($type)){
-			$select->addWhereAnd(new OPDB_Clause('content_type_type', '=', $type));
+			$select->addWhereAnd(new OPDB_Clause('content_type_type', 'IN', $type));
 		}
-		if ( (($type == 3) || ($type == 4)) && !is_null($type_name) ){
+		if ( !is_null($type_name) && (in_array(3,$type) || in_array(4,$type)) ){
 			$select->addWhereAnd(new OPDB_Clause('content_type_code', '=', $type_name));
 		}
 		if ($output != '*'){

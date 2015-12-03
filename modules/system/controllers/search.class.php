@@ -22,14 +22,14 @@ class OPMC_System_Search extends OPAL_Controller {
 		OPAL_Portal::getInstance()->content->set('content_title',OPAL_Lang::t('Search'));
 		$baselimit = $this->arg('limit',50);
 		$results = OPAM_Page::getList(array(
-			'types' => OPAM_Content_Type::getPageTypes(),
+			'types' => OPAM_Content_Type::getSearchableTypes(),
 			'search' => $search,
 			'searchmode' => 1,
 			'access_user' => $this->user
 		),'OPAM_Page');
 		if (($limit = ($baselimit - count($results))) > 0){
 			$results += OPAM_Page::getList(array(
-				'types' => OPAM_Content_Type::getPageTypes(),
+				'types' => OPAM_Content_Type::getSearchableTypes(),
 				'search' => $search,
 				'searchmode' => 2,
 				'access_user' => $this->user,
@@ -39,7 +39,7 @@ class OPMC_System_Search extends OPAL_Controller {
 		}
 		if (($limit = ($baselimit - count($results))) > 0){
 			$results += OPAM_Page::getList(array(
-				'types' => OPAM_Content_Type::getPageTypes(),
+				'types' => OPAM_Content_Type::getSearchableTypes(),
 				'search' => str_replace(' ', '%', $search),
 				'searchmode' => 1,
 				'access_user' => $this->user,
@@ -49,7 +49,7 @@ class OPMC_System_Search extends OPAL_Controller {
 		}
 		if (($limit = ($baselimit - count($results))) > 0){
 			$results += OPAM_Page::getList(array(
-				'types' => OPAM_Content_Type::getPageTypes(),
+				'types' => OPAM_Content_Type::getSearchableTypes(),
 				'search' => str_replace(' ', '%', $search),
 				'searchmode' => 2,
 				'access_user' => $this->user,

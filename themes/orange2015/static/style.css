@@ -176,6 +176,28 @@ section#top-section #block_slogan > span {
 }
 
 
+/* Search results */
+
+p.search-info {
+    margin-bottom: 1.5rem;
+}
+
+ol.search-results {
+    list-style: decimal outside;
+    margin-left: 2rem;
+}
+
+ol.search-results li {
+    margin-bottom: 1rem;
+    line-height: 1.1rem;
+}
+
+ol.search-results li a.search-url {
+    font-size: 0.9rem;
+    color:#74787a;
+}
+
+
 /* Menu */
 
 section#sub-header {
