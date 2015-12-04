@@ -99,6 +99,8 @@ class OPAM_Content_Type extends OPDB_Object {
     public static function getTypesForSitemap(){
         $select = new OPDB_Select(self::$table);
         $select->addWhere(new OPDB_Clause('content_type_status', '=', 1));
+        $select->addWhereAnd(new OPDB_Clause('content_type_type', 'NOT IN', array(0,2)));
+        $select->addWhereAnd(new OPDB_Clause('content_type_code', 'NOT LIKE', 'admin'));
         $select->addField('content_type_code');
         $select->addField('content_type_sitemap_priority');
         return $select->execQuery()->getResultArray(true);

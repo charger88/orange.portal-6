@@ -52,12 +52,9 @@ class OPMA_System_Sitemap extends OPAL_Controller {
             foreach ($types as $sitemap_name => $priority) {
                 $sitemap = new OPAL_Sitemap();
                 $fields = array(
-                    'seo_hidden'           => '1',
-                    'seo_sitemap_priority' => '0',
+                    'seo_hidden' => '1',
+                    'seo_sitemap_priority' => '-1',
                 );
-                if (!$priority){
-                    $fields['seo_sitemap_priority'] = '';
-                }
                 $list = OPAM_Content::getList(array(
                     'types' => array($sitemap_name),
                     'access_user' => new OPAM_User(),
@@ -70,14 +67,17 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                 if ($list) {
                     $count = 0;
                     foreach ($list as $item) {
-                        if ($iPriority = (isset($custom[$item->id]) ? $custom[$item->id] : $priority)){
+                        if (!isset($custom[$item->id])){
+                            $custom[$item->id] = 0;
+                        }
+                        if (($custom[$item->id] > 0) || ( ($priority > 0) && ($custom[$item->id] >= 0) )) {
+                            $iPriority = $custom[$item->id] > 0 ? $custom[$item->id] : $priority;
                             $sitemap->addElement($item->getURL(), $cTime = $item->get('content_time_modified'), $iPriority / 100);
                             $count++;
                             if (strtotime($cTime) > $lTime) {
                                 $lTime = $cTime;
                             }
                         }
-                        var_dump($iPriority);
                     }
                     if ($count) {
                         $indexFile->saveData($sitemap->get());
