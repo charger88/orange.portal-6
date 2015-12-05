@@ -19,7 +19,7 @@ class OPMC_System_Search extends OPAL_Controller {
 	}
 	
 	private function results($search){
-		OPAL_Portal::getInstance()->content->set('content_title',OPAL_Lang::t('Search'));
+		OPAL_Portal::getInstance()->content->set('content_title',OPAL_Lang::t('SEARCH'));
 		$baselimit = $this->arg('limit',50);
 		$results = OPAM_Page::getList(array(
 			'types' => OPAM_Content_Type::getSearchableTypes(),

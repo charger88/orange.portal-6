@@ -9,5 +9,7 @@ $lang = array(
     'NOTHING_FOUND'                   => 'Nothing found',
     'ADMIN_PANEL'                     => 'Admin panel',
     'ERROR_NOT_FOUND'                 => 'Page not found',
+    'SEARCH'                          => 'Search',
+    'FIND'                            => 'Find',
 
 );

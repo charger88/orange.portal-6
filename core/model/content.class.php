@@ -432,6 +432,14 @@ class OPAM_Content extends OPDB_Object {
 	}
 
     /**
+    * @param array $user_groups
+    * @return bool
+    */
+    public function isReadable($user_groups) {
+        return ($this->id > 0) && ($this->get('content_status') >= 5) && $this->isAllowedForGroups($user_groups);
+    }
+
+    /**
      * @param array $user_groups
      * @return bool
      */
@@ -492,6 +500,7 @@ class OPAM_Content extends OPDB_Object {
      * @param array $order
      * @param string $group_field
      * @param OPAM_User $access_user
+     * @return array
      */
     public static function reorder($root,$order,$group_field,$access_user){
         $updated = array();
