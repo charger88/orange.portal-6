@@ -24,7 +24,7 @@ class OPAM_Content extends OPDB_Object {
         'content_access_groups'   => array(array(),'LIST',256),
         'content_lang'            => array('','VARCHAR',2),
         'content_area'            => array('','VARCHAR',32),
-        'content_slug'            => array('','VARCHAR',256),
+        'content_slug'            => array('','VARCHAR',1024),
         'content_default_lang_id' => array(0,'INTEGER'),
         'content_on_site_mode'    => array(0,'TINYINT'),
         'content_status'          => array(0,'TINYINT'),

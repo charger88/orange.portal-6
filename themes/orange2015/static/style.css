@@ -147,7 +147,7 @@ section#top-section #block_slogan > span {
 #block_search-form form > div > input {
     line-height: 2rem;
     padding: 0 2.2rem 0 0.5rem;
-    height: 2em;
+    height: 2rem;
     border: 0;
     box-sizing: border-box;
     width: 100%;
@@ -255,7 +255,7 @@ div#block_main-menu > nav > ul > li:hover > ul {
 div#block_main-menu > nav > ul > li:hover > ul > li > a {
     display: block;
     font-size: 0.9rem;
-    padding: 1em 1.5em;
+    padding: 1rem 1.5em;
 }
 
 div#block_main-menu > nav > ul > li:hover > ul > li > a:hover {
@@ -307,7 +307,7 @@ aside .content-block {
 }
 
 aside .content-block:last-child {
-    margin-bottom: 0em;
+    margin-bottom: 0;
 }
 
 
@@ -322,6 +322,19 @@ footer {
 
 
 /* News Module */
+
+.news-excerpt {
+    margin-bottom: 1.25rem;
+    font-style: italic;
+}
+
+.news-image {
+    margin-bottom: 1.25rem;
+}
+
+.news-image img {
+    max-width: 100%;
+}
 
 .news-block li {
     margin-top: 0.5rem;
