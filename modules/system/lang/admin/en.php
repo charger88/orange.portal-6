@@ -25,7 +25,8 @@ $lang = array(
         'ADMIN_ADMIN_PAGES'       => 'Admin panel',
 	
 	'ADMIN_LIST'              => 'List',
-	'ADMIN_ADD_NEW'           => 'Create',
+    'ADMIN_ADD_NEW'           => 'Create',
+    'ADMIN_ADD'               => 'Add',
 	'ADMIN_EDIT'              => 'Edit',
     'ADMIN_SAVE'              => 'Save',
     'ADMIN_SAVED'             => 'Saved',
@@ -39,9 +40,15 @@ $lang = array(
     'ADMIN_SEARCH'            => 'Search',
     'ADMIN_SORT_BY'           => 'Sort by',
     'ADMIN_ERROR'             => 'Error',
+    'ADMIN_CATEGORIES'        => 'Categories',
     'ADMIN_CATEGORY'          => 'Category',
+    'ADMIN_CATEGORY_PAGE'     => 'Category page',
 
     'ADMIN_NOTHING_FOUND'     => 'Nothing found',
+
+    'ADMIN_NO_ACCESS_FOR_CONTENT' => 'You have not access to this content',
+    'ADMIN_PAGE_WAS_DELETED'  => 'Page was deleted',
+    'ADMIN_UNKNOWN_CATEGORY'  => 'Unknown category',
 
 	'id'                      => 'ID',
 	'content_type'            => 'Content type',

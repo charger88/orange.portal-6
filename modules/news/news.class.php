@@ -45,6 +45,8 @@ class OPMO_News extends OPAL_Module {
         $admin->delete();
         $content_type = new OPAM_Content_Type('content_type_code','news_item');
         $content_type->delete();
+        $config_option = new OPAM_Config('config_key','news_categories');
+        $config_option->delete();
 		return null;
 	}
 
@@ -68,6 +70,12 @@ class OPMO_News extends OPAL_Module {
                         'url' => '/admin/news/new',
                         'icon' => '/modules/news/static/icons/news-add.png',
                         'order' => 20
+                    ),
+                    'categories' => array(
+                        'name' => 'ADMIN_CATEGORIES',
+                        'url' => '/admin/news/categories',
+                        'icon' => '/modules/system/static/icons/categories.png',
+                        'order' => 30
                     ),
 				)
 			),

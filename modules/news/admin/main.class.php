@@ -33,7 +33,54 @@ class OPMA_News_Main extends OPMA_System_Content {
 
     protected function getFormOptions($item = null){
         $options = parent::getFormOptions($item);
+        if ($IDs = OPAL_Portal::getInstance()->config('news_categories',array())) {
+            $pages = OPAM_Page::getList(array(
+                'types' => OPAM_Content_Type::getPageTypes(),
+                'IDs' => $IDs,
+                'order' => 'content_title',
+            ), 'OPAM_Page');
+            $categories = array();
+            foreach ($pages as $page){
+                if ($page->isReadable($this->user->get('user_groups'))) {
+                    $categories[$page->id] = $page->get('content_title');
+                }
+            }
+            if ($item && $item->get('content_parent_id') && (!isset($categories[$item->get('content_parent_id')]))){
+                $categories[$item] = OPAL_Lang::t('ADMIN_UNKNOWN_CATEGORY');
+            }
+            $options['content_parent_id'] = $categories;
+        }
         return $options;
+    }
+
+    public function categoriesAction(){
+        if ($IDs = OPAL_Portal::getInstance()->config('news_categories',array())){
+            $pages = OPAM_Page::getList(array(
+                'types' => OPAM_Content_Type::getPageTypes(),
+                'IDs' => $IDs,
+                'order' => 'content_title',
+            ), 'OPAM_Page');
+        } else {
+            $pages = array();
+        }
+        return $this->templater->fetch('system/admin-categories.phtml',array(
+            'IDs' => $IDs,
+            'pages' => $pages,
+            'add_form' => new OPMX_System_Category(OP_WWW.'/admin/news/addcategory'),
+        ));
+    }
+
+    public function addcategoryAction(){
+        $IDs = OPAL_Portal::getInstance()->config('news_categories',array());
+        $IDs[] = intval($this->getPost('category'));
+        $option = new OPAM_Config('config_key','news_categories');
+        if (!$option->id){
+            $option->set('config_type','LIST');
+            $option->set('config_key','news_categories');
+        }
+        $option->set('config_value',$IDs);
+        $option->save();
+        return $this->msg(OPAL_Lang::t('ADMIN_CATEGORY_ADDED'), self::STATUS_OK, $this->content->getURL().'/categories');
     }
 
 }

@@ -129,7 +129,7 @@ class OPAL_Portal {
 		mb_internal_encoding("UTF-8");
 		$this->initEnvironment();
 		$this->loadConfig();
-		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$_SERVER["HTTP_HOST"]) . (($bdir = self::config('system_base_dir',trim($_SERVER["REQUEST_URI"],'/'))) ? '/'.$bdir : ''));
+		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$_SERVER["SERVER_NAME"]) . (($bdir = self::config('system_base_dir',trim($_SERVER["REQUEST_URI"],'/'))) ? '/'.$bdir : ''));
         $sessionclass = $this->config('sessionclass','OPAL_Session');
         $this->session = new $sessionclass();
         $this->templater = new OPAL_Templater(self::config('system_theme'));
@@ -147,16 +147,16 @@ class OPAL_Portal {
 		if (self::$enviroment['ajax'] = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'))){
 			$this->data_type = 'application/json';
 		}
-		if (self::$enviroment['cli'] = (isset($_SERVER['argv']) && is_array($_SERVER['argv']) && (count($_SERVER['argv']) > 1))){
+		if (self::$enviroment['cli'] = (php_sapi_name() == 'cli')){
 			if ($url = $_SERVER['argv'][1]){
 				$url = parse_url($url);
-				$_SERVER['HTTP_HOST'] = isset($url['host']) ? $url['host'] : 'localhost';
+				$_SERVER['SERVER_NAME'] = isset($url['host']) ? $url['host'] : 'localhost';
 				$_SERVER['REQUEST_URI'] = isset($url['path']) ? $url['path'] : '/';
 			}
 			$this->data_type = 'plain/text';
 		}
 		self::$enviroment['protocol'] = (!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] != 'off')) ? 'https' : 'http';
-		self::$enviroment['hostname'] = $_SERVER['HTTP_HOST'];
+		self::$enviroment['hostname'] = $_SERVER['SERVER_NAME'];
 		self::$enviroment['request'] = $_SERVER['REQUEST_URI'];
 	}
 	
@@ -382,7 +382,7 @@ class OPAL_Portal {
 			$errors = $form->setValues(null,true);
 			if (!$errors){
 				$params = $form->getValues();
-				$params['domain'] = $_SERVER["HTTP_HOST"];
+				$params['domain'] = $_SERVER["SERVER_NAME"];
 				$params['base_dir'] = trim($_SERVER["REQUEST_URI"],'/');
 				$errors = $system->install($params);
 				if (is_null($errors)){

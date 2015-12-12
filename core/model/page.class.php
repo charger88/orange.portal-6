@@ -79,6 +79,7 @@ class OPAM_Page extends OPAM_Content {
 			'access_user' => $user,
 			'parent_id' => $root,
             'on_site_mode' => array(1,3),
+            'order' => 'content_order',
 		);
 		return self::getList($params,__CLASS__);
 	}
@@ -96,6 +97,7 @@ class OPAM_Page extends OPAM_Content {
 			'types'       => OPAM_Content_Type::getPageTypes(),
 			'access_user' => $user,
 			'lang'        => array($lang,''),
+            'order'       => 'content_order',
 		);
 		$menu = array();
 		$pages = self::getList($params,__CLASS__);

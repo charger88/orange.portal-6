@@ -1,0 +1,14 @@
+<div class="form-area-column"><?php echo $add_form->getHTML($this); ?></div>
+<div class="form-area-main">
+    <?php if ($IDs){ ?>
+    <ul>
+        <?php foreach($IDs as $id){ ?>
+            <?php if ($page = isset($pages[$id]) ? $pages[$id] : null){ ?>
+                <li><?php $page->isEditable(OPAL_Portal::getInstance()->user->get('user_groups')) ? $this->ee($page->get('content_title')) : $this->el('ADMIN_NO_ACCESS_FOR_CONTENT'); ?></li>
+            <?php } else { ?>
+                <li><?php $this->el('ADMIN_PAGE_WAS_DELETED'); ?></li>
+            <?php } ?>
+        <?php } ?>
+    </ul>
+    <?php } ?>
+</div>

@@ -8,6 +8,11 @@ class OPMI_News extends OPAL_Installer {
 			$this->createThisModule();
 		}
         if (empty($this->errors)){
+            $this->createConfig(array(
+                'categories' => 'LIST',
+            ));
+        }
+        if (empty($this->errors)){
             $this->createContentTypes();
         }
         if (empty($this->errors)){
