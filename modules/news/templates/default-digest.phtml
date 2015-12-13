@@ -9,4 +9,10 @@
 <div class="navigation news-digest-list">
     <a href="<?php $this->ee($category->getURL()); ?>"><?php $this->el('NEWS_MORE_ITEMS'); ?></a>
 </div>
-<?php }
+<?php } else {
+    echo $this->fetch('system/paginator-arrows.phtml', array(
+        'listcount' => count($list),
+        'limit'     => $limit,
+        'offset'    => $offset,
+    ));
+}

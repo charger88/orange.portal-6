@@ -23,6 +23,12 @@ a {
     padding-bottom: 0.25rem;
 }
 
+.paginator-arrow {
+    margin-top: 1rem;
+    border-top: 1px dotted;
+    padding-top: 0.5rem;
+}
+
 
 /* Header */
 

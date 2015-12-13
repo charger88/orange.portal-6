@@ -1,0 +1,17 @@
+<?php if (isset($offset) && ($offset || $listcount)){
+    //TODO Add better parameters support
+    ?>
+    <div class="paginator-arrow">
+        <?php if ($offset){ ?>
+            <a href="?offset=<?php echo ($offset - 1); ?>" class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></a>
+        <?php } else { ?>
+            <span class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></span>
+        <?php } ?>
+        <span>[<?php echo ($offset * $limit) + 1; ?>-<?php echo ($offset * $limit) + $listcount; ?>]</span>
+        <?php if ($limit == $listcount){ ?>
+            <a href="?offset=<?php echo($offset + 1); ?>" class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</a>
+        <?php } else { ?>
+            <span class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</span>
+        <?php } ?>
+    </div>
+<?php } ?>

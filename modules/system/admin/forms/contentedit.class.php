@@ -131,7 +131,7 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 		/* Main BEGIN */
 		
 		if (!in_array('content_slug', $params['hide'])){
-            if (isset($params['options']['content_template'])){
+            if (!empty($params['options']['content_template'])){
                 $field_options = array_keys($params['options']['content_template']);
                 $field_options = strpos($field_options[0],'block-') === 0 ? array() : array('data-postfix' => '.html');
             } else {

@@ -2,12 +2,12 @@
 
 class OPMC_News_Main extends OPAL_Controller {
 
-    public function indexAction($offset = 0){
-        return $this->index($offset);
+    public function indexAction(){
+        return $this->index($this->getGet('offset',0));
     }
 
-    public function indexAjax($offset = 0){
-        return $this->index($offset);
+    public function indexAjax(){
+        return $this->index($this->getGet('offset',0));
     }
 
     public function indexBlock(){
@@ -21,12 +21,14 @@ class OPMC_News_Main extends OPAL_Controller {
             'parent_id'   => $categoryID,
             'access_user' => $this->user,
             'status_min'  => 5,
-            'limit'       => $this->arg('limit',$is_block ? 5 : 10),
+            'limit'       => $limit = $this->arg('limit',$is_block ? 5 : 10),
             'offset'      => $is_block ? 0 : $offset,
             'desc'        => true,
         ),'OPMM_News_Item');
         return $this->templater->fetch('news/'.$this->arg('prefix','default').'-'.($is_block ? 'block' : 'digest').'.phtml',array(
             'list'       => $list,
+            'offset'     => $offset,
+            'limit'      => $limit,
             'digestlink' => $this->arg('digestlink',false),
             'category'   => $categoryID ? new OPAM_Page($categoryID) : ($is_block ? new OPAM_Page() : $this->content ),
         ));
