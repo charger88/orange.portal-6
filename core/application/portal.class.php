@@ -329,7 +329,7 @@ class OPAL_Portal {
 				$this->content = OPAM_Content::getContent(null,self::$sitelang,$slug);
 			}
 		}
-		if (strpos($this->content->get('content_template'),'main-') === false){
+		if ((strpos($this->content->get('content_template'),'main-') === false) || ($this->content->get('content_status') < 5)){
 			$status = 'not-found';
 		}  else if (!$this->content->isAllowedForGroups($this->user->get('user_groups'))){
 			$status = 'unauthorized';
