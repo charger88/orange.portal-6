@@ -3,7 +3,9 @@
 abstract class OPAL_Installer {
 	
 	protected $module;
-	
+
+    protected $params = array();
+
 	protected $errors = array();
 	
 	public function __construct($module){
