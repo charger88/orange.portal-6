@@ -2,7 +2,7 @@
 
 class OPMI_System extends OPAL_Installer {
 
-	private $params = array(
+	protected $params = array(
 		'cache_css'    => 0,
 		'cache_js'     => 0,
 		'cache_method' => 0,
