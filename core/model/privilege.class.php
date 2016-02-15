@@ -1,9 +1,11 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 /**
  * Class OPAM_Privilege
  */
-class OPAM_Privilege extends OPDB_Object {
+class OPAM_Privilege extends \Orange\Database\ActiveRecord {
 
     /**
      * @var string
@@ -13,16 +15,16 @@ class OPAM_Privilege extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'              => array(0 ,'ID'),
-		'privilege_name'  => array('','VARCHAR',64),
-		'user_group_id'   => array(0 ,'INTEGER'),
+    protected static $scheme = array(
+		'id'              => array('type' => 'ID'),
+		'privilege_name'  => array('type' => 'STRING', 'length' => 64),
+		'user_group_id'   => array('type' => 'INTEGER'),
 	);
 
     /**
      * @var array
      */
-    protected static $uniq = array(array('privilege_name','user_group_id'));
+    protected static $u_keys = array(array('privilege_name','user_group_id'));
 
     /**
      * @param string $name
@@ -33,13 +35,15 @@ class OPAM_Privilege extends OPDB_Object {
 		$user_groups = $user->get('user_groups');
 		if (!in_array(OPAM_User::GROUP_ADMIN, $user_groups)){
 			$user_groups[] = 0;
-			$select = new OPDB_Select(self::$table);
-			$select->addWhere(new OPDB_Clause('privilege_name', '=', $name));
-			$select->addWhereAnd();
-			$select->addWhere(new OPDB_Clause('user_group_id', 'IN', $user_groups));
-			$select->addField('id');
-			$select->addField('privilege_name');
-			return $select->execQuery()->getNumRows() > 0;
+			$num = (new \Orange\Database\Queries\Select(self::$table))
+                ->addWhere(new Condition('privilege_name', '=', $name))
+                ->addWhere(new Condition('user_group_id', 'IN', $user_groups))
+                ->addField('id')
+                ->addField('privilege_name')
+                ->execute()
+                ->getResultNumRow()
+            ;
+			return $num > 0;
 		} else {
 			return true;
 		}
@@ -50,22 +54,22 @@ class OPAM_Privilege extends OPDB_Object {
      */
     public static function massPrivilegesDeleting($data){
         if ($data){
-            $delete = new OPDB_Delete(self::$table);
+            $delete = new \Orange\Database\Queries\Delete(self::$table);
             $first = true;
             foreach ($data as $group_id => $privileges){
                 if ($privileges){
                     if ($first){
                         $first = false;
                     } else {
-                        $delete->addWhereOr();
+                        $delete->addWhereOperator(Condition::L_OR);
                     }
                     $delete->addWhereBracket(true);
-                    $delete->addWhere(new OPDB_Clause('user_group_id', '=', $group_id));
-                    $delete->addWhereAnd(new OPDB_Clause('privilege_name', 'IN', $privileges));
+                    $delete->addWhere(new Condition('user_group_id', '=', $group_id));
+                    $delete->addWhere(new Condition('privilege_name', 'IN', $privileges));
                     $delete->addWhereBracket(false);
                 }
             }
-            $delete->execQuery();
+            $delete->execute();
         }
     }
 
@@ -92,8 +96,11 @@ class OPAM_Privilege extends OPDB_Object {
      */
     public static function getPrivilegesByGroup(){
         $privileges = array();
-        $select = new OPDB_Select(self::$table);
-        if ($result = $select->execQuery()->getResultArray()){
+        $result = (new \Orange\Database\Queries\Select(self::$table))
+            ->execute()
+            ->getResultArray()
+        ;
+        if ($result){
             foreach ($result as $row){
                 if (!isset($privileges[$row['user_group_id']])){
                     $privileges[$row['user_group_id']] = array();

@@ -101,7 +101,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			$params['options'] = $this->getFormOptions($item);
 			$params['type'] = $type;
 			$form = new OPMX_System_ContentEdit($this->content->getURL().'/save/'.$item->id,'post',$params);
-			$values = $item->getDataArray();
+			$values = $item->getData();
 			if ($texts = $type->get('content_type_texts')){
 				foreach ($texts as $text_id => $text_name){
 					$textObject = $item->text($text_id);

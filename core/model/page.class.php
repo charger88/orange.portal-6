@@ -1,5 +1,7 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 /**
  * Class OPAM_Page
  */
@@ -13,10 +15,13 @@ class OPAM_Page extends OPAM_Content {
 			$this->set('content_type', 'page');
 		}
 		if (!$this->id){
-			$select = new OPDB_Select(self::$table);
-			$select->addWhere(new OPDB_Clause('content_type', 'IN', OPAM_Content_Type::getPageTypes()));
-			$select->addField(array('max','content_order'));
-			$this->set('content_order',intval($select->execQuery()->getResult()));
+			$select = new \Orange\Database\Queries\Select(self::$table);
+			$select
+                ->addField(array('max','content_order'))
+                ->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
+                ->execute()
+            ;
+			$this->set('content_order',intval($select->getResultValue()));
 		}
 		return parent::save();
 	}
@@ -33,12 +38,15 @@ class OPAM_Page extends OPAM_Content {
      * @return OPAM_Content
      */
     public static function getHomepage($lang){
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('content_status', '=', 7));
-		$select->addWhereAnd(new OPDB_Clause('content_lang', 'IN', array($lang,'')));
-		$select->addWhereAnd(new OPDB_Clause('content_type', 'IN', OPAM_Content_Type::getPageTypes()));
-		$select->setOrder('content_lang',true);
-		return new OPAM_Content($select->execQuery()->getNext());
+		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select
+            ->addWhere(new Condition('content_status', '=', 7))
+		    ->addWhere(new Condition('content_lang', 'IN', array($lang,'')))
+		    ->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
+		    ->setOrder('content_lang',true)
+            ->execute()
+        ;
+		return new OPAM_Content($select->getResultNextRow());
 	}
 
     /**

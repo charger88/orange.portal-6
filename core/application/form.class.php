@@ -96,8 +96,8 @@ abstract class OPAL_Form {
 	}
 	
 	public function setValues($values = null,$validate = false){
-		if ($values instanceof OPDB_Object){
-			$values = $values->getDataArray();
+		if ($values instanceof \Orange\Database\ActiveRecord){
+			$values = $values->getData();
 		} else if (is_array($values)){
 			//OK, $values is already array
 		} else if ($this->method == 'post'){

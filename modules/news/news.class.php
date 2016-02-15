@@ -1,5 +1,7 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 class OPMO_News extends OPAL_Module {
 	
 	protected $privileges = array();
@@ -14,8 +16,8 @@ class OPMO_News extends OPAL_Module {
 	}
 
     protected function doInstall($params = array()){
-		$i = new OPMI_News('news');
-		return $i->install();
+		$errors = OPMI_News::install();
+		return empty($errors);
 	}
 
     protected function doEnable(){
@@ -32,16 +34,16 @@ class OPMO_News extends OPAL_Module {
 	}
 
     protected function doUninstall(){
-        $select = new OPDB_Select('content');
-        $select->addWhere(new OPDB_Clause('content_type','=','news_item'));
-        $select = $select->execQuery();
-        while ($item = $select->getNext()){
+        $select = new \Orange\Database\Queries\Select('content');
+        $select->addWhere(new Condition('content_type','=','news_item'));
+        $select = $select->execute();
+        while ($item = $select->getResultNextRow()){
             $item = new OPMM_News_Item($item);
             $item->delete();
         }
-        $admin = new OPDB_Select('content');
-        $admin->addWhere(new OPDB_Clause('content_slug','=','admin/news'));
-        $admin = new OPAM_Admin($admin->execQuery()->getNext());
+        $admin = new \Orange\Database\Queries\Select('content');
+        $admin->addWhere(new Condition('content_slug','=','admin/news'));
+        $admin = new OPAM_Admin($admin->execute()->getNext());
         $admin->delete();
         $content_type = new OPAM_Content_Type('content_type_code','news_item');
         $content_type->delete();

@@ -13,30 +13,30 @@ abstract class OPAL_Installer {
 	}
 
     /**
-     * @param OPDB_Object[]
+     * @param \Orange\Database\ActiveRecord[]
      * @return bool
      */
-    protected function createTables($objects){
+    protected function createTables($classes){
         $result = true;
         $success = array();
         $errors = array();
-        /** @var OPDB_Object $obj */
-        foreach ($objects as $obj){
-            $table = new OPDB_Table($obj->getStructure());
-            list($t_result,$message) = $table->createTable();
-            if ($t_result){
-                $success[] = $table;
-            } else {
+        foreach ($classes as $classname){
+            try {
+                $classname::install();
+            } catch (\Orange\Database\DBException $e){
                 $result = false;
-                $errors[] = $message;
+                $errors[] = $e->getMessage();
             }
+            $success[] = $classname;
         }
         if (!$result){
-            $this->errors['db_prefix'] = implode(' ', $errors);
+            $this->errors['db_prefix'] = implode("\n",$errors);
             if ($success){
-                /** @var OPDB_Table $table */
-                foreach ($success as $table){
-                    $table->dropTable();
+                foreach ($success as $classname){
+                    (new \Orange\Database\Queries\Table\Drop($classname::getTableName()))
+                        ->setIfExistsOnly()
+                        ->execute()
+                    ;
                 }
             }
         }

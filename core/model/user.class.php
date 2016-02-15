@@ -1,9 +1,11 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 /**
  * Class OPAM_User
  */
-class OPAM_User extends OPDB_Object {
+class OPAM_User extends \Orange\Database\ActiveRecord {
 
     const GROUP_EVERYBODY = 0;
     const GROUP_ADMIN     = 1;
@@ -18,23 +20,23 @@ class OPAM_User extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'               => array(0 ,'ID'),
-		'user_login'       => array('','VARCHAR',256),
-		'user_email'       => array('','VARCHAR',256),
-		'user_pwdhash'     => array('','VARCHAR',256),
-		'user_status'      => array(0 ,'BOOLEAN'),
-		'user_groups'      => array(array(),'LIST', 256),
-		'user_provider'    => array(0 ,'SMALLINT'),
-		'user_phone'       => array('','VARCHAR',32),
-		'user_name'        => array('','VARCHAR',256),
-		'user_key'         => array('','CHAR',32),
+    protected static $scheme = array(
+		'id'               => array('type' => 'ID'),
+		'user_login'       => array('type' => 'STRING', 'length' => 128),
+		'user_email'       => array('type' => 'STRING', 'length' => 128),
+		'user_pwdhash'     => array('type' => 'STRING', 'length' => 256),
+		'user_status'      => array('type' => 'BOOLEAN'),
+		'user_groups'      => array('type' => 'LIST', 'length' => 256),
+		'user_provider'    => array('type' => 'SMALLINT'),
+		'user_phone'       => array('type' => 'STRING', 'length' => 32),
+		'user_name'        => array('type' => 'STRING', 'length' => 256),
+		'user_key'         => array('type' => 'CHAR', 'length' => 32),
 	);
 
     /**
      * @var array
      */
-    protected static $uniq = array('user_login','user_email');
+    protected static $u_keys = array('user_login','user_email');
 
     /**
      * @return int|null
@@ -80,42 +82,40 @@ class OPAM_User extends OPDB_Object {
         $filter_status  = !empty($params['filter_status'])  ? $params['filter_status']       : null;
         $order          = isset($params['order'])           ? $params['order']               : 'id';
         $desc           = isset($params['desc'])            ? $params['desc']                : false;
-		$select = new OPDB_Select(self::$table);
+		$select = new \Orange\Database\Queries\Select(self::$table);
         if (!is_null($filter)){
 			$select->addWhereBracket(true);
-			$select->addWhere(new OPDB_Clause('user_login', 'LIKE', '%'.$filter.'%'));
-			$select->addWhereOr(new OPDB_Clause('user_email', 'LIKE', '%'.$filter.'%'));
-            $select->addWhereOr(new OPDB_Clause('user_name' , 'LIKE', '%'.$filter.'%'));
-            $select->addWhereOr(new OPDB_Clause('user_phone' , 'LIKE', '%'.$filter.'%'));
+			$select->addWhere(new Condition('user_login', 'LIKE', '%'.$filter.'%'));
+			$select->addWhere(new Condition('user_email', 'LIKE', '%'.$filter.'%'), Condition::L_OR);
+            $select->addWhere(new Condition('user_name' , 'LIKE', '%'.$filter.'%'), Condition::L_OR);
+            $select->addWhere(new Condition('user_phone' , 'LIKE', '%'.$filter.'%'), Condition::L_OR);
 			$select->addWhereBracket(false);
-            $select->addWhereAnd();
+            $select->addWhereOperator(Condition::L_AND);
         }
-        $select->addWhereBracket(true);
-            $select->addWhere(new OPDB_Clause('id', '>', 0));
-            if (!is_null($filter_login)){
-                $select->addWhereAnd(new OPDB_Clause('user_login', 'LIKE', '%'.$filter_login.'%'));
-            }
-            if (!is_null($filter_email)){
-                $select->addWhereAnd(new OPDB_Clause('user_email', 'LIKE', '%'.$filter_email.'%'));
-            }
-            if (!is_null($filter_name)){
-                $select->addWhereAnd(new OPDB_Clause('user_name', 'LIKE', '%'.$filter_name.'%'));
-            }
-            if (!is_null($filter_phone)){
-                $select->addWhereAnd(new OPDB_Clause('user_phone', 'LIKE', '%'.$filter_phone.'%'));
-            }
-            if (!is_null($filter_group)){
-                $select->addWhereAnd(new OPDB_Clause('user_groups', 'LIKE', '%|'.$filter_group.'|%'));
-            }
-            if (!is_null($filter_status)){
-                $select->addWhereAnd(new OPDB_Clause('user_status', '=', $filter_status > 0 ? 1 : 0));
-            }
-        $select->addWhereBracket(false);
+        $select->addWhere(new Condition('id', '>', 0));
+        if (!is_null($filter_login)){
+            $select->addWhere(new Condition('user_login', 'LIKE', '%'.$filter_login.'%'));
+        }
+        if (!is_null($filter_email)){
+            $select->addWhere(new Condition('user_email', 'LIKE', '%'.$filter_email.'%'));
+        }
+        if (!is_null($filter_name)){
+            $select->addWhere(new Condition('user_name', 'LIKE', '%'.$filter_name.'%'));
+        }
+        if (!is_null($filter_phone)){
+            $select->addWhere(new Condition('user_phone', 'LIKE', '%'.$filter_phone.'%'));
+        }
+        if (!is_null($filter_group)){
+            $select->addWhere(new Condition('user_groups', 'LIKE', '%|'.$filter_group.'|%'));
+        }
+        if (!is_null($filter_status)){
+            $select->addWhere(new Condition('user_status', '=', $filter_status > 0 ? 1 : 0));
+        }
 		if (!is_null($limit)){
 			$select->setLimit($limit,$limit * $skip);
 		}
-		$select->setOrder($order,$desc);
-		return $select->execQuery()->getResultArray(false,__CLASS__);
+		$select->setOrder($order,$desc ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC);
+		return $select->execute()->getResultArray(null,__CLASS__);
 	}
 	
 }

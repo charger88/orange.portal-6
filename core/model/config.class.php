@@ -1,15 +1,17 @@
 <?php
 
-class OPAM_Config extends OPDB_Object {
+use \Orange\Database\Queries\Parts\Condition;
+
+class OPAM_Config extends \Orange\Database\ActiveRecord {
 	
 	protected static $table = 'config';
 	
-	protected static $schema = array(
-		'id'             => array(0 ,'ID'),
-		'config_status'  => array(1 ,'BOOLEAN'),
-		'config_type'    => array('','VARCHAR',8),
-		'config_key'     => array('','VARCHAR',64),
-		'config_value'   => array('','VARCHAR',512),
+	protected static $scheme = array(
+		'id'             => array('type' => 'ID'),
+		'config_status'  => array('type' => 'BOOLEAN', 'default' => true),
+		'config_type'    => array('type' => 'STRING', 'length' => 8),
+		'config_key'     => array('type' => 'STRING', 'length' => 64),
+		'config_value'   => array('type' => 'STRING', 'length' => 512),
 	);
 
 	protected static $indexes = array('config_status');
@@ -22,36 +24,26 @@ class OPAM_Config extends OPDB_Object {
         return parent::set($field, $value);
     }
 
-    public function save(){
-        $this->set(
-            'config_value',
-            $this->compositeValueToString(
-                $this->valueOfType($this->get('config_value'),$this->get('config_type'),self::$schema['config_value'][2]),
-                $this->get('config_type')
-            )
-        );
-        return parent::save();
-    }
-
-
     public static function loadActive($module = null){
 		$ref = array();
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('config_status','=',1));
+		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select->addWhere(new Condition('config_status','=',1));
 		if (!is_null($module)){
-			$select->addWhereAnd(new OPDB_Clause('config_key','LIKE',$module.'_%'));
+			$select->addWhere(new Condition('config_key','LIKE',$module.'_%'));
 		}
-		$select->execQuery();
+		$select->execute();
 		while ($row = $select->getNext()){
-            $ref[$row['config_key']] = self::valueOfType($row['config_value'],$row['config_type'],self::$schema['config_value'][2]);
+            $ref[$row['config_key']] = unserialize($row['config_value']);
 		}
 		return $ref;
 	}
 
 	public static function loadList($module = null){
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('config_key','LIKE',$module.':%'));
-		return $select->execQuery()->getResultArray(false,__CLASS__);
+        return (new \Orange\Database\Queries\Select(self::$table))
+            ->addWhere(new Condition('config_key','LIKE',$module.':%'))
+            ->execute()
+            ->getResultArray(null,__CLASS__)
+        ;
 	}
 	
 	

@@ -3,7 +3,7 @@
 /**
  * Class OPAM_User_Group
  */
-class OPAM_User_Group extends OPDB_Object {
+class OPAM_User_Group extends \Orange\Database\ActiveRecord {
 
     /**
      * @var string
@@ -13,11 +13,11 @@ class OPAM_User_Group extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'                 => array(0 ,'ID'),
-		'group_name'         => array('','VARCHAR',32),
-		'group_description'  => array('','VARCHAR',256),
-		'group_module'       => array('','VARCHAR',32),
+    protected static $scheme = array(
+		'id'                 => array('type' => 'ID'),
+		'group_name'         => array('type' => 'STRING', 'length' => 32),
+		'group_description'  => array('type' => 'STRING', 'length' => 256),
+		'group_module'       => array('type' => 'STRING', 'length' => 32),
 	);
 
     /**
@@ -25,11 +25,13 @@ class OPAM_User_Group extends OPDB_Object {
      * @return array
      */
     public static function getRef($translate = false){
-		$select = new OPDB_Select(self::$table);
-		$select->setOrder('group_name');
-		$select->addField('id');
-		$select->addField('group_name');
-        $ref = $select->execQuery()->getResultArray(true);
+        $ref = (new \Orange\Database\Queries\Select(self::$table))
+            ->setOrder('group_name')
+            ->addField('id')
+            ->addField('group_name')
+            ->execute()
+            ->getResultColumn('id','group_name')
+        ;
         $ref[0] = 'USER_GROUP_EVERYBODY';
         if ($translate){
             foreach ($ref as $index => $value) {
@@ -43,9 +45,11 @@ class OPAM_User_Group extends OPDB_Object {
      * @return OPAM_User_Group[]
      */
     public static function getList(){
-        $select = new OPDB_Select(self::$table);
-        $select->setOrder('id');
-        return $select->execQuery()->getResultArray(false,__CLASS__);
+        return (new \Orange\Database\Queries\Select(self::$table))
+            ->setOrder('id')
+            ->execute()
+            ->getResultArray(null,__CLASS__)
+        ;
     }
 	
 }

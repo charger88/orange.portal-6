@@ -79,7 +79,7 @@ class OPMA_System_Users extends OPAL_Controller {
         $params = array();
         $params['options'] = $this->getFormOptions();
         $form = new OPMX_System_UserEdit(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id,'post',$params);
-        $form->setValues($item->getDataArray(),true);
+        $form->setValues($item->getData(),true);
         return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
     }
 

@@ -3,7 +3,7 @@
 /**
  * Class OPAM_Content_Text
  */
-class OPAM_Content_Text extends OPDB_Object {
+class OPAM_Content_Text extends \Orange\Database\ActiveRecord {
 
     /**
      * @var string
@@ -13,18 +13,19 @@ class OPAM_Content_Text extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'                  => array(0 ,'ID'),
-		'content_id'          => array(0 ,'INTEGER'),
-		'content_text_role'   => array('','VARCHAR',16),
-		'content_text_format' => array(0 ,'TINYINT'),
-		'content_text_value'  => array('','LONGTEXT'),
+    protected static $scheme = array(
+		'id'                  => array('type' => 'ID'),
+		'content_id'          => array('type' => 'INTEGER'),
+		'content_text_role'   => array('type' => 'STRING', 'length' => 16),
+		'content_text_format' => array('type' => 'TINYINT'),
+		'content_text_value'  => array('type' => 'LONGTEXT'),
 	);
 
     /**
      * @var array
      */
-    protected static $indexes = array('content_id');
+    protected static $keys = array('content_id');
+
     /**
      * @var array
      */

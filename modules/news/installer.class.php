@@ -2,7 +2,7 @@
 
 class OPMI_News extends OPAL_Installer {
 	
-	public function install(){
+	public function installModule(){
 		$this->errors = array();
 		if (empty($this->errors)){
 			$this->createThisModule();
@@ -75,7 +75,7 @@ class OPMI_News extends OPAL_Installer {
         foreach ($content_data as $data){
             $content = new OPAM_Content();
             $content->setFromArray($data);
-            $content->set('content_time_published', OPDB_Functions::getTime());
+            $content->set('content_time_published', time());
             $content->set('content_user_id', 1);
             $id = $content->save();
             if (!$id){

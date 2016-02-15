@@ -176,7 +176,9 @@ class OPAL_Portal {
 		}
 		if ($installed){
 			self::$configs = $config;
-			if ($config = OPAM_Config::loadActive()){
+            $connection = new \Orange\Database\Connection($config['db']['master']);
+            $connection->logfile = OP_SYS_ROOT.'database.log';
+            if ($config = OPAM_Config::loadActive()){
 				self::$configs = array_merge($config,self::$configs);
 			}
 		} else {
@@ -384,7 +386,7 @@ class OPAL_Portal {
 				$params = $form->getValues();
 				$params['domain'] = $_SERVER["SERVER_NAME"];
 				$params['base_dir'] = trim($_SERVER["REQUEST_URI"],'/');
-				$errors = $system->install($params);
+				$errors = $system->installModule($params);
 				if (is_null($errors)){
 					$errors['go'] = OPAL_Lang::t('Portal was installed earlier');
 				}

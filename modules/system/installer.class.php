@@ -8,7 +8,7 @@ class OPMI_System extends OPAL_Installer {
 		'cache_method' => 0,
 	);
 	
-	public function install($params){
+	public function installModule($params){
 		$configname = isset($params['configname']) ? $params['configname'] : 'default.php';
 		$this->params = array_merge($this->params,$params);
 		$this->errors = array();
@@ -17,30 +17,30 @@ class OPMI_System extends OPAL_Installer {
 		}
 		if (empty($this->errors)){
 			$this->createTables(array(
-				new OPAM_Content_Type(),
-				new OPAM_Content_Text(),
-				new OPAM_Content_Field(),
-				new OPAM_Content(),
-				new OPMM_System_Media(),
-				new OPAM_Privilege(),
-				new OPAM_User_Group(),
-				new OPAM_User(),
-				new OPAM_Log(),
-				new OPAM_Module(),
-				new OPAM_Config(),
+				'OPAM_Content_Type',
+				'OPAM_Content_Text',
+				'OPAM_Content_Field',
+				'OPAM_Content',
+				'OPMM_System_Media',
+				'OPAM_Privilege',
+				'OPAM_User_Group',
+				'OPAM_User',
+				'OPAM_Log',
+				'OPAM_Module',
+				'OPAM_Config',
 			));
 		}
 		if (empty($this->errors)){
 			$this->createConfig(array(
-				'sitename'      => 'VARCHAR',
-				'domain'        => 'VARCHAR',
-				'base_dir'      => 'VARCHAR',
-				'copyright'     => 'VARCHAR',
-				'theme'         => 'VARCHAR',
-				'default_lang'  => 'VARCHAR',
+				'sitename'      => 'STRING',
+				'domain'        => 'STRING',
+				'base_dir'      => 'STRING',
+				'copyright'     => 'STRING',
+				'theme'         => 'STRING',
+				'default_lang'  => 'STRING',
 				'enabled_langs' => 'ARRAY',
-				'email_public'  => 'VARCHAR',
-				'email_system'  => 'VARCHAR',
+				'email_public'  => 'STRING',
+				'email_system'  => 'STRING',
 				'proxy_ip'      => 'ARRAY',
 				'cache_css'     => 'BOOLEAN',
 				'cache_js'      => 'BOOLEAN',
@@ -65,38 +65,55 @@ class OPMI_System extends OPAL_Installer {
         if (empty($this->errors)){
             $this->createFiles();
         }
+        if (!empty($this->errors)){
+            $file = new OPAL_File($configname,'config');
+            $file->delete();
+
+        }
 		return $this->errors;
 	}
 	
 	private function createConfigFile($configname){
-		OPDB_Config::$DBHost = $this->params['db_server'];
-		OPDB_Config::$DBPort = $this->params['db_port'];
-		OPDB_Config::$DBUser = $this->params['db_user'];
-		OPDB_Config::$DBPass = $this->params['db_password'];
-		OPDB_Config::$DBName = $this->params['db_name'];
-		OPDB_Config::$TablesPrefix = $this->params['db_prefix'];
-		OPDB_Config::$DBType = $this->params['db_type'];
-		OPDB_Database::connectToServer();
-		if (!OPDB_Database::$connect){
-			$this->errors['db_server'] = 'Server, port, username or passwrod is wrong, or database is not exists.';
-			$result = false;
-		} else {
-			$php_code = '<?'.'php'."\n"
-				.'OPDB_Config::$DBHost = \''.$this->params['db_server'].'\';'."\n"
-				.'OPDB_Config::$DBPort = \''.$this->params['db_port'].'\';'."\n"
-				.'OPDB_Config::$DBUser = \''.$this->params['db_user'].'\';'."\n"
-				.'OPDB_Config::$DBPass = \''.$this->params['db_password'].'\';'."\n"
-				.'OPDB_Config::$DBName = \''.$this->params['db_name'].'\';'."\n"
-				.'OPDB_Config::$TablesPrefix = \''.$this->params['db_prefix'].'\';'."\n"
-				.'OPDB_Config::$DBType = \''.$this->params['db_type'].'\';'."\n"
-			;
-			$file = new OPAL_File($configname,'config');
-			if ($result = $file->saveData($php_code)){
-				include $file->getFullname();
-			} else {
-				$this->errors['db_prefix'] = 'Config file was not saved';
-			}
-		}
+        $config['db'] = [
+            'master' => [
+                'driver' => $this->params['db_type'],
+                'server' => $this->params['db_server'],
+                'database' => $this->params['db_name'],
+                'port' => $this->params['db_port'],
+                'user' => $this->params['db_user'],
+                'password' => $this->params['db_password'],
+                'charset' => 'utf8',
+                'collation' => 'utf8_general_ci',
+                'table_prefix' => $this->params['db_prefix']
+            ]
+        ];
+        $connection = new \Orange\Database\Connection($config['db']['master']);
+        try {
+            $connection->logfile = OP_SYS_ROOT.'database.log';
+            $connection->driver->connect();
+            $php_code = '<'.'?'.'php'
+                ."\n".'$config[\'db\'] = ['
+                ."\n\t".'\'master\' => ['
+                ."\n\t\t".'\'driver\' => \''.$this->params['db_type'].'\','
+                ."\n\t\t".'\'server\' => \''.$this->params['db_server'].'\','
+                ."\n\t\t".'\'database\' => \''.$this->params['db_name'].'\','
+                ."\n\t\t".'\'port\' => \''.$this->params['db_port'].'\','
+                ."\n\t\t".'\'user\' => \''.$this->params['db_user'].'\','
+                ."\n\t\t".'\'password\' => \''.$this->params['db_password'].'\','
+                ."\n\t\t".'\'charset\' => \'utf8\','
+                ."\n\t\t".'\'collation\' => \'utf8_general_ci\','
+                ."\n\t\t".'\'table_prefix\' => \''.$this->params['db_prefix'].'\''
+                ."\n\t".']'
+                ."\n".'];'
+            ;
+            $file = new OPAL_File($configname,'config');
+            if (!($result = $file->saveData($php_code))){
+                $this->errors['db_prefix'] = 'Config file was not saved';
+            }
+        } catch (\Orange\Database\DBException $e){
+            $this->errors['db_server'] = 'Server, port, username or password is wrong, or database is not exists.';
+            $result = false;
+        }
 		return $result;
 	}
 
@@ -523,7 +540,7 @@ class OPMI_System extends OPAL_Installer {
 		foreach ($content_data as $data){
 			$content = new OPAM_Content();
 			$content->setFromArray($data);
-			$content->set('content_time_published', OPDB_Functions::getTime());
+			$content->set('content_time_published', time());
 			$content->set('content_user_id', 1);
 			$id = $content->save();
 			if (!$id){

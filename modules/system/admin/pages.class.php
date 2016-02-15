@@ -23,7 +23,7 @@ class OPMA_System_Pages extends OPMA_System_Content {
         $item = new $classname();
 		$item->set('content_type',$type->get('content_type_code'));
 		if ($item->isNewAllowed()){
-			$item->set('content_time_published',OPDB_Functions::getTime());
+			$item->set('content_time_published',time());
 			$item->set('content_template','main-html.phtml');
             $item->set('content_commands',array( array( 'module' => 'system', 'controller' => 'text', 'method' => 'index', 'static' => false, 'args' => array() ) ));
             $item->set('content_access_groups',array(0));

@@ -1,4 +1,5 @@
 config/*.php
 files/*
 tmp/*
-log.html
+database.log
+vendor/*

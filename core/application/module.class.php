@@ -10,7 +10,9 @@ abstract class OPAL_Module extends OPAM_Module {
 			} else {
                 parent::__construct('module_code',$code);
 			}
-		}
+		} else {
+            parent::__construct();
+        }
 	}
 	
 	public function init(){
@@ -24,7 +26,7 @@ abstract class OPAL_Module extends OPAM_Module {
 		return null;
 	}
 	
-	public function install($params = array()){
+	public function installModule($params = array()){
 		if (!$this->id && !$this->get('module_status')){
 			return $this->doInstall($params);
 		}
