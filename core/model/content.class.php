@@ -60,7 +60,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 			$this->set('content_time_published', time());
 		}
         $this->set('content_time_modified', time());
-		$id = parent::save();
+		$id = parent::save()->id;
 		$type = new OPAM_Content_Type('content_type_code', $this->get('content_type'));
 		$field_IDs = array();
 		if ($fields = $type->get('content_type_fields')) {
@@ -71,7 +71,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                 if (($fieldObject->get('content_field_type') != $field['type']) || ($fieldObject->get('content_field_value') != $value)) {
 					$fieldObject->set('content_field_type', $field['type']);
 					$fieldObject->set('content_field_value', $value);
-					$field_IDs[] = $fieldObject->save();
+					$field_IDs[] = $fieldObject->save()->id;
 				} else {
 					$field_IDs[] = $fieldObject->id;
 				}
@@ -83,7 +83,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 			$delete->addWhere(new Condition('id', 'NOT IN', $field_IDs));
 		}
 		$delete->execute();
-		return $id;
+		return $this;
 	}
 
     /**
@@ -116,7 +116,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                 ->addWhere(new Condition('content_text_role', '=', $role))
                 ->execute()
             ;
-            $text = new OPAM_Content_Text($select->getNext());
+            $text = new OPAM_Content_Text($select->getResultNextRow());
             if (!$text->id) {
                 $text->set('content_id', $this->id);
                 $text->set('content_text_role', $role);
@@ -262,9 +262,9 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$select = is_null($select_base)? new \Orange\Database\Queries\Select(self::$table): $select_base;
 
 		if (!is_null($IDs)&& $IDs) {
-			$select->addWhere(new Condition('id', 'IN', $IDs));
+			$select->addWhere(new Condition('id', 'IN', $IDs), Condition::L_AND);
 		} else {
-			$select->addWhere(new Condition('id', '>', 0));
+			$select->addWhere(new Condition('id', '>', 0), Condition::L_AND);
 		}
 
 		if (!is_null($exclude)&& $exclude) {
@@ -289,7 +289,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                 $fieldsSelect->addWhere(new Condition('content_field_value',strpos($value,'%') !== false ? 'LIKE' : '=',$value));
 
             }
-            $select->addWhereAnd(new Condition('id',$fields_not ? 'NOT IN' : 'IN',$fieldsSelect));
+            $select->addWhere(new Condition('id',$fields_not ? 'NOT IN' : 'IN',$fieldsSelect),Condition::L_AND);
         }
 
 		if (!is_null($search)) {
@@ -317,16 +317,10 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		if (!is_null($access_user) && ($access_user instanceof OPAM_User)) {
 			$groups = $access_user->get('user_groups');
 			$groups[] = 0;
-			$f = true;
             $select->addWhereOperator(Condition::L_AND);
 			$select->addWhereBracket(true);
 			foreach($groups as $n => $group_id){
-				if (!$f) {
-                    $select->addWhereOperator(Condition::L_OR);
-				} else {
-					$f = false;
-				}
-				$select->addWhere(new Condition('content_access_groups', 'LIKE', '%|' . $group_id . '|%'));
+				$select->addWhere(new Condition('content_access_groups', 'LIKE', '%|' . $group_id . '|%'), Condition::L_OR);
 			}
 			$select->addWhereBracket(false);
 		}
@@ -384,7 +378,8 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
             'content_image' => array(),
             'content_user_id' => array()
 		);
-		return is_array($classname)? $select->getResultArray(true): $select->getResultArray(false, is_null($classname)? __CLASS__ : $classname, self::$listMoreData );
+        //TODO Fill self::$listMoreData with values from returned array
+		return is_array($classname)? $select->getResultArray('id'): $select->getResultArray('id', is_null($classname)? __CLASS__ : $classname);
 	}
 
     /**
@@ -416,13 +411,18 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @return array
      */
     public function getDefaultLanguageRef($lang) {
-		return self::getList(array(
-            'types' => $this->get('content_type' ),
+		$tmp = self::getList(array(
+            'types' => $this->get('content_type'),
             'lang' => $lang
 		), array(
             'id',
             'content_title'
 		));
+        $defaultLanguageRef = [];
+        foreach ($tmp as $t){
+            $defaultLanguageRef[$t['id']] = $t['content_title'];
+        }
+        return $defaultLanguageRef;
 	}
 
     /**
@@ -488,7 +488,6 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                     $select->addWhere(new Condition('content_default_lang_id', '=', $id_def));
                 $select->addWhereBracket(false);
 			$select->addWhereBracket(false);
-			$select->addWhereOperator(Condition::L_AND);
 			if ($pages = self::getList(array(
 					'access_user' => $user
 			), null, $select)) {

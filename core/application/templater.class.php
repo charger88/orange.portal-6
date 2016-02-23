@@ -86,16 +86,10 @@ class OPAL_Templater {
 		return ! empty($filename) &&(strpos($filename, '/') === false) &&(strpos($filename, '\\') === false) &&($filename{0} != '.');
 	}
 	public function esc($text, $nl2br = false){
-		if (is_array($text)){
-			print_r(debug_backtrace());
-		}
 		$text = htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 		return $nl2br ? nl2br($text) : $text;
 	}
 	public function ee($text, $nl2br = false){
-		if (is_array($text)){
-			print_r(debug_backtrace());
-		}
 		$text = htmlspecialchars($text, ENT_COMPAT, 'UTF-8');
 		echo $nl2br ? nl2br($text) : $text;
 	}

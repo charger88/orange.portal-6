@@ -120,12 +120,12 @@ class OPMI_System extends OPAL_Installer {
 	private function createThisModule(){
 		$result = true;
 		$module = new OPAM_Module();
-		$module->setFromArray(array(
+		$module->setData(array(
 			'module_code'   => 'system',
 			'module_title'  => 'MODULE_SYSTEM',
 			'module_status' => true,
 		));
-		$id = $module->save();
+		$id = $module->save()->id;
 		if ($id !== 1){
 			$result = false;
 			$this->errors['db_prefix'] = $id > 0 ? 'Modules table is not empty.' : 'System module was not installed.';
@@ -135,21 +135,21 @@ class OPMI_System extends OPAL_Installer {
 	
 	private function createAdminUser(){
 		$ug = new OPAM_User_Group();
-		$ug->setObjectFromArray(array(
+		$ug->setData(array(
 			'group_name'         => 'USER_GROUP_ADMIN',
 			'group_description'  => 'USER_GROUP_ADMIN_DESCRIPTION',
 			'group_module'       => 'system',
 		));
 		$ug->save();
 		$ug = new OPAM_User_Group();
-		$ug->setObjectFromArray(array(
+		$ug->setData(array(
 			'group_name'         => 'USER_GROUP_MANAGER',
 			'group_description'  => 'USER_GROUP_MANAGER_DESCRIPTION',
 			'group_module'       => 'system',
 		));
 		$ug->save();
 		$ug = new OPAM_User_Group();
-		$ug->setObjectFromArray(array(
+		$ug->setData(array(
 			'group_name'         => 'USER_GROUP_USER',
 			'group_description'  => 'USER_GROUP_USER_DESCRIPTION',
 			'group_module'       => 'system',
@@ -157,7 +157,7 @@ class OPMI_System extends OPAL_Installer {
 		$ug->save();
 		
 		$user = new OPAM_User();
-		$user->setFromArray(array(
+		$user->setData(array(
 			'user_login'    => $this->params['admin_username'],
 			'user_email'    => $this->params['admin_email'],
 			'user_status'   => 1,
@@ -167,7 +167,7 @@ class OPMI_System extends OPAL_Installer {
 			'user_name'     => $this->params['admin_username'],
 		));
         $user->setPassword($this->params['admin_password']);
-		$id = $user->save();
+		$id = $user->save()->id;
 		if ($id !== 1){
 			$result = false;
 			$this->errors['db_prefix'] = $id > 0 ? 'Users table is not empty.' : 'Admin user was not created.';
@@ -231,9 +231,11 @@ class OPMI_System extends OPAL_Installer {
 		);
 		foreach ($content_types_data as $data){
 			$content = new OPAM_Content_Type();
-			$content->setFromArray($data);
-			$content->set('content_type_status', 1);
-			$results[] = $content->save();
+			$content
+                ->setData($data)
+                ->set('content_type_status', 1)
+            ;
+			$results[] = $content->save()->id;
 		}
 		return $result;
 	}
@@ -539,10 +541,10 @@ class OPMI_System extends OPAL_Installer {
         );
 		foreach ($content_data as $data){
 			$content = new OPAM_Content();
-			$content->setFromArray($data);
+			$content->setData($data);
 			$content->set('content_time_published', time());
 			$content->set('content_user_id', 1);
-			$id = $content->save();
+			$id = $content->save()->id;
 			if (!$id){
 				$result = false;
 			}

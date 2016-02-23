@@ -58,16 +58,10 @@ class OPAM_Block extends OPAM_Content {
 			if (!is_null($user)){
 				$groups = $user->get('user_groups');
 				$groups[] = 0;
-				$f = true;
 				$select->addWhereOperator(Condition::L_AND);
 				$select->addWhereBracket(true);
 				foreach ($groups as $n => $group_id){
-					if (!$f){
-						$select->addWhereOperator(Condition::L_OR);
-					} else {
-						$f = false;
-					}
-					$select->addWhere(new Condition('content_access_groups', 'LIKE', '%|'.$group_id.'|%'));
+					$select->addWhere(new Condition('content_access_groups', 'LIKE', '%|'.$group_id.'|%'),Condition::L_OR);
 				}
 				$select->addWhereBracket(false);
 			}

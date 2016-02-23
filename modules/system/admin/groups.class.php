@@ -38,6 +38,7 @@ class OPMA_System_Groups extends OPAL_Controller {
 	}
 	
 	public function editAction($id){
+        $id = intval($id);
 		$item = new OPAM_User_Group($id);
 		if ($item->id){
 			return $this->edit($item);
@@ -57,10 +58,11 @@ class OPMA_System_Groups extends OPAL_Controller {
 	}
 	
 	public function saveAction($id = 0){
+        $id = intval($id);
         $item = new OPAM_User_Group($id);
 		$form = new OPMX_System_GroupEdit();
 		$form->setValues();
-		$item->setFromArray($form->getValues());
+		$item->setData($form->getValues());
 		$item->save();
 		$this->log('GROUP_%s_SAVED', array($item->get('group_name')), 'LOG_USERS', self::STATUS_OK, $item);
 		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);

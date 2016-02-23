@@ -25,7 +25,7 @@ abstract class OPAL_Installer {
                 $classname::install();
             } catch (\Orange\Database\DBException $e){
                 $result = false;
-                $errors[] = $e->getMessage();
+                $errors[] = $e->getMessage().' --- '.$e->getTraceAsString();
             }
             $success[] = $classname;
         }
@@ -53,8 +53,8 @@ abstract class OPAL_Installer {
                 $c = new OPAM_Config();
                 $c->set('config_type', $type);
                 $c->set('config_key', $this->module.'_'.$param);
-                $c->set('config_value', $this->params[$param]);
-                $id = $c->save();
+                $c->set('config_value', isset($this->params[$param]) ? $this->params[$param] : null);
+                $id = $c->save()->id;
                 $result = $result && ($id > 0);
             }
         }

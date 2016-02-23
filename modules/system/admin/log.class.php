@@ -34,6 +34,7 @@ class OPMA_System_Log extends OPAL_Controller {
 	}
 
     public function viewAction($id){
+        $id = intval($id);
         $log = new OPAM_Log($id);
         return $this->templater->fetch('system/admin-log.phtml',array(
             'log'  => $log,

@@ -67,7 +67,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		$return = 0;
 		
 		if ($params){
-			$this->setFromArray($params);
+			$this->setData($params);
 		}
 		
 		$this->set('media_name',$org_name);
@@ -98,7 +98,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 			
 			if ($status){
 				$this->generateThumbnails();
-                $return = $this->save();
+                $return = $this->save()->id;
             } else {
 				$return = -2;
 			}

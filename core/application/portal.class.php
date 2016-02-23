@@ -134,7 +134,7 @@ class OPAL_Portal {
         $this->session = new $sessionclass();
         $this->templater = new OPAL_Templater(self::config('system_theme'));
 		self::$sitelang = isset($_GET['lang']) && (strlen(trim($_GET['lang'])) == 2) ? trim($_GET['lang']) : self::config('system_default_lang',self::$sitelang);
-		if (!$this->install_mode){
+        if (!$this->install_mode){
 			$this->initModules();
 			$this->initUser();
 		}
@@ -450,7 +450,7 @@ class OPAL_Portal {
 		if ($commands = $content->get('content_commands')){
 			$isDirect = $content->get('content_type') == 'module';
 			$isCli = self::env('cli',false);
-			foreach ($commands as $command){
+            foreach ($commands as $command){
 				if (isset($this->modules[$command['module']])){
 					$classname = $this->getCommandClassName($command);
 					$methodname = $this->getCommandMethodName($command,!empty($this->request[1]) ? $this->request[1] : 'index',self::env('ajax',false),$isDirect,$isCli);

@@ -11,11 +11,12 @@ class OPAM_Content_Field extends \Orange\Database\ActiveRecord {
 		'content_id'          => array('type' => 'INTEGER'),
 		'content_field_name'  => array('type' => 'STRING', 'length' => 32),
 		'content_field_type'  => array('type' => 'STRING', 'length' => 16),
-		'content_field_value' => array('type' => 'STRING', 'length' => 2048),
+		'content_field_value' => array('type' => 'DATA', 'length' => 2048),
 	);
 	
 	protected static $keys = array('content_id');
 	protected static $u_keys = array(array('content_id','content_field_name'));
+
 
     public static function getObject($content_id,$field){
 		$select = (new \Orange\Database\Queries\Select(self::$table))
@@ -23,7 +24,7 @@ class OPAM_Content_Field extends \Orange\Database\ActiveRecord {
             ->addWhere(new Condition('content_field_name', '=', $field))
             ->execute()
         ;
-		$fieldObject = new OPAM_Content_Field($select->getResultNext());
+		$fieldObject = new OPAM_Content_Field($select->getResultNextRow());
 		if (!$fieldObject->id){
 			$fieldObject->set('content_id',$content_id);
 			$fieldObject->set('content_field_name',$field);

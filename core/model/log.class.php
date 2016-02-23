@@ -23,7 +23,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord {
 		'log_uri'        => array('type' => 'STRING', 'length' => 512),
 		'log_ip'         => array('type' => 'STRING', 'length' => 15),
 		'log_useragent'  => array('type' => 'STRING', 'length' => 256),
-		'log_user_id'    => array('type' => 'BOOLEAN'),
+		'log_user_id'    => array('type' => 'INTEGER'),
 		'log_classname'  => array('type' => 'STRING', 'length' => 32),
 		'log_object_id'  => array('type' => 'INTEGER'),
 		'log_message'    => array('type' => 'STRING', 'length' => 512),

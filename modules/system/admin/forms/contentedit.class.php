@@ -24,7 +24,7 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 		/* Top EMD */
 		
 		/* Column BEGIN */
-		
+
 		if (!in_array('content_lang', $params['hide']) && (count($params['options']['content_lang']) > 1)){
 			$this->addFieldset($this->lng('LANG_OPTIONS'), 'column', 'fieldset-lang');
 			$this->addField('content_lang', 'select', $this->lng('content_lang'), array('options' => isset($params['options']['content_lang']) ? $params['options']['content_lang'] : array()), 'column');

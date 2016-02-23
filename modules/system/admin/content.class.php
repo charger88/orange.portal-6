@@ -70,6 +70,7 @@ class OPMA_System_Content extends OPAL_Controller {
 	}
 	
 	public function editAction($id = 0){
+        $id = intval($id);
 		$item = new OPAM_Content($id);
 		$type = new OPAM_Content_Type('content_type_code',$item->get('content_type'));
 		$classname = $type->getClass();
@@ -123,10 +124,12 @@ class OPMA_System_Content extends OPAL_Controller {
 	}
 	
 	public function saveAction($id = 0){
+        $id = intval($id);
 		return $this->save($id);
 	}
 	
 	public function saveAjax($id = 0){
+        $id = intval($id);
 		return $this->save($id);
 	}
 
@@ -155,7 +158,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				));
 				$errors = $form->setValues(null,true);
 				$values = $form->getValues();
-				$item->setFromArray($values);
+				$item->setData($values);
 				$item->set('content_slug',urlencode($item->get('content_slug')));
 				if ($fields = $type->get('content_type_fields')){
 					foreach ($fields as $field_id => $field){
@@ -163,7 +166,7 @@ class OPMA_System_Content extends OPAL_Controller {
 					}
 				}
 				if (!$errors){
-					if ($id = $item->save()){
+					if ($id = $item->save()->id){
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){
 								$textObject = $item->text($text_id);
@@ -232,7 +235,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			}
 			try {
 				$options['content_default_lang_id'] = $controllerReflection->getMethod('getDefaultLanguageRef')->invokeArgs($item, array( OPAL_Portal::config('system_default_lang') ));
-			} catch (ReflectionException $e){
+            } catch (ReflectionException $e){
 				$options['content_default_lang_id'] = null;
 			}
 			$options['content_area'] = (strpos($item->get('content_slug'),'admin/') === 0 ? $this->templater->theme->getAdminAreas() : $this->templater->theme->getThemeAreas());
