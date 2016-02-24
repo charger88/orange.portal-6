@@ -101,7 +101,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord {
 			$select->addWhere(new Condition('log_object_id', '=', $object->id));
 		}
 
-		$select->setOrder('id',true);
+		$select->setOrder('id',\Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
 		
 		return $select->execute()->getResultArray(null,__CLASS__);

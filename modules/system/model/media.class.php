@@ -170,7 +170,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		if ($first_id){
 			$select->addWhere(new Condition('id','>',$first_id));
 		}
-		$select->setOrder('media_time_uploaded',$first_id ? false : true);
+		$select->setOrder('media_time_uploaded',$first_id ? \Orange\Database\Queries\Select::SORT_ASC : \Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
 		return $select->execute()->getResultArray(false,__CLASS__);
 	}

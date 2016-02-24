@@ -159,7 +159,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				$errors = $form->setValues(null,true);
 				$values = $form->getValues();
 				$item->setData($values);
-				$item->set('content_slug',urlencode($item->get('content_slug')));
+				$item->set('content_slug',str_replace('%2F','/',urlencode($item->get('content_slug'))));
 				if ($fields = $type->get('content_type_fields')){
 					foreach ($fields as $field_id => $field){
 						$item->setField($field_id,$values['content_field_'.$field_id]);

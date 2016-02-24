@@ -145,7 +145,11 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		    ->addWhere(new Condition('content_id', '=', $this->id))
             ->execute()
         ;
-		$this->fields = array_merge($select->getResultColumn('content_field_name','content_field_value'),$this->fields);
+        $fields = $select->getResultColumn('content_field_name','content_field_value');
+        foreach ($fields as $key => $value){
+            $fields[$key] = unserialize($value);
+        }
+		$this->fields = array_merge($fields,$this->fields);
 	}
 
     /**
@@ -212,14 +216,16 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$select->addWhere(new Condition('id', '>', 0));
 		if (!is_null($type)) {
 			$select->addWhere(new Condition('content_type', 'LIKE', $type));
-		}
+		} else {
+            $type = 'page';
+        }
 		if (!is_null($lang)) {
 			$select->addWhereOperator(Condition::L_AND);
 			$select->addWhereBracket(true);
 			$select->addWhere(new Condition('content_lang', 'LIKE', $lang));
 			$select->addWhere(new Condition('content_lang', 'LIKE', ''),Condition::L_OR);
 			$select->addWhereBracket(false);
-			$select->setOrder('content_lang', true);
+			$select->setOrder('content_lang', \Orange\Database\Queries\Select::SORT_DESC);
 		}
 		if (!is_null($slug)) {
 			$select->addWhere(new Condition('content_slug', 'LIKE', $slug));
@@ -257,7 +263,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$limit = isset($params['limit'])? $params['limit']: 30;
 		$offset = isset($params['offset'])? $params['offset']: 0;
 		$order = isset($params['order'])? $params['order']: 'content_time_published';
-		$desc = isset($params['desc'])? $params['desc']: false;
+		$desc = isset($params['desc']) && $params['desc'] ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC;
 
 		$select = is_null($select_base)? new \Orange\Database\Queries\Select(self::$table): $select_base;
 

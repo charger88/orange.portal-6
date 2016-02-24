@@ -43,7 +43,7 @@ class OPAM_Page extends OPAM_Content {
             ->addWhere(new Condition('content_status', '=', 7))
 		    ->addWhere(new Condition('content_lang', 'IN', array($lang,'')))
 		    ->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
-		    ->setOrder('content_lang',true)
+		    ->setOrder('content_lang',\Orange\Database\Queries\Select::SORT_DESC)
             ->execute()
         ;
 		return new OPAM_Content($select->getResultNextRow());

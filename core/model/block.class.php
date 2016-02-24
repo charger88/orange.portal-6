@@ -31,7 +31,7 @@ class OPAM_Block extends OPAM_Content {
 		if (is_null($areas) || !empty($areas)){
 			$select = new \Orange\Database\Queries\Select(self::$table);
 			$select->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getBlockTypes()));
-			$select->setOrder('content_order',false);
+			$select->setOrder('content_order',\Orange\Database\Queries\Select::SORT_ASC);
 			if (!empty($areas)){
 				$select->addWhere(new Condition('content_area', 'IN', $areas));
 			}
