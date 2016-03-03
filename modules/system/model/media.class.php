@@ -33,7 +33,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		$path .= '/';
 		$path .= ( $th && isset(self::$th_sizes[$th]) ) ? 'th/'.$th : 'org';
 		$path .= '/';
-		$path .= date('Y/m/d',strtotime($this->get('media_time_uploaded')));
+		$path .= date('Y/m/d',$this->get('media_time_uploaded'));
 		return $path;
 	}
 
@@ -123,7 +123,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 	public function generateThumbnails(){
 		$result = false;
 		if ($this->get('media_size')){
-			$image = new OPAL_Image($this->getDir().'/'.$this->get('media_file'));
+			$image = new \Orange\Image\Image(OP_SYS_ROOT.$this->getDir().'/'.$this->get('media_file'));
 			if ($image->getType()){
 				$result = true;
 				foreach (self::$th_sizes as $size => $info){
@@ -138,7 +138,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 					if (!$dir->dir){
 						$dir->makeDir();
 					}
-					$tresult = $th->save($dirname.'/'.$this->get('media_file'),null,$info[3],true);
+					$tresult = $th->save(OP_SYS_ROOT.$dirname.'/'.$this->get('media_file'),null,$info[3],true);
 					$result = $result && $tresult;
 				}
 			}
@@ -172,7 +172,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		}
 		$select->setOrder('media_time_uploaded',$first_id ? \Orange\Database\Queries\Select::SORT_ASC : \Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
-		return $select->execute()->getResultArray(false,__CLASS__);
+		return $select->execute()->getResultArray(null,__CLASS__);
 	}
 	
 }

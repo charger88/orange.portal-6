@@ -12,9 +12,14 @@
     {
       "type": "vcs",
       "url": "https://github.com/charger88/orange.database"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.image"
     }
   ],
   "require": {
-    "charger88/orange.database": "dev-master"
+    "charger88/orange.database": "dev-master",
+    "charger88/orange.image": "dev-master"
   }
 }

@@ -2,7 +2,6 @@
 class OPAL_Templater {
 	
 	/**
-	 *
 	 * @var OPAL_Theme
 	 */
 	public $theme;
