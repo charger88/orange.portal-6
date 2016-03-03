@@ -48,6 +48,7 @@ class OPMA_System_Types extends OPAL_Controller {
 	}
 	
 	public function editAction($id){
+        $id = intval($id);
 		$item = new OPAM_Content_Type($id);
 		if ($item->id){
 			return $this->edit($item);
@@ -62,15 +63,16 @@ class OPMA_System_Types extends OPAL_Controller {
      */
 	protected function edit($item){
 		$form = new OPMX_System_TypeEdit($this->content->getURL().'/save/'.$item->id,'post');
-		$form->setValues($item->getDataArray(),true);
+		$form->setValues($item->getData(),true);
 		return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 	}
 	
 	public function saveAction($id = 0){
+        $id = intval($id);
 		$item = new OPAM_Content_Type($id);
 		$form = new OPMX_System_TypeEdit();
 		$form->setValues();
-		$item->setFromArray($form->getValues());
+		$item->setData($form->getValues());
 		$item->save();
 		$this->log('CONTENT_TYPE_%s_SAVED', array($item->get('content_type_name')), 'LOG_CONTENT', self::STATUS_OK, $item);
 		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);

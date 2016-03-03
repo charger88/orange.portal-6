@@ -219,13 +219,13 @@ class OPAL_Controller {
      * @param array $vars
      * @param string $log_name
      * @param int $status
-     * @param OPDB_Object|null $object
+     * @param \Orange\Database\ActiveRecord|null $object
      */
     protected function log($message,$vars = array(),$log_name = 'LOG_MISC',$status = self::STATUS_INFO,$object = null){
 		$log = new OPAM_Log();
 		$log->set('log_log', $log_name);
 		$log->set('log_status', $status);
-		$log->set('log_time', OPDB_Functions::getTime());
+		$log->set('log_time', time());
 		$log->set('log_uri', $this->getURI());
 		$log->set('log_ip', $this->getIP());
 		$log->set('log_useragent', $this->getUserAgent());

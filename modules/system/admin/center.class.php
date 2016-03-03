@@ -16,7 +16,7 @@ class OPMA_System_Center extends OPAL_Controller {
 	}
 
 	public function systemHook(){
-		$version = new OPAL_File('version.txt','config');
+		$version = new OPAL_File('version.txt','core');
 		return $this->templater->fetch('system/admin-center-system.phtml',array(
 			'version' => $version->getData(),
 			'server' => $this->getServer('SERVER_SOFTWARE',''),

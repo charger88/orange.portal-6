@@ -2,7 +2,7 @@
 
 class OPMI_News extends OPAL_Installer {
 	
-	public function install(){
+	public function installModule(){
 		$this->errors = array();
 		if (empty($this->errors)){
 			$this->createThisModule();
@@ -24,12 +24,12 @@ class OPMI_News extends OPAL_Installer {
 	private function createThisModule(){
 		$result = true;
 		$module = new OPAM_Module();
-		$module->setFromArray(array(
+		$module->setData(array(
 			'module_code'   => 'news',
 			'module_title'  => 'MODULE_NEWS',
 			'module_status' => true,
 		));
-		$id = $module->save();
+		$module->save();
 		return $result;
 	}
 	
@@ -50,9 +50,9 @@ class OPMI_News extends OPAL_Installer {
 		);
 		foreach ($content_types_data as $data){
 			$content = new OPAM_Content_Type();
-			$content->setFromArray($data);
+			$content->setData($data);
 			$content->set('content_type_status', 1);
-			$results[] = $content->save();
+			$results[] = $content->save()->id;
 		}
 		return $result;
 	}
@@ -74,10 +74,10 @@ class OPMI_News extends OPAL_Installer {
         );
         foreach ($content_data as $data){
             $content = new OPAM_Content();
-            $content->setFromArray($data);
-            $content->set('content_time_published', OPDB_Functions::getTime());
+            $content->setData($data);
+            $content->set('content_time_published', time());
             $content->set('content_user_id', 1);
-            $id = $content->save();
+            $id = $content->save()->id;
             if (!$id){
                 $result = false;
             }

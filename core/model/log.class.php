@@ -1,9 +1,11 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 /**
  * Class OPAM_Log
  */
-class OPAM_Log extends OPDB_Object {
+class OPAM_Log extends \Orange\Database\ActiveRecord {
 
     /**
      * @var string
@@ -13,25 +15,25 @@ class OPAM_Log extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'             => array(0 ,'ID'),
-		'log_log'        => array('','VARCHAR',16),
-		'log_status'     => array(0 ,'TINYINT'),
-		'log_time'       => array('0000-00-00 00:00:00','TIMESTAMP'),
-		'log_uri'        => array('','VARCHAR',512),
-		'log_ip'         => array('','VARCHAR',15),
-		'log_useragent'  => array('','VARCHAR',256  ),
-		'log_user_id'    => array(0 ,'BOOLEAN'),
-		'log_classname'  => array('','VARCHAR',32),
-		'log_object_id'  => array(0 ,'INTEGER'),
-		'log_message'    => array('','VARCHAR',512),
-		'log_vars'       => array(array(),'ARRAY'),
+    protected static $scheme = array(
+		'id'             => array('type' => 'ID'),
+		'log_log'        => array('type' => 'STRING', 'length' => 16),
+		'log_status'     => array('type' => 'TINYINT'),
+		'log_time'       => array('type' => 'TIME'),
+		'log_uri'        => array('type' => 'STRING', 'length' => 512),
+		'log_ip'         => array('type' => 'STRING', 'length' => 15),
+		'log_useragent'  => array('type' => 'STRING', 'length' => 256),
+		'log_user_id'    => array('type' => 'INTEGER'),
+		'log_classname'  => array('type' => 'STRING', 'length' => 32),
+		'log_object_id'  => array('type' => 'INTEGER'),
+		'log_message'    => array('type' => 'STRING', 'length' => 512),
+		'log_vars'       => array('type' => 'ARRAY'),
 	);
 
     /**
      * @var array
      */
-    protected static $indexes = array('log_log','log_status');
+    protected static $keys = array('log_log','log_status');
 
     /**
      * @param string $to
@@ -55,7 +57,7 @@ class OPAM_Log extends OPDB_Object {
     public static function loadLog($params = array()){
 		
 		$log        = isset($params['log'])        ? $params['log'] : null;
-		$date_start = isset($params['date_start']) ? OPDB_Functions::getTime(strtotime($params['date_start'])) : null;
+		$date_start = isset($params['date_start']) ? date("Y-m-d H:i:s",strtotime($params['date_start'])) : null;
 		$min_status = isset($params['min_status']) ? intval($params['min_status']) : null;
 		$max_status = isset($params['max_status']) ? intval($params['max_status']) : null;
 		$ip         = isset($params['ip'])         ? intval($params['ip']) : null;
@@ -64,46 +66,45 @@ class OPAM_Log extends OPDB_Object {
 		$object     = isset($params['object'])     ? $params['object']           : null;
 		$limit      = isset($params['limit'])      ? intval($params['limit']) : null;
 		
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('id', '>', 0));
-		
+		$select = new \Orange\Database\Queries\Select(self::$table);
+
 		if (!is_null($log)){
-			$select->addWhereAnd(new OPDB_Clause('log_log', '=', $log));
+			$select->addWhere(new Condition('log_log', '=', $log));
 		}
 		
 		if (!is_null($min_status)){
-			$select->addWhereAnd(new OPDB_Clause('log_status', '>=', $min_status));
+			$select->addWhere(new Condition('log_status', '>=', $min_status));
 		}
 		
 		if (!is_null($max_status)){
-			$select->addWhereAnd(new OPDB_Clause('log_status', '<=', $max_status));
+			$select->addWhere(new Condition('log_status', '<=', $max_status));
 		}
 		
 		if (!is_null($date_start)){
-			$select->addWhereAnd(new OPDB_Clause('log_time', '>', $date_start));
+			$select->addWhere(new Condition('log_time', '>', $date_start));
 		}
 		
 		if (!is_null($ip)){
-			$select->addWhereAnd(new OPDB_Clause('log_ip', '=', $ip));
+			$select->addWhere(new Condition('log_ip', '=', $ip));
 		}
 		
 		if (!is_null($useragent)){
-			$select->addWhereAnd(new OPDB_Clause('log_useragent', '=', $useragent));
+			$select->addWhere(new Condition('log_useragent', '=', $useragent));
 		}
 		
 		if (!is_null($user_id)){
-			$select->addWhereAnd(new OPDB_Clause('log_user_id', '=', $user_id));
+			$select->addWhere(new Condition('log_user_id', '=', $user_id));
 		}
 		
-		if ($object instanceof OPDB_Object){
-			$select->addWhereAnd(new OPDB_Clause('log_classname', 'LIKE', get_class($object)));
-			$select->addWhereAnd(new OPDB_Clause('log_object_id', '=', $object->id));
+		if ($object instanceof \Orange\Database\ActiveRecord){
+			$select->addWhere(new Condition('log_classname', 'LIKE', get_class($object)));
+			$select->addWhere(new Condition('log_object_id', '=', $object->id));
 		}
 
-		$select->setOrder('id',true);
+		$select->setOrder('id',\Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
 		
-		return $select->execQuery()->getResultArray(false,__CLASS__);
+		return $select->execute()->getResultArray(null,__CLASS__);
 	}
 	
 }

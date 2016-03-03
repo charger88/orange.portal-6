@@ -1,0 +1,25 @@
+{
+  "name": "Orange/Portal",
+  "description": "CMS",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mikhail Kelner",
+      "email": "mikhail.kelner@gmail.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.database"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.image"
+    }
+  ],
+  "require": {
+    "charger88/orange.database": "dev-master",
+    "charger88/orange.image": "dev-master"
+  }
+}

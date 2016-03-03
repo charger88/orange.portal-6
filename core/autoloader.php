@@ -1,5 +1,11 @@
 <?php
 
+if (is_file(OP_SYS_ROOT.'vendor/autoload.php')) {
+    require_once OP_SYS_ROOT . 'vendor/autoload.php';
+} else {
+    die('Vendor modules was not installed.');
+}
+
 /*
  * OPDB - Orange.Portal DataBase
  * OPAM - Orange.Portal Application Model
@@ -12,16 +18,11 @@
  * OPMM - Orange.Portal Module Model
  */
 
-	function __autoload($orgclassname) {
+spl_autoload_register(
+    function ($orgclassname){
 		if ( (strpos($orgclassname,'OP') === 0) && (($plen = strpos($orgclassname,'_')) !== false) ){
             $classname = strtolower(substr($orgclassname,$plen + 1));
-			if (strpos($orgclassname,'DB') === 2){
-				$filename = 'core/opdb/'.$classname.'.class.php';
-				if (!is_file(OP_SYS_ROOT.$filename)) {
-					$filename = 'core/opdb/'.OPDB_Config::$DBType.'/'.$classname.'.class.php';
-					//TODO Make something with database - it is not so beautiful
-				}
-			} elseif (strpos($orgclassname,'AL') === 2) {
+			if (strpos($orgclassname,'AL') === 2) {
 				$filename = 'core/application/'.$classname.'.class.php';
 			} elseif (strpos($orgclassname,'AM') === 2) {
 				$filename = 'core/model/'.$classname.'.class.php';
@@ -74,3 +75,4 @@
             }
         }
 	}
+);

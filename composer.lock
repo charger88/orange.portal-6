@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "d36d0654c9feb82a30c0b5f97855dbb4",
+    "content-hash": "8063298b60419e4b5343bf3328a577ef",
+    "packages": [
+        {
+            "name": "charger88/orange.database",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/charger88/orange.database.git",
+                "reference": "39b6303e344df0c74b2cd0ff2c34f895990f4f51"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/charger88/orange.database/zipball/39b6303e344df0c74b2cd0ff2c34f895990f4f51",
+                "reference": "39b6303e344df0c74b2cd0ff2c34f895990f4f51",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mikhail Kelner",
+                    "email": "mikhail.kelner@gmail.com"
+                }
+            ],
+            "description": "This library implements object model of SQL queries and ActiveRecord (ORM) pattern.",
+            "support": {
+                "source": "https://github.com/charger88/orange.database/tree/master",
+                "issues": "https://github.com/charger88/orange.database/issues"
+            },
+            "time": "2016-01-30 17:55:10"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "charger88/orange.database": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

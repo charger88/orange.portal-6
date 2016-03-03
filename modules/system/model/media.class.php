@@ -1,24 +1,25 @@
 <?php
 
-class OPMM_System_Media extends OPDB_Object {
+use \Orange\Database\Queries\Parts\Condition;
+
+class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 	
 	protected static $table = 'media';
 	
-	protected static $schema = array(
-		'id'                   => array(0 ,'ID'),
-		'media_name'           => array('','VARCHAR',512),
-		'media_size'           => array(0 ,'BIGINT'),
-		'media_file'           => array('','VARCHAR',512),
-		'media_hidden_in_list' => array(0 ,'BOOLEAN'),
-		'media_protected'      => array(0 ,'BOOLEAN'),
-		'media_thumbnails'     => array(0 ,'BOOLEAN'),
-		'media_access_level'   => array(0 ,'TINYINT'),
-		'media_time_uploaded'  => array('','TIMESTAMP'),
-		'media_user_id'        => array(0 ,'INTEGER'),
+	protected static $scheme = array(
+		'id'                   => array('type' => 'ID'),
+		'media_name'           => array('type' => 'STRING', 'length' => 512),
+		'media_size'           => array('type' => 'BIGINT'),
+		'media_file'           => array('type' => 'STRING', 'length' => 512),
+		'media_hidden_in_list' => array('type' => 'BOOLEAN'),
+		'media_protected'      => array('type' => 'BOOLEAN'),
+		'media_thumbnails'     => array('type' => 'BOOLEAN'),
+		'media_access_level'   => array('type' => 'TINYINT'),
+		'media_time_uploaded'  => array('type' => 'TIME'),
+		'media_user_id'        => array('type' => 'INTEGER'),
 	);
 	
-	protected static $indexes = array('media_hidden_in_list','media_time_uploaded');
-	protected static $uniq = null;
+	protected static $keys = array('media_hidden_in_list','media_time_uploaded');
 	
 	public static $th_sizes = array(
 		'l' => array(960,null,null,70),
@@ -32,7 +33,7 @@ class OPMM_System_Media extends OPDB_Object {
 		$path .= '/';
 		$path .= ( $th && isset(self::$th_sizes[$th]) ) ? 'th/'.$th : 'org';
 		$path .= '/';
-		$path .= date('Y/m/d',strtotime($this->get('media_time_uploaded')));
+		$path .= date('Y/m/d',$this->get('media_time_uploaded'));
 		return $path;
 	}
 
@@ -66,13 +67,13 @@ class OPMM_System_Media extends OPDB_Object {
 		$return = 0;
 		
 		if ($params){
-			$this->setFromArray($params);
+			$this->setData($params);
 		}
 		
 		$this->set('media_name',$org_name);
 		$org_name = str_replace(' ','-',$org_name);
 		$this->set('media_file',$org_name);
-		$this->set('media_time_uploaded',OPDB_Functions::getTime());
+		$this->set('media_time_uploaded',time());
 		$this->set('media_user_id',$user_id);
 		
 		$file = new OPAL_File();
@@ -97,7 +98,7 @@ class OPMM_System_Media extends OPDB_Object {
 			
 			if ($status){
 				$this->generateThumbnails();
-                $return = $this->save();
+                $return = $this->save()->id;
             } else {
 				$return = -2;
 			}
@@ -122,7 +123,7 @@ class OPMM_System_Media extends OPDB_Object {
 	public function generateThumbnails(){
 		$result = false;
 		if ($this->get('media_size')){
-			$image = new OPAL_Image($this->getDir().'/'.$this->get('media_file'));
+			$image = new \Orange\Image\Image(OP_SYS_ROOT.$this->getDir().'/'.$this->get('media_file'));
 			if ($image->getType()){
 				$result = true;
 				foreach (self::$th_sizes as $size => $info){
@@ -137,7 +138,7 @@ class OPMM_System_Media extends OPDB_Object {
 					if (!$dir->dir){
 						$dir->makeDir();
 					}
-					$tresult = $th->save($dirname.'/'.$this->get('media_file'),null,$info[3],true);
+					$tresult = $th->save(OP_SYS_ROOT.$dirname.'/'.$this->get('media_file'),null,$info[3],true);
 					$result = $result && $tresult;
 				}
 			}
@@ -147,31 +148,31 @@ class OPMM_System_Media extends OPDB_Object {
 	}
 	
 	public static function getOne($id,$user_id,$user_status = 0){
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('id','=',$id));
-		$select->addWhereAnd(new OPDB_Clause('media_access_level','<=',$user_status));
+		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select->addWhere(new Condition('id','=',$id));
+		$select->addWhere(new Condition('media_access_level','<=',$user_status));
 		if ($user_id !== true){
-			$select->addWhereAnd(new OPDB_Clause('media_user_id','=',$user_id));
+			$select->addWhere(new Condition('media_user_id','=',$user_id));
 		}
 		$select->setLimit(1);
-		return new OPMM_System_Media($select->execQuery()->getNext());
+		return new OPMM_System_Media($select->execute()->getResultNextRow());
 	}
 	
 	public static function getList($user_id,$user_status = 0,$last_id = null,$first_id = null,$limit = 30){
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('media_access_level','<=',$user_status));
+		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select->addWhere(new Condition('media_access_level','<=',$user_status));
 		if ($user_id !== true){
-			$select->addWhereAnd(new OPDB_Clause('media_user_id','=',$user_id));
+			$select->addWhere(new Condition('media_user_id','=',$user_id));
 		}
 		if ($last_id){
-			$select->addWhereAnd(new OPDB_Clause('id','<',$last_id));
+			$select->addWhere(new Condition('id','<',$last_id));
 		}
 		if ($first_id){
-			$select->addWhereAnd(new OPDB_Clause('id','>',$first_id));
+			$select->addWhere(new Condition('id','>',$first_id));
 		}
-		$select->setOrder('media_time_uploaded',$first_id ? false : true);
+		$select->setOrder('media_time_uploaded',$first_id ? \Orange\Database\Queries\Select::SORT_ASC : \Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
-		return $select->execQuery()->getResultArray(false,__CLASS__);
+		return $select->execute()->getResultArray(null,__CLASS__);
 	}
 	
 }

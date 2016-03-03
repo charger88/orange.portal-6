@@ -25,7 +25,7 @@ class OPMA_System_Blocks extends OPMA_System_Content {
 		$item->set('content_type',$type->get('content_type_code'));
 		if ($item->isNewAllowed()){
             $item->set('content_area',$this->getGet('area'));
-			$item->set('content_time_published',OPDB_Functions::getTime());
+			$item->set('content_time_published',time());
 			$item->set('content_template','block-element.phtml');
             $item->set('content_commands',array( array( 'module' => 'system', 'controller' => 'text', 'method' => 'index', 'static' => true, 'args' => array() ) ));
             $item->set('content_access_groups',array(0));

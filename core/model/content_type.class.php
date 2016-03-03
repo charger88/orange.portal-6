@@ -1,9 +1,11 @@
 <?php
 
+use \Orange\Database\Queries\Parts\Condition;
+
 /**
  * Class OPAM_Content_Type
  */
-class OPAM_Content_Type extends OPDB_Object {
+class OPAM_Content_Type extends \Orange\Database\ActiveRecord {
 
     /**
      * @var string
@@ -13,28 +15,28 @@ class OPAM_Content_Type extends OPDB_Object {
     /**
      * @var array
      */
-    protected static $schema = array(
-		'id'                            => array(0 ,'ID'),
-		'content_type_name'             => array('','VARCHAR',64),
-		'content_type_code'             => array('','VARCHAR',32),
-		'content_type_status'           => array(0 ,'BOOLEAN'),
-		'content_type_type'             => array(0 ,'TINYINT'), // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
-		'content_type_multilang'        => array(0 ,'BOOLEAN'),
-		'content_type_class'            => array('','VARCHAR',32),
-		'content_type_hidden'           => array(array(),'ARRAY',2048),
-		'content_type_fields'           => array(array(),'ARRAY'),
-		'content_type_texts'            => array(array(),'ARRAY',1024),
-        'content_type_sitemap_priority' => array(0 ,'TINYINT'),
+    protected static $scheme = array(
+		'id'                            => array('type' => 'ID'),
+		'content_type_name'             => array('type' => 'STRING', 'length' => 64),
+		'content_type_code'             => array('type' => 'STRING', 'length' => 32),
+		'content_type_status'           => array('type' => 'BOOLEAN'),
+		'content_type_type'             => array('type' => 'TINYINT'), // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
+		'content_type_multilang'        => array('type' => 'BOOLEAN'),
+		'content_type_class'            => array('type' => 'STRING', 'length' => 32),
+		'content_type_hidden'           => array('type' => 'ARRAY', 'length' => 2048),
+		'content_type_fields'           => array('type' => 'ARRAY'),
+		'content_type_texts'            => array('type' => 'ARRAY', 'length' => 1024),
+        'content_type_sitemap_priority' => array('type' => 'TINYINT'),
 	);
 
     /**
      * @var array
      */
-    protected static $indexes = array('content_type_status');
+    protected static $keys = array('content_type_status');
     /**
      * @var array
      */
-    protected static $uniq = array('content_type_code');
+    protected static $u_keys = array('content_type_code');
 
     /**
      * @return string
@@ -97,22 +99,26 @@ class OPAM_Content_Type extends OPDB_Object {
      * @return array
      */
     public static function getTypesForSitemap(){
-        $select = new OPDB_Select(self::$table);
-        $select->addWhere(new OPDB_Clause('content_type_status', '=', 1));
-        $select->addWhereAnd(new OPDB_Clause('content_type_type', 'NOT IN', array(0,2)));
-        $select->addWhereAnd(new OPDB_Clause('content_type_code', 'NOT LIKE', 'admin'));
-        $select->addField('content_type_code');
-        $select->addField('content_type_sitemap_priority');
-        return $select->execQuery()->getResultArray(true);
+        return (new \Orange\Database\Queries\Select(self::$table))
+            ->addWhere(new Condition('content_type_status', '=', 1))
+            ->addWhere(new Condition('content_type_type', 'NOT IN', array(0,2)))
+            ->addWhere(new Condition('content_type_code', 'NOT LIKE', 'admin'))
+            ->addField('content_type_code')
+            ->addField('content_type_sitemap_priority')
+            ->execute()
+            ->getResultColumn('content_type_code','content_type_sitemap_priority')
+        ;
     }
 
     /**
      * @return array
      */
     public static function getList(){
-		$select = new OPDB_Select(self::$table);
-		$select->setOrder('id');
-		return $select->execQuery()->getResultArray(false,__CLASS__);
+        return (new \Orange\Database\Queries\Select(self::$table))
+		    ->setOrder('id')
+		    ->execute()
+            ->getResultArray(null,__CLASS__)
+        ;
 	}
 
     /**
@@ -125,22 +131,24 @@ class OPAM_Content_Type extends OPDB_Object {
         if ($type && !is_array($type)){
             $type = array($type);
         }
-		$select = new OPDB_Select(self::$table);
-		$select->addWhere(new OPDB_Clause('content_type_status', '=', 1));
+		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select->addWhere(new Condition('content_type_status', '=', 1));
 		if (!is_null($type)){
-			$select->addWhereAnd(new OPDB_Clause('content_type_type', 'IN', $type));
+			$select->addWhere(new Condition('content_type_type', 'IN', $type));
 		}
 		if ( !is_null($type_name) && (in_array(3,$type) || in_array(4,$type)) ){
-			$select->addWhereAnd(new OPDB_Clause('content_type_code', '=', $type_name));
+			$select->addWhere(new Condition('content_type_code', '=', $type_name));
 		}
 		if ($output != '*'){
-			$select->addField('content_type_code');
+            $select->addField('content_type_code');
 			if ($output == 'ref'){
-				$select->addField('content_type_name');
-			}
-			return $select->execQuery()->getResultArray(true);
+                $select->addField('content_type_name');
+                return $select->execute()->getResultColumn('content_type_code','content_type_name');
+			} else {
+                return $select->execute()->getResultList('content_type_code');
+            }
 		} else {
-			return $select->execQuery()->getResultArray(false,__CLASS__);
+			return $select->execute()->getResultArray(null,__CLASS__);
 		}
 	}
 	

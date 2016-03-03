@@ -11,7 +11,7 @@ class OPMX_System_Install extends OPAL_Form {
 		$this->addField('db_prefix', 'text', OPAL_Lang::t('INSTALL_DB_PREFIX'), array('value' => 'op6_'), 'step-1');
 		$this->addField('db_user', 'text', OPAL_Lang::t('INSTALL_DB_USER'), array('required' => 'required'), 'step-1');
 		$this->addField('db_password', 'text', OPAL_Lang::t('INSTALL_DB_PASSWORD'), array(), 'step-1');
-		$this->addField('db_type', 'select', OPAL_Lang::t('INSTALL_DB_DRIVER'), array('options' => array('mi' => 'MySQL'), 'value' => 'mi', 'required' => 'required'), 'step-1');
+		$this->addField('db_type', 'select', OPAL_Lang::t('INSTALL_DB_DRIVER'), array('options' => array('MySQL' => 'MySQL'), 'value' => 'mi', 'required' => 'required'), 'step-1');
 		
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_SITE').'</h3>', 'step-2');
 		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array(), 'step-2');

@@ -63,6 +63,7 @@ class OPMA_System_Users extends OPAL_Controller {
     }
 
     public function editAction($id){
+        $id = intval($id);
         $item = new OPAM_User($id);
         if ($item->id){
             return $this->edit($item);
@@ -79,15 +80,16 @@ class OPMA_System_Users extends OPAL_Controller {
         $params = array();
         $params['options'] = $this->getFormOptions();
         $form = new OPMX_System_UserEdit(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id,'post',$params);
-        $form->setValues($item->getDataArray(),true);
+        $form->setValues($item->getData(),true);
         return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
     }
 
     public function saveAction($id = 0){
+        $id = intval($id);
         $item = new OPAM_User($id);
         $form = new OPMX_System_UserEdit();
         $form->setValues();
-        $item->setFromArray($data = $form->getValues());
+        $item->setData($data = $form->getValues());
         $groups = $this->getPost('user_groups');
         $item->set('user_groups',$groups);
         if (!empty($data['user_password_new'])){
