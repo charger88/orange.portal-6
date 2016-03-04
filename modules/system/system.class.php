@@ -29,7 +29,7 @@ class OPMO_System extends OPAL_Module {
 
     protected function doInstall($params = array()){
 		$i = new OPMI_System('system');
-		return $i->installModule($params);
+		return empty($i->installModule($params));
 	}
 
     protected function doEnable(){

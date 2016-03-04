@@ -52,7 +52,7 @@ class OPMA_System_Modules extends OPAL_Controller {
         if (!$module->id){
             $module->set('module_code',$code);
             $module = $module->getModuleObject();
-            $module->install();
+            $module->installModule();
             $msg = OPAL_Lang::t('ADMIN_MODULE_INSTALLED');
             $status = self::STATUS_COMPLETE;
         }

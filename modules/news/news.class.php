@@ -16,8 +16,8 @@ class OPMO_News extends OPAL_Module {
 	}
 
     protected function doInstall($params = array()){
-		$errors = OPMI_News::install();
-		return empty($errors);
+		$i = new OPMI_News('news');
+		return empty($i->installModule($params));
 	}
 
     protected function doEnable(){
@@ -43,7 +43,7 @@ class OPMO_News extends OPAL_Module {
         }
         $admin = new \Orange\Database\Queries\Select('content');
         $admin->addWhere(new Condition('content_slug','=','admin/news'));
-        $admin = new OPAM_Admin($admin->execute()->getNext());
+        $admin = new OPAM_Admin($admin->execute()->getResultNextRow());
         $admin->delete();
         $content_type = new OPAM_Content_Type('content_type_code','news_item');
         $content_type->delete();
