@@ -57,7 +57,7 @@ class OPAL_Templater {
 					}
 				}
 				if (is_null($templateFilename)){
-					if (is_file(OP_SYS_ROOT.'modules/'.$template[0].'/templates/'.$template[1])){
+                    if (is_file(OP_SYS_ROOT.'modules/'.$template[0].'/templates/'.$template[1])){
 						$templateFilename = OP_SYS_ROOT.'modules/'.$template[0].'/templates/'.$template[1];
 					}
 				}

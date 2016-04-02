@@ -37,6 +37,16 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
         'content_time_published'  => array('type' => 'TIME'),
         'content_user_id'         => array('type' => 'INTEGER'),
 	);
+
+    const STATUS_REMOVED    = 0;
+	const STATUS_CANCELED   = 1;
+	const STATUS_DISABLED   = 2;
+	const STATUS_DRAFT      = 3;
+	const STATUS_MODERATION = 4;
+	const STATUS_ENABLED    = 5;
+	const STATUS_APPROVED   = 6;
+	const STATUS_HOMEPAGE   = 7;
+
     /**
      * @var array
      */
@@ -56,7 +66,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @return int|null
      */
     public function save(){
-		if (!strtotime($this->get('content_time_published'))) {
+		if (!$this->get('content_time_published')) {
 			$this->set('content_time_published', time());
 		}
         $this->set('content_time_modified', time());
@@ -203,6 +213,31 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
             $url .= '?lang=' . $current_lang;
         }
         return $url;
+    }
+
+    const SLUG_UNIQUE_MODE_NONE = 0;
+    const SLUG_UNIQUE_MODE_ID = 1;
+    const SLUG_UNIQUE_MODE_DATE = 2;
+
+    /**
+     * @param int $unique_mode
+     * @return OPAM_Content
+     */
+    function generateSlug($unique_mode = self::SLUG_UNIQUE_MODE_NONE){
+        $slug = mb_strtolower($this->get('content_title'));
+        $slug = preg_replace('/[^\p{L}0-9]/u', '-', $slug);
+        $slug = trim($slug,'-');
+        while (strpos($slug,'--') !== false){
+            $slug = str_replace('--','-',$slug);
+        }
+        if ($unique_mode == self::SLUG_UNIQUE_MODE_ID){
+            $slug .= '.'.$this->id;
+        } else if ($unique_mode == self::SLUG_UNIQUE_MODE_DATE){
+            $slug .= '.'.date("Ymd-Hi");
+        }
+        $slug .= '.html';
+        $this->set('content_slug',urlencode($slug));
+        return $this;
     }
 
     /**
@@ -368,14 +403,19 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		}
 
 		if (!is_null($limit)) {
-			$select->setLimit($limit, $offset * $limit);
+			$select->setLimit($limit);
+            $select->setOffset($offset * $limit);
 		}
 
         //TODO WTF? If wont work with new DB (see return)
 		if (is_array($classname)) {
-			foreach($classname as $field){
+			foreach($classname as $key => $field){
+                if (!is_numeric($key)){
+                    $select->addField($key);
+                }
 				$select->addField($field);
 			}
+            //TODO Add here 'id'
 		}
 
 		$select->execute();
@@ -384,8 +424,21 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
             'content_image' => array(),
             'content_user_id' => array()
 		);
+        $is_column = null;
+        if (is_array($classname)){
+            $is_column = array_keys($classname)[0];
+            if (is_numeric($is_column)){
+                $is_column = null;
+            }
+        }
         //TODO Fill self::$listMoreData with values from returned array
-		return is_array($classname)? $select->getResultArray('id'): $select->getResultArray('id', is_null($classname)? __CLASS__ : $classname);
+		return is_array($classname)
+            ? ( $is_column
+                ? $select->getResultColumn($is_column, array_shift($classname))
+                : $select->getResultArray('id')
+            )
+            : $select->getResultArray('id', is_null($classname)? __CLASS__ : $classname)
+        ;
 	}
 
     /**

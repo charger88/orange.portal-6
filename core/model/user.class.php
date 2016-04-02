@@ -71,7 +71,7 @@ class OPAM_User extends \Orange\Database\ActiveRecord {
      * @return OPAM_User[]
      */
     public static function getList($params = array()){
-		$skip           = isset($params['offset'])          ? abs(intval($params['offset'])) : 0;
+		$offset         = isset($params['offset'])          ? abs(intval($params['offset'])) : 0;
         $limit          = isset($params['limit'])           ? abs(intval($params['limit']))  : null;
         $filter         = !empty($params['filter'])         ? $params['filter']              : null;
         $filter_login   = !empty($params['filter_login'])   ? $params['filter_login']        : null;
@@ -112,7 +112,8 @@ class OPAM_User extends \Orange\Database\ActiveRecord {
             $select->addWhere(new Condition('user_status', '=', $filter_status > 0 ? 1 : 0));
         }
 		if (!is_null($limit)){
-			$select->setLimit($limit,$limit * $skip);
+			$select->setLimit($limit);
+            $select->setOffset($offset * $limit);
 		}
 		$select->setOrder($order,$desc ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC);
 		return $select->execute()->getResultArray(null,__CLASS__);

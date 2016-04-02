@@ -212,6 +212,9 @@ class OPAL_File {
 				$file = fopen(OP_SYS_ROOT.$this->fullname, $add ? 'a' : 'w' );
 				$result = fwrite($file, $data);
 				fclose($file);
+                if ($result){
+                    $this->file = is_file(OP_SYS_ROOT.$this->fullname);
+                }
 				return $result;
 			} else {
 				return false;

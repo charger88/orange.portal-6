@@ -32,12 +32,12 @@
 				} else {
 					$link = null;
 				}
-				
+
 				if ($link){
 					if (!isset($column_params['hint']) && isset($column_params['link']) && isset($columns[$column_params['link']]['hint'])){
 						$column_params['hint'] = $columns[$column_params['link']]['hint'];
 					}
-					echo '<a href="'.$this->esc($link).'" '.( isset($column_params['hint']) ? 'title="'.$this->esc($column_params['hint']).'"' : '' ).' '.($link{0} == '?' ? 'class="filter-link"' : '').'>';
+					echo '<a href="'.$this->esc($link).'" '.( isset($column_params['hint']) ? 'title="'.$this->esc($column_params['hint']).'"' : '' ).' '.($link{0} == '?' ? 'class="filter-link"' : '').' '.(!empty($column_params['icon']) ? 'style="background-image: url('.$column_params['icon'].')"' : '').'>';
 				}
 				
 				if (isset($column_params['text'])){
@@ -65,7 +65,10 @@
 								? $this->esc($refs[$column][$item->get($column)])
 								: ( $val ? $this->esc($val) : '&mdash;' )
 							)
-							: $item->get($column)
+							: ( ($item->type($column) == 'TIME')
+                                ? $this->getTime($val)
+                                : $this->esc($val)
+                            )
 						;
 					} 
 				}

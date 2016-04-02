@@ -51,7 +51,7 @@ abstract class OPAL_Module extends OPAM_Module {
 		return null;
 	}
 	
-	public function uninstall(){
+	public function uninstallModule(){
 		if ($this->id && !$this->get('module_status')){
             $this->delete();
 			return $this->doUninstall();

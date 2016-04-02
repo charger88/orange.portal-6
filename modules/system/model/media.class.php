@@ -87,22 +87,19 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 				$return = -1;
 			}
 		} while ( $file->is_exists() && ($return == 0) );
-		
+
 		$this->set('media_file',$filename);
-		
-		if ($return == 0){
 
-            $status = !is_null($tmp_name) ? $file->saveUpload($tmp_name) : $file->saveData($data);
+        $status = !is_null($tmp_name) ? $file->saveUpload($tmp_name) : $file->saveData($data);
+        $this->set('media_size',$file->getFileSize());
 
-			$this->set('media_size',$file->getFileSize());
-			
-			if ($status){
-				$this->generateThumbnails();
-                $return = $this->save()->id;
-            } else {
-				$return = -2;
-			}
-		}
+        if ($status){
+            $this->generateThumbnails();
+            $return = $this->save()->id;
+        } else {
+            $return = -2;
+        }
+
 		return $return;
 	}
 	

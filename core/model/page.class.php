@@ -30,7 +30,7 @@ class OPAM_Page extends OPAM_Content {
      * @return array
      */
     public function getParentsRef(){
-		return self::getList(array('types' => array('page'),'exclude' => array($this->id)),array('id','content_title'));
+		return self::getList(array('types' => array('page'),'exclude' => array($this->id)),array('id' => 'content_title'));
 	}
 
     /**
@@ -51,7 +51,7 @@ class OPAM_Page extends OPAM_Content {
 
     /**
      * @param OPAM_User $user
-     * @param array|null $types
+     * @param boolean $ignoreOnSiteMode
      * @return array
      */
     public static function getPagesByParents($user,$ignoreOnSiteMode = false){

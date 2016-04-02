@@ -65,7 +65,7 @@ class OPMA_System_Modules extends OPAL_Controller {
         $status = self::STATUS_ERROR;
         if ($module->id){
             $module = $module->getModuleObject();
-            $module->uninstall();
+            $module->uninstallModule();
             $msg = OPAL_Lang::t('ADMIN_MODULE_UNINSTALLED');
             $status = self::STATUS_COMPLETE;
         }

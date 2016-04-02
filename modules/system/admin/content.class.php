@@ -33,7 +33,7 @@ class OPMA_System_Content extends OPAL_Controller {
 		$params['types']   = OPAM_Content_Type::getTypes($this->allowed_type_type,$this->content_type);
 		$params['access_level'] = $this->user->get('user_status');
 		$params['list']    = OPAM_Content::getList($params,$type->getClass());
-		$listMoreData      = OPAM_Content::getListMoreData();
+        $listMoreData      = OPAM_Content::getListMoreData();
 		$params['class_fields'] = $this->list_class_fields;
 		if (isset($this->list_columns['content_user_id'])){
 			$params['refs']['content_user_id'] = OPAM_User::loadByIDs($listMoreData['content_user_id'],'user_name');
@@ -115,6 +115,7 @@ class OPMA_System_Content extends OPAL_Controller {
 					$values['content_field_'.$field_id] = $item->field($field_id);
 				}
 			}
+            $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
 			$form->setValues($values,$validate);
 			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 		} else {
@@ -165,7 +166,7 @@ class OPMA_System_Content extends OPAL_Controller {
 						$item->setField($field_id,$values['content_field_'.$field_id]);
 					}
 				}
-				if (!$errors){
+                if (!$errors){
 					if ($id = $item->save()->id){
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){

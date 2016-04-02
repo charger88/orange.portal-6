@@ -507,6 +507,12 @@ aside#column nav ul li:hover ul {
 	z-index: 300;
 }
 
+.form-default .form-area-buttons > *,
+.buttons-area > * {
+    float: left;
+}
+
+
 .form-default fieldset,
 .form-default .form-element-wrapper {
 	margin-bottom: 2.2rem;

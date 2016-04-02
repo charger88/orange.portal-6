@@ -2,11 +2,11 @@
 
 class OPMA_System_Log extends OPAL_Controller {
 	
-	public function indexAction($log = null){
+	public function indexAction(){
 		$params = array();
 		$params['offset']  = intval($this->getGet('offset',0));
         $params['limit']   = intval($this->getGet('limit',50));
-        $params['log']     = $log;
+        $params['log']     = $this->getGet('log_log',null);
 		if ($params['list'] = OPAM_Log::loadLog($params)){
 			foreach ($params['list'] as $item){
 				$item->set('log_message',vsprintf(OPAL_Lang::t($item->get('log_message')),$item->get('log_vars')));
