@@ -20,7 +20,7 @@
 		<tr <?php if (isset($class_fields) && $class_fields){ ?>class="<?php foreach ($class_fields as $field){ echo $this->esc($field).'_'.$this->esc($item->get($field)).' '; } ?>"<?php } ?>>
 			<?php foreach ($columns as $column => $column_params){ 
 			
-				$val = $column{0} != '_' ? $item->get($column) : null;
+				$val = $column{0} != '_' ? (is_array($item) ? $item[$column] : $item->get($column)) : null;
 				
 				echo '<td class="op-admin-list-table-td-'.$this->esc($column).(isset($column_params['class']) ? ' '.$this->esc($column_params['class']) : '').'">';
 				
@@ -43,7 +43,7 @@
 				if (isset($column_params['text'])){
 					echo $this->esc($column_params['text']);
 				} else {
-					$colValue = $item->get($column);
+					$colValue = is_array($item) ? $item[$column] : $item->get($column);
 					if (is_array($colValue)){
 						if (isset($refs[$column])){
 							foreach ($colValue as $i => $colValueItem){
@@ -61,11 +61,11 @@
 						$this->ee(implode(', ', $colValue));
 					} else {
 						echo isset($refs[$column])
-							? ( isset($refs[$column][$item->get($column)])
-								? $this->esc($refs[$column][$item->get($column)])
+							? ( isset($refs[$column][$colValue])
+								? $this->esc($refs[$column][$colValue])
 								: ( $val ? $this->esc($val) : '&mdash;' )
 							)
-							: ( ($item->type($column) == 'TIME')
+							: ( (!is_array($item) && ($item->type($column) == 'TIME'))
                                 ? $this->getTime($val)
                                 : $this->esc($val)
                             )

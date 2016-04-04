@@ -295,7 +295,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$user_id = isset($params['user_id'])? $params['user_id']: null;
 		$parent_id = isset($params['parent_id'])? $params['parent_id']: null;
 
-		$limit = isset($params['limit'])? $params['limit']: 30;
+		$limit = isset($params['limit'])? $params['limit']: null;
 		$offset = isset($params['offset'])? $params['offset']: 0;
 		$order = isset($params['order'])? $params['order']: 'content_time_published';
 		$desc = isset($params['desc']) && $params['desc'] ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC;
@@ -319,18 +319,17 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
         if ($fields){
             $fieldsSelect = new \Orange\Database\Queries\Select('content_field');
             $fieldsSelect->addField('content_id');
-            $first = true;
             foreach ($fields as $param => $value){
-                if ($first){
-                    $first = false;
-                } else {
-                    $fieldsSelect->addWhereOperator(Condition::L_OR);
-                }
-                $fieldsSelect->addWhere(new Condition('content_field_name','=',$param));
+                $fieldsSelect->addWhere(new Condition('content_field_name','=',$param),Condition::L_OR);
                 $fieldsSelect->addWhere(new Condition('content_field_value',strpos($value,'%') !== false ? 'LIKE' : '=',$value));
-
             }
-            $select->addWhere(new Condition('id',$fields_not ? 'NOT IN' : 'IN',$fieldsSelect),Condition::L_AND);
+            if ($fids = $fieldsSelect->execute()->getResultList('content_id')) {
+                $select->addWhere(new Condition('id', $fields_not ? 'NOT IN' : 'IN', $fids));
+            } else {
+                if (!$fields_not){
+                    return array();
+                }
+            }
         }
 
 		if (!is_null($search)) {

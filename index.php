@@ -4,5 +4,11 @@
 error_reporting(E_ALL);
 define('OP_SYS_ROOT',__DIR__ . '/');
 require_once OP_SYS_ROOT.'core/autoloader.php';
-$portal = OPAL_Portal::getInstance();
-echo $portal->execute();
+try {
+    $portal = OPAL_Portal::getInstance();
+    echo $portal->execute();
+} catch (Exception $e){
+    header('Content-type: text/plain');
+    echo 'Orange.Portal uncaught exception: '.$e->getMessage()."\n";
+    echo $e->getTraceAsString();
+}

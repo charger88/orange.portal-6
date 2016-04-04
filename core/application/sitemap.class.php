@@ -27,7 +27,7 @@ class OPAL_Sitemap {
         $element = $this->sitemap->createElement($this->index ? 'sitemap' : 'url');
         $element->appendChild(new DOMElement('loc', $loc));
         if (!is_null($lastmod)){
-            $element->appendChild(new DOMElement('lastmod', date(DATE_ATOM,strtotime($lastmod))));
+            $element->appendChild(new DOMElement('lastmod', date(DATE_ATOM,$lastmod)));
         }
         if (!is_null($priority)){
             $element->appendChild(new DOMElement('priority', $priority));
