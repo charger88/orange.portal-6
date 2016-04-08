@@ -19,7 +19,8 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 		$content_type_hidden_options = array(
 			'content_title'           => OPAL_Lang::t('content_title'),
 			'content_parent_id'       => OPAL_Lang::t('content_parent_id'),
-			'content_access_groups'   => OPAL_Lang::t('content_access_groups'),
+            'content_tags'            => OPAL_Lang::t('content_tags'),
+            'content_access_groups'   => OPAL_Lang::t('content_access_groups'),
 			'content_lang'            => OPAL_Lang::t('content_lang'),
 			'content_area'            => OPAL_Lang::t('content_area'),
 			'content_slug'            => OPAL_Lang::t('content_slug'),

@@ -102,10 +102,11 @@ class OPAM_Page extends OPAM_Content {
      */
     public static function getTreeMenu($user,$lang,$root = 0,$tree_levels = 0){
 		$params = array(
-			'types'       => OPAM_Content_Type::getPageTypes(),
-			'access_user' => $user,
-			'lang'        => array($lang,''),
-            'order'       => 'content_order',
+			'types'        => OPAM_Content_Type::getPageTypes(),
+			'access_user'  => $user,
+			'lang'         => array($lang,''),
+            'on_site_mode' => [2,3],
+            'order'        => 'content_order',
 		);
 		$menu = array();
 		$pages = self::getList($params,__CLASS__);

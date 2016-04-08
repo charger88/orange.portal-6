@@ -19,8 +19,11 @@ class OPMC_System_Search extends OPAL_Controller {
 	}
 	
 	private function results($search){
+        $search = trim($search);
         OPAL_Portal::getInstance()->content->set('content_title', OPAL_Lang::t('SEARCH'));
-        if (strlen($search) > 256){
+        if (empty($search)){
+            return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_IS_EMPTY'), self::STATUS_NOTFOUND);
+        } else if (strlen($search) > 256){
             return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_TOO_LARGE'), self::STATUS_NOTFOUND);
         } else if (substr_count($search,' ') >= 10){
             return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_TOO_MUCH_WORDS'), self::STATUS_NOTFOUND);

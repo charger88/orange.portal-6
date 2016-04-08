@@ -116,6 +116,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				}
 			}
             $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
+            $values['content_tags'] = $item->id ? implode(', ',OPAM_Content_Tag::getTagsForContent($item->id)) : '';
 			$form->setValues($values,$validate);
 			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 		} else {
@@ -168,6 +169,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				}
                 if (!$errors){
 					if ($id = $item->save()->id){
+                        OPAM_Content_Tag::updateTagsForContent($id,explode(', ',$values['content_tags']));
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){
 								$textObject = $item->text($text_id);

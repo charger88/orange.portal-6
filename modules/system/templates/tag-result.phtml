@@ -1,0 +1,16 @@
+<div class="tag-results">
+<?php foreach ($list as $item) { $url = $item->getURL(OPAL_Portal::config('system_default_lang')); ?>
+	<article>
+        <h3><a href="<?php $this->ee($url); ?>"><?php $this->ee($item->get('content_title')); ?></a></h3>
+        <?php $text = $item->text('excerpt'); if ($text->id){ ?>
+        <div class="text news-excerpt"><?php echo $text->format(); ?></div>
+        <?php } ?>
+    </article>
+<?php } ?>
+</div>
+<?php
+echo $this->fetch('system/paginator-arrows.phtml', array(
+    'listcount' => count($list),
+    'limit'     => $limit,
+    'offset'    => $offset,
+));

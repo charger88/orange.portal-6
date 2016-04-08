@@ -31,6 +31,7 @@ $lang = array(
     'ADMIN_SAVE'              => 'Save',
     'ADMIN_SAVED'             => 'Saved',
     'ADMIN_DELETE'            => 'Delete',
+    'ADMIN_DELETED'           => 'Deleted',
     'ADMIN_MANAGE'            => 'Manage',
 	'ADMIN_ENABLED'           => 'Enabled',
     'ADMIN_DISABLED'          => 'Disabled',
@@ -55,6 +56,7 @@ $lang = array(
 	'content_title'           => 'Title',
 	'content_text_format'     => 'Text format',
 	'content_parent_id'       => 'Page parent',
+    'content_tags'            => 'Tags',
 	'content_order'           => 'Order',
 	'content_access_groups'   => 'Access to groups',
 	'content_lang'            => 'Language',
@@ -130,6 +132,7 @@ $lang = array(
     'STATUS_COMPLETE'   => 'Complete',
 
 	'BLOCK_ID'                => 'Block ID',
+    'UNDEFINED_IN_THEME'      => 'Not defined in theme',
 
 	'LANG_OPTIONS'            => 'Language options',
     'PUBLISHING'              => 'Publishing',

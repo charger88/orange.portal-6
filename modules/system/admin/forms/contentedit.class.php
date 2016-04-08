@@ -58,10 +58,15 @@ class OPMX_System_ContentEdit extends OPAL_Form {
 			$this->addFieldset(null, 'column');
 		}
 		
-		if (!in_array('content_parent_id', $params['hide'])){
+		if (!in_array('content_parent_id', $params['hide']) || !in_array('content_tags', $params['hide'])){
 			$this->addFieldset($this->lng('STRUCTURE'), 'column', 'structure');
-			$this->addField('content_parent_id', 'select', $this->lng('content_parent_id'), array('options' => isset($params['options']['content_parent_id']) ? $params['options']['content_parent_id'] : array()), 'column');
-			$this->addFieldset(null, 'column');
+            if (!in_array('content_parent_id', $params['hide'])) {
+                $this->addField('content_parent_id', 'select', $this->lng('content_parent_id'), array('options' => isset($params['options']['content_parent_id']) ? $params['options']['content_parent_id'] : array()), 'column');
+            }
+            if (!in_array('content_tags', $params['hide'])) {
+                $this->addField('content_tags', 'text', $this->lng('content_tags'), array(), 'column');
+            }
+            $this->addFieldset(null, 'column');
 		}
 		
 		if (
