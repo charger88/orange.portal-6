@@ -177,7 +177,9 @@ class OPAL_Portal {
 		if ($installed){
 			self::$configs = $config;
             $connection = new \Orange\Database\Connection($config['db']['master']);
-            $connection->logfile = OP_SYS_ROOT.'database.log';
+            if (!empty($config['db_debug'])) {
+                $connection->logfile = OP_SYS_ROOT . 'database.log';
+            }
             if ($config = OPAM_Config::loadActive()){
 				self::$configs = array_merge($config,self::$configs);
 			}

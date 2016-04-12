@@ -39,5 +39,18 @@ class OPAL_Sitemap {
         $this->sitemap->appendChild($this->root);
         return $this->sitemap->saveXML();
     }
+
+    public static function rebuild(){
+        $index = new OPAL_Sitemap(true);
+        if ($sitemaps = OPAL_Portal::getInstance()->processHooks('adminCenter_sitemap')) {
+            foreach ($sitemaps as $sitemapsByHook) {
+                foreach ($sitemapsByHook as $sitemap_name => $lastmod) {
+                    $index->addElement(OP_WWW.'/sitemap_'.$sitemap_name.'.xml', $lastmod);
+                }
+            }
+        }
+        $indexFile = new OPAL_File('sitemap.xml','files/root');
+        $indexFile->saveData($index->get());
+    }
 	
 }

@@ -63,4 +63,46 @@ class OPAM_Content_Tag extends \Orange\Database\ActiveRecord {
         ;
     }
 
+    public static function getCloudData($limit){
+        $tags = self::getPopularTags($limit);
+        return $tags;
+    }
+
+    public static function getPopularTags($limit){
+        return (new \Orange\Database\Queries\Select(static::$table))
+            ->addField('content_tag_value')
+            ->addField(['count', '*'], 'cnt')
+            ->setGroupBy('content_tag_value')
+            ->setOrder('cnt', \Orange\Database\Queries\Select::SORT_DESC)
+            ->setLimit($limit)
+            ->execute()
+            ->getResultColumn('content_tag_value','cnt')
+        ;
+    }
+
+    public static function tagsStats($tags){
+        $min = $max = null;
+        foreach ($tags as $cnt){
+            if (is_null($min)){
+                $min = $max = $cnt;
+            } else {
+                if ($cnt > $max){
+                    $max = $cnt;
+                }
+                if ($cnt < $min){
+                    $min = $cnt;
+                }
+            }
+        }
+        $avg = $tags ? array_sum($tags) / count($tags) : 0;
+        return [$min, $max, $avg];
+    }
+
+    public static function deleteTagsByContent($id){
+        (new \Orange\Database\Queries\Delete(static::$table))
+            ->addWhere(new Condition('content_id', '=', $id))
+            ->execute()
+        ;
+    }
+
 }

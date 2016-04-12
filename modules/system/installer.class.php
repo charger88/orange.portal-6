@@ -90,7 +90,9 @@ class OPMI_System extends OPAL_Installer {
         ];
         $connection = new \Orange\Database\Connection($config['db']['master']);
         try {
-            $connection->logfile = OP_SYS_ROOT.'database.log';
+            if (!empty($config['db_debug'])) {
+                $connection->logfile = OP_SYS_ROOT . 'database.log';
+            }
             $connection->driver->connect();
             $php_code = '<'.'?'.'php'
                 ."\n".'$config[\'db\'] = ['
@@ -225,7 +227,7 @@ class OPMI_System extends OPAL_Installer {
 				'content_type_type'       => 2,
 				'content_type_multilang'  => true,
 				'content_type_class'      => 'OPAM_Block',
-				'content_type_hidden'     => array('content_type','content_parent_id','content_tags','content_order','content_image'),
+				'content_type_hidden'     => array('content_type','content_tags','content_time_published','content_order','content_image'),
 				'content_type_fields'     => array(),
 				'content_type_texts'      => array('text' => 'ADMIN_CONTENT_TEXT_CONTENT'),
 			),

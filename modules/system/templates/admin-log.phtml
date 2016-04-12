@@ -4,7 +4,7 @@
     <dt><?php $this->el('log_status'); ?></dt>
     <dd><?php $this->el($refs['log_status'][$log->get('log_status')]); ?></dd>
     <dt><?php $this->el('log_time'); ?></dt>
-    <dd><?php $this->ee($log->get('log_time')); ?></dd>
+    <dd><?php $this->ee($this->getTime($log->get('log_time'))); ?></dd>
     <dt><?php $this->el('log_uri'); ?></dt>
     <dd><?php $this->ee($log->get('log_uri')); ?></dd>
     <dt><?php $this->el('log_ip'); ?></dt>

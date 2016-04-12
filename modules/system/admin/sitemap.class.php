@@ -3,16 +3,7 @@
 class OPMA_System_Sitemap extends OPAL_Controller {
 
     public function rebuildAction(){
-        $index = new OPAL_Sitemap(true);
-        if ($sitemaps = OPAL_Portal::getInstance()->processHooks('adminCenter_sitemap')) {
-            foreach ($sitemaps as $sitemapsByHook) {
-                foreach ($sitemapsByHook as $sitemap_name => $lastmod) {
-                    $index->addElement(OP_WWW.'/sitemap_'.$sitemap_name.'.xml', $lastmod);
-                }
-            }
-        }
-        $indexFile = new OPAL_File('sitemap.xml','files/root');
-        $indexFile->saveData($index->get());
+        OPAL_Sitemap::rebuild();
         return $this->msg(OPAL_Lang::t('SITEMAP_WAS_REBUILT'), self::STATUS_OK, OP_WWW.'/admin');
     }
 
@@ -58,7 +49,6 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                 $list = OPAM_Content::getList(array(
                     'types' => array($sitemap_name),
                     'access_user' => new OPAM_User(),
-                    'status_min'  => 5,
                     'fields'      => $fields,
                     'fields_not'  => true,
                 ),'OPAM_Content');

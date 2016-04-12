@@ -20,7 +20,6 @@ class OPMC_News_Main extends OPAL_Controller {
             'types'       => array('news_item'),
             'parent_id'   => $categoryID,
             'access_user' => $this->user,
-            'status_min'  => 5,
             'limit'       => $limit = $this->arg('limit',$is_block ? 5 : 10),
             'offset'      => $is_block ? 0 : $offset,
             'desc'        => true,

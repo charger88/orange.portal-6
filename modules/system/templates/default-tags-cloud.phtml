@@ -1,0 +1,11 @@
+<div class="tags-cloud">
+<?php foreach ($tags as $tag => $count){
+    if ($count > $avg){
+        $pc = ( ($count - $avg) / ($max - $avg) ) * 100 + 100;
+    } else if ($count < $avg){
+        $pc = ( ($count - $min) / ($avg - $min) ) * 30 + 70;
+    } else {
+        $pc = 100;
+    }
+    ?><a href="<?php echo OP_WWW.'/module/system/tags/search/'.$this->esc($tag); ?>" style="font-size: <?php $this->ee($pc); ?>%;"><?php echo str_replace(' ', '&nbsp;', $this->esc($tag)); ?></a> <?php } ?>
+</div>

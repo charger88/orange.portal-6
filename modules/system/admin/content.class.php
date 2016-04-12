@@ -30,7 +30,8 @@ class OPMA_System_Content extends OPAL_Controller {
 		$params['order']   = $this->getGet('order',$this->arg('order','content_time_published'));
 		$params['desc']    = (bool)$this->getGet('desc',$this->arg('desc',true));
 		$params['offset']  = intval($this->getGet('offset',0));
-		$params['types']   = OPAM_Content_Type::getTypes($this->allowed_type_type,$this->content_type);
+        $params['status_min'] = OPAM_Content::STATUS_CANCELED;
+        $params['types']   = OPAM_Content_Type::getTypes($this->allowed_type_type,$this->content_type);
 		$params['access_level'] = $this->user->get('user_status');
 		$params['list']    = OPAM_Content::getList($params,$type->getClass());
         $listMoreData      = OPAM_Content::getListMoreData();
@@ -168,8 +169,10 @@ class OPMA_System_Content extends OPAL_Controller {
 					}
 				}
                 if (!$errors){
-					if ($id = $item->save()->id){
-                        OPAM_Content_Tag::updateTagsForContent($id,explode(', ',$values['content_tags']));
+					if ($id = $item->save()->id) {
+                        if (isset($values['content_tags'])) {
+                            OPAM_Content_Tag::updateTagsForContent($id, trim($values['content_tags']) ? explode(',', $values['content_tags']) : []);
+                        }
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){
 								$textObject = $item->text($text_id);

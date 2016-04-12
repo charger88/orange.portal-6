@@ -110,6 +110,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                 ->addWhere(new Condition('content_id', '=', $this->id))
                 ->execute()
             ;
+            OPAM_Content_Tag::deleteTagsByContent($this->id);
         }
         return parent::delete($null);
     }
@@ -286,7 +287,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
         $tag = isset($params['tag'])? $params['tag']: null;
         $fields = isset($params['fields'])? $params['fields'] : null;
         $fields_not = !empty($params['fields_not']);
-		$status_min = isset($params['status_min'])? $params['status_min']: null;
+		$status_min = isset($params['status_min'])? $params['status_min']: self::STATUS_ENABLED;
 		$status_max = isset($params['status_max'])? $params['status_max']: null;
 		$access_user = isset($params['access_user'])? $params['access_user']: null;
 		$lang = isset($params['lang'])? $params['lang']: null;
@@ -475,13 +476,14 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @return array
      */
     public function getDefaultLanguageRef($lang) {
-		$tmp = self::getList(array(
+		$tmp = self::getList([
             'types' => $this->get('content_type'),
-            'lang' => $lang
-		), array(
+            'lang' => $lang,
+            'status_min' => OPAM_Content::STATUS_DRAFT,
+		], [
             'id',
             'content_title'
-		));
+		]);
         $defaultLanguageRef = [];
         foreach ($tmp as $t){
             $defaultLanguageRef[$t['id']] = $t['content_title'];
@@ -552,9 +554,10 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                     $select->addWhere(new Condition('content_default_lang_id', '=', $id_def));
                 $select->addWhereBracket(false);
 			$select->addWhereBracket(false);
-			if ($pages = self::getList(array(
-					'access_user' => $user
-			), null, $select)) {
+			if ($pages = self::getList([
+                'access_user' => $user,
+                'status_min' => OPAM_Content::STATUS_DRAFT,
+			], null, $select)) {
 				foreach($pages as $page){
 					$links[$page->get('content_lang')]= $page->getURL($default_lang);
 				}
@@ -575,7 +578,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     public static function reorder($root,$order,$group_field,$access_user){
         $updated = array();
         if ($order){
-            if ($list = self::getList(array('IDs' => $order,'access_user' => $access_user), __CLASS__)){
+            if ($list = self::getList(['IDs' => $order,'access_user' => $access_user], __CLASS__)){
                 foreach ($order as $ord => $id){
                     if (isset($list[$id])){
                         $item = $list[$id];

@@ -25,7 +25,7 @@ class OPMC_System_Menu extends OPAL_Controller {
 	
 	private function index(){
 		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-menu.phtml',array(
-			'menu' => OPAM_Page::getMenu($this->user)
+			'menu' => OPAM_Page::getMenu($this->user,$this->arg('root',0))
 		));
 	}
 	

@@ -16,7 +16,8 @@ class OPMX_System_Install extends OPAL_Form {
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_SITE').'</h3>', 'step-2');
 		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array(), 'step-2');
 		$this->addField('copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array(), 'step-2');
-		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2'); //TODO Get DB drivers
+        //TODO Get DB drivers
+		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2');
 		
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_LANGUAGE').'</h3>', 'step-3');
 		$languages = OPAL_Lang::langs();

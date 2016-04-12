@@ -38,6 +38,7 @@ class OPMA_News_Main extends OPMA_System_Content {
                 'types' => OPAM_Content_Type::getPageTypes(),
                 'IDs' => $IDs,
                 'order' => 'content_title',
+                'status_min' => OPAM_Content::STATUS_DRAFT,
             ), 'OPAM_Page');
             $categories = array();
             foreach ($pages as $page){
@@ -59,6 +60,7 @@ class OPMA_News_Main extends OPMA_System_Content {
                 'types' => OPAM_Content_Type::getPageTypes(),
                 'IDs' => $IDs,
                 'order' => 'content_title',
+                'status_min' => OPAM_Content::STATUS_DRAFT,
             ), 'OPAM_Page');
         } else {
             $pages = array();

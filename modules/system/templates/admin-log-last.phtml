@@ -2,7 +2,7 @@
 <?php if ($log){ ?>
 <table>
 <?php foreach ($log as $item){ ?>
-	<tr><td title="<?php $this->ee(date("d.m.Y",strtotime($item->get('log_time')))); ?>"><?php $this->ee(date("H:i",strtotime($item->get('log_time')))); ?></td><td><?php $this->ee(OPAL_Lang::t($item->get('log_message'),$item->get('log_vars'))); ?></td></tr>
+	<tr><td title="<?php echo $this->getTime($item->get('log_time')); ?>"><?php $this->ee(date("H:i",$item->get('log_time'))); ?></td><td><?php $this->ee(OPAL_Lang::t($item->get('log_message'),$item->get('log_vars'))); ?></td></tr>
 <?php } ?>
 </table>
 <?php } ?>
