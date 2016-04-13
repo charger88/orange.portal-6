@@ -246,6 +246,8 @@ $lang = array(
     'ADMIN_FILE_SIZE'         => 'Size',
     'ADMIN_FILE_MTIME'        => 'Modification time',
 
+    'ADMIN_FILEPATH_FAIL'     => 'Filepath is incorrect',
+
     'ADMIN_UPLOAD' => 'Upload',
 
     'ADMIN_SYSTEM_MODULE_NOT_EDITABLE' => 'Error! System module is not editable.',
@@ -292,6 +294,7 @@ $lang = array(
 	'INSTALL_DB_DRIVER'      => 'Driver',
 	'INSTALL_SITE'           => 'Site',
 	'INSTALL_SITENAME'       => 'Site name',
+    'INSTALL_SITECODE'       => 'Production domain',
 	'INSTALL_DOMAIN'         => 'Domain',
 	'INSTALL_BASE_DIR'       => 'Directory',
 	'INSTALL_COPYRIGHT'      => 'Copyright',

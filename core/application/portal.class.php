@@ -5,7 +5,14 @@
  * @author Mikhail Kelner
  */
 class OPAL_Portal {
-	
+
+    /**
+     * Current site code
+     * @static
+     * @var string
+     */
+    public static $sitecode = 'default';
+
 	/**
 	 * Current language of the website
 	 * @static
@@ -166,14 +173,33 @@ class OPAL_Portal {
 	private function loadConfig(){
 		$config = array();
 		$installed = false;
-		if (is_file($filename = OP_SYS_ROOT.'config/default.php')){
-			require_once $filename;
-			$installed = true;
-		}
-		if (is_file($filename = OP_SYS_ROOT.'config/'.self::$enviroment['hostname'].'.php')){
-			require_once $filename;
-			$installed = true;
-		}
+        if (is_file($filename = OP_SYS_ROOT.'sites/'.self::$enviroment['hostname'].'/config/default.php')) {
+            require_once $filename;
+            if (is_file($filename = OP_SYS_ROOT . 'sites/' . self::$enviroment['hostname'] . '/config/' . self::$enviroment['hostname'] . '.php')) {
+                require_once $filename;
+            }
+            OPAL_Portal::$sitecode = self::$enviroment['hostname'];
+            $installed = true;
+        } else {
+            $sites = new OPAL_File('sites');
+            if ($sites->dir) {
+                $sites = $sites->dirFiles();
+                foreach ($sites as $site) {
+                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site . '/config/' . self::$enviroment['hostname'] . '.php')) {
+                        if (is_file($filename1 = OP_SYS_ROOT.'sites/' . $site . '/config/default.php')) {
+                            require_once $filename1;
+                        }
+                        require_once $filename;
+                        OPAL_Portal::$sitecode = $site;
+                        $installed = true;
+                        break;
+                    }
+                }
+                if (!$installed) {
+                    throw new Exception('Unknown site');
+                }
+            }
+        }
 		if ($installed){
 			self::$configs = $config;
             $connection = new \Orange\Database\Connection($config['db']['master']);

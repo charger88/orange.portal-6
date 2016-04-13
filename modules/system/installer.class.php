@@ -9,6 +9,7 @@ class OPMI_System extends OPAL_Installer {
 	);
 	
 	public function installModule($params){
+        OPAL_Portal::$sitecode = $params['sitecode'];
 		$configname = isset($params['configname']) ? $params['configname'] : 'default.php';
 		$this->params = array_merge($this->params,$params);
 		$this->errors = array();
@@ -109,7 +110,7 @@ class OPMI_System extends OPAL_Installer {
                 ."\n\t".']'
                 ."\n".'];'
             ;
-            $file = new OPAL_File($configname,'config');
+            $file = new OPAL_File($configname,'sites/'.OPAL_Portal::$sitecode.'/config');
             if (!($result = $file->saveData($php_code))){
                 $this->errors['db_prefix'] = 'Config file was not saved';
             }
@@ -578,11 +579,12 @@ class OPMI_System extends OPAL_Installer {
     }
 
     private function createFiles(){
-        $file = new OPAL_File('robots.txt','files/root');
+        $root_path = 'sites/'.OPAL_Portal::$sitecode.'/static/root';
+        $file = new OPAL_File('robots.txt',$root_path);
         $file->saveData("User-agent: *\nAllow: /");
-        $file = new OPAL_File('favicon.ico','files/root');
+        $file = new OPAL_File('favicon.ico',$root_path);
         $file->saveData(base64_decode('AAABAAMAMDACAAEAAQAwAwAANgAAACAgAgABAAEAMAEAAGYDAAAQEAIAAQABALAAAACWBAAAKAAAADAAAABgAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'));
-        $file = new OPAL_File('sitemap.xml','files/root');
+        $file = new OPAL_File('sitemap.xml',$root_path);
         $file->saveData((new OPAL_Sitemap(true))->get());
     }
 	

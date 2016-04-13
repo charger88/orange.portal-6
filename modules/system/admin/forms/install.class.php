@@ -14,8 +14,9 @@ class OPMX_System_Install extends OPAL_Form {
 		$this->addField('db_type', 'select', OPAL_Lang::t('INSTALL_DB_DRIVER'), array('options' => array('MySQL' => 'MySQL'), 'value' => 'mi', 'required' => 'required'), 'step-1');
 		
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_SITE').'</h3>', 'step-2');
-		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array(), 'step-2');
-		$this->addField('copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array(), 'step-2');
+		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array('required' => 'required'), 'step-2');
+        $this->addField('sitecode', 'text', OPAL_Lang::t('INSTALL_SITECODE'), array('required' => 'required'), 'step-2');
+        $this->addField('copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array(), 'step-2');
         //TODO Get DB drivers
 		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2');
 		
@@ -31,7 +32,7 @@ class OPMX_System_Install extends OPAL_Form {
 		
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_EMAIL').'</h3>', 'step-5');
 		$this->addField('email_public', 'email', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC'), array('required' => 'required'), 'step-5');
-		$this->addField('email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array(), 'step-5');
+		$this->addField('email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array('required' => 'required'), 'step-5');
 				
 		$this->addField('step', 'hidden', null, array(), 'step-last');
 		$this->addField('go', 'submit', OPAL_Lang::t('INSTALL'), array(), 'step-last');

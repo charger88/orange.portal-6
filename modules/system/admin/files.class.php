@@ -11,7 +11,7 @@ class OPMA_System_Files extends OPAL_Controller {
     public function readdirAjax(){
         //TODO XXX Add checkings for path!!!
         $org_path = $this->getGet('path');
-        $path = trim('files'.'/'.$org_path,'/');
+        $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$org_path,'/');
         if ($this->checkFilepath($path)){
             $dir = new OPAL_File($path);
             if ($dir->dir){
@@ -38,14 +38,14 @@ class OPMA_System_Files extends OPAL_Controller {
                 return $this->msg(OPAL_Lang::t('ADMIN_FILES_NOT_DIR'),self::STATUS_WARNING);
             }
         } else {
-        return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'),self::STATUS_ERROR);
+            return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'),self::STATUS_ERROR);
         }
     }
 
     public function uploadAjax(){
         //TODO XXX Add checkings for path!!!
 
-        $path = trim('files' . '/' . $this->getPost('path'), '/');
+        $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$this->getPost('path'), '/');
         if ($this->checkFilepath($path)){
             $files = $this->getFile('uploads');
             if (!empty($files['name'])){
@@ -80,7 +80,7 @@ class OPMA_System_Files extends OPAL_Controller {
     }
 
     public function deleteAjax(){
-        $path = trim('files' . '/' . $this->getPost('file'), '/');
+        $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$this->getPost('file'), '/');
         if ($this->checkFilepath($path)){
             $file = new OPAL_File($path);
             $file->delete();
@@ -99,8 +99,7 @@ class OPMA_System_Files extends OPAL_Controller {
             }
         }
         if ($status){
-            $status = ( (count($path) >= 1) && ($path[0] == 'files') )
-                || ( (count($path) >= 3) && ($path[0] == 'themes') && ($path[2] == 'static') );
+            $status = ( (count($path) >= 3) && ($path[0] == 'sites') && ($path[1] == OPAL_Portal::$sitecode) && ($path[2] == 'static') );
         }
         return $status;
     }

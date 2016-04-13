@@ -95,7 +95,7 @@ abstract class OPAL_Theme {
      */
     public function getHeadStyleFiles(){
 		if (self::$head_style && OPAL_Portal::config('system_cache_css',false)){
-			$filename = 'tmp/cache/static/style_'.md5(implode(';', self::$head_style)).'.css';
+			$filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/style_'.md5(implode(';', self::$head_style)).'.css';
 			$file = new OPAL_File($filename);
 			$data = '';
 			if (!$file->file){
@@ -123,7 +123,7 @@ abstract class OPAL_Theme {
      */
     public function getHeadScriptFiles(){
         if (self::$head_scripts && OPAL_Portal::config('system_cache_js',false)){
-            $filename = 'tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
+            $filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
             $file = new OPAL_File($filename);
             $data = '';
             if (!$file->file){

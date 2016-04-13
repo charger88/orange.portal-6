@@ -255,7 +255,7 @@ class OPAL_Controller {
     private function getMethodFileName($methodname, $request){
 		if (isset($this->cachemap[$methodname])){
 			$map = $this->cachemap[$methodname];
-			$file = 'tmp/cache/methods/'.get_class($this).'/'.$methodname;
+			$file = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods/'.get_class($this).'/'.$methodname;
 			if (in_array('id_is_page_id',$map)){
 				$file .= '/'.OPAL_Portal::getInstance()->content->id;
 			}
@@ -333,7 +333,7 @@ class OPAL_Controller {
      * @param int|null $id
      */
     public function deleteMethodCache($classname = null,$methodname = null,$id = null){
-		$path = 'tmp/cache/methods';
+		$path = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods';
 		$path .= !is_null($classname) ? '/'.$classname : '/'.get_class($this);
 		$path .= !is_null($methodname) ? '/'.$methodname : '';
 		$path .= !is_null($id) ? '/'.intval($id) : '';

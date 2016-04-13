@@ -8,7 +8,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
     }
 
     public function sitemapHook(){
-        $index = new OPAL_File('sitemap.xml','files/root');
+        $index = new OPAL_File('sitemap.xml','sites/'.OPAL_Portal::$sitecode.'/static/root');
         $sitemap = simplexml_load_string($index->getData());
         $files = array();
         $files['sitemap.xml'] = array(
@@ -18,7 +18,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
         if ($sitemap){
             foreach ($sitemap as $element) {
                 $name = basename($element->loc);
-                $sfile = new OPAL_File($name,'files/root');
+                $sfile = new OPAL_File($name,'sites/'.OPAL_Portal::$sitecode.'/static/root');
                 if ($sfile->file){
                     $sitemapXML = simplexml_load_string($sfile->getData());
                     $items = $sitemapXML ? count($sitemapXML) : 0;
@@ -53,7 +53,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                     'fields_not'  => true,
                 ),'OPAM_Content');
                 $lTime = 0;
-                $indexFile = new OPAL_File('sitemap_'.$sitemap_name.'.xml', 'files/root');
+                $indexFile = new OPAL_File('sitemap_'.$sitemap_name.'.xml', 'sites/'.OPAL_Portal::$sitecode.'/static/root');
                 if ($list) {
                     $count = 0;
                     foreach ($list as $item) {
