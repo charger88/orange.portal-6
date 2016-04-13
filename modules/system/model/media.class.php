@@ -33,7 +33,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		$path .= '/';
 		$path .= ( $th && isset(self::$th_sizes[$th]) ) ? 'th/'.$th : 'org';
 		$path .= '/';
-		$path .= date('Y/m/d',$this->get('media_time_uploaded'));
+		$path .= date('Y/m/d',$this->id ? $this->get('media_time_uploaded') : time());
 		return $path;
 	}
 
