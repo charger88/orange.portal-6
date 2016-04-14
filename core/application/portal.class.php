@@ -327,7 +327,10 @@ class OPAL_Portal {
 	private function processPage(){
         OPAL_Lang::load('modules/system/lang', self::$sitelang);
         if (!empty($this->request[0]) && ($this->request[0] == 'admin')){ //TODO Add here install mode too
-            OPAL_Lang::load('modules/system/lang/admin', self::$sitelang);
+            $modules = OPAL_Module::getModules(true);
+            foreach ($modules as $module){
+                OPAL_Lang::load('modules/'.$module->get('module_code').'/lang/admin', self::$sitelang);
+            }
         }
         if (!$this->install_mode){
 			if (!empty($this->request[0]) && ($this->request[0] == 'module') && (count($this->request) >= 4)){
@@ -554,10 +557,7 @@ class OPAL_Portal {
 					}
 					if (!$cache_loaded) {
 						OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
-                        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){
-                            OPAL_Lang::load('modules/' . $module . '/lang/admin', self::$sitelang);
-                        }
-						$method_result = $methodReflection->invokeArgs($controller, $request);
+                        $method_result = $methodReflection->invokeArgs($controller, $request);
 						if ($is_method_cacheable) {
 							$controller->setMethodCache($methodname, $request, $method_result);
 						}

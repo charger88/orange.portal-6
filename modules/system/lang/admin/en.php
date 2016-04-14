@@ -237,7 +237,9 @@ $lang = array(
 	'OPT_system_cache_js'     => 'Group JavaScript files (experimental)',
 	'OPT_system_cache_method' => 'System cache (per controller\'s method)',
 
-	'ADMIN_URL_DOMAIN'        => 'Site domain',
+    'PORTAL_MODULE_NOT_FOUND'         => 'Module not found',
+
+    'ADMIN_URL_DOMAIN'        => 'Site domain',
 	'ADMIN_URL_PATH'          => 'Site path',
 	'ADMIN_URL_ACTION_INFO'   => 'You may be logged off after domain changing.',
 	'ADMIN_MOVE'              => 'Change domain',

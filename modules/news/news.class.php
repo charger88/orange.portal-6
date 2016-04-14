@@ -53,7 +53,6 @@ class OPMO_News extends OPAL_Module {
 	}
 
 	public function getAdminMenu(){
-        OPAL_Lang::load('modules/news/lang', OPAL_Portal::$sitelang);
 		$adminMenu = array(
 			'news' => array(
 				'name' => 'MODULE_NEWS',
