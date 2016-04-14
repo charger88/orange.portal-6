@@ -166,26 +166,26 @@ class OPAL_Portal {
 		self::$enviroment['hostname'] = $_SERVER['SERVER_NAME'];
 		self::$enviroment['request'] = $_SERVER['REQUEST_URI'];
 	}
-	
-	/**
-	 * Set config into property $configs
-	 */
-	private function loadConfig(){
-		$config = array();
-		$installed = false;
-        if (is_file($filename = OP_SYS_ROOT.'sites/'.self::$enviroment['hostname'].'/config/default.php')) {
+
+    /**
+     * Load config from files
+     */
+    private static function loadConfigFromFiles($hostname){
+        $config = [];
+        $installed = false;
+        if (is_file($filename = OP_SYS_ROOT.'sites/'.$hostname.'/config/default.php')) {
             require_once $filename;
-            if (is_file($filename = OP_SYS_ROOT . 'sites/' . self::$enviroment['hostname'] . '/config/' . self::$enviroment['hostname'] . '.php')) {
+            if (is_file($filename = OP_SYS_ROOT . 'sites/' . $hostname . '/config/' . $hostname . '.php')) {
                 require_once $filename;
             }
-            OPAL_Portal::$sitecode = self::$enviroment['hostname'];
+            OPAL_Portal::$sitecode = $hostname;
             $installed = true;
         } else {
             $sites = new OPAL_File('sites');
             if ($sites->dir) {
                 $sites = $sites->dirFiles();
                 foreach ($sites as $site) {
-                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site . '/config/' . self::$enviroment['hostname'] . '.php')) {
+                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site . '/config/' . $hostname . '.php')) {
                         if (is_file($filename1 = OP_SYS_ROOT.'sites/' . $site . '/config/default.php')) {
                             require_once $filename1;
                         }
@@ -200,6 +200,14 @@ class OPAL_Portal {
                 }
             }
         }
+        return [$installed,$config];
+    }
+
+	/**
+	 * Set config into property $configs
+	 */
+	private function loadConfig(){
+        list($installed, $config) = self::loadConfigFromFiles(self::$enviroment['hostname']);
 		if ($installed){
 			self::$configs = $config;
             $connection = new \Orange\Database\Connection($config['db']['master']);
@@ -633,5 +641,31 @@ class OPAL_Portal {
 		}
 		self::$hooks[$event][] = array($class,$method,$args);
 	}
+
+    public static function outputRootFile($filename){
+        if (strpos($filename,'/') === false) {
+            try {
+                self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
+                $fname = OP_SYS_ROOT . '/sites/' . self::$sitecode . '/static/root/' . $filename;
+                if (file_exists($fname)){
+                    if (strpos($filename, '.xml')){
+                        $type = 'text/xml';
+                    } else if (strpos($filename, '.txt')){
+                        $type = 'text/plain';
+                    } else if (strpos($filename, '.ico')){
+                        $type = 'image/x-icon';
+                    } else {
+                        $type = 'application/octet-stream';
+                    }
+                    header('Content-Type: ' .$type);
+                    header('Content-Length: ' . filesize($fname));
+                    readfile($fname);
+                    die();
+                }
+            } catch (Exception $e){}
+        }
+        header('HTTP/1.0 404 Not Found');
+        die();
+    }
 	
 }
