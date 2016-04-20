@@ -475,6 +475,7 @@ aside#column nav ul li:hover ul {
 }
 
 .form-default .form-element-submit,
+.form-default .form-element-button,
 .admin-button {
 	border: 0;
 	outline: none;

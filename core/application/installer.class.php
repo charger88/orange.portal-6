@@ -25,7 +25,7 @@ abstract class OPAL_Installer {
                 $classname::install();
             } catch (\Orange\Database\DBException $e){
                 $result = false;
-                $errors[] = $e->getMessage().' --- '.$e->getTraceAsString();
+                $errors[] = $classname . ' --- ' . $e->getMessage().' --- '.$e->getTraceAsString();
             }
             $success[] = $classname;
         }

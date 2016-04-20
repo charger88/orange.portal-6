@@ -117,7 +117,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				}
 			}
             $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
-            $values['content_tags'] = $item->id ? implode(', ',OPAM_Content_Tag::getTagsForContent($item->id)) : '';
+            $values['content_tags'] = $item->id ? implode(', ',$item->tags()) : '';
 			$form->setValues($values,$validate);
 			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 		} else {
@@ -141,7 +141,7 @@ class OPMA_System_Content extends OPAL_Controller {
      * @return array|null|string
      */
     protected function save($id){
-		$type = new OPAM_Content_Type('content_type_code',$this->getPost('content_type'));
+		$type = new OPAM_Content_Type('content_type_code',$this->getPost('content_type',$this->content_type));
 		$classname = $type->getClass();
         /** @var OPAM_Content $item */
         $item = new $classname($id);
@@ -171,7 +171,7 @@ class OPMA_System_Content extends OPAL_Controller {
                 if (!$errors){
 					if ($id = $item->save()->id) {
                         if (isset($values['content_tags'])) {
-                            OPAM_Content_Tag::updateTagsForContent($id, trim($values['content_tags']) ? explode(',', $values['content_tags']) : []);
+                            $item->updateTags(trim($values['content_tags']) ? explode(',', $values['content_tags']) : []);
                         }
 						if ($texts = $type->get('content_type_texts')){
 							foreach ($texts as $text_id => $text_name){

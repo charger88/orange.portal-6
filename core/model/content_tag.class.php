@@ -35,6 +35,7 @@ class OPAM_Content_Tag extends \Orange\Database\ActiveRecord {
     }
 
     public static function updateTagsForContent($id,$tags){
+        $tags = array_unique($tags);
         $old_tags = static::getTagsForContent($id);
         $old_tags = array_combine($old_tags, $old_tags);
         foreach ($tags as $i => $tag){
@@ -65,6 +66,7 @@ class OPAM_Content_Tag extends \Orange\Database\ActiveRecord {
 
     public static function getCloudData($limit){
         $tags = self::getPopularTags($limit);
+        ksort($tags);
         return $tags;
     }
 

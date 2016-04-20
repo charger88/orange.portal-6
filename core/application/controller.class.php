@@ -201,7 +201,11 @@ class OPAL_Controller {
 		if (!is_null($data)){
 			$msg_data = is_array($data) ? array_merge($msg_data,$data) : array_merge($msg_data,['html' => $data]);
 		}
-		return OPAL_Portal::env('ajax',false) && !$ignoreajax ? $msg_data : $this->templater->fetch('message.phtml',$msg_data);
+        if (OPAL_Portal::env('cli',false)) {
+            return $msg_data['message'];
+        } else {
+            return OPAL_Portal::env('ajax', false) && !$ignoreajax ? $msg_data : $this->templater->fetch('message.phtml', $msg_data);
+        }
 	}
 
     /**

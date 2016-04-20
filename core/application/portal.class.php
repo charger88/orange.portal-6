@@ -303,6 +303,7 @@ class OPAL_Portal {
 	
 	public function execute(){
 		$this->initRequestURI();
+		$this->templater->theme->loadLanguages(OPAL_Portal::$sitelang);
 		$response = $this->processPage();
 		$admin_panel = $this->content->get('content_type') == 'admin';
 		header('Content-Type: '.$this->data_type.'; charset=utf-8');
@@ -375,6 +376,7 @@ class OPAL_Portal {
 		}  else if (!$this->content->isAllowedForGroups($this->user->get('user_groups'))){
 			$status = 'unauthorized';
 		} else {
+            self::processHooks('mainContent_loaded');
 			$status = 'found';
 		}
 		return array($status,$this->executeContent($this->content));

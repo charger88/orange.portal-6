@@ -55,6 +55,11 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     /**
      * @var array
      */
+    private $tags = null;
+
+    /**
+     * @var array
+     */
     protected static $keys = array('content_type','content_parent_id','content_order','content_lang','content_area','content_slug','content_on_site_mode','content_status','content_time_published','content_user_id');
 
     /**
@@ -176,6 +181,25 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		}
 		return $this->fields[$field];
 	}
+
+    /**
+     * @return OPAM_Content
+     */
+    public function tags(){
+        if (is_null($this->tags)){
+            $this->tags = OPAM_Content_Tag::getTagsForContent($this->id);
+        }
+        return $this->tags;
+    }
+
+    /**
+     * @var string[] $tags
+     * @return OPAM_Content
+     */
+    public function updateTags($tags){
+        $this->tags = OPAM_Content_Tag::updateTagsForContent($this->id,$tags);
+        return $this;
+    }
 
     /**
      * @return array

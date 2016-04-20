@@ -68,9 +68,12 @@ class OPMI_System extends OPAL_Installer {
             $this->createFiles();
         }
         if (!empty($this->errors)){
-            $file = new OPAL_File($configname,'config');
-            $file->delete();
-
+            $site_config_dir = new OPAL_File($configname,'sites');
+            $site_config_dir->delete();
+            $site_config_dir = new OPAL_File('sites');
+            if (!$site_config_dir->dirFiles()){
+                $site_config_dir->delete();
+            }
         }
 		return $this->errors;
 	}

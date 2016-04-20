@@ -15,5 +15,6 @@ $lang = array(
     'SEARCH'                          => 'Search',
     'FIND'                            => 'Find',
     'SEARCH_BY_TAG_%s'                => 'Search by tag "%s"',
+    'EDIT'                            => 'Edit',
 
 );

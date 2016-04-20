@@ -219,6 +219,17 @@ abstract class OPAL_Theme {
 	}
 
     /**
+     * @param string $lang
+     * @return OPAL_Theme
+     */
+    public function loadLanguages($lang){
+        foreach ($this->folders as $folder) {
+            OPAL_Lang::load('themes/'.$folder.'/lang', $lang);
+        }
+        return $this;
+    }
+
+    /**
      * @param string|null $field
      * @return array
      */
@@ -238,5 +249,5 @@ abstract class OPAL_Theme {
 		}
 		return $themes;
 	}
-	
+
 }
