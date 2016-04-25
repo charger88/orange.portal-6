@@ -570,9 +570,13 @@ aside#column nav ul li:hover ul {
     width: 100%;
 }
 
-
 .form-default .form-multirow .form-element-wrapper:first-child {
 	margin-left: 0;
+}
+
+.form-element-error {
+    color: #e52222;
+    font-size: 0.85rem;
 }
 
 .input-title {

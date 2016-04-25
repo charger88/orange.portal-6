@@ -21,18 +21,6 @@ class OPMI_News extends OPAL_Installer {
 		return $this->errors;
 	}
 	
-	private function createThisModule(){
-		$result = true;
-		$module = new OPAM_Module();
-		$module->setData(array(
-			'module_code'   => 'news',
-			'module_title'  => 'MODULE_NEWS',
-			'module_status' => true,
-		));
-		$module->save();
-		return $result;
-	}
-	
 	private function createContentTypes(){
 		$result = true;
 		$content_types_data = array(

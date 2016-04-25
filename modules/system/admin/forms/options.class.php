@@ -10,7 +10,8 @@ class OPMX_System_Options extends OPAL_Form {
 		$this->addField('system_theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'));
 		$this->addField('system_email_public', 'email', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC'), array('required' => 'required'));
 		$this->addField('system_email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array());
-		
+		$this->addField('system_secretkey', 'text', OPAL_Lang::t('OPT_system_secretkey'), array());
+
 		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_LANGUAGE').'</h3>');
 		$languages = OPAL_Lang::langs();
 		$this->addField('system_default_lang', 'select', OPAL_Lang::t('INSTALL_LANGUAGE_DEF'), array('options' => $languages, 'value' => 'en', 'required' => 'required'));

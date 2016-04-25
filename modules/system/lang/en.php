@@ -17,4 +17,9 @@ $lang = array(
     'SEARCH_BY_TAG_%s'                => 'Search by tag "%s"',
     'EDIT'                            => 'Edit',
 
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_NUMBER' => 'Value is not a number',
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_EMAIL'  => 'Email is incorrect',
+    'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY'      => 'Field is empty',
+    'FORM_VALIDATION_ERROR_MAX_LENGTH'          => 'Field length is exceeded',
+
 );

@@ -33,6 +33,7 @@ class OPMI_System extends OPAL_Installer {
 			));
 		}
 		if (empty($this->errors)){
+            $this->params['secretkey'] = md5(rand().rand().rand().rand().time());
 			$this->createConfig(array(
 				'sitename'      => 'STRING',
 				'domain'        => 'STRING',
@@ -40,6 +41,7 @@ class OPMI_System extends OPAL_Installer {
 				'copyright'     => 'STRING',
 				'theme'         => 'STRING',
 				'default_lang'  => 'STRING',
+                'secretkey'     => 'STRING',
 				'enabled_langs' => 'ARRAY',
 				'email_public'  => 'STRING',
 				'email_system'  => 'STRING',
@@ -124,20 +126,12 @@ class OPMI_System extends OPAL_Installer {
 		return $result;
 	}
 
-	private function createThisModule(){
-		$result = true;
-		$module = new OPAM_Module();
-		$module->setData(array(
-			'module_code'   => 'system',
-			'module_title'  => 'MODULE_SYSTEM',
-			'module_status' => true,
-		));
-		$id = $module->save()->id;
+	protected function createThisModule(){
+		$id = parent::createThisModule();
 		if ($id !== 1){
-			$result = false;
 			$this->errors['db_prefix'] = $id > 0 ? 'Modules table is not empty.' : 'System module was not installed.';
 		}
-		return $result;
+		return $id;
 	}
 	
 	private function createAdminUser(){

@@ -327,7 +327,7 @@ class OPAL_Portal {
 	
 	private function processPage(){
         OPAL_Lang::load('modules/system/lang', self::$sitelang);
-        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){ //TODO Add here install mode too
+        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){
             $modules = OPAL_Module::getModules(true);
             foreach ($modules as $module){
                 OPAL_Lang::load('modules/'.$module->get('module_code').'/lang/admin', self::$sitelang);
@@ -385,6 +385,7 @@ class OPAL_Portal {
 	private function processContentDirect(){
 		array_shift($this->request);
 		$module = array_shift($this->request);
+        OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
 		$this->content = new OPAM_Page();
 		$this->content->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$this->content->set('content_type','module');
@@ -558,7 +559,9 @@ class OPAL_Portal {
 						}
 					}
 					if (!$cache_loaded) {
-						OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                        if (strpos($this->content->get('content_slug'),'admin/') !== 0) {
+                            OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                        }
                         $method_result = $methodReflection->invokeArgs($controller, $request);
 						if ($is_method_cacheable) {
 							$controller->setMethodCache($methodname, $request, $method_result);

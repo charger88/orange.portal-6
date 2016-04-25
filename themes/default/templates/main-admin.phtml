@@ -7,7 +7,8 @@
 			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
 			echo $this->fetch('head.phtml',array('content' => $content));
 		?>
-	</head>
+        <meta name="referrer" content="origin-when-crossorigin" />
+    </head>
 	<body>
 		<header>
 			<div class="aside" id="logo"><a href="<?php echo $content->get('content_slug') == 'admin/center' ? OP_WWW : OP_WWW.'/admin'; ?>">Orange.Portal 6</a></div>

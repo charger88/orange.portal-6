@@ -1,0 +1,76 @@
+<dl>
+    <?php if ($item->get('feedback_message_subject')){ ?>
+        <dt><?php $this->el('feedback_message_subject'); ?></dt>
+        <dd><?php $this->ee($item->get('feedback_message_subject')); ?></dd>
+    <?php } ?>
+    <?php if ($form->id){ ?>
+        <dt><?php $this->el('feedback_message_form_id'); ?></dt>
+        <dd><?php $this->ee($form->get('feedback_form_name')); ?></a></dd>
+    <?php } ?>
+    <dt><?php $this->el('feedback_message_time'); ?></dt>
+    <dd><?php echo $this->getTime($item->get('feedback_message_time')); ?></dd>
+    <?php if ($sender->id){ ?>
+        <dt><?php $this->el('feedback_message_sender_user_id'); ?></dt>
+        <dd><a href="<?php echo OP_WWW.'/admin/users/edit/'.$sender->id; ?>"><?php $this->ee($sender->get('user_login')); ?></a> (ID:<?php $this->ee($sender->id); ?>)</dd>
+    <?php } ?>
+    <?php if ($item->get('feedback_message_sender_name')){ ?>
+        <dt><?php $this->el('feedback_message_sender_name'); ?></dt>
+        <dd><?php $this->ee($item->get('feedback_message_sender_name')); ?></dd>
+    <?php } ?>
+    <?php if ($item->get('feedback_message_sender_email')){ ?>
+        <dt><?php $this->el('feedback_message_sender_email'); ?></dt>
+        <dd><?php $this->ee($item->get('feedback_message_sender_email')); ?></dd>
+    <?php } ?>
+    <?php if ($item->get('feedback_message_sender_phone')){ ?>
+        <dt><?php $this->el('feedback_message_sender_phone'); ?></dt>
+        <dd><?php $this->ee($item->get('feedback_message_sender_phone')); ?></dd>
+    <?php } ?>
+    <dt><?php $this->el('feedback_message_sender_ip'); ?></dt>
+    <dd><?php $this->ee($item->get('feedback_message_sender_ip')); ?></dd>
+    <?php if ($fields = $item->get('feedback_message_fields')){ ?>
+        <?php foreach ($fields as $key => $field){ ?>
+            <dt><?php $this->el($key); ?></dt>
+            <dd><?php echo $field !== '' ? $this->esc($field) : '&mdash;'; ?></dd>
+        <?php } ?>
+    <?php } ?>
+    <?php if ($item->get('feedback_message_text')){ ?>
+        <dt><?php $this->el('feedback_message_text'); ?></dt>
+        <dd><?php echo nl2br($this->esc($item->get('feedback_message_text'))); ?></dd>
+    <?php } ?>
+</dl>
+<?php if ($item->get('feedback_message_status') == OPMM_Feedback_Message::STATUS_REPLIED){ ?>
+    <h3><?php $this->el('MODULE_FEEDBACK_REPLY_HEADER'); ?></h3>
+    <dl>
+        <?php if ($replier->id){ ?>
+            <dt><?php $this->el('feedback_message_sender_user_id'); ?></dt>
+            <dd><a href="<?php echo OP_WWW.'/admin/users/edit/'.$replier->id; ?>"><?php $this->ee($replier->get('user_login')); ?></a> (ID:<?php $this->ee($replier->id); ?>)</dd>
+        <?php } ?>
+        <?php if ($item->get('feedback_message_reply_from_name')){ ?>
+            <dt><?php $this->el('feedback_message_reply_from_name'); ?></dt>
+            <dd><?php $this->ee($item->get('feedback_message_reply_from_name')); ?></dd>
+        <?php } ?>
+        <?php if ($item->get('feedback_message_reply_from_email')){ ?>
+            <dt><?php $this->el('feedback_message_reply_from_email'); ?></dt>
+            <dd><?php $this->ee($item->get('feedback_message_reply_from_email')); ?></dd>
+        <?php } ?>
+        <?php if ($item->get('feedback_message_reply_time')){ ?>
+            <dt><?php $this->el('feedback_message_reply_time'); ?></dt>
+            <dd><?php echo $this->getTime($item->get('feedback_message_reply_time')); ?></dd>
+        <?php } ?>
+        <?php if ($item->get('feedback_message_reply_text')){ ?>
+            <dt><?php $this->el('feedback_message_reply_text'); ?></dt>
+            <dd><?php echo nl2br($this->esc($item->get('feedback_message_reply_text'))); ?></dd>
+        <?php } ?>
+    </dl>
+<?php } ?>
+
+<?php if (
+        ($item->get('feedback_message_status') == OPMM_Feedback_Message::STATUS_NEW)
+        ||
+        ($item->get('feedback_message_status') == OPMM_Feedback_Message::STATUS_READ)
+    ){ ?>
+    <div class="buttons-area">
+        <a href="<?php echo OP_WWW.'/admin/feedback/delete/'.$item->id; ?>" class="admin-button admin-button-delete" style="background: #ff0000;"><?php $this->el('MODULE_FEEDBACK_DELETE'); ?></a>
+        <a href="<?php echo OP_WWW.'/admin/feedback/reply/'.$item->id; ?>" class="admin-button admin-button-new"><?php $this->el('MODULE_FEEDBACK_REPLY'); ?></a>
+    </div>
+<?php } ?>

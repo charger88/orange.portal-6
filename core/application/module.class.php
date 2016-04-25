@@ -65,7 +65,11 @@ abstract class OPAL_Module extends OPAM_Module {
 
     protected abstract function doEnable();
 
-    protected abstract function doDisable();
+    protected function doDisable(){
+        $this->set('module_status',0);
+        $this->save();
+        return null;
+    }
 
     protected abstract function doUninstall();
 

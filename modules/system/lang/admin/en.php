@@ -233,6 +233,7 @@ $lang = array(
 	'ADMIN_LANGUAGE'          => 'Language',
 	'ADMIN_CACHING'           => 'Caching',
 
+    'OPT_system_secretkey'    => 'Secret key',
 	'OPT_system_cache_css'    => 'Group CSS files (experimental)',
 	'OPT_system_cache_js'     => 'Group JavaScript files (experimental)',
 	'OPT_system_cache_method' => 'System cache (per controller\'s method)',
@@ -312,5 +313,10 @@ $lang = array(
 	'INSTALL_EMAIL_PUBLIC'   => 'Public email',
 	'INSTALL_EMAIL_SYSTEM'   => 'System email',
 	'INSTALL'                => 'Install',
-	
+
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_NUMBER' => 'Value is not a number',
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_EMAIL'  => 'Email is incorrect',
+    'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY'      => 'Field is empty',
+    'FORM_VALIDATION_ERROR_MAX_LENGTH'          => 'Field length is exceeded',
+
 );

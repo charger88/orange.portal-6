@@ -12,6 +12,20 @@ abstract class OPAL_Installer {
 		$this->module = $module;
 	}
 
+    protected function createThisModule(){
+        $module_name = explode('_',get_class($this),2)[1];
+        $id = (new OPAM_Module())
+            ->setData([
+                'module_code'   => strtolower($module_name),
+                'module_title'  => 'MODULE_'.strtoupper($module_name),
+                'module_status' => true,
+            ])
+            ->save()
+            ->id
+        ;
+        return $id;
+    }
+
     /**
      * @param \Orange\Database\ActiveRecord[]
      * @return bool

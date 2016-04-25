@@ -130,16 +130,25 @@ abstract class OPAL_Form {
 			} else {
 				$this->fields[$id]['value'] = isset($values[$name]) ? $values[$name] : null;
 				if ($validate){
-					if ($this->fields[$id]['type'] == 'number'){				
+					if ($this->fields[$id]['type'] == 'number'){
 						if (!is_numeric($this->fields[$id]['value'])){
 							$this->setError($id, 'FORM_VALIDATION_ERROR_VALUE_IS_NOT_NUMBER');
 						}
-					} else if  ($this->fields[$id]['type'] == 'email'){				
+					} else if ($this->fields[$id]['type'] == 'email'){
 						if (!empty($this->fields[$id]['value']) && !filter_var($this->fields[$id]['value'],FILTER_VALIDATE_EMAIL)){
 							$this->setError($id, 'FORM_VALIDATION_ERROR_VALUE_IS_NOT_EMAIL');
 						}
 					}
-					//TODO Add more validations, e.g. required
+                    if (!empty($this->fields[$id]['required'])){
+                        if ($this->fields[$id]['value'] === ''){
+                            $this->setError($id, 'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY');
+                        }
+                    }
+                    if (!empty($this->fields[$id]['maxlength'])){
+                        if (mb_strlen($this->fields[$id]['value']) > intval($this->fields[$id]['maxlength'])){
+                            $this->setError($id, 'FORM_VALIDATION_ERROR_MAX_LENGTH');
+                        }
+                    }
 				}
 			}
 		}
