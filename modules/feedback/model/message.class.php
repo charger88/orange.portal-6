@@ -65,6 +65,14 @@ class OPMM_Feedback_Message extends \Orange\Database\ActiveRecord {
         return $this;
     }
 
+    public function reply(){
+        $form = new OPMM_Feedback_Form($this->get('feedback_message_form_id'));
+        $email = new OPAL_Email(OPAL_Lang::t('MODULE_FEEDBACK_REPLY_SUBJECT_PREFIX_%s', $this->get('feedback_message_subject')),$this->get('feedback_message_reply_text'));
+        $email->setReturnPath($this->get('feedback_message_reply_from_email'));
+        $email->send($this->get('feedback_message_sender_email'));
+        return $this;
+    }
+
     public static function getList($statuses = null, $offset = 0, $limit = 25){
         $select = new \Orange\Database\Queries\Select(static::$table);
         if (!is_null($statuses)) {

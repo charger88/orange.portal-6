@@ -103,9 +103,9 @@ abstract class OPAL_Theme {
 					if ($css = OPAL_Downloader::download($css_filename)){
 						//TODO Add support for @import directives
 						$urls = array();
-						preg_match_all('/background[-image]?:.*[\s]*url\(["|\']+(.*)["|\']+\)/', $css, $urls, PREG_SET_ORDER);
+						preg_match_all('/background(\-image)?:.*[\s]*url\(["|\']+(.*)["|\']+\)/', $css, $urls, PREG_SET_ORDER);
 						foreach ($urls as $url){
-							$url = $url[1];
+							$url = $url[2];
 							$css = str_replace($url, dirname($css_filename).'/'.$url, $css);
 						}
 						$data .= "/* File: $css_filename */\n\n".$css."\n\n";
@@ -233,7 +233,7 @@ abstract class OPAL_Theme {
      * @param string|null $field
      * @return array
      */
-    public static function getAvalibleThemes($field = null){
+    public static function getAvailableThemes($field = null){
 		$dirname = 'themes';
 		$files = new OPAL_File($dirname);
 		$themes = array();

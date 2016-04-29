@@ -1,8 +1,12 @@
 <?php
 
 class OPMX_System_Install extends OPAL_Form {
-	
+
 	protected function build($params){
+
+        $timezones = timezone_identifiers_list();
+        $timezones = array_values($timezones);
+        $timezones = array_combine($timezones,$timezones);
 
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_DB').'</h3>', 'step-1');
 		$this->addField('db_server', 'text', OPAL_Lang::t('INSTALL_DB_SERVER'), array('value' => 'localhost','required' => 'required'), 'step-1');
@@ -17,8 +21,9 @@ class OPMX_System_Install extends OPAL_Form {
 		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array('required' => 'required'), 'step-2');
         $this->addField('sitecode', 'text', OPAL_Lang::t('INSTALL_SITECODE'), array('required' => 'required'), 'step-2');
         $this->addField('copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array(), 'step-2');
+        $this->addField('timezone', 'select', OPAL_Lang::t('INSTALL_TIMEZONE'), array('options' => $timezones), 'step-2');
         //TODO Get DB drivers
-		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2');
+		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvailableThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2');
 		
 		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_LANGUAGE').'</h3>', 'step-3');
 		$languages = OPAL_Lang::langs();
@@ -38,5 +43,5 @@ class OPMX_System_Install extends OPAL_Form {
 		$this->addField('go', 'submit', OPAL_Lang::t('INSTALL'), array(), 'step-last');
 				
 	}
-	
+
 }

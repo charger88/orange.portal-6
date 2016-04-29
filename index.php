@@ -12,7 +12,15 @@ try {
         echo OPAL_Portal::getInstance()->execute();
     }
 } catch (Exception $e){
-    header('Content-type: text/plain');
-    echo 'Orange.Portal uncaught exception: '.$e->getMessage()."\n";
-    echo $e->getTraceAsString();
+    if (!is_null($webmaster_email = OPAL_Portal::getWebmasterEmailForException())){
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
+        $message = 'URL: ' . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
+        if ($webmaster_email === '#'){
+            header('Content-type: text/plain');
+            echo $message;
+        } else {
+            mail($webmaster_email, 'Exception on site '.$_SERVER['HTTP_HOST'], $message);
+        }
+    }
+    die();
 }

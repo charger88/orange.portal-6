@@ -9,10 +9,14 @@
     <dd><?php $this->ee($log->get('log_uri')); ?></dd>
     <dt><?php $this->el('log_ip'); ?></dt>
     <dd><?php $this->ee($log->get('log_ip')); ?></dd>
+    <?php if ($log->get('log_useragent')){ ?>
     <dt><?php $this->el('log_useragent'); ?></dt>
     <dd><?php $this->ee($log->get('log_useragent')); ?></dd>
+    <?php } ?>
+    <?php if ($user->id){ ?>
     <dt><?php $this->el('log_user_id'); ?></dt>
     <dd><a href="<?php echo OP_WWW.'/admin/users/edit/'.$user->id; ?>"><?php $this->ee($user->get('user_login')); ?></a></dd>
+    <?php } ?>
     <dt><?php $this->el('log_message'); ?></dt>
     <dd><?php $this->ee(OPAL_Lang::t($log->get('log_message'),$log->get('log_vars'))); ?></dd>
 </dl>

@@ -6,6 +6,7 @@ class OPMO_Feedback extends OPAL_Module {
 
     protected $privileges = array(
         'OPMC_Feedback_Main::sendActionDirect' => 'METHOD_FEEDBACK_SEND_MESSAGE',
+        'OPMC_Feedback_Main::sendAjaxDirect' => 'METHOD_FEEDBACK_SEND_MESSAGE',
     );
 
     protected function doInit(){
@@ -14,6 +15,7 @@ class OPMO_Feedback extends OPAL_Module {
     }
 
     private function initHooks(){
+        OPAL_Portal::addHook('adminAccess_privileges', __CLASS__, 'getPrivilegesList');
     }
 
     protected function doInstall($params = array()){

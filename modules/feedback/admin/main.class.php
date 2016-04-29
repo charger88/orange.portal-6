@@ -107,6 +107,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
             ->set('feedback_message_reply_user_id', $this->user->id)
             ->set('feedback_message_reply_time', time())
             ->save()
+            ->reply()
         ;
         return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_FORM_REPLY_SENT'), self::STATUS_OK, $this->content->getURL().'/view/'.$message_object->id);
     }

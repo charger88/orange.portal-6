@@ -269,7 +269,7 @@ $lang = array(
 
     'MEDIA_SAVED'             => 'Media file saved',
 
-    'ALERT_CONFIG_SAVE:%s'    => 'Options saved: %s',
+    'ALERT_CONFIG_UNKNOWN_SAVE:%s' => 'Unknown option: %s',
 
     'ADMIN_PRIVILEGE'         => 'Privilege',
 
@@ -301,6 +301,7 @@ $lang = array(
 	'INSTALL_DOMAIN'         => 'Domain',
 	'INSTALL_BASE_DIR'       => 'Directory',
 	'INSTALL_COPYRIGHT'      => 'Copyright',
+    'INSTALL_TIMEZONE'       => 'Timezone',
 	'INSTALL_THEME'          => 'Theme',
 	'INSTALL_LANGUAGE'       => 'Languages',
 	'INSTALL_LANGUAGE_DEF'   => 'Default language',

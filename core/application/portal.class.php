@@ -124,7 +124,9 @@ class OPAL_Portal {
 	 */
 	public function __destruct(){
 		if (!$this->install_mode){
-			$this->session->close();
+            if ($this->session) {
+                $this->session->close();
+            }
 		}
 		$this->echoDebugData();
 	}
@@ -174,9 +176,9 @@ class OPAL_Portal {
         $config = [];
         $installed = false;
         if (is_file($filename = OP_SYS_ROOT.'sites/'.$hostname.'/config/default.php')) {
-            require_once $filename;
+            require $filename;
             if (is_file($filename = OP_SYS_ROOT . 'sites/' . $hostname . '/config/' . $hostname . '.php')) {
-                require_once $filename;
+                require $filename;
             }
             OPAL_Portal::$sitecode = $hostname;
             $installed = true;
@@ -217,6 +219,10 @@ class OPAL_Portal {
             if ($config = OPAM_Config::loadActive()){
 				self::$configs = array_merge($config,self::$configs);
 			}
+            if ($timezone = self::config('system_timezone')) {
+                date_default_timezone_set($timezone);
+                $connection->driver->setTimezone($timezone);
+            }
 		} else {
 			$this->install_mode = true;
 		}
@@ -376,7 +382,7 @@ class OPAL_Portal {
 		}  else if (!$this->content->isAllowedForGroups($this->user->get('user_groups'))){
 			$status = 'unauthorized';
 		} else {
-            self::processHooks('mainContent_loaded');
+            $this->processHooks('mainContent_loaded');
 			$status = 'found';
 		}
 		return array($status,$this->executeContent($this->content));
@@ -559,8 +565,10 @@ class OPAL_Portal {
 						}
 					}
 					if (!$cache_loaded) {
-                        if (strpos($this->content->get('content_slug'),'admin/') !== 0) {
-                            OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                        if ($this->content){
+                            if (strpos($this->content->get('content_slug'),'admin/') !== 0) {
+                                OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                            }
                         }
                         $method_result = $methodReflection->invokeArgs($controller, $request);
 						if ($is_method_cacheable) {
@@ -671,6 +679,17 @@ class OPAL_Portal {
         }
         header('HTTP/1.0 404 Not Found');
         die();
+    }
+
+    public static function getWebmasterEmailForException(){
+        $email = null;
+        try {
+            list($installed, $config) = self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
+            if ($installed) {
+                $email = isset($config['webmaster_email']) ? $config['webmaster_email'] : null;
+            }
+        } catch (Exception $e){}
+        return $email;
     }
 	
 }

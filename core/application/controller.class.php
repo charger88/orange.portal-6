@@ -213,7 +213,7 @@ class OPAL_Controller {
      * @param bool $permanent
      */
     protected function redirect($url,$permanent = false){
-		header($permanent ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 302 Found');
+		header($permanent ? $_SERVER['SERVER_PROTOCOL'].' 301 Moved Permanently' : $_SERVER['SERVER_PROTOCOL'].' 302 Found');
 		header('Location: '.$url);
 		die();
 	}

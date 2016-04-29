@@ -45,6 +45,7 @@ class OPMI_System extends OPAL_Installer {
 				'enabled_langs' => 'ARRAY',
 				'email_public'  => 'STRING',
 				'email_system'  => 'STRING',
+                'timezone'      => 'STRING',
 				'proxy_ip'      => 'ARRAY',
 				'cache_css'     => 'BOOLEAN',
 				'cache_js'      => 'BOOLEAN',

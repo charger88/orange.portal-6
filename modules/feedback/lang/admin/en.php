@@ -55,4 +55,6 @@ $lang = array(
 
     'MODULE_FEEDBACK_SPAM_WRONG_TOKEN' => 'Spam detected: wrong token.',
 
+    'METHOD_FEEDBACK_SEND_MESSAGE' => 'Feedback sending',
+
 );

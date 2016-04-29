@@ -250,6 +250,17 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      */
     function generateSlug($unique_mode = self::SLUG_UNIQUE_MODE_NONE){
         $slug = mb_strtolower($this->get('content_title'));
+        if (strlen($slug) > 96) {
+            if (($sp = strpos($slug, ' ', 96)) !== false) {
+                $slug = substr($slug, 0, $sp);
+            } else {
+                if (($sp = strpos($slug, ' ', 64)) !== false) {
+                    $slug = substr($slug, 0, $sp);
+                } else {
+                    $slug = md5($slug);
+                }
+            }
+        }
         $slug = preg_replace('/[^\p{L}0-9]/u', '-', $slug);
         $slug = trim($slug,'-');
         while (strpos($slug,'--') !== false){
