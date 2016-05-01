@@ -1,4 +1,4 @@
 RewriteEngine On
 RewriteRule ^([^/]*)\.(txt|ico|xml|css|js)?$ index.php?_rootfile=$1.$2 [L]
-RewriteRule ^(.*)\.(txt|ico|xml|css|js|jpg|gif|png|pdf|svg)?$ $1.$2 [L]
+RewriteRule ^(.*)\.(txt|ico|xml|css|js|jpg|jpeg|gif|png|pdf|svg)?$ $1.$2 [L]
 RewriteRule ^(.*)?$ index.php [L]
