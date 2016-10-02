@@ -6,10 +6,21 @@ error_reporting(E_ALL);
 define('OP_SYS_ROOT',__DIR__ . '/');
 require_once OP_SYS_ROOT.'core/autoloader.php';
 try {
-    $portal = OPAL_Portal::getInstance();
-    echo $portal->execute();
+    if (!empty($_GET['_rootfile'])){
+        OPAL_Portal::outputRootFile($_GET['_rootfile']);
+    } else {
+        echo OPAL_Portal::getInstance()->execute();
+    }
 } catch (Exception $e){
-    header('Content-type: text/plain');
-    echo 'Orange.Portal uncaught exception: '.$e->getMessage()."\n\n";
-    echo $e->getTraceAsString();
+    if (!is_null($webmaster_email = OPAL_Portal::getWebmasterEmailForException())){
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
+        $message = 'URL: ' . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
+        if ($webmaster_email === '#'){
+            header('Content-type: text/plain');
+            echo $message;
+        } else {
+            mail($webmaster_email, 'Exception on site '.$_SERVER['HTTP_HOST'], $message);
+        }
+    }
+    die();
 }

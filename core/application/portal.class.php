@@ -5,7 +5,14 @@
  * @author Mikhail Kelner
  */
 class OPAL_Portal {
-	
+
+    /**
+     * Current site code
+     * @static
+     * @var string
+     */
+    public static $sitecode = 'default';
+
 	/**
 	 * Current language of the website
 	 * @static
@@ -161,21 +168,48 @@ class OPAL_Portal {
 		self::$enviroment['hostname'] = $_SERVER['SERVER_NAME'];
 		self::$enviroment['request'] = $_SERVER['REQUEST_URI'];
 	}
-	
+
+    /**
+     * Load config from files
+     */
+    private static function loadConfigFromFiles($hostname){
+        $config = [];
+        $installed = false;
+        if (is_file($filename = OP_SYS_ROOT.'sites/'.$hostname.'/config/default.php')) {
+            require $filename;
+            if (is_file($filename = OP_SYS_ROOT . 'sites/' . $hostname . '/config/' . $hostname . '.php')) {
+                require $filename;
+            }
+            OPAL_Portal::$sitecode = $hostname;
+            $installed = true;
+        } else {
+            $sites = new OPAL_File('sites');
+            if ($sites->dir) {
+                $sites = $sites->dirFiles();
+                foreach ($sites as $site) {
+                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site . '/config/' . $hostname . '.php')) {
+                        if (is_file($filename1 = OP_SYS_ROOT.'sites/' . $site . '/config/default.php')) {
+                            require_once $filename1;
+                        }
+                        require_once $filename;
+                        OPAL_Portal::$sitecode = $site;
+                        $installed = true;
+                        break;
+                    }
+                }
+                if (!$installed) {
+                    throw new Exception('Unknown site');
+                }
+            }
+        }
+        return [$installed,$config];
+    }
+
 	/**
 	 * Set config into property $configs
 	 */
 	private function loadConfig(){
-		$config = array();
-		$installed = false;
-		if (is_file($filename = OP_SYS_ROOT.'config/default.php')){
-			require_once $filename;
-			$installed = true;
-		}
-		if (is_file($filename = OP_SYS_ROOT.'config/'.self::$enviroment['hostname'].'.php')){
-			require_once $filename;
-			$installed = true;
-		}
+        list($installed, $config) = self::loadConfigFromFiles(self::$enviroment['hostname']);
 		if ($installed){
 			self::$configs = $config;
             $connection = new \Orange\Database\Connection($config['db']['master']);
@@ -185,6 +219,10 @@ class OPAL_Portal {
             if ($config = OPAM_Config::loadActive()){
 				self::$configs = array_merge($config,self::$configs);
 			}
+            if ($timezone = self::config('system_timezone')) {
+                date_default_timezone_set($timezone);
+                $connection->driver->setTimezone($timezone);
+            }
 		} else {
 			$this->install_mode = true;
 		}
@@ -271,6 +309,7 @@ class OPAL_Portal {
 	
 	public function execute(){
 		$this->initRequestURI();
+		$this->templater->theme->loadLanguages(OPAL_Portal::$sitelang);
 		$response = $this->processPage();
 		$admin_panel = $this->content->get('content_type') == 'admin';
 		header('Content-Type: '.$this->data_type.'; charset=utf-8');
@@ -294,8 +333,11 @@ class OPAL_Portal {
 	
 	private function processPage(){
         OPAL_Lang::load('modules/system/lang', self::$sitelang);
-        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){ //TODO Add here install mode too
-            OPAL_Lang::load('modules/system/lang/admin', self::$sitelang);
+        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){
+            $modules = OPAL_Module::getModules(true);
+            foreach ($modules as $module){
+                OPAL_Lang::load('modules/'.$module->get('module_code').'/lang/admin', self::$sitelang);
+            }
         }
         if (!$this->install_mode){
 			if (!empty($this->request[0]) && ($this->request[0] == 'module') && (count($this->request) >= 4)){
@@ -340,6 +382,7 @@ class OPAL_Portal {
 		}  else if (!$this->content->isAllowedForGroups($this->user->get('user_groups'))){
 			$status = 'unauthorized';
 		} else {
+            $this->processHooks('mainContent_loaded');
 			$status = 'found';
 		}
 		return array($status,$this->executeContent($this->content));
@@ -348,6 +391,7 @@ class OPAL_Portal {
 	private function processContentDirect(){
 		array_shift($this->request);
 		$module = array_shift($this->request);
+        OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
 		$this->content = new OPAM_Page();
 		$this->content->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$this->content->set('content_type','module');
@@ -521,11 +565,12 @@ class OPAL_Portal {
 						}
 					}
 					if (!$cache_loaded) {
-						OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
-                        if (!empty($this->request[0]) && ($this->request[0] == 'admin')){
-                            OPAL_Lang::load('modules/' . $module . '/lang/admin', self::$sitelang);
+                        if ($this->content){
+                            if (strpos($this->content->get('content_slug'),'admin/') !== 0) {
+                                OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
+                            }
                         }
-						$method_result = $methodReflection->invokeArgs($controller, $request);
+                        $method_result = $methodReflection->invokeArgs($controller, $request);
 						if ($is_method_cacheable) {
 							$controller->setMethodCache($methodname, $request, $method_result);
 						}
@@ -609,5 +654,42 @@ class OPAL_Portal {
 		}
 		self::$hooks[$event][] = array($class,$method,$args);
 	}
+
+    public static function outputRootFile($filename){
+        if (strpos($filename,'/') === false) {
+            try {
+                self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
+                $fname = OP_SYS_ROOT . '/sites/' . self::$sitecode . '/static/root/' . $filename;
+                if (file_exists($fname)){
+                    if (strpos($filename, '.xml')){
+                        $type = 'text/xml';
+                    } else if (strpos($filename, '.txt')){
+                        $type = 'text/plain';
+                    } else if (strpos($filename, '.ico')){
+                        $type = 'image/x-icon';
+                    } else {
+                        $type = 'application/octet-stream';
+                    }
+                    header('Content-Type: ' .$type);
+                    header('Content-Length: ' . filesize($fname));
+                    readfile($fname);
+                    die();
+                }
+            } catch (Exception $e){}
+        }
+        header('HTTP/1.0 404 Not Found');
+        die();
+    }
+
+    public static function getWebmasterEmailForException(){
+        $email = null;
+        try {
+            list($installed, $config) = self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
+            if ($installed) {
+                $email = isset($config['webmaster_email']) ? $config['webmaster_email'] : null;
+            }
+        } catch (Exception $e){}
+        return $email;
+    }
 	
 }

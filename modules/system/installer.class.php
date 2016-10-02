@@ -9,6 +9,7 @@ class OPMI_System extends OPAL_Installer {
 	);
 	
 	public function installModule($params){
+        OPAL_Portal::$sitecode = $params['sitecode'];
 		$configname = isset($params['configname']) ? $params['configname'] : 'default.php';
 		$this->params = array_merge($this->params,$params);
 		$this->errors = array();
@@ -32,6 +33,7 @@ class OPMI_System extends OPAL_Installer {
 			));
 		}
 		if (empty($this->errors)){
+            $this->params['secretkey'] = md5(rand().rand().rand().rand().time());
 			$this->createConfig(array(
 				'sitename'      => 'STRING',
 				'domain'        => 'STRING',
@@ -39,9 +41,11 @@ class OPMI_System extends OPAL_Installer {
 				'copyright'     => 'STRING',
 				'theme'         => 'STRING',
 				'default_lang'  => 'STRING',
+                'secretkey'     => 'STRING',
 				'enabled_langs' => 'ARRAY',
 				'email_public'  => 'STRING',
 				'email_system'  => 'STRING',
+                'timezone'      => 'STRING',
 				'proxy_ip'      => 'ARRAY',
 				'cache_css'     => 'BOOLEAN',
 				'cache_js'      => 'BOOLEAN',
@@ -67,9 +71,12 @@ class OPMI_System extends OPAL_Installer {
             $this->createFiles();
         }
         if (!empty($this->errors)){
-            $file = new OPAL_File($configname,'config');
-            $file->delete();
-
+            $site_config_dir = new OPAL_File($configname,'sites');
+            $site_config_dir->delete();
+            $site_config_dir = new OPAL_File('sites');
+            if (!$site_config_dir->dirFiles()){
+                $site_config_dir->delete();
+            }
         }
 		return $this->errors;
 	}
@@ -109,7 +116,7 @@ class OPMI_System extends OPAL_Installer {
                 ."\n\t".']'
                 ."\n".'];'
             ;
-            $file = new OPAL_File($configname,'config');
+            $file = new OPAL_File($configname,'sites/'.OPAL_Portal::$sitecode.'/config');
             if (!($result = $file->saveData($php_code))){
                 $this->errors['db_prefix'] = 'Config file was not saved';
             }
@@ -120,20 +127,12 @@ class OPMI_System extends OPAL_Installer {
 		return $result;
 	}
 
-	private function createThisModule(){
-		$result = true;
-		$module = new OPAM_Module();
-		$module->setData(array(
-			'module_code'   => 'system',
-			'module_title'  => 'MODULE_SYSTEM',
-			'module_status' => true,
-		));
-		$id = $module->save()->id;
+	protected function createThisModule(){
+		$id = parent::createThisModule();
 		if ($id !== 1){
-			$result = false;
 			$this->errors['db_prefix'] = $id > 0 ? 'Modules table is not empty.' : 'System module was not installed.';
 		}
-		return $result;
+		return $id;
 	}
 	
 	private function createAdminUser(){
@@ -578,11 +577,12 @@ class OPMI_System extends OPAL_Installer {
     }
 
     private function createFiles(){
-        $file = new OPAL_File('robots.txt','files/root');
+        $root_path = 'sites/'.OPAL_Portal::$sitecode.'/static/root';
+        $file = new OPAL_File('robots.txt',$root_path);
         $file->saveData("User-agent: *\nAllow: /");
-        $file = new OPAL_File('favicon.ico','files/root');
+        $file = new OPAL_File('favicon.ico',$root_path);
         $file->saveData(base64_decode('AAABAAMAMDACAAEAAQAwAwAANgAAACAgAgABAAEAMAEAAGYDAAAQEAIAAQABALAAAACWBAAAKAAAADAAAABgAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'));
-        $file = new OPAL_File('sitemap.xml','files/root');
+        $file = new OPAL_File('sitemap.xml',$root_path);
         $file->saveData((new OPAL_Sitemap(true))->get());
     }
 	

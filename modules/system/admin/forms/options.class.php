@@ -4,13 +4,19 @@ class OPMX_System_Options extends OPAL_Form {
 		
 	protected function build($params){
 
+        $timezones = timezone_identifiers_list();
+        $timezones = array_values($timezones);
+        $timezones = array_combine($timezones,$timezones);
+
 		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_GENERAL').'</h3>');
 		$this->addField('system_sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array());
 		$this->addField('system_copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array());
-		$this->addField('system_theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvalibleThemes('name'), 'value' => 'default', 'required' => 'required'));
+		$this->addField('system_theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvailableThemes('name'), 'value' => 'default', 'required' => 'required'));
 		$this->addField('system_email_public', 'email', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC'), array('required' => 'required'));
 		$this->addField('system_email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array());
-		
+        $this->addField('system_timezone', 'select', OPAL_Lang::t('INSTALL_TIMEZONE'), array('options' => $timezones));
+        $this->addField('system_secretkey', 'text', OPAL_Lang::t('OPT_system_secretkey'), array());
+
 		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_LANGUAGE').'</h3>');
 		$languages = OPAL_Lang::langs();
 		$this->addField('system_default_lang', 'select', OPAL_Lang::t('INSTALL_LANGUAGE_DEF'), array('options' => $languages, 'value' => 'en', 'required' => 'required'));

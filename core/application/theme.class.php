@@ -95,7 +95,7 @@ abstract class OPAL_Theme {
      */
     public function getHeadStyleFiles(){
 		if (self::$head_style && OPAL_Portal::config('system_cache_css',false)){
-			$filename = 'tmp/cache/static/style_'.md5(implode(';', self::$head_style)).'.css';
+			$filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/style_'.md5(implode(';', self::$head_style)).'.css';
 			$file = new OPAL_File($filename);
 			$data = '';
 			if (!$file->file){
@@ -103,9 +103,9 @@ abstract class OPAL_Theme {
 					if ($css = OPAL_Downloader::download($css_filename)){
 						//TODO Add support for @import directives
 						$urls = array();
-						preg_match_all('/background[-image]?:.*[\s]*url\(["|\']+(.*)["|\']+\)/', $css, $urls, PREG_SET_ORDER);
+						preg_match_all('/background(\-image)?:.*[\s]*url\(["|\']+(.*)["|\']+\)/', $css, $urls, PREG_SET_ORDER);
 						foreach ($urls as $url){
-							$url = $url[1];
+							$url = $url[2];
 							$css = str_replace($url, dirname($css_filename).'/'.$url, $css);
 						}
 						$data .= "/* File: $css_filename */\n\n".$css."\n\n";
@@ -123,7 +123,7 @@ abstract class OPAL_Theme {
      */
     public function getHeadScriptFiles(){
         if (self::$head_scripts && OPAL_Portal::config('system_cache_js',false)){
-            $filename = 'tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
+            $filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
             $file = new OPAL_File($filename);
             $data = '';
             if (!$file->file){
@@ -219,10 +219,21 @@ abstract class OPAL_Theme {
 	}
 
     /**
+     * @param string $lang
+     * @return OPAL_Theme
+     */
+    public function loadLanguages($lang){
+        foreach ($this->folders as $folder) {
+            OPAL_Lang::load('themes/'.$folder.'/lang', $lang);
+        }
+        return $this;
+    }
+
+    /**
      * @param string|null $field
      * @return array
      */
-    public static function getAvalibleThemes($field = null){
+    public static function getAvailableThemes($field = null){
 		$dirname = 'themes';
 		$files = new OPAL_File($dirname);
 		$themes = array();
@@ -238,5 +249,5 @@ abstract class OPAL_Theme {
 		}
 		return $themes;
 	}
-	
+
 }

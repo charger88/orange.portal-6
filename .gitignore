@@ -1,6 +1,4 @@
-config/*.php
-files/*
-tmp/*
-database.log
+sites/*
 vendor/*
+database.log
 composer.lock

@@ -9,9 +9,9 @@ class OPMA_System_Cache extends OPAL_Controller {
 	
 	public function summaryHook(){
 		$data = array();
-		$methodCacheDir = new OPAL_File('methods','tmp/cache');
+		$methodCacheDir = new OPAL_File('methods','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
 		list($data['methodCacheCount'],$data['methodCacheSize']) = $methodCacheDir->getDirCountAndSize();
-		$staticCacheDir = new OPAL_File('static','tmp/cache');
+		$staticCacheDir = new OPAL_File('static','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
 		list($data['staticCacheCount'],$data['staticCacheSize']) = $staticCacheDir->getDirCountAndSize();
 		return $this->templater->fetch('system/admin-cache-summary.phtml',$data);
 	}
@@ -33,7 +33,7 @@ class OPMA_System_Cache extends OPAL_Controller {
 	}
 	
 	private function clearMethodCache(){
-		$dir = new OPAL_File('methods','tmp/cache');
+		$dir = new OPAL_File('methods','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
 		return $dir->delete();
 	}
 	
@@ -54,7 +54,7 @@ class OPMA_System_Cache extends OPAL_Controller {
 	}
 	
 	private function clearStaticCache(){
-		$dir = new OPAL_File('static','tmp/cache');
+		$dir = new OPAL_File('static','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
 		return $dir->delete();
 	}
 	

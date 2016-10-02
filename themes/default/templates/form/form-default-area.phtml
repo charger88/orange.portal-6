@@ -50,7 +50,7 @@ foreach ($elements as $element){
 			if (!empty($errors[$field['data-id']])){
 				echo '<ul class="form-element-error">';
 				foreach ($errors[$field['data-id']] as $error){
-					echo '<li>'.$this->esc($error).'</li>';
+					echo '<li>'.$this->esc(OPAL_Lang::t($error)).'</li>';
 				}
 				echo '</ul>';
 			}

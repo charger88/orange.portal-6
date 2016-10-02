@@ -49,7 +49,7 @@ class OPAL_Sitemap {
                 }
             }
         }
-        $indexFile = new OPAL_File('sitemap.xml','files/root');
+        $indexFile = new OPAL_File('sitemap.xml','sites/'.OPAL_Portal::$sitecode.'/static/root');
         $indexFile->saveData($index->get());
     }
 	

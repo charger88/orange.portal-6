@@ -233,11 +233,14 @@ $lang = array(
 	'ADMIN_LANGUAGE'          => 'Language',
 	'ADMIN_CACHING'           => 'Caching',
 
+    'OPT_system_secretkey'    => 'Secret key',
 	'OPT_system_cache_css'    => 'Group CSS files (experimental)',
 	'OPT_system_cache_js'     => 'Group JavaScript files (experimental)',
 	'OPT_system_cache_method' => 'System cache (per controller\'s method)',
 
-	'ADMIN_URL_DOMAIN'        => 'Site domain',
+    'PORTAL_MODULE_NOT_FOUND'         => 'Module not found',
+
+    'ADMIN_URL_DOMAIN'        => 'Site domain',
 	'ADMIN_URL_PATH'          => 'Site path',
 	'ADMIN_URL_ACTION_INFO'   => 'You may be logged off after domain changing.',
 	'ADMIN_MOVE'              => 'Change domain',
@@ -245,6 +248,8 @@ $lang = array(
     'ADMIN_FILE_NAME'         => 'Name',
     'ADMIN_FILE_SIZE'         => 'Size',
     'ADMIN_FILE_MTIME'        => 'Modification time',
+
+    'ADMIN_FILEPATH_FAIL'     => 'Filepath is incorrect',
 
     'ADMIN_UPLOAD' => 'Upload',
 
@@ -264,7 +269,7 @@ $lang = array(
 
     'MEDIA_SAVED'             => 'Media file saved',
 
-    'ALERT_CONFIG_SAVE:%s'    => 'Options saved: %s',
+    'ALERT_CONFIG_UNKNOWN_SAVE:%s' => 'Unknown option: %s',
 
     'ADMIN_PRIVILEGE'         => 'Privilege',
 
@@ -292,9 +297,11 @@ $lang = array(
 	'INSTALL_DB_DRIVER'      => 'Driver',
 	'INSTALL_SITE'           => 'Site',
 	'INSTALL_SITENAME'       => 'Site name',
+    'INSTALL_SITECODE'       => 'Production domain',
 	'INSTALL_DOMAIN'         => 'Domain',
 	'INSTALL_BASE_DIR'       => 'Directory',
 	'INSTALL_COPYRIGHT'      => 'Copyright',
+    'INSTALL_TIMEZONE'       => 'Timezone',
 	'INSTALL_THEME'          => 'Theme',
 	'INSTALL_LANGUAGE'       => 'Languages',
 	'INSTALL_LANGUAGE_DEF'   => 'Default language',
@@ -307,5 +314,10 @@ $lang = array(
 	'INSTALL_EMAIL_PUBLIC'   => 'Public email',
 	'INSTALL_EMAIL_SYSTEM'   => 'System email',
 	'INSTALL'                => 'Install',
-	
+
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_NUMBER' => 'Value is not a number',
+    'FORM_VALIDATION_ERROR_VALUE_IS_NOT_EMAIL'  => 'Email is incorrect',
+    'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY'      => 'Field is empty',
+    'FORM_VALIDATION_ERROR_MAX_LENGTH'          => 'Field length is exceeded',
+
 );

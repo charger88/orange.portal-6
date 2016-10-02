@@ -14,6 +14,9 @@ class OPAM_Block extends OPAM_Content {
 		if (!$this->get('content_type')){
 			$this->set('content_type', 'block');
 		}
+        if (!$this->id){
+            $this->set('content_time_published', time());
+        }
 		return parent::save();
 	}
 

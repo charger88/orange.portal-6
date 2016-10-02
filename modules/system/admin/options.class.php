@@ -79,6 +79,7 @@ class OPMA_System_Options extends OPAL_Controller {
     public function saveOptions($form){
 		$form->setValues();		
 		if ($data = $form->getValues()){
+            unset($data['content_edit_submit']);
 			foreach ($data as $key => $value){
 				$config = new OPAM_Config('config_key',$key);
 				if ($config->id){
@@ -90,7 +91,7 @@ class OPMA_System_Options extends OPAL_Controller {
 					$config->set('config_value', $value);
 					$config->save();
 				} else {
-					$this->log('ALERT_CONFIG_SAVE:%s',array($key),'LOG_OPTIONS',self::STATUS_ALERT);
+					$this->log('ALERT_CONFIG_UNKNOWN_SAVE:%s',array($key),'LOG_OPTIONS',self::STATUS_ALERT);
 				}
 			}
 		}

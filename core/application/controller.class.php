@@ -201,7 +201,11 @@ class OPAL_Controller {
 		if (!is_null($data)){
 			$msg_data = is_array($data) ? array_merge($msg_data,$data) : array_merge($msg_data,['html' => $data]);
 		}
-		return OPAL_Portal::env('ajax',false) && !$ignoreajax ? $msg_data : $this->templater->fetch('message.phtml',$msg_data);
+        if (OPAL_Portal::env('cli',false)) {
+            return $msg_data['message'];
+        } else {
+            return OPAL_Portal::env('ajax', false) && !$ignoreajax ? $msg_data : $this->templater->fetch('message.phtml', $msg_data);
+        }
 	}
 
     /**
@@ -209,7 +213,7 @@ class OPAL_Controller {
      * @param bool $permanent
      */
     protected function redirect($url,$permanent = false){
-		header($permanent ? 'HTTP/1.1 301 Moved Permanently' : 'HTTP/1.1 302 Found');
+		header($permanent ? $_SERVER['SERVER_PROTOCOL'].' 301 Moved Permanently' : $_SERVER['SERVER_PROTOCOL'].' 302 Found');
 		header('Location: '.$url);
 		die();
 	}
@@ -255,7 +259,7 @@ class OPAL_Controller {
     private function getMethodFileName($methodname, $request){
 		if (isset($this->cachemap[$methodname])){
 			$map = $this->cachemap[$methodname];
-			$file = 'tmp/cache/methods/'.get_class($this).'/'.$methodname;
+			$file = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods/'.get_class($this).'/'.$methodname;
 			if (in_array('id_is_page_id',$map)){
 				$file .= '/'.OPAL_Portal::getInstance()->content->id;
 			}
@@ -333,7 +337,7 @@ class OPAL_Controller {
      * @param int|null $id
      */
     public function deleteMethodCache($classname = null,$methodname = null,$id = null){
-		$path = 'tmp/cache/methods';
+		$path = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods';
 		$path .= !is_null($classname) ? '/'.$classname : '/'.get_class($this);
 		$path .= !is_null($methodname) ? '/'.$methodname : '';
 		$path .= !is_null($id) ? '/'.intval($id) : '';
