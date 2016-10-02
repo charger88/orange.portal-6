@@ -10,6 +10,6 @@ try {
     echo $portal->execute();
 } catch (Exception $e){
     header('Content-type: text/plain');
-    echo 'Orange.Portal uncaught exception: '.$e->getMessage()."\n";
+    echo 'Orange.Portal uncaught exception: '.$e->getMessage()."\n\n";
     echo $e->getTraceAsString();
 }

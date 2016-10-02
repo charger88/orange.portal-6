@@ -117,7 +117,9 @@ class OPAL_Portal {
 	 */
 	public function __destruct(){
 		if (!$this->install_mode){
-			$this->session->close();
+            if ($this->session) {
+                $this->session->close();
+            }
 		}
 		$this->echoDebugData();
 	}

@@ -16,10 +16,35 @@
     {
       "type": "vcs",
       "url": "https://github.com/charger88/orange.image"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.forms"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.filters"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.fs"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.sitemap"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/charger88/orange.lang"
     }
   ],
   "require": {
     "charger88/orange.database": "dev-master",
-    "charger88/orange.image": "dev-master"
+    "charger88/orange.image": "dev-master",
+    "charger88/orange.forms": "dev-master",
+    "charger88/orange.filters": "dev-master",
+    "charger88/orange.fs": "dev-master",
+    "charger88/orange.sitemap": "dev-master",
+    "charger88/orange.lang": "dev-master"
   }
 }
