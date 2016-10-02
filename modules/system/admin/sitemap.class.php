@@ -16,12 +16,12 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                 }
             }
         }
-        $indexFile = new OPAL_File('sitemap.xml','sites/'.OPAL_Portal::$sitecode.'/static/root');
-        $indexFile->saveData($index->build());
+        $indexFile = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', 'sitemap.xml');
+        $indexFile->save($index->build());
     }
 
     public function sitemapHook(){
-        $index = new OPAL_File('sitemap.xml','sites/'.OPAL_Portal::$sitecode.'/static/root');
+        $index = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', 'sitemap.xml');
         $sitemap = simplexml_load_string($index->getData());
         $files = array();
         $files['sitemap.xml'] = array(
@@ -31,8 +31,8 @@ class OPMA_System_Sitemap extends OPAL_Controller {
         if ($sitemap){
             foreach ($sitemap as $element) {
                 $name = basename($element->loc);
-                $sfile = new OPAL_File($name,'sites/'.OPAL_Portal::$sitecode.'/static/root');
-                if ($sfile->file){
+                $sfile = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', $name);
+                if ($sfile){
                     $sitemapXML = simplexml_load_string($sfile->getData());
                     $items = $sitemapXML ? count($sitemapXML) : 0;
                 } else {
@@ -64,7 +64,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                     'fields_not'  => true,
                 ),'OPAM_Content');
                 $lTime = 0;
-                $indexFile = new OPAL_File('sitemap_'.$sitemap_name.'.xml', 'sites/'.OPAL_Portal::$sitecode.'/static/root');
+                $indexFile = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', 'sitemap_'.$sitemap_name.'.xml');
                 if ($list) {
                     $sitemap = new \Orange\Sitemap\Urlset();
                     $count = 0;
@@ -83,13 +83,13 @@ class OPMA_System_Sitemap extends OPAL_Controller {
                         }
                     }
                     if ($count) {
-                        $indexFile->saveData($sitemap->build());
+                        $indexFile->save($sitemap->build());
                         $sitemaps[$sitemap_name] = $lTime;
                     } else {
-                        $indexFile->delete();
+                        $indexFile->remove();
                     }
                 } else {
-                    $indexFile->delete();
+                    $indexFile->remove();
                 }
 
             }

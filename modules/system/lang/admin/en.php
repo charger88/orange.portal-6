@@ -228,6 +228,7 @@ return [
     'ADMIN_REBUILD'           => 'Rebuild',
     'SITEMAP_WAS_REBUILT'     => 'Sitemap was rebuilt',
 
+    'ADMIN_CACHE_DELETED'     => 'Cache deleted',
     'ADMIN_CACHE_NOT_DELETED' => 'Cache was not cleared',
 
 	'ADMIN_GENERAL'           => 'General',

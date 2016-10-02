@@ -136,6 +136,7 @@ class OPAL_Portal {
 	 */
 	private function init(){
 		mb_internal_encoding("UTF-8");
+        \Orange\FS\FS::setRoot(OP_SYS_ROOT);
 		$this->initEnvironment();
 		$this->loadConfig();
 		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$_SERVER["SERVER_NAME"]) . (($bdir = self::config('system_base_dir',trim($_SERVER["REQUEST_URI"],'/'))) ? '/'.$bdir : ''));
@@ -183,23 +184,22 @@ class OPAL_Portal {
             OPAL_Portal::$sitecode = $hostname;
             $installed = true;
         } else {
-            $sites = new OPAL_File('sites');
-            if ($sites->dir) {
-                $sites = $sites->dirFiles();
-                foreach ($sites as $site) {
-                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site . '/config/' . $hostname . '.php')) {
-                        if (is_file($filename1 = OP_SYS_ROOT.'sites/' . $site . '/config/default.php')) {
+            $sites = (new \Orange\FS\Dir('sites'))->readDir();
+            foreach ($sites as $site) {
+                if ($site instanceof \Orange\FS\Dir) {
+                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/' . $hostname . '.php')) {
+                        if (is_file($filename1 = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/default.php')) {
                             require_once $filename1;
                         }
                         require_once $filename;
-                        OPAL_Portal::$sitecode = $site;
+                        OPAL_Portal::$sitecode = $site->getName();
                         $installed = true;
                         break;
                     }
                 }
-                if (!$installed) {
-                    throw new Exception('Unknown site');
-                }
+            }
+            if (!$installed) {
+                throw new Exception('Unknown site');
             }
         }
         return [$installed,$config];

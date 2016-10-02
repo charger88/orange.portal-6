@@ -49,14 +49,12 @@ class OPMA_System_Options extends OPAL_Controller {
 				$newBasedir = trim($newUrlChecking['path'],'/');
 				$newUrl = OPAL_Portal::env('protocol').'://'.$newDomain.'/'.$newBasedir;
 				if ( ($newDomain != $oldDomain) || ($newBasedir != $oldBasedir) ){
-					$config = new OPAL_File($oldDomain.'.php','config');
-					$renamingError = false;
-					if ($config->file){
-						if (!$config->rename($newDomain.'.php')){
-							$renamingError = true;
-						}
+					$config = new \Orange\FS\Dir('sites', $oldDomain);
+					if ($config->exists()){
+                        $config->rename($newDomain);
 					}
-					if (!$renamingError){
+                    $config = new \Orange\FS\Dir('sites', $newDomain);
+					if ($config->exists()){
 						$this->saveOptions($form);
 						return $this->msg(OPAL_Lang::t('ADMIN_MOVED_SUCCESSFUL'), self::STATUS_COMPLETE, $newUrl);
 					} else {

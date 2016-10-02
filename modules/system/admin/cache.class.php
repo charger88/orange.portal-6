@@ -3,16 +3,23 @@
 class OPMA_System_Cache extends OPAL_Controller {
 	
 	public function indexAction(){
-		
 		return '';
 	}
 	
 	public function summaryHook(){
 		$data = array();
-		$methodCacheDir = new OPAL_File('methods','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
-		list($data['methodCacheCount'],$data['methodCacheSize']) = $methodCacheDir->getDirCountAndSize();
-		$staticCacheDir = new OPAL_File('static','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
-		list($data['staticCacheCount'],$data['staticCacheSize']) = $staticCacheDir->getDirCountAndSize();
+		$methodCacheDir = new \Orange\FS\Dir('sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods');
+        try {
+            list($data['methodCacheCount'], $data['methodCacheSize']) = $methodCacheDir->getDirInfo();
+        } catch (\Orange\FS\FSException $e){
+            $data['methodCacheCount'] = $data['methodCacheSize'] = 0;
+        }
+        $staticCacheDir = new \Orange\FS\Dir('sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static');
+		try {
+            list($data['staticCacheCount'], $data['staticCacheSize']) = $staticCacheDir->getDirInfo();
+        } catch (\Orange\FS\FSException $e){
+            $data['staticCacheCount'] = $data['staticCacheSize'] = 0;
+        }
 		return $this->templater->fetch('system/admin-cache-summary.phtml',$data);
 	}
 	
@@ -33,8 +40,13 @@ class OPMA_System_Cache extends OPAL_Controller {
 	}
 	
 	private function clearMethodCache(){
-		$dir = new OPAL_File('methods','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
-		return $dir->delete();
+        try {
+            $dir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/methods');
+            $dir->clear();
+            return true;
+        } catch (\Orange\FS\FSException $e){
+            return false;
+        }
 	}
 	
 	public function clearStaticCacheAction(){
@@ -54,8 +66,13 @@ class OPMA_System_Cache extends OPAL_Controller {
 	}
 	
 	private function clearStaticCache(){
-		$dir = new OPAL_File('static','sites/'.OPAL_Portal::$sitecode.'/tmp/cache');
-		return $dir->delete();
+        try {
+            $dir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/static');
+            $dir->clear();
+            return true;
+        } catch (\Orange\FS\FSException $e){
+            return false;
+        }
 	}
 	
 }

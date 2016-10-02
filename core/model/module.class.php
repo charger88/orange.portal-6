@@ -58,14 +58,13 @@ class OPAM_Module extends \Orange\Database\ActiveRecord {
      */
     public static function getNotInstalledModules(){
         $modules = array();
-        $modulesDir = new OPAL_File('modules');
-        $dirs = $modulesDir->dirFiles();
-        foreach ($dirs as $dirName){
-            $dir = new OPAL_File($dirName,'modules');
-            if ($dir->dir){
-                $module = new OPAM_Module('module_code',$dirName);
+        $modulesDir = new \Orange\FS\Dir('modules');
+        $dirs = $modulesDir->readDir();
+        foreach ($dirs as $dir){
+            if ($dir instanceof $dir){
+                $module = new OPAM_Module('module_code', $dir->getName());
                 if (!$module->id) {
-                    $module->set('module_code',$dirName);
+                    $module->set('module_code', $dir->getName());
                     $modules[] = $module->getModuleObject();
                 }
             }

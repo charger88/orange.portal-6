@@ -71,11 +71,11 @@ class OPMI_System extends OPAL_Installer {
             $this->createFiles();
         }
         if (!empty($this->errors)){
-            $site_config_dir = new OPAL_File($configname,'sites');
-            $site_config_dir->delete();
-            $site_config_dir = new OPAL_File('sites');
-            if (!$site_config_dir->dirFiles()){
-                $site_config_dir->delete();
+            $site_config_dir = new \Orange\FS\Dir('sites', $configname);
+            $site_config_dir->remove();
+            $site_config_dir = new \Orange\FS\Dir('sites');
+            if (empty($site_config_dir->readDir())){
+                $site_config_dir->remove();
             }
         }
 		return $this->errors;
@@ -116,8 +116,9 @@ class OPMI_System extends OPAL_Installer {
                 ."\n\t".']'
                 ."\n".'];'
             ;
-            $file = new OPAL_File($configname,'sites/'.OPAL_Portal::$sitecode.'/config');
-            if (!($result = $file->saveData($php_code))){
+            $dir = new \Orange\FS\Dir('sites/'.OPAL_Portal::$sitecode.'/config');
+            $file = new \Orange\FS\File($dir, $configname);
+            if (!($result = $file->save($php_code))){
                 $this->errors['db_prefix'] = 'Config file was not saved';
             }
         } catch (\Orange\Database\DBException $e){
@@ -578,11 +579,11 @@ class OPMI_System extends OPAL_Installer {
 
     private function createFiles(){
         $root_path = 'sites/'.OPAL_Portal::$sitecode.'/static/root';
-        $file = new OPAL_File('robots.txt',$root_path);
+        $file = new \Orange\FS\File($root_path, 'robots.txt');
         $file->saveData("User-agent: *\nAllow: /");
-        $file = new OPAL_File('favicon.ico',$root_path);
+        $file = new \Orange\FS\File($root_path, 'favicon.ico');
         $file->saveData(base64_decode('AAABAAMAMDACAAEAAQAwAwAANgAAACAgAgABAAEAMAEAAGYDAAAQEAIAAQABALAAAACWBAAAKAAAADAAAABgAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'));
-        $file = new OPAL_File('sitemap.xml',$root_path);
+        $file = new \Orange\FS\File($root_path, 'sitemap.xml');
         $file->saveData((new \Orange\Sitemap\Index())->build());
     }
 	

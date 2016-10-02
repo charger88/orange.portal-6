@@ -306,8 +306,8 @@ class OPAL_Controller {
      */
     public function getMethodCache($methodname,$request){
 		if ($filename = $this->getMethodFileName($methodname, $request)){
-			$file = new OPAL_File($filename);
-			return $file->getData();
+			$file = new \Orange\FS\File($filename);
+			return $file->exists() ? $file->getData() : null;
 		} else {
 			return null;
 		}
@@ -321,8 +321,8 @@ class OPAL_Controller {
      */
     public function setMethodCache($methodname,$request,$data){
 		if ($filename = $this->getMethodFileName($methodname, $request)){
-			$file = new OPAL_File($filename);
-			if (!($status = $file->saveData($data))){
+			$file = new \Orange\FS\File($filename);
+			if (!($status = $file->save($data))){
 				$this->log('CACHE_NOT_SAVED %s',array($filename),'LOG_CACHE',self::STATUS_ALERT);
 			}
 			return (bool)$status;
@@ -341,8 +341,10 @@ class OPAL_Controller {
 		$path .= !is_null($classname) ? '/'.$classname : '/'.get_class($this);
 		$path .= !is_null($methodname) ? '/'.$methodname : '';
 		$path .= !is_null($id) ? '/'.intval($id) : '';
-		$dir = new OPAL_File($path);
-		$dir->delete();
+		$dir = \Orange\FS\FS::open($path);
+        if ($dir->exists()) {
+            $dir->remove();
+        }
 	}
 
     /**

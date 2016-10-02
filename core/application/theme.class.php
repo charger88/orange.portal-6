@@ -96,9 +96,9 @@ abstract class OPAL_Theme {
     public function getHeadStyleFiles(){
 		if (self::$head_style && OPAL_Portal::config('system_cache_css',false)){
 			$filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/style_'.md5(implode(';', self::$head_style)).'.css';
-			$file = new OPAL_File($filename);
+			$file = new \Orange\FS\File($filename);
 			$data = '';
-			if (!$file->file){
+			if (!$file->exists()){
 				foreach (self::$head_style as $css_filename){
 					if ($css = OPAL_Downloader::download($css_filename)){
 						//TODO Add support for @import directives
@@ -111,7 +111,7 @@ abstract class OPAL_Theme {
 						$data .= "/* File: $css_filename */\n\n".$css."\n\n";
 					}
 				}
-				$file->saveData(trim($data));
+				$file->save(trim($data));
 			}
 			self::$head_style = array(OP_WWW.'/'.$filename);
 		}
@@ -124,15 +124,15 @@ abstract class OPAL_Theme {
     public function getHeadScriptFiles(){
         if (self::$head_scripts && OPAL_Portal::config('system_cache_js',false)){
             $filename = 'sites/'.OPAL_Portal::$sitecode.'/tmp/cache/static/script_'.md5(implode(';', self::$head_scripts)).'.js';
-            $file = new OPAL_File($filename);
+            $file = new \Orange\FS\File($filename);
             $data = '';
-            if (!$file->file){
+            if (!$file->exists()){
                 foreach (self::$head_scripts as $js_filename){
                     if ($js = OPAL_Downloader::download($js_filename)){
                         $data .= "/* File: $js_filename */\n\n".$js."\n\n";
                     }
                 }
-                $file->saveData(trim($data));
+                $file->save(trim($data));
             }
             self::$head_scripts = array(OP_WWW.'/'.$filename);
         }
@@ -154,12 +154,12 @@ abstract class OPAL_Theme {
 		$templates = array();
 		if ($prefix){
 			foreach ($this->folders as $theme){
-				$dir = new OPAL_File('themes/'.$theme.'/templates');
-				if ($dir->dir){
-					$files = $dir->dirFiles();
+				$dir = new \Orange\FS\Dir('themes/'.$theme.'/templates');
+				if ($dir->exists()){
+					$files = $dir->readDir();
 					foreach ($files as $file){
-						if (strpos($file,$prefix) === 0){
-							$templates[$file] = $file . ' / ' . $theme;
+						if (strpos($file->getName(),$prefix) === 0){
+							$templates[$file->getName()] = $file->getName() . ' / ' . $theme;
 						}
 					}
 				}
@@ -208,7 +208,7 @@ abstract class OPAL_Theme {
      * @return array
      */
     public function getThemeInfo(){
-		$json = new OPAL_File('info.json','themes/'.$this->theme_name);
+		$json = new \Orange\FS\File('themes/'.$this->theme_name, 'info.json');
 		$info = array();
 		if ($json = $json->getData()){
 			if ($json = json_decode($json,true)){
@@ -234,19 +234,16 @@ abstract class OPAL_Theme {
      * @return array
      */
     public static function getAvailableThemes($field = null){
-		$dirname = 'themes';
-		$files = new OPAL_File($dirname);
-		$themes = array();
-		if ($dirFiles = $files->dirFiles()){
-			foreach ($dirFiles as $filename){
-				$file = new OPAL_File('info.json',$dirname.'/'.$filename);
-				if ($file->getExt() == 'json'){
-					if ($data = json_decode($file->getData(),true)){
-						$themes[$data['code']] = is_null($field) ? $data : $data[$field];
-					}
-				}
-			}
-		}
+		$files = new \Orange\FS\Dir('themes');
+		$themes = [];
+        foreach ($files->readDir() as $dir){
+            $file = new \Orange\FS\File($dir, 'info.json');
+            if ($file->getExt() == 'json'){
+                if ($data = json_decode($file->getData(),true)){
+                    $themes[$data['code']] = is_null($field) ? $data : $data[$field];
+                }
+            }
+        }
 		return $themes;
 	}
 

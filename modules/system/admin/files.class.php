@@ -13,22 +13,21 @@ class OPMA_System_Files extends OPAL_Controller {
         $org_path = $this->getGet('path');
         $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$org_path,'/');
         if ($this->checkFilepath($path)){
-            $dir = new OPAL_File($path);
-            if ($dir->dir){
+            $dir = new \Orange\FS\Dir($path);
+            if ($dir->exists()){
                 $list = array();
-                if ($filenames = $dir->dirFiles()){
-                    foreach ($filenames as $filename) {
-                        $file = new OPAL_File($filename, $path);
+                if ($files = $dir->readDir()){
+                    foreach ($files as $file) {
                         $mtime = $file->getModifyTime();
-                        $filesize = $file->getFileSize();
+                        $filesize = $file instanceof \Orange\FS\Dir ? '' : $file->getFileSize();
                         $fileData = array(
-                            'name'      => $filename,
-                            'ext'       => $file->getExt(),
+                            'name'      => $file->getName(),
+                            'ext'       => $file instanceof \Orange\FS\Dir ? '.' : $file->getExt(),
                             'mtime'     => date(OPAL_Portal::config('system_time_format','Y-m-d H:i:s'),$mtime),
                             'mtime_raw' => $mtime,
                             'size'      => $this->templater->getFilesize($filesize),
                             'size_raw'  => $filesize,
-                            'path'      => trim($org_path.'/'.$filename,'/'),
+                            'path'      => trim($org_path.'/'.$file->getName(),'/'),
                         );
                         $list[] = $fileData;
                     }
@@ -44,7 +43,6 @@ class OPMA_System_Files extends OPAL_Controller {
 
     public function uploadAjax(){
         //TODO XXX Add checkings for path!!!
-
         $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$this->getPost('path'), '/');
         if ($this->checkFilepath($path)){
             $files = $this->getFile('uploads');
@@ -52,7 +50,7 @@ class OPMA_System_Files extends OPAL_Controller {
                 $status = true;
                 foreach ($files['name'] as $fIndex => $fName) {
                     $fName = str_replace(' ', '-', $fName);
-                    $file = new OPAL_File($fName, $path);
+                    $file = new \Orange\FS\File($path, $fName);
                     $status = $status && $file->saveUpload($files['tmp_name'][$fIndex]);
                 }
                 if ($status) {
@@ -69,10 +67,10 @@ class OPMA_System_Files extends OPAL_Controller {
     }
 
     public function newfolderAjax(){
-        $path = trim('files' . '/' . $this->getPost('path'), '/').'/'.$this->getPost('folder');
+        $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/' . $this->getPost('path'), '/').'/'.$this->getPost('folder');
         if ($this->checkFilepath($path)){
-            $file = new OPAL_File($path);
-            $file->makeDir();
+            $dir = new \Orange\FS\Dir($path);
+            $dir->create();
             return $this->msg(OPAL_Lang::t('ADMIN_FOLDER_CREATED'),self::STATUS_OK);
         } else {
             return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'),self::STATUS_ERROR);
@@ -82,9 +80,12 @@ class OPMA_System_Files extends OPAL_Controller {
     public function deleteAjax(){
         $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$this->getPost('file'), '/');
         if ($this->checkFilepath($path)){
-            $file = new OPAL_File($path);
-            $file->delete();
-            return $this->msg(OPAL_Lang::t('ADMIN_FILE_DELETED'),self::STATUS_OK);
+            try {
+                \Orange\FS\FS::open($path)->remove();
+                return $this->msg(OPAL_Lang::t('ADMIN_FILE_DELETED'), self::STATUS_OK);
+            } catch (\Orange\FS\FSException $e){
+                return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'),self::STATUS_ERROR);
+            }
         } else {
             return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'),self::STATUS_ERROR);
         }

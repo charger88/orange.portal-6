@@ -15,6 +15,9 @@ try {
     if (!is_null($webmaster_email = OPAL_Portal::getWebmasterEmailForException())){
         header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
         $message = 'URL: ' . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
+        if ($e instanceof \Orange\FS\FSException) {
+            $message .= "\n\nFile: " . $e->getFilepath();
+        }
         if ($webmaster_email === '#'){
             header('Content-type: text/plain');
             echo $message;

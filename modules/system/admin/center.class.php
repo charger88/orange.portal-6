@@ -9,14 +9,14 @@ class OPMA_System_Center extends OPAL_Controller {
 	}
 	
 	public function licenseAction(){
-		$license = new OPAL_File('license.txt');
+		$license = new \Orange\FS\File('license.txt');
 		return $this->templater->fetch('system/admin-center-license.phtml',array(
 			'license' => $license->getData(),
 		));
 	}
 
 	public function systemHook(){
-		$version = new OPAL_File('version.txt','core');
+		$version = new \Orange\FS\File('core', 'version.txt');
 		return $this->templater->fetch('system/admin-center-system.phtml',array(
 			'version' => $version->getData(),
 			'server' => $this->getServer('SERVER_SOFTWARE',''),

@@ -86,8 +86,8 @@ abstract class OPAL_Module extends OPAM_Module {
             'author_url'  => '',
         );
         if ($this->get('module_code')) {
-            $file = new OPAL_File('info.json', 'modules/' . $this->get('module_code'));
-            if ($file->file){
+            $file = new \Orange\FS\File('modules/' . $this->get('module_code'), 'info.json');
+            if ($file->exists()){
                 $file = json_decode($file->getData(), true);
                 foreach ($info as $key => $value) {
                     if (isset($file[$key])) {

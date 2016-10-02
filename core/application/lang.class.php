@@ -46,15 +46,16 @@ class OPAL_Lang {
 	public static function getAvalibleLangsInfo(){
 		$langs = array();
 		$dirname = 'modules/system/lang';
-		$files = new OPAL_File($dirname);
-		if ($dirFiles = $files->dirFiles()){
-			foreach ($dirFiles as $filename){
-				$file = new OPAL_File($filename,$dirname);
-				if ($file->getExt() == 'json'){
-					if ($data = json_decode($file->getData(),true)){
-						$langs[$data['code']] = $data;
-					}
-				}
+		$files = new \Orange\FS\Dir($dirname);
+		if ($dirFiles = $files->readDir()){
+			foreach ($dirFiles as $file){
+                if ($file instanceof \Orange\FS\File) {
+                    if ($file->getExt() == 'json') {
+                        if ($data = json_decode($file->getData(), true)) {
+                            $langs[$data['code']] = $data;
+                        }
+                    }
+                }
 			}
 		}
 		return $langs;

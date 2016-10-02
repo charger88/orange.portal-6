@@ -76,21 +76,21 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 		$this->set('media_time_uploaded',time());
 		$this->set('media_user_id',$user_id);
 		
-		$file = new OPAL_File();
 		$dir = $this->getDir();
-		
 		$tNum = 0;
 		do {
-			if ($file->set($filename = $this->getNameWithNumber($tNum), $dir)){
+            $filename = $this->getNameWithNumber($tNum);
+            $file = new \Orange\FS\File($dir, $filename);
+			if ($file->exists()){
 				$tNum++;
 			} else {
 				$return = -1;
 			}
-		} while ( $file->is_exists() && ($return == 0) );
+		} while ( $file->exists() && ($return == 0) );
 
 		$this->set('media_file',$filename);
 
-        $status = !is_null($tmp_name) ? $file->saveUpload($tmp_name) : $file->saveData($data);
+        $status = !is_null($tmp_name) ? $file->saveUpload($tmp_name) : $file->save($data);
         $this->set('media_size',$file->getFileSize());
 
         if ($status){
@@ -130,12 +130,11 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 					} else {
 						$th->rectangle($info[0],$info[1],$info[2]);
 					}
-					$dirname = $this->getDir($size);
-					$dir = new OPAL_File($dirname);
-					if (!$dir->dir){
-						$dir->makeDir();
+					$dir = new \Orange\FS\Dir($this->getDir($size));
+					if (!$dir->exists()){
+						$dir->create();
 					}
-					$tresult = $th->save(OP_SYS_ROOT.$dirname.'/'.$this->get('media_file'),null,$info[3],true);
+					$tresult = $th->save($dir->getPath().'/'.$this->get('media_file'),null,$info[3],true);
 					$result = $result && $tresult;
 				}
 			}
