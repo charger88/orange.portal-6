@@ -256,6 +256,7 @@ $lang = array(
     'ADMIN_SYSTEM_MODULE_NOT_EDITABLE' => 'Error! System module is not editable.',
     'ADMIN_MODULES_NOT_INSTALLED'  => 'Not installed',
     'ADMIN_MODULE_INSTALLED'       => 'Module installed',
+    'ADMIN_MODULE_FAILED'          => 'Module installation was failed',
     'ADMIN_MODULE_UNINSTALLED'     => 'Module uninstalled',
     'ADMIN_ARE_YOU_SURE'     => 'Are you sure?',
     'ADMIN_FILES_NEW_FOLDER' => 'Create new folder',

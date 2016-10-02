@@ -19,7 +19,7 @@ class OPMO_Feedback extends OPAL_Module {
     }
 
     protected function doInstall($params = array()){
-        return empty((new OPMI_Feedback('feedback'))->installModule($params));
+        return (new OPMI_Feedback('feedback'))->installModule($params);
     }
 
     protected function doEnable(){

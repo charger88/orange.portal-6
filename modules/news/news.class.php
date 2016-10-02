@@ -16,8 +16,7 @@ class OPMO_News extends OPAL_Module {
 	}
 
     protected function doInstall($params = array()){
-		$i = new OPMI_News('news');
-		return empty($i->installModule($params));
+		return (new OPMI_News('news'))->installModule($params);
 	}
 
     protected function doEnable(){

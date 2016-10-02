@@ -52,9 +52,14 @@ class OPMA_System_Modules extends OPAL_Controller {
         if (!$module->id){
             $module->set('module_code',$code);
             $module = $module->getModuleObject();
-            $module->installModule();
-            $msg = OPAL_Lang::t('ADMIN_MODULE_INSTALLED');
-            $status = self::STATUS_COMPLETE;
+            $errors = $module->installModule();
+            if (empty($errors)) {
+                $msg = OPAL_Lang::t('ADMIN_MODULE_INSTALLED');
+                $status = self::STATUS_COMPLETE;
+            } else {
+                $msg = OPAL_Lang::t('ADMIN_MODULE_FAILED') . ': ' . implode(', ', $errors) . '.';
+                $status = self::STATUS_ERROR;
+            }
         }
         return $this->msg($msg,$status,OP_WWW.'/admin/modules');
     }
