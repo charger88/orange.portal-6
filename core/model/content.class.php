@@ -224,8 +224,8 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 	}
 
     /**
-     * @param null $default_lang
-     * @param null $current_lang
+     * @param string $default_lang
+     * @param string $current_lang
      * @return string
      */
     public function getURL($default_lang = null,$current_lang = null) {

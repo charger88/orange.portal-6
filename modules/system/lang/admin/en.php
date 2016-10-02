@@ -23,6 +23,7 @@ $lang = array(
         'ADMIN_GROUPS'            => 'Groups',
         'ADMIN_PRIVILEGES'        => 'Privileges',
         'ADMIN_ADMIN_PAGES'       => 'Admin panel',
+    'ADMIN_SITEMAP'           => 'Sitemaps',
 	
 	'ADMIN_LIST'              => 'List',
     'ADMIN_ADD_NEW'           => 'Create',
