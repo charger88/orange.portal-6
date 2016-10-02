@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+return [
 
     'MODULE_FEEDBACK' => 'Обратная связь',
 
@@ -17,4 +17,4 @@ $lang = array(
     'MODULE_FEEDBACK_MESSAGE_SENT' => 'Сообщение отправлено',
     'MODULE_FEEDBACK_SPAM_DETECTED' => 'К сожалению нащ спам-детектор сообщает, что что-то пошло не так. Попробуйте позже.',
 
-);
+];

@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+return [
 
 	'THEME'                           => 'Theme',
 	'POWERED_BY'                      => 'Powered by',
@@ -22,4 +22,4 @@ $lang = array(
     'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY'      => 'Field is empty',
     'FORM_VALIDATION_ERROR_MAX_LENGTH'          => 'Field length is exceeded',
 
-);
+];

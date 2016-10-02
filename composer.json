@@ -32,10 +32,6 @@
     {
       "type": "vcs",
       "url": "https://github.com/charger88/orange.sitemap"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/charger88/orange.lang"
     }
   ],
   "require": {
@@ -44,7 +40,6 @@
     "charger88/orange.forms": "dev-master",
     "charger88/orange.filters": "dev-master",
     "charger88/orange.fs": "dev-master",
-    "charger88/orange.sitemap": "dev-master",
-    "charger88/orange.lang": "dev-master"
+    "charger88/orange.sitemap": "dev-master"
   }
 }

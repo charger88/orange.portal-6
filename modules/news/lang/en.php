@@ -1,5 +1,6 @@
 <?php
-$lang = array(
+
+return [
 
     'MODULE_NEWS' => 'News',
     'MODULE_NEWS_LIST' => 'News list',
@@ -9,4 +10,4 @@ $lang = array(
 
     'NEWS_MORE_ITEMS' => 'Read more news',
 
-);
+];

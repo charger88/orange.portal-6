@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+return [
 
 	'ADMIN_CENTER_TITLE'      => 'Admin center',
 	'ADMIN_PAGES'             => 'Site pages',
@@ -322,4 +322,4 @@ $lang = array(
     'FORM_VALIDATION_ERROR_VALUE_IS_EMPTY'      => 'Field is empty',
     'FORM_VALIDATION_ERROR_MAX_LENGTH'          => 'Field length is exceeded',
 
-);
+];

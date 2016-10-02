@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+return [
 
     'MODULE_FEEDBACK' => 'Feedback',
 
@@ -57,4 +57,4 @@ $lang = array(
 
     'METHOD_FEEDBACK_SEND_MESSAGE' => 'Feedback sending',
 
-);
+];

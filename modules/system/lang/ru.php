@@ -1,6 +1,6 @@
 <?php
 
-$lang = array(
+return [
 
 	'THEME'                           => 'Тема',
 	'POWERED_BY'                      => 'Сайт работает на',
@@ -17,4 +17,4 @@ $lang = array(
     'SEARCH_BY_TAG_%s'                => 'Поиск по тегу «%s»',
     'EDIT'                            => 'Редактировать',
 
-);
+];

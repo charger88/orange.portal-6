@@ -8,15 +8,13 @@ class OPAL_Lang {
 		if ($lang_to_load != $baselang){
 			$filename = OP_SYS_ROOT.trim($folder,'/').'/'.$baselang.'.php';
 			if (is_file($filename)){
-                $lang = array();
-				require $filename;
+                $lang = include $filename;
 				self::$lang = array_merge($lang,self::$lang);
 			}
 		}
 		$filename = OP_SYS_ROOT.trim($folder,'/').'/'.$lang_to_load.'.php';
         if (is_file($filename)){
-            $lang = array();
-			require $filename;
+            $lang = include $filename;
 			self::$lang = array_merge(self::$lang,$lang);
 		}
 	}
