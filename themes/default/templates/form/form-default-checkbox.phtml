@@ -1,5 +1,0 @@
-<?php $label = $field['label']; unset($field['label']); $checked = !empty($field['checked']); if (!isset($field['value'])) { $field['value'] = 1; }  ?>
-<label class="form-label form-checkbox-label" for="<?php $this->ee($field['id']); ?>">
-<input <?php foreach ($field as $attr_key => $attr_value){ if (!is_array($attr_value)){ echo $this->esc($attr_key).'="'.$this->esc($attr_value).'" '; }} if ($checked){ echo 'checked="checked"'; } ?> />
-<?php $this->ee($label); ?>
-</label>

@@ -184,22 +184,27 @@ class OPAL_Portal {
             OPAL_Portal::$sitecode = $hostname;
             $installed = true;
         } else {
-            $sites = (new \Orange\FS\Dir('sites'))->readDir();
-            foreach ($sites as $site) {
-                if ($site instanceof \Orange\FS\Dir) {
-                    if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/' . $hostname . '.php')) {
-                        if (is_file($filename1 = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/default.php')) {
-                            require_once $filename1;
+            $sitesDir = new \Orange\FS\Dir('sites');
+            if ($sitesDir->exists()) {
+                $sites = $sitesDir->readDir();
+                foreach ($sites as $site) {
+                    if ($site instanceof \Orange\FS\Dir) {
+                        if (is_file($filename = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/' . $hostname . '.php')) {
+                            if (is_file($filename1 = OP_SYS_ROOT . 'sites/' . $site->getName() . '/config/default.php')) {
+                                require_once $filename1;
+                            }
+                            require_once $filename;
+                            OPAL_Portal::$sitecode = $site->getName();
+                            $installed = true;
+                            break;
                         }
-                        require_once $filename;
-                        OPAL_Portal::$sitecode = $site->getName();
-                        $installed = true;
-                        break;
                     }
                 }
-            }
-            if (!$installed) {
-                throw new Exception('Unknown site');
+                if (!$installed) {
+                    throw new Exception('Unknown site');
+                }
+            } else {
+                $installed = false;
             }
         }
         return [$installed,$config];
@@ -429,22 +434,19 @@ class OPAL_Portal {
 		if (count($_POST) == 0){
 			$response = $form->getHTML($this->templater);
 		} else {
-			$errors = $form->setValues(null,true);
-			if (!$errors){
-				$params = $form->getValues();
-				$params['domain'] = $_SERVER["SERVER_NAME"];
-				$params['base_dir'] = trim($_SERVER["REQUEST_URI"],'/');
-				$errors = $system->installModule($params);
-				if (is_null($errors)){
-					$errors['go'] = OPAL_Lang::t('Portal was installed earlier');
-				}
-				if ($errors){
-					foreach ($errors as $key => $error){
-						$form->setError($key, $error);
-					}
-				}
-			}
-			$errors = $form->getErrors();
+			$form->setValues($_POST);
+            $params = $form->getValues();
+            $params['domain'] = $_SERVER["SERVER_NAME"];
+            $params['base_dir'] = trim($_SERVER["REQUEST_URI"],'/');
+            $errors = $system->installModule($params);
+            if (is_null($errors)){
+                $errors['go'] = OPAL_Lang::t('Portal was installed earlier');
+            }
+            if ($errors){
+                foreach ($errors as $key => $error){
+                    $form->setError($key, $error);
+                }
+            }
 			if (self::env('ajax')){
 				$response = json_encode($errors);
 			} else {

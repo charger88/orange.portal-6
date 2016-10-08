@@ -1,10 +1,14 @@
 <?php
 
-class OPMF_System_Search extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Inputs\Search;
+use \Orange\Forms\Fields\Buttons\Button;
+
+class OPMF_System_Search extends Form {
 		
-	protected function build($params){
-		$this->addField('search', 'text', null, array('placeholder' => OPAL_Lang::t('SEARCH')));
-		$this->addField(null, 'submit', OPAL_Lang::t('FIND'));
-	}
+	protected function init($params){
+        $this->addField((new Search('search', OPAL_Lang::t('SEARCH')))->placeholder());
+        $this->addField((new Button('signin_submit', OPAL_Lang::t('FIND'))));
+    }
 	
 }

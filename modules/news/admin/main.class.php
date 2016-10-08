@@ -68,7 +68,7 @@ class OPMA_News_Main extends OPMA_System_Content {
         return $this->templater->fetch('system/admin-categories.phtml',array(
             'IDs' => $IDs,
             'pages' => $pages,
-            'add_form' => new OPMX_System_Category(OP_WWW.'/admin/news/addcategory'),
+            'add_form' => (new OPMX_System_Category())->setAction(OP_WWW.'/admin/news/addcategory'),
         ));
     }
 

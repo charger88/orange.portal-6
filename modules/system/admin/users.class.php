@@ -19,8 +19,10 @@ class OPMA_System_Users extends OPAL_Controller {
     public function indexAction(){
         $params = array();
         $params['groups'] = OPAM_User_Group::getRef(true);
-        $form = new OPMX_System_UserSearch(OP_WWW.'/'.$this->content->getSlug().'/list','get',$params);
-        return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+        $form = new OPMX_System_UserSearch($params);
+        $form->setMethod(\Orange\Forms\Form::METHOD_GET);
+        $form->setAction(OP_WWW.'/'.$this->content->getSlug().'/list');
+        return $form->getHTML();
     }
 
     public function listAction(){
@@ -79,7 +81,8 @@ class OPMA_System_Users extends OPAL_Controller {
     protected function edit($item){
         $params = array();
         $params['options'] = $this->getFormOptions();
-        $form = new OPMX_System_UserEdit(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id,'post',$params);
+        $form = new OPMX_System_UserEdit($params);
+        $form->setAction(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id);
         $form->setValues($item->getData(),true);
         return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
     }
@@ -88,7 +91,7 @@ class OPMA_System_Users extends OPAL_Controller {
         $id = intval($id);
         $item = new OPAM_User($id);
         $form = new OPMX_System_UserEdit();
-        $form->setValues();
+        $form->setValues($_POST);
         $item->setData($data = $form->getValues());
         $groups = $this->getPost('user_groups');
         $item->set('user_groups',$groups);

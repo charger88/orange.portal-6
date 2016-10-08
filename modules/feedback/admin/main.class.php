@@ -65,15 +65,16 @@ class OPMA_Feedback_Main extends OPAL_Controller {
     }
 
     protected function edit($item){
-        $form = new OPMX_Feedback_FormEdit($this->content->getURL().'/save/'.$item->id,'post');
-        $form->setValues($item->getData(),true);
+        $form = new OPMX_Feedback_FormEdit();
+        $form->setAction($this->content->getURL().'/save/'.$item->id);
+        $form->setValues($item->getData(), true);
         return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
     }
 
     public function saveAction($id){
         $item = new OPMM_Feedback_Form(intval($id));
         $form = new OPMX_Feedback_FormEdit();
-        $form->setValues();
+        $form->setValues($_POST);
         $item->setData($form->getValues());
         $item->save();
         $this->log('MODULE_FEEDBACK_FORM_%s_SAVED', array($item->get('feedback_form_name')), 'LOG_FEEDBACK', self::STATUS_OK, $item);
@@ -83,7 +84,8 @@ class OPMA_Feedback_Main extends OPAL_Controller {
     public function replyAction($id){
         $message_object = new OPMM_Feedback_Message(intval($id));
         $form_object = new OPMM_Feedback_Form($message_object->get('feedback_message_form_id'));
-        $form = new OPMX_Feedback_Reply($this->content->getURL().'/send/'.$message_object->id,'post');
+        $form = new OPMX_Feedback_Reply();
+        $form->setAction($this->content->getURL().'/send/'.$message_object->id);
         $message = explode("\n",$message_object->get('feedback_message_text'));
         $message = array_map(function($s){
             return '> '.$s;
@@ -99,8 +101,9 @@ class OPMA_Feedback_Main extends OPAL_Controller {
 
     public function sendAction($id){
         $message_object = new OPMM_Feedback_Message(intval($id));
-        $form = new OPMX_Feedback_Reply($this->content->getURL().'/send/'.$message_object->id,'post');
-        $form->setValues();
+        $form = new OPMX_Feedback_Reply();
+        $form->setAction($this->content->getURL().'/send/'.$message_object->id);
+        $form->setValues($_POST);
         $message_object
             ->setData($form->getValues())
             ->set('feedback_message_status', OPMM_Feedback_Message::STATUS_REPLIED)

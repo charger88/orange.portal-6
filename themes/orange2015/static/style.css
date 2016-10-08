@@ -142,11 +142,11 @@ section#top-section #block_slogan > span {
 	position: absolute;
 }
 
-#block_search-form form > div.form-element-input-wrapper {
+#block_search-form form > div.orange-forms-field-input-search {
     width: 100%;
 }
 
-#block_search-form form > div.form-element-button-wrapper {
+#block_search-form form > div.orange-forms-field-button-button {
     right: 0; 
 }
 

@@ -1,14 +1,19 @@
 <?php
 
-class OPMX_Feedback_Reply extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Inputs\Textarea;
+use \Orange\Forms\Fields\Buttons\Submit;
+
+class OPMX_Feedback_Reply extends Form {
 		
-	protected function build($params){
+	protected function init($params){
 
-        $this->addField('feedback_message_reply_from_name', 'text', OPAL_Lang::t('feedback_message_reply_from_name'), ['required' => true]);
-        $this->addField('feedback_message_reply_from_email', 'text', OPAL_Lang::t('feedback_message_reply_from_email'), ['required' => true]);
-        $this->addField('feedback_message_reply_text', 'textarea', OPAL_Lang::t('feedback_message_reply_text'), ['required' => true]);
+        $this->addField((new Text('feedback_message_reply_from_name', OPAL_Lang::t('feedback_message_reply_from_name')))->requireField());
+        $this->addField((new Text('feedback_message_reply_from_email', OPAL_Lang::t('feedback_message_reply_from_email')))->requireField());
+        $this->addField((new Textarea('feedback_message_reply_text', OPAL_Lang::t('feedback_message_reply_text')))->requireField());
 
-        $this->addField('feedback_message_reply_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
+        $this->addField((new Submit('feedback_message_reply_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
 
 	}
 		

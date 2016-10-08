@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	
-	$('.form-default fieldset > legend').on('click',function(){
+	$('.orange-forms-form fieldset > legend').on('click',function(){
 		var fid = $(this).parent().attr('id');
 		if (fid){
 			$(this).next().stop().clearQueue().slideToggle(100,function(){
@@ -29,7 +29,7 @@ $(document).ready(function(){
 });
 
 function legendsShowHide(){
-	$('.form-default fieldset').each(function(){
+	$('.orange-forms-form fieldset').each(function(){
 		var fid = $(this).attr('id');
 		if (Boolean(localStorage.getItem('fieldset_hidden_' + fid))){
 			$(this).find('> div').hide();

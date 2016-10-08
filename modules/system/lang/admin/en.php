@@ -280,6 +280,11 @@ return [
 
     'USER_%s_SAVED'           => 'User %s is saved',
 
+    'ADMIN_MOVED_SUCCESSFUL' => 'Site was successfully moved.',
+    'ADMIN_MOVED_FAIL' => 'Error! Domain changing was failed.',
+    'ADMIN_MOVED_NOT_CHANGED' => 'Domain was not changed',
+    'ADMIN_MOVED_INCORRECT_DATA' => 'Error! Incorrect data.',
+
 	'CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER' => 'Content type is not allowed for this controller',
 	'CONTENT_TYPE_%s_SAVED'   => 'Content "%s" is saved',
 	'CONTENT_%s_SAVED'        => 'Content type "%s" is saved',

@@ -6,10 +6,10 @@ class OPMA_System_Pages extends OPMA_System_Content {
 	protected $allowed_type_type = 1;
 	
 	public function indexAction(){
-		return $this->wrapContentWithTemplate(
+        return $this->wrapContentWithTemplate(
 			$this->wrapper,
 			$this->templater->fetch('system/admin-pages-tree.phtml',array(
-				'tree' => OPAM_Page::getPagesByParents($this->user,true),
+				'tree' => array_merge(OPAM_Page::getPagesByParents($this->user,true)),
 				'refs' => $this->getFormOptions(),
 				'slug' => $this->content->getSlug(),
 			))

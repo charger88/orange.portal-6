@@ -19,7 +19,8 @@ class OPMA_System_Options extends OPAL_Controller {
 	}
 	
 	public function systemAction(){
-		$form = new OPMX_System_Options(OP_WWW.'/admin/options/save');
+		$form = new OPMX_System_Options();
+        $form->setAction(OP_WWW.'/admin/options/save');
 		$form->setValues(OPAM_Config::loadActive('system'));
 		return $form->getHTML($this->templater);
 	}
@@ -30,7 +31,8 @@ class OPMA_System_Options extends OPAL_Controller {
 	}
 	
 	public function moveAction(){
-		$form = new OPMX_System_Move(OP_WWW.'/admin/options/moveSite');
+		$form = new OPMX_System_Move();
+        $form->setAction(OP_WWW.'/admin/options/moveSite');
 		$form->setValues(OPAM_Config::loadActive('system'));
 		return $form->getHTML($this->templater);
 	}
@@ -39,7 +41,7 @@ class OPMA_System_Options extends OPAL_Controller {
 		$oldDomain = OPAL_Portal::config('system_domain','');
 		$oldBasedir = OPAL_Portal::config('system_base_dir','');
 		$form = new OPMX_System_Move();
-		$form->setValues();
+		$form->setValues($_POST);
 		if ($data = $form->getValues()){
 			$newDomain = $data['system_domain'];
 			$newBasedir = $data['system_base_dir'];
@@ -72,10 +74,10 @@ class OPMA_System_Options extends OPAL_Controller {
 	}
 
     /**
-     * @param OPAL_Form $form
+     * @param \Orange\Forms\Form $form
      */
     public function saveOptions($form){
-		$form->setValues();		
+		$form->setValues($_POST);
 		if ($data = $form->getValues()){
             unset($data['content_edit_submit']);
 			foreach ($data as $key => $value){

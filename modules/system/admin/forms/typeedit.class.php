@@ -1,20 +1,30 @@
 <?php
 
-class OPMX_System_TypeEdit extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Components\Multirow;
+use \Orange\Forms\Fields\Selectors\Checkbox;
+use \Orange\Forms\Fields\Selectors\Select;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Buttons\Submit;
+
+class OPMX_System_TypeEdit extends Form {
 		
-	protected function build($params){
-		
-		$this->addField('content_type_name', 'text', OPAL_Lang::t('content_type_name'), array());
-		$this->addField('content_type_code', 'text', OPAL_Lang::t('content_type_code'), array());
-		$this->addField('content_type_type', 'select', OPAL_Lang::t('content_type_type'), array('required' => 'required', 'options' => array(
-			0 => OPAL_Lang::t('ADMIN_TYPE_TYPE_SYSTEM'),
-			1 => OPAL_Lang::t('ADMIN_TYPE_TYPE_PAGE'),
-			2 => OPAL_Lang::t('ADMIN_TYPE_TYPE_BLOCK'),
-			3 => OPAL_Lang::t('ADMIN_TYPE_TYPE_MODULE'),
-			4 => OPAL_Lang::t('ADMIN_TYPE_TYPE_CUSTOM'),
-		)));
-        $this->addField('content_type_sitemap_priority', 'text', OPAL_Lang::t('content_type_sitemap_priority'));
-        $this->addField('content_type_class', 'text', OPAL_Lang::t('content_type_class'), array());
+	protected function init($params){
+
+        $this->addField((new Text('content_type_name', OPAL_Lang::t('content_type_name'))));
+        $this->addField((new Text('content_type_code', OPAL_Lang::t('content_type_code'))));
+		$this->addField((new Select('content_type_type', OPAL_Lang::t('content_type_type')))
+            ->requireField()
+            ->setOptions([
+                0 => OPAL_Lang::t('ADMIN_TYPE_TYPE_SYSTEM'),
+                1 => OPAL_Lang::t('ADMIN_TYPE_TYPE_PAGE'),
+                2 => OPAL_Lang::t('ADMIN_TYPE_TYPE_BLOCK'),
+                3 => OPAL_Lang::t('ADMIN_TYPE_TYPE_MODULE'),
+                4 => OPAL_Lang::t('ADMIN_TYPE_TYPE_CUSTOM'),
+            ])
+        );
+        $this->addField((new Text('content_type_sitemap_priority', OPAL_Lang::t('content_type_sitemap_priority'))));
+        $this->addField((new Text('content_type_class', OPAL_Lang::t('content_type_class'))));
 
 		$content_type_hidden_options = array(
 			'content_title'           => OPAL_Lang::t('content_title'),
@@ -32,24 +42,86 @@ class OPMX_System_TypeEdit extends OPAL_Form {
 			'content_image'           => OPAL_Lang::t('content_image'),
 			'content_time_published'  => OPAL_Lang::t('content_time_published'),
 		);
-		
-		$this->addField('content_type_hidden', 'select', OPAL_Lang::t('content_type_hidden'), array('options' => $content_type_hidden_options, 'multiple' => 'multiple'));
 
-        $this->addField('content_type_multilang', 'checkbox', OPAL_Lang::t('content_type_multilang'), array('value' => 1));
-        $this->addField('content_type_status', 'checkbox', OPAL_Lang::t('content_type_status'), array('value' => 1));
-		
-		$this->addField('content_type_fields:_', 'text', OPAL_Lang::t('content_type_fields:_'), array(), 'content_type_fields[]');
-		$this->addField('content_type_fields:type', 'text', OPAL_Lang::t('content_type_fields:type'), array(), 'content_type_fields[]');
-		$this->addField('content_type_fields:group', 'text', OPAL_Lang::t('content_type_fields:group'), array(), 'content_type_fields[]');
-		$this->addField('content_type_fields:title', 'text', OPAL_Lang::t('content_type_fields:title'), array(), 'content_type_fields[]');
-		$this->addMultirow('content_type_fields');
-		
-		$this->addField('content_type_texts:_', 'text', OPAL_Lang::t('content_type_texts:_'), array(), 'content_type_texts[]');
-		$this->addField('content_type_texts:*', 'text', OPAL_Lang::t('content_type_texts:*'), array(), 'content_type_texts[]');
-		$this->addMultirow('content_type_texts');
+		$this->addField((new Select('content_type_hidden', OPAL_Lang::t('content_type_hidden')))
+            ->setMultiple()
+            ->setOptions($content_type_hidden_options));
 
-        $this->addField('type_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
-		
+        $this->addField((new Checkbox('content_type_multilang', OPAL_Lang::t('content_type_multilang')))->setDefault(1));
+        $this->addField((new Checkbox('content_type_status', OPAL_Lang::t('content_type_status')))->setDefault(1));
+
+        $content_type_fields = new Multirow('content_type_fields', OPAL_Lang::t('content_type_fields'));
+        {
+            $content_type_fields->addField((new Text('content_type_fields_id', OPAL_Lang::t('content_type_fields:_')))->setName('id'));
+            $content_type_fields->addField((new Text('content_type_fields_type', OPAL_Lang::t('content_type_fields:type')))->setName('type'));
+            $content_type_fields->addField((new Text('content_type_fields_group', OPAL_Lang::t('content_type_fields:group')))->setName('group'));
+            $content_type_fields->addField((new Text('content_type_fields_title', OPAL_Lang::t('content_type_fields:title')))->setName('title'));
+        }
+        $this->addField($content_type_fields);
+
+        $content_type_texts = new Multirow('content_type_texts', OPAL_Lang::t('content_type_texts'));
+        {
+            $content_type_texts->addField((new Text('content_type_texts_id', OPAL_Lang::t('content_type_texts:_')))->setName('id'));
+            $content_type_texts->addField((new Text('content_type_texts_value', OPAL_Lang::t('content_type_texts:*')))->setName('value'));
+        }
+        $this->addField($content_type_texts);
+
+        $this->addField(new Submit('type_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
+
 	}
-		
+
+    public function getValues()
+    {
+        $values = parent::getValues();
+        $content_type_texts = $values['content_type_texts'];
+        $values['content_type_texts'] = [];
+        $first_column = $content_type_texts[key($content_type_texts)];
+        foreach ($first_column as $i => $id) {
+            if (!empty($id) && !empty($content_type_texts['value'][$i])) {
+                $values['content_type_texts'][$id] = $content_type_texts['value'][$i];
+            }
+        }
+        $content_type_fields = $values['content_type_fields'];
+        $values['content_type_fields'] = [];
+        $first_column = $content_type_fields[key($content_type_fields)];
+        foreach ($first_column as $i => $id) {
+            if (!empty($id)) {
+                $values['content_type_fields'][$id] = [
+                    'code' => $id,
+                    'type' => $content_type_fields['type'][$i],
+                    'group' => $content_type_fields['group'][$i],
+                    'title' => $content_type_fields['title'][$i],
+                ];
+            }
+        }
+        return $values;
+    }
+
+    public function setValues($values, $from_db = false)
+    {
+        if ($from_db) {
+            $content_type_texts = $values['content_type_texts'];
+            $values['content_type_texts'] = [];
+            $values['content_type_texts']['id'] = [];
+            $values['content_type_texts']['type'] = [];
+            foreach ($content_type_texts as $i => $row) {
+                $values['content_type_texts']['id'][$i] = $i;
+                $values['content_type_texts']['value'][$i] = $row;
+            }
+            $content_type_fields = $values['content_type_fields'];
+            $values['content_type_fields'] = [];
+            $values['content_type_fields']['id'] = [];
+            $values['content_type_fields']['type'] = [];
+            $values['content_type_fields']['group'] = [];
+            $values['content_type_fields']['title'] = [];
+            foreach ($content_type_fields as $i => $row) {
+                $values['content_type_fields']['id'][$i] = $i;
+                $values['content_type_fields']['type'][$i] = $row['type'];
+                $values['content_type_fields']['group'][$i] = $row['group'];
+                $values['content_type_fields']['title'][$i] = $row['title'];
+            }
+        }
+        return parent::setValues($values);
+    }
+
 }

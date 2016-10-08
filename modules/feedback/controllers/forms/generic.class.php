@@ -1,47 +1,82 @@
 <?php
 
-class OPMF_Feedback_Generic extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Selectors\Select;
+use \Orange\Forms\Fields\Inputs\Hidden;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Inputs\Email;
+use \Orange\Forms\Fields\Inputs\Textarea;
+use \Orange\Forms\Fields\Buttons\Submit;
+
+class OPMF_Feedback_Generic extends Form {
 		
-	protected function build($params){
+	protected function init($params){
         if ($params['feedback_form_theme']) {
             $req = $params['feedback_form_theme'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
             if (empty(trim($params['feedback_form_themes']))) {
-                $this->addField('theme', 'text', OPAL_Lang::t('MODULE_FEEDBACK_THEME'), ['required' => $req]);
+                $field = new Text('theme', OPAL_Lang::t('MODULE_FEEDBACK_THEME'));
+                if ($req){
+                    $field->requireField();
+                }
             } else {
                 $themes = explode("\n",$params['feedback_form_themes']);
-                $themes = array_combine($themes,$themes);
                 if (count($themes) == 1){
-                    $this->addField('theme', 'hidden', OPAL_Lang::t('MODULE_FEEDBACK_THEME'), ['required' => $req, 'value' => $themes[0]]);
+                    $field = new Hidden('theme');
+                    $field->setDefault($themes[0]);
                 } else {
-                    $this->addField('theme', 'select', OPAL_Lang::t('MODULE_FEEDBACK_THEME'), ['required' => $req, 'options' => $themes]);
+                    $themes = array_combine($themes,$themes);
+                    $field = new Select('theme', OPAL_Lang::t('MODULE_FEEDBACK_THEME'));
+                    $field->setDefault($themes[0]);
+                    if ($req){
+                        $field->requireField();
+                    }
+                    $field->setOptions($themes);
                 }
             }
+            $this->addField($field);
         }
 
         if ($params['feedback_form_fields']) {
             foreach ($params['feedback_form_fields'] as $field){
                 $req = $field['status'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
-                $this->addField('field_'.md5($field['name']), 'text', OPAL_Lang::t($field['name']), ['required' => $req] );
+                $field = new Text('field_'.md5($field['name']), OPAL_Lang::t($field['name']));
+                if ($req){
+                    $field->requireField();
+                }
+                $this->addField($field);
             }
         }
 
         if ($params['feedback_form_phone']) {
-            $req = $params['feedback_form_phone'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
-            $this->addField('phone', 'text', OPAL_Lang::t('MODULE_FEEDBACK_PHONE'), ['required' => $req] );
+            $field = new Text('phone', OPAL_Lang::t('MODULE_FEEDBACK_PHONE'));
+            if ($params['feedback_form_phone'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED){
+                $field->requireField();
+            }
+            $this->addField($field);
         }
         if ($params['feedback_form_email']) {
-            $req = $params['feedback_form_email'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
-            $this->addField('email', 'email', OPAL_Lang::t('MODULE_FEEDBACK_EMAIL'), ['required' => $req] );
+            $field = new Email('email', OPAL_Lang::t('MODULE_FEEDBACK_EMAIL'));
+            if ($params['feedback_form_email'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED){
+                $field->requireField();
+            }
+            $this->addField($field);
         }
         if ($params['feedback_form_uname']) {
-            $req = $params['feedback_form_uname'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
-            $this->addField('uname', 'text', OPAL_Lang::t('MODULE_FEEDBACK_UNAME'), ['required' => $req] );
+            $field = new Text('uname', OPAL_Lang::t('MODULE_FEEDBACK_UNAME'));
+            if ($params['feedback_form_uname'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED){
+                $field->requireField();
+            }
+            $this->addField($field);
         }
         if ($params['feedback_form_text']) {
-            $req = $params['feedback_form_text'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED;
-            $this->addField('text', 'textarea', OPAL_Lang::t('MODULE_FEEDBACK_TEXT'), ['value' => '', 'required' => $req] );
+            $field = new Textarea('text', OPAL_Lang::t('MODULE_FEEDBACK_TEXT'));
+            if ($params['feedback_form_text'] == OPMM_Feedback_Form::FIELD_STATUS_REQUIRED){
+                $field->requireField();
+            }
+            $this->addField($field);
         }
-		$this->addField(null, 'submit', OPAL_Lang::t('MODULE_FEEDBACK_SEND'));
+
+		$this->addField(new Submit('feedback_form_submit', OPAL_Lang::t('MODULE_FEEDBACK_SEND')));
 	}
 	
 }

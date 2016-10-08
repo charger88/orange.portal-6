@@ -1,34 +1,60 @@
 <?php
 
-class OPMX_System_Options extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Inputs\Email;
+use \Orange\Forms\Fields\Html;
+use \Orange\Forms\Fields\Selectors\Select;
+use \Orange\Forms\Fields\Selectors\Checkbox;
+use \Orange\Forms\Fields\Buttons\Submit;
+
+class OPMX_System_Options extends Form {
 		
-	protected function build($params){
+	protected function init($params){
 
         $timezones = timezone_identifiers_list();
         $timezones = array_values($timezones);
         $timezones = array_combine($timezones,$timezones);
 
-		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_GENERAL').'</h3>');
-		$this->addField('system_sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array());
-		$this->addField('system_copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array());
-		$this->addField('system_theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvailableThemes('name'), 'value' => 'default', 'required' => 'required'));
-		$this->addField('system_email_public', 'email', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC'), array('required' => 'required'));
-		$this->addField('system_email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array());
-        $this->addField('system_timezone', 'select', OPAL_Lang::t('INSTALL_TIMEZONE'), array('options' => $timezones));
-        $this->addField('system_secretkey', 'text', OPAL_Lang::t('OPT_system_secretkey'), array());
+		$this->addField((new Html('<h3>' . OPAL_Lang::t('ADMIN_GENERAL') . '</h3>')));
+        $this->addField((new Text('system_sitename', OPAL_Lang::t('INSTALL_SITENAME'))));
+        $this->addField((new Text('system_copyright', OPAL_Lang::t('INSTALL_COPYRIGHT'))));
 
-		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_LANGUAGE').'</h3>');
-		$languages = OPAL_Lang::langs();
-		$this->addField('system_default_lang', 'select', OPAL_Lang::t('INSTALL_LANGUAGE_DEF'), array('options' => $languages, 'value' => 'en', 'required' => 'required'));
-		$this->addField('system_enabled_langs', 'select', OPAL_Lang::t('INSTALL_LANGUAGES'), array('options' => $languages, 'multiple' => 'multiple', 'required' => 'required'));
-		
-		$this->addHTML('<h3>'.OPAL_Lang::t('ADMIN_CACHING').'</h3>');
-		$this->addField('system_cache_css', 'checkbox', OPAL_Lang::t('OPT_system_cache_css'), array('value' => 1));
-		$this->addField('system_cache_js', 'checkbox', OPAL_Lang::t('OPT_system_cache_js'), array('value' => 1));
-		$this->addField('system_cache_method', 'checkbox', OPAL_Lang::t('OPT_system_cache_method'), array('value' => 1));
+		$this->addField((new Select('system_theme', OPAL_Lang::t('INSTALL_THEME')))
+            ->setOptions(OPAL_Theme::getAvailableThemes('name'))
+            ->setDefault('default')
+            ->requireField()
+        );
 
-        $this->addField('content_edit_submit', 'submit', OPAL_Lang::t('ADMIN_SAVE'), array(), 'buttons');
-		
+        $this->addField((new Email('system_email_public', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC')))->requireField());
+        $this->addField((new Email('system_email_system', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'))));
+
+        $this->addField((new Select('system_timezone', OPAL_Lang::t('INSTALL_TIMEZONE')))
+            ->setOptions($timezones)
+        );
+        $this->addField((new Text('system_secretkey', OPAL_Lang::t('OPT_system_secretkey'))));
+
+        $this->addField((new Html('<h3>' . OPAL_Lang::t('ADMIN_LANGUAGE') . '</h3>')));
+
+        $languages = OPAL_Lang::langs();
+        $this->addField((new Select('system_default_lang', OPAL_Lang::t('INSTALL_LANGUAGE_DEF')))
+            ->setOptions($languages)
+            ->setDefault('en')
+            ->requireField()
+        );
+        $this->addField((new Select('system_enabled_langs', OPAL_Lang::t('INSTALL_LANGUAGES')))
+            ->setOptions($languages)
+            ->setMultiple()
+            ->requireField()
+        );
+
+        $this->addField((new Html('<h3>' . OPAL_Lang::t('ADMIN_CACHING') . '</h3>')));
+        $this->addField((new Checkbox('system_cache_css', OPAL_Lang::t('OPT_system_cache_css')))->setDefault(1));
+		$this->addField((new Checkbox('system_cache_js', OPAL_Lang::t('OPT_system_cache_js')))->setDefault(1));
+		$this->addField((new Checkbox('system_cache_method', OPAL_Lang::t('OPT_system_cache_method')))->setDefault(1));
+
+        $this->addField(new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
+
 	}
 	
 	

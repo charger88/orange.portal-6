@@ -1,5 +1,0 @@
-<?php $label = $field['label']; unset($field['label']); ?>
-<label for="<?php $this->ee($field['id']); ?>">
-<input <?php foreach ($field as $attr_key => $attr_value){ if (!is_array($attr_value)){ echo $this->esc($attr_key).'="'.$this->esc($attr_value).'" '; }} ?> />
-<?php $this->ee($label); ?>
-</label>

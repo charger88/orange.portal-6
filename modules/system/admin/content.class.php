@@ -102,7 +102,8 @@ class OPMA_System_Content extends OPAL_Controller {
 			$params = $this->edit_form_params;
 			$params['options'] = $this->getFormOptions($item);
 			$params['type'] = $type;
-			$form = new OPMX_System_ContentEdit($this->content->getURL().'/save/'.$item->id,'post',$params);
+			$form = new OPMX_System_ContentEdit($params);
+            $form->setAction($this->content->getURL().'/save/'.$item->id);
 			$values = $item->getData();
 			if ($texts = $type->get('content_type_texts')){
 				foreach ($texts as $text_id => $text_name){
@@ -118,7 +119,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			}
             $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
             $values['content_tags'] = $item->id ? implode(', ',$item->tags()) : '';
-			$form->setValues($values,$validate);
+			$form->setValues($values, true); //TODO Validation
 			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
 		} else {
 			$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
@@ -155,17 +156,19 @@ class OPMA_System_Content extends OPAL_Controller {
 			}
 			$type = new OPAM_Content_Type('content_type_code',$item->get('content_type'));
 			if ($this->checkIsTypeAllowed($type)){
-				$form = new OPMX_System_ContentEdit($this->content->getURL().'/save/'.$item->id,'post',array(
+				$form = new OPMX_System_ContentEdit([
 					'options' => $this->getFormOptions($item),
 					'type'    => $type,
-				));
-				$errors = $form->setValues(null,true);
-				$values = $form->getValues();
+				]);
+                $form->setAction($this->content->getURL().'/save/'.$item->id);
+				$form->setValues($_POST);
+                $errors = []; //TODO Form validation
+                $values = $form->getValues();
 				$item->setData($values);
 				$item->set('content_slug',str_replace('%2F','/',urlencode($item->get('content_slug'))));
 				if ($fields = $type->get('content_type_fields')){
 					foreach ($fields as $field_id => $field){
-						$item->setField($field_id,$values['content_field_'.$field_id]);
+						$item->setField($field_id,isset($values['content_field_'.$field_id]) ? $values['content_field_'.$field_id] : null);
 					}
 				}
                 if (!$errors){

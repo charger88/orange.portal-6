@@ -46,24 +46,24 @@ body > section {
 	padding: 30px 42px;
 }
 
-body > section .form-element-wrapper {
+body > section .orange-forms-field-wrapper {
 	margin-bottom: 7px;
 }
 
-body > section .form-element-submit-wrapper {
+body > section .orange-forms-field-button-submit {
 	text-align: right;
 }
 
-body > section .form-area {
+body > section .orange-forms-region {
 	margin-bottom: 28px;
 }
 
-body > section .form-area-step-last,
-body > section .form-area-step-last .form-element-wrapper {
+body > section #form-region-step-last,
+body > section #form-region-step-last .orange-forms-field-wrapper {
 	margin-bottom: 0;
 }
 
-body > section .form-element-required-wrapper label:after {
+body > section .orange-forms-field-required label:after {
 	content: '*';
 	color: #f27318;
 	margin-left: 0.15em;

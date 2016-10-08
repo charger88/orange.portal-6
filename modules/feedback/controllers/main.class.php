@@ -18,7 +18,8 @@ class OPMC_Feedback_Main extends OPAL_Controller {
         $form_id = intval($this->arg('form',0));
         $form_object = new OPMM_Feedback_Form($form_id);
         if ($form_object->id) {
-            $form = new OPMF_Feedback_Generic(OP_WWW.'/module/feedback/main/send/'.$form_object->id,'post',$form_object->getData());
+            $form = new OPMF_Feedback_Generic($form_object->getData());
+            $form->setAction(OP_WWW.'/module/feedback/main/send/'.$form_object->id);
             if ($formValues = $this->getGet('formValues')){
                 if ($formValues = base64_decode($formValues)) {
                     if ($formValues = json_decode($formValues,true)) {
@@ -45,8 +46,11 @@ class OPMC_Feedback_Main extends OPAL_Controller {
     protected function send($form_id){
         $form_object = new OPMM_Feedback_Form(intval($form_id));
         if ($form_object->id) {
-            $form = new OPMF_Feedback_Generic(OP_WWW.'/module/feedback/main/send/'.$form_object->id,'post',$form_object->getData());
-            if ($errors = $form->setValues(null, true)){
+            $form = new OPMF_Feedback_Generic($form_object->getData());
+            $form->setAction(OP_WWW.'/module/feedback/main/send/'.$form_object->id);
+            $form->setValues($_POST, true);
+            $errors = false; //TODO Validation
+            if ($errors){
                 if (OPAL_Portal::getInstance()->env('ajax')){
                     return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, $errors);
                 } else {

@@ -1,29 +1,37 @@
 <?php
 
-class OPMX_System_UserSearch extends OPAL_Form {
-		
-	protected function build($params){
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Selectors\Select;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Buttons\Submit;
 
-        $this->addField('order', 'select', OPAL_Lang::t('ADMIN_SORT_BY'), array('options' => array(
+class OPMX_System_UserSearch extends Form {
+
+    protected function init($params){
+
+        $this->addField((new Select('order', OPAL_Lang::t('ADMIN_SORT_BY'), [
             'id'         => 'ID',
             'user_login' => OPAL_Lang::t('user_login'),
             'user_email' => OPAL_Lang::t('user_email'),
             'user_phone' => OPAL_Lang::t('user_phone'),
             'user_name'  => OPAL_Lang::t('user_name'),
-        ), 'value'=> 'id', 'required' => true), 'column');
+        ]))->requireField()->setDefault('user_login'), 'column');
 
-        $this->addField('user_login', 'text', OPAL_Lang::t('user_login'), array(), 'main');
-        $this->addField('user_email', 'text', OPAL_Lang::t('user_email'), array(), 'main');
-        $this->addField('user_phone', 'text', OPAL_Lang::t('user_phone'), array(), 'main');
-        $this->addField('user_name', 'text', OPAL_Lang::t('user_name'), array(), 'main');
-        $this->addField('user_group', 'select', OPAL_Lang::t('user_group'), array('options' => $params['groups'], 'value'=> 0, 'required' => true), 'main');
-        $this->addField('user_status', 'select', OPAL_Lang::t('ADMIN_STATUS'), array('options' => array(
+        $this->addField((new Text('user_login', OPAL_Lang::t('user_login'))), 'main');
+        $this->addField((new Text('user_email', OPAL_Lang::t('user_email'))), 'main');
+        $this->addField((new Text('user_phone', OPAL_Lang::t('user_phone'))), 'main');
+        $this->addField((new Text('user_name', OPAL_Lang::t('user_name'))), 'main');
+
+        $this->addField((new Select('user_group', OPAL_Lang::t('user_group'), $params['groups']))->requireField()->setDefault(0), 'main');
+
+        $this->addField((new Select('user_group', OPAL_Lang::t('ADMIN_STATUS'), [
             -1 => OPAL_Lang::t('ADMIN_DISABLED'),
-             1 => OPAL_Lang::t('user_status'),
-        )), 'main');
+            1 => OPAL_Lang::t('user_status'),
+        ]))->requireField(), 'main');
 
-		$this->addField('user_search', 'submit', OPAL_Lang::t('ADMIN_SEARCH'), array('value' => 1), 'buttons');
+        $this->addField((new Submit('user_search', OPAL_Lang::t('ADMIN_SEARCH')))
+            ->setDefault(1), 'top');
 
-	}
+    }
 		
 }

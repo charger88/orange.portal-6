@@ -341,10 +341,12 @@ class OPAL_Controller {
 		$path .= !is_null($classname) ? '/'.$classname : '/'.get_class($this);
 		$path .= !is_null($methodname) ? '/'.$methodname : '';
 		$path .= !is_null($id) ? '/'.intval($id) : '';
-		$dir = \Orange\FS\FS::open($path);
-        if ($dir->exists()) {
-            $dir->remove();
-        }
+        try {
+            $dir = \Orange\FS\FS::open($path);
+            if ($dir->exists()) {
+                $dir->remove();
+            }
+        } catch(\Exception $e){}
 	}
 
     /**

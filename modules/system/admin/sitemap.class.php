@@ -22,27 +22,31 @@ class OPMA_System_Sitemap extends OPAL_Controller {
 
     public function sitemapHook(){
         $index = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', 'sitemap.xml');
-        $sitemap = simplexml_load_string($index->getData());
-        $files = array();
-        $files['sitemap.xml'] = array(
-            'time' => $index->getModifyTime(),
-            'items' => $sitemap ? count($sitemap) : 0,
-        );
-        if ($sitemap){
-            foreach ($sitemap as $element) {
-                $name = basename($element->loc);
-                $sfile = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', $name);
-                if ($sfile){
-                    $sitemapXML = simplexml_load_string($sfile->getData());
-                    $items = $sitemapXML ? count($sitemapXML) : 0;
-                } else {
-                    $items = -1;
+        if ($index->exists()) {
+            $sitemap = simplexml_load_string($index->getData());
+            $files = array();
+            $files['sitemap.xml'] = array(
+                'time' => $index->getModifyTime(),
+                'items' => $sitemap ? count($sitemap) : 0,
+            );
+            if ($sitemap) {
+                foreach ($sitemap as $element) {
+                    $name = basename($element->loc);
+                    $sfile = new \Orange\FS\File('sites/' . OPAL_Portal::$sitecode . '/static/root', $name);
+                    if ($sfile) {
+                        $sitemapXML = simplexml_load_string($sfile->getData());
+                        $items = $sitemapXML ? count($sitemapXML) : 0;
+                    } else {
+                        $items = -1;
+                    }
+                    $files[$name] = array(
+                        'time' => $sfile->getModifyTime(),
+                        'items' => $items,
+                    );
                 }
-                $files[$name] = array(
-                    'time' => $sfile->getModifyTime(),
-                    'items' => $items,
-                );
             }
+        } else {
+            $files = [];
         }
         return $this->templater->fetch('system/admin-center-sitemap.phtml',array(
             'files' => $files,

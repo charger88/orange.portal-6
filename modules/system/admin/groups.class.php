@@ -61,7 +61,7 @@ class OPMA_System_Groups extends OPAL_Controller {
         $id = intval($id);
         $item = new OPAM_User_Group($id);
 		$form = new OPMX_System_GroupEdit();
-		$form->setValues();
+		$form->setValues($_POST);
 		$item->setData($form->getValues());
 		$item->save();
 		$this->log('GROUP_%s_SAVED', array($item->get('group_name')), 'LOG_USERS', self::STATUS_OK, $item);

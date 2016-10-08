@@ -1,14 +1,14 @@
 <?php
 
-class OPMX_System_Category extends OPAL_Form {
-		
-	protected function build($params){
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Buttons\Submit;
 
-		$this->addField('category', 'text', OPAL_Lang::t('ADMIN_CATEGORY_PAGE'), array());
-		
-		$this->addField('category_submit', 'submit', OPAL_Lang::t('ADMIN_ADD'), array());
-		
-	}
-	
-	
+class OPMX_System_Category extends Form {
+
+    protected function init($params){
+        $this->addField(new Text('category', OPAL_Lang::t('ADMIN_CATEGORY_PAGE')));
+        $this->addField(new Submit('category_submit', OPAL_Lang::t('ADMIN_ADD')), 'top');
+    }
+
 }

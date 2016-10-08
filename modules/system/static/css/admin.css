@@ -448,14 +448,14 @@ aside#column nav ul li:hover ul {
 
 /* Forms */
 
-.form-default fieldset {
+.orange-forms-form fieldset {
 	padding: 2.4rem 0 0 0;
 	background: #edf0f2;
 	position: relative;
 	display: block;
 }
 
-.form-default fieldset > legend {
+.orange-forms-form fieldset > legend {
 	background: rgba(0,0,0,0.1);
 	position: absolute;
 	height: 2.4rem;
@@ -470,12 +470,20 @@ aside#column nav ul li:hover ul {
 	cursor: pointer;
 }
 
-.form-default fieldset > div {
-	padding: 1.2rem;
+.orange-forms-form fieldset > div {
+	padding: 0.5rem 1.2rem;
 }
 
-.form-default .form-element-submit,
-.form-default .form-element-button,
+.orange-forms-form fieldset > div:last-child,
+.orange-forms-form fieldset > div:last-child label {
+    margin-bottom: 0;
+}
+
+.orange-forms-form .orange-forms-field-wrapper.orange-forms-field-hidden {
+    margin: 0;
+}
+
+.orange-forms-form .orange-forms-field-button button,
 .admin-button {
 	border: 0;
 	outline: none;
@@ -493,14 +501,15 @@ aside#column nav ul li:hover ul {
 	text-decoration: none;
 }
 
-.form-default .form-label {
+.orange-forms-form label {
 	display: block;
 	margin-bottom: 0.25rem;
 	font-weight: bold;
 	font-size: 0.8rem;
 }
 
-.form-default .form-area-buttons,
+.orange-forms-form .form-area-buttons,
+#form-region-top,
 .buttons-area {
 	position: fixed;
 	top: 0;
@@ -508,29 +517,29 @@ aside#column nav ul li:hover ul {
 	z-index: 300;
 }
 
-.form-default .form-area-buttons > *,
+.orange-forms-form .form-area-buttons > *,
 .buttons-area > * {
     float: left;
 }
 
 
-.form-default fieldset,
-.form-default .form-element-wrapper {
+.orange-forms-form fieldset,
+.orange-forms-form .orange-forms-field-wrapper {
 	margin-bottom: 2.2rem;
 }
 
-.form-default .form-element-wrapper.form-element-checkbox-wrapper {
+.orange-forms-form .orange-forms-field-wrapper.orange-forms-field-checkbox {
 	margin-bottom: 0.5rem;
 }
 
-.form-default fieldset:last-child,
-.form-default .form-element-wrapper:last-child {
+.orange-forms-form fieldset:last-child,
+.orange-forms-form .orange-forms-field-wrapper:last-child {
 	margin-bottom: 0;
 }
 
-.form-default .form-element-input,
-.form-default .form-element-select,
-.form-default .form-element-textarea {
+.orange-forms-form .orange-forms-field-input input,
+.orange-forms-form .orange-forms-field-select select,
+.orange-forms-form .orange-forms-field-textarea textarea {
 	outline: none;
 	padding: 0.5rem;
 	width: 100%;
@@ -538,39 +547,44 @@ aside#column nav ul li:hover ul {
 	background: #ffffff;
 }
 
-.form-default .form-element-textarea {
+.orange-forms-form .orange-forms-field-textarea textarea {
     height: 12rem;
 }
 
-.form-default .form-element-textarea.full-text {
+.orange-forms-form .orange-forms-field-textarea textarea.full-text {
     height: 24rem;
 }
 
-.form-default .form-element-input:focus,
-.form-default .form-element-select:focus,
-.form-default .form-element-textarea:focus {
+.orange-forms-form .orange-forms-field-input input:focus,
+.orange-forms-form .orange-forms-field-select select:focus,
+.orange-forms-form .orange-forms-field-textarea textarea:focus {
 	border: 1px solid #e6b522;
 }
 
-.form-default .form-multirow {
+.orange-forms-form .orange-forms-multirow {
 	margin-bottom: 2.2rem;
 }
 
-.form-default .form-multirow .form-multirow-row {
+.orange-forms-form .orange-forms-multirow .orange-forms-row-wrapper {
 	margin-bottom: 2.2rem;
 	display: flex;
 	flex-direction: row;
     cursor: move;
 }
 
-.form-default .form-multirow .form-element-wrapper {
+.orange-forms-form .orange-forms-multirow .orange-forms-row-wrapper:last-child {
+    margin-bottom: 0;
+}
+
+
+.orange-forms-form .orange-forms-multirow .orange-forms-field-wrapper {
 	margin-left: 0.9rem;
 	margin-bottom: 0;
 	box-sizing: border-box;
     width: 100%;
 }
 
-.form-default .form-multirow .form-element-wrapper:first-child {
+.orange-forms-form .orange-forms-multirow .orange-forms-field-wrapper:first-child {
 	margin-left: 0;
 }
 
@@ -593,16 +607,16 @@ aside#column nav ul li:hover ul {
 
 /* Form special */
 
-.form-area-top {
+#form-region-header {
 	margin-bottom: 2.2rem;
 }
 
-.form-area-main {
+#form-region-main {
 	margin-right: 16rem;
     padding-right: 1.6rem;
 }
 
-.form-area-column {
+#form-region-column {
 	float: right;
 	width: 16rem;
 }

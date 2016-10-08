@@ -1,46 +1,69 @@
 <?php
 
-class OPMX_System_Install extends OPAL_Form {
+use \Orange\Forms\Form;
+use \Orange\Forms\Fields\Inputs\Text;
+use \Orange\Forms\Fields\Inputs\Email;
+use \Orange\Forms\Fields\Inputs\Number;
+use \Orange\Forms\Fields\Inputs\Hidden;
+use \Orange\Forms\Fields\Html;
+use \Orange\Forms\Fields\Selectors\Select;
+use \Orange\Forms\Fields\Buttons\Submit;
 
-	protected function build($params){
+class OPMX_System_Install extends Form {
+
+	protected function init($params){
 
         $timezones = timezone_identifiers_list();
         $timezones = array_values($timezones);
         $timezones = array_combine($timezones,$timezones);
 
-		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_DB').'</h3>', 'step-1');
-		$this->addField('db_server', 'text', OPAL_Lang::t('INSTALL_DB_SERVER'), array('value' => 'localhost','required' => 'required'), 'step-1');
-		$this->addField('db_port', 'number', OPAL_Lang::t('INSTALL_DB_PORT'), array('value' => '3306'), 'step-1');
-		$this->addField('db_name', 'text', OPAL_Lang::t('INSTALL_DB_NAME'), array('required' => 'required'), 'step-1');
-		$this->addField('db_prefix', 'text', OPAL_Lang::t('INSTALL_DB_PREFIX'), array('value' => 'op6_'), 'step-1');
-		$this->addField('db_user', 'text', OPAL_Lang::t('INSTALL_DB_USER'), array('required' => 'required'), 'step-1');
-		$this->addField('db_password', 'text', OPAL_Lang::t('INSTALL_DB_PASSWORD'), array(), 'step-1');
-		$this->addField('db_type', 'select', OPAL_Lang::t('INSTALL_DB_DRIVER'), array('options' => array('MySQL' => 'MySQL'), 'value' => 'mi', 'required' => 'required'), 'step-1');
-		
-		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_SITE').'</h3>', 'step-2');
-		$this->addField('sitename', 'text', OPAL_Lang::t('INSTALL_SITENAME'), array('required' => 'required'), 'step-2');
-        $this->addField('sitecode', 'text', OPAL_Lang::t('INSTALL_SITECODE'), array('required' => 'required'), 'step-2');
-        $this->addField('copyright', 'text', OPAL_Lang::t('INSTALL_COPYRIGHT'), array(), 'step-2');
-        $this->addField('timezone', 'select', OPAL_Lang::t('INSTALL_TIMEZONE'), array('options' => $timezones), 'step-2');
+		$this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_DB').'</h3>')), 'step-1');
+		$this->addField((new Text('db_server', OPAL_Lang::t('INSTALL_DB_SERVER')))->setDefault('localhost')->requireField(), 'step-1');
+		$this->addField((new Number('db_port', OPAL_Lang::t('INSTALL_DB_PORT')))->setDefault('3306'), 'step-1');
+		$this->addField((new Text('db_name', OPAL_Lang::t('INSTALL_DB_NAME')))->requireField(), 'step-1');
+		$this->addField((new Text('db_prefix', OPAL_Lang::t('INSTALL_DB_PREFIX')))->setDefault('op6_'), 'step-1');
+		$this->addField((new Text('db_user', OPAL_Lang::t('INSTALL_DB_USER')))->requireField(), 'step-1');
+		$this->addField((new Text('db_password', OPAL_Lang::t('INSTALL_DB_PASSWORD'))), 'step-1');
+		$this->addField((new Select('db_type', OPAL_Lang::t('INSTALL_DB_DRIVER')))
+            ->setOptions(['MySQL' => 'MySQL'])
+            ->setDefault('MySQL')
+            ->requireField(), 'step-1');
+
+        $this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_SITE').'</h3>')), 'step-2');
+        $this->addField((new Text('sitename', OPAL_Lang::t('INSTALL_SITENAME')))->requireField(), 'step-2');
+        $this->addField((new Text('sitecode', OPAL_Lang::t('INSTALL_SITECODE')))->requireField(), 'step-2');
+        $this->addField((new Text('copyright', OPAL_Lang::t('INSTALL_COPYRIGHT'))), 'step-2');
+        $this->addField((new Select('timezone', OPAL_Lang::t('INSTALL_TIMEZONE')))
+            ->setOptions($timezones), 'step-2');
         //TODO Get DB drivers
-		$this->addField('theme', 'select', OPAL_Lang::t('INSTALL_THEME'), array('options' => OPAL_Theme::getAvailableThemes('name'), 'value' => 'default', 'required' => 'required'), 'step-2');
-		
-		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_LANGUAGE').'</h3>', 'step-3');
-		$languages = OPAL_Lang::langs();
-		$this->addField('default_lang', 'select', OPAL_Lang::t('INSTALL_LANGUAGE_DEF'), array('options' => $languages, 'value' => 'en', 'required' => 'required'), 'step-3');
-		$this->addField('enabled_langs', 'select', OPAL_Lang::t('INSTALL_LANGUAGES'), array('options' => $languages, 'multiple' => 'multiple', 'value' => 'en', 'required' => 'required'), 'step-3');
+		$this->addField((new Select('theme', OPAL_Lang::t('INSTALL_THEME')))
+            ->setOptions(OPAL_Theme::getAvailableThemes('name'))
+            ->setDefault('default')
+            ->requireField(), 'step-2');
+
+        $this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_LANGUAGE').'</h3>')), 'step-3');
+        $languages = OPAL_Lang::langs();
+		$this->addField((new Select('default_lang', OPAL_Lang::t('INSTALL_LANGUAGE_DEF')))
+            ->setOptions($languages)
+            ->setDefault('en')
+            ->requireField(), 'step-3');
+		$this->addField((new Select('enabled_langs', OPAL_Lang::t('INSTALL_LANGUAGES')))
+            ->setOptions($languages)
+            ->setMultiple()
+            ->setDefault('en')
+            ->requireField(), 'step-3');
+
+        $this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_ADMIN').'</h3>')), 'step-4');
+		$this->addField((new Text('admin_username', OPAL_Lang::t('INSTALL_ADMIN_USERNAME')))->requireField()->setDefault('admin'), 'step-4');
+		$this->addField((new Text('admin_password', OPAL_Lang::t('INSTALL_ADMIN_PASSWORD')))->requireField()->setDefault(''), 'step-4');
+		$this->addField((new Text('admin_email', OPAL_Lang::t('INSTALL_ADMIN_EMAIL')))->requireField(), 'step-4');
+
+        $this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_EMAIL').'</h3>')), 'step-5');
+		$this->addField((new Email('email_public', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC')))->requireField(), 'step-5');
+		$this->addField((new Email('email_system', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM')))->requireField(), 'step-5');
 				
-		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_ADMIN').'</h3>', 'step-4');
-		$this->addField('admin_username', 'text', OPAL_Lang::t('INSTALL_ADMIN_USERNAME'), array('value' => 'admin','required' => 'required'), 'step-4');
-		$this->addField('admin_password', 'text', OPAL_Lang::t('INSTALL_ADMIN_PASSWORD'), array('value' => '','required' => 'required'), 'step-4');
-		$this->addField('admin_email', 'email', OPAL_Lang::t('INSTALL_ADMIN_EMAIL'), array('required' => 'required'), 'step-4');
-		
-		$this->addHTML('<h3>'.OPAL_Lang::t('INSTALL_EMAIL').'</h3>', 'step-5');
-		$this->addField('email_public', 'email', OPAL_Lang::t('INSTALL_EMAIL_PUBLIC'), array('required' => 'required'), 'step-5');
-		$this->addField('email_system', 'email', OPAL_Lang::t('INSTALL_EMAIL_SYSTEM'), array('required' => 'required'), 'step-5');
-				
-		$this->addField('step', 'hidden', null, array(), 'step-last');
-		$this->addField('go', 'submit', OPAL_Lang::t('INSTALL'), array(), 'step-last');
+		$this->addField((new Hidden('step'))->setDefault('step-last'), 'step-last');
+		$this->addField((new Submit('go', OPAL_Lang::t('INSTALL'))), 'step-last');
 				
 	}
 
