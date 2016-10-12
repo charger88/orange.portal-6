@@ -14,9 +14,7 @@ class OPMO_Feedback extends OPAL_Module {
         return true;
     }
 
-    private function initHooks(){
-        OPAL_Portal::addHook('adminAccess_privileges', __CLASS__, 'getPrivilegesList');
-    }
+    private function initHooks(){}
 
     protected function doInstall($params = array()){
         return (new OPMI_Feedback('feedback'))->installModule($params);

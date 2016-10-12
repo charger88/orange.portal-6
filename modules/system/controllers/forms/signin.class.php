@@ -4,7 +4,7 @@ use \Orange\Forms\Form;
 use \Orange\Forms\Fields\Inputs\Text;
 use \Orange\Forms\Fields\Inputs\Password;
 use \Orange\Forms\Fields\Inputs\Hidden;
-use \Orange\Forms\Fields\Buttons\Button;
+use \Orange\Forms\Fields\Buttons\Submit;
 use \Orange\Forms\Fields\Html;
 
 class OPMF_System_Signin extends Form {
@@ -16,7 +16,7 @@ class OPMF_System_Signin extends Form {
         $this->addField((new Text('signin_login', OPAL_Lang::t('Username'))));
         $this->addField((new Password('signin_password', OPAL_Lang::t('Password'))));
         $this->addField((new Hidden('signin_redirect')));
-        $this->addField((new Button('signin_submit', OPAL_Lang::t('Sign In'))));
+        $this->addField((new Submit('signin_submit', OPAL_Lang::t('Sign In'))));
 
 		if (isset($params['recovery'])){
 			$this->addField(new Html($params['recovery']));

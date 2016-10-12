@@ -3,10 +3,10 @@
 class OPMA_System_Privileges extends OPAL_Controller {
 
 	public function indexAction(){
-        $privileges_tmp = OPAL_Portal::getInstance()->processHooks('adminAccess_privileges');
-        $privileges = array();
-        foreach ($privileges_tmp as $privileges_tmp_data){
-            $privileges = array_merge($privileges,$privileges_tmp_data);
+        $privileges = [];
+        $modules = OPAL_Module::getModules(true);
+        foreach ($modules as $module){
+            $privileges = array_merge($privileges, $module->getPrivilegesList());
         }
 		return $this->templater->fetch('system/admin-privileges.phtml',array(
             'privileges' => $privileges,

@@ -99,7 +99,7 @@ abstract class OPAL_Module extends OPAM_Module {
         return $info;
     }
 
-	public function getPrivilegesListHook(){
+	public function getPrivilegesList(){
 		return array_unique(array_values($this->privileges));
 	}
 	

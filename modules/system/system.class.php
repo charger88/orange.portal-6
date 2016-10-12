@@ -20,7 +20,6 @@ class OPMO_System extends OPAL_Module {
         OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Log', 'last');
         OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Sitemap', 'sitemap');
         OPAL_Portal::addHook('adminCenter_sitemap', 'OPMA_System_Sitemap', 'buildSitemap');
-        OPAL_Portal::addHook('adminAccess_privileges', __CLASS__, 'getPrivilegesList');
 	}
 	
 	public function getInstallForm(){
