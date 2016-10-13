@@ -41,7 +41,7 @@ class OPMA_System_Options extends OPAL_Controller {
 		$oldDomain = OPAL_Portal::config('system_domain','');
 		$oldBasedir = OPAL_Portal::config('system_base_dir','');
 		$form = new OPMX_System_Move();
-		$form->setValues($_POST);
+		$form->setValues($this->getPostArray());
 		if ($data = $form->getValues()){
 			$newDomain = $data['system_domain'];
 			$newBasedir = $data['system_base_dir'];
@@ -77,7 +77,7 @@ class OPMA_System_Options extends OPAL_Controller {
      * @param \Orange\Forms\Form $form
      */
     public function saveOptions($form){
-		$form->setValues($_POST);
+		$form->setValues($this->getPostArray());
 		if ($data = $form->getValues()){
             unset($data['content_edit_submit']);
 			foreach ($data as $key => $value){

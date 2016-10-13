@@ -91,7 +91,7 @@ class OPMA_System_Users extends OPAL_Controller {
         $id = intval($id);
         $item = new OPAM_User($id);
         $form = new OPMX_System_UserEdit();
-        $form->setValues($_POST);
+        $form->setValues($this->getPostArray());
         $item->setData($data = $form->getValues());
         $groups = $this->getPost('user_groups');
         $item->set('user_groups',$groups);

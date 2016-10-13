@@ -72,7 +72,7 @@ class OPMA_System_Types extends OPAL_Controller {
         $id = intval($id);
 		$item = new OPAM_Content_Type($id);
 		$form = new OPMX_System_TypeEdit();
-		$form->setValues($_POST);
+		$form->setValues($this->getPostArray());
 		$item->setData($form->getValues());
 		$item->save();
 		$this->log('CONTENT_TYPE_%s_SAVED', array($item->get('content_type_name')), 'LOG_CONTENT', self::STATUS_OK, $item);

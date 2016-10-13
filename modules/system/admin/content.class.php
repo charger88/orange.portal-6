@@ -161,7 +161,7 @@ class OPMA_System_Content extends OPAL_Controller {
 					'type'    => $type,
 				]);
                 $form->setAction($this->content->getURL().'/save/'.$item->id);
-				$form->setValues($_POST);
+				$form->setValues($this->getPostArray());
                 $errors = []; //TODO Form validation
                 $values = $form->getValues();
 				$item->setData($values);

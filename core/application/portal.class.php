@@ -6,6 +6,8 @@
  */
 class OPAL_Portal {
 
+    use OPAL_Request;
+
     /**
      * Current site code
      * @static
@@ -139,11 +141,12 @@ class OPAL_Portal {
         \Orange\FS\FS::setRoot(OP_SYS_ROOT);
 		$this->initEnvironment();
 		$this->loadConfig();
-		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$_SERVER["SERVER_NAME"]) . (($bdir = self::config('system_base_dir',trim($_SERVER["REQUEST_URI"],'/'))) ? '/'.$bdir : ''));
+		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$this->getServer('SERVER_NAME','')) . (($bdir = self::config('system_base_dir',trim($this->getURI(),'/'))) ? '/'.$bdir : ''));
         $sessionclass = $this->config('sessionclass','OPAL_Session');
         $this->session = new $sessionclass();
         $this->templater = new OPAL_Templater(self::config('system_theme'));
-		self::$sitelang = isset($_GET['lang']) && (strlen(trim($_GET['lang'])) == 2) ? trim($_GET['lang']) : self::config('system_default_lang',self::$sitelang);
+        $lang = trim($this->getGet('lang', ''));
+		self::$sitelang = (strlen($lang) == 2) ? $lang : self::config('system_default_lang', self::$sitelang);
         if (!$this->install_mode){
 			$this->initModules();
 			$this->initUser();
@@ -154,20 +157,21 @@ class OPAL_Portal {
 	 * Set enviroment data into property $enviroment
 	 */
 	private function initEnvironment(){
-		if (self::$enviroment['ajax'] = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest'))){
+		if (self::$enviroment['ajax'] = (strtolower($this->getServer('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest')){
 			$this->data_type = 'application/json';
 		}
 		if (self::$enviroment['cli'] = (php_sapi_name() == 'cli')){
-			if ($url = $_SERVER['argv'][1]){
+            $argv = $this->getServer('argv');
+			if (is_array($argv) && ($url = $argv[1])){
 				$url = parse_url($url);
 				$_SERVER['SERVER_NAME'] = isset($url['host']) ? $url['host'] : 'localhost';
 				$_SERVER['REQUEST_URI'] = isset($url['path']) ? $url['path'] : '/';
 			}
 			$this->data_type = 'plain/text';
 		}
-		self::$enviroment['protocol'] = (!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] != 'off')) ? 'https' : 'http';
-		self::$enviroment['hostname'] = $_SERVER['SERVER_NAME'];
-		self::$enviroment['request'] = $_SERVER['REQUEST_URI'];
+		self::$enviroment['protocol'] = ($this->getServer('HTTPS', 'off') != 'off') ? 'https' : 'http';
+		self::$enviroment['hostname'] = $this->getServer('SERVER_NAME');
+		self::$enviroment['request'] = $this->getServer('REQUEST_URI');
 	}
 
     /**
@@ -273,7 +277,8 @@ class OPAL_Portal {
 	 */
 	private function initUser(){
 		if (self::env('cli',false)){
-			$this->user = new OPAM_User(isset($_SERVER['argv'][2]) ? intval($_SERVER['argv'][2]) : null);
+            $argv = $this->getServer('argv', []);
+			$this->user = new OPAM_User(isset($argv[2]) ? intval($argv[2]) : null);
 		} else {
 			if ($this->session->cookieExists() && !is_null($this->session->get('uid'))){
 				$this->user = new OPAM_User(intval($this->session->get('uid')));
@@ -292,10 +297,9 @@ class OPAL_Portal {
 	 * Set properties $request and $sitelang
 	 */
 	private function initRequestURI(){
-		$u = $_SERVER['REQUEST_URI'];
-		$u = explode('?', $u);
+		$u = explode('?', $this->getURI());
 		if (isset($u[1])){
-			parse_str($u[1],$_GET);
+			parse_str($u[1],$this->getGetArray());
 		}
 		$u = trim($u[0],'/');
 		if (!empty(self::config('system_base_dir')) && (strpos($u, self::config('system_base_dir')) === 0)){
@@ -431,13 +435,13 @@ class OPAL_Portal {
         OPAL_Lang::load('modules/system/lang/admin', self::$sitelang);
         $system = new OPMO_System(null);
 		$form = $system->getInstallForm();
-		if (count($_POST) == 0){
+		if (!$this->getPostArray()){
 			$response = $form->getHTML($this->templater);
 		} else {
-			$form->setValues($_POST);
+			$form->setValues($this->getPostArray());
             $params = $form->getValues();
-            $params['domain'] = $_SERVER["SERVER_NAME"];
-            $params['base_dir'] = trim($_SERVER["REQUEST_URI"],'/');
+            $params['domain'] = $this->getServer("SERVER_NAME");
+            $params['base_dir'] = trim($this->getServer("REQUEST_URI"),'/');
             $errors = $system->installModule($params);
             if (is_null($errors)){
                 $errors['go'] = OPAL_Lang::t('Portal was installed earlier');
@@ -636,7 +640,7 @@ class OPAL_Portal {
 		$response = '';
 		if (self::config('system_debug')){
 			if ($this->data_type == 'text/html'){
-				$response = '<!-- Generate time: '.sprintf("%.4f",microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']).' sec | Memory usage: '.sprintf("%.2f", memory_get_usage()/1048576).' MB | Peak memory usage: '.sprintf("%.2f", memory_get_peak_usage()/1048576).' MB -->';
+				$response = '<!-- Generate time: '.sprintf("%.4f",microtime(true) - $this->getServer('REQUEST_TIME_FLOAT', 0)).' sec | Memory usage: '.sprintf("%.2f", memory_get_usage()/1048576).' MB | Peak memory usage: '.sprintf("%.2f", memory_get_peak_usage()/1048576).' MB -->';
 			}
 		}
 		echo $response;

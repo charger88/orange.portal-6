@@ -74,7 +74,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
     public function saveAction($id){
         $item = new OPMM_Feedback_Form(intval($id));
         $form = new OPMX_Feedback_FormEdit();
-        $form->setValues($_POST);
+        $form->setValues($this->getPostArray());
         $item->setData($form->getValues());
         $item->save();
         $this->log('MODULE_FEEDBACK_FORM_%s_SAVED', array($item->get('feedback_form_name')), 'LOG_FEEDBACK', self::STATUS_OK, $item);
@@ -103,7 +103,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         $message_object = new OPMM_Feedback_Message(intval($id));
         $form = new OPMX_Feedback_Reply();
         $form->setAction($this->content->getURL().'/send/'.$message_object->id);
-        $form->setValues($_POST);
+        $form->setValues($this->getPostArray());
         $message_object
             ->setData($form->getValues())
             ->set('feedback_message_status', OPMM_Feedback_Message::STATUS_REPLIED)
