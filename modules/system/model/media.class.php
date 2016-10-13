@@ -6,26 +6,26 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
 	
 	protected static $table = 'media';
 	
-	protected static $scheme = array(
-		'id'                   => array('type' => 'ID'),
-		'media_name'           => array('type' => 'STRING', 'length' => 512),
-		'media_size'           => array('type' => 'BIGINT'),
-		'media_file'           => array('type' => 'STRING', 'length' => 512),
-		'media_hidden_in_list' => array('type' => 'BOOLEAN'),
-		'media_protected'      => array('type' => 'BOOLEAN'),
-		'media_thumbnails'     => array('type' => 'BOOLEAN'),
-		'media_access_level'   => array('type' => 'TINYINT'),
-		'media_time_uploaded'  => array('type' => 'TIME'),
-		'media_user_id'        => array('type' => 'INTEGER'),
-	);
+	protected static $scheme = [
+		'id'                   => ['type' => 'ID'],
+		'media_name'           => ['type' => 'STRING', 'length' => 512],
+		'media_size'           => ['type' => 'BIGINT'],
+		'media_file'           => ['type' => 'STRING', 'length' => 512],
+		'media_hidden_in_list' => ['type' => 'BOOLEAN'],
+		'media_protected'      => ['type' => 'BOOLEAN'],
+		'media_thumbnails'     => ['type' => 'BOOLEAN'],
+		'media_access_level'   => ['type' => 'TINYINT'],
+		'media_time_uploaded'  => ['type' => 'TIME'],
+		'media_user_id'        => ['type' => 'INTEGER'],
+	];
 	
-	protected static $keys = array('media_hidden_in_list','media_time_uploaded');
+	protected static $keys = ['media_hidden_in_list','media_time_uploaded'];
 	
-	public static $th_sizes = array(
-		'l' => array(960,null,null,70),
-		'm' => array(480,320,false,70),
-		's' => array(240,160,false,70),
-	);
+	public static $th_sizes = [
+		'l' => [960,null,null,70],
+		'm' => [480,320,false,70],
+		's' => [240,160,false,70],
+	];
 	
 	public function getDir($th = null){
 		$path = 'sites/'.OPAL_Portal::$sitecode.'/static/';
@@ -62,7 +62,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord {
         return $type;
     }
 	
-	public function create($org_name,$data,$tmp_name,$user_id,$params = array()){
+	public function create($org_name,$data,$tmp_name,$user_id,$params = []){
 
 		$return = 0;
 		

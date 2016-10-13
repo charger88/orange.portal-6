@@ -9,7 +9,7 @@
 	$image = $content->get('content_image') ? OP_WWW.'/'.$content->getImageUrl('m') : '';
 	$alternate = (count(OPAL_Portal::config('system_enabled_langs',array())) > 1)
 		? $content->getLanguagePages(OPAL_Portal::config('system_default_lang',''),OPAL_Portal::getInstance()->user)
-		: array()
+		: []
 	;
 ?>
 	

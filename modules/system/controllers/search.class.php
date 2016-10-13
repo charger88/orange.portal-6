@@ -69,10 +69,10 @@ class OPMC_System_Search extends OPAL_Controller {
             $this->content->set('content_type', 'SEARCH_RESULTS');
             $this->content->setField('seo_hidden', true);
             if ($results) {
-                return $this->templater->fetch('system/search-result.phtml', array(
+                return $this->templater->fetch('system/search-result.phtml', [
                     'search' => $search,
                     'results' => $results
-                ));
+                ]);
             } else {
                 return $this->msg(OPAL_Lang::t('NOTHING_FOUND'), self::STATUS_NOTFOUND);
             }

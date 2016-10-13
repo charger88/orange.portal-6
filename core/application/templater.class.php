@@ -5,7 +5,7 @@ class OPAL_Templater {
 	 * @var OPAL_Theme
 	 */
 	public $theme;
-	private $assigned = array();
+	private $assigned = [];
 	private $template;
 	public function __construct($theme_name = null){
 		$theme_name = $theme_name ? $theme_name : 'default';
@@ -24,7 +24,7 @@ class OPAL_Templater {
 		return $this;
 	}
 	public function clear(){
-		$this->assigned = array();
+		$this->assigned = [];
 	}
 	public function fetch($template = '', $vars = null){
 		if ($this->template = $this->getTemplateFilename($template)){

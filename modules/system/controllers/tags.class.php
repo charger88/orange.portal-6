@@ -30,11 +30,11 @@ class OPMC_System_Tags extends OPAL_Controller {
             'offset'      => $offset,
         ), 'OPAM_Page');
         if ($list){
-            return $this->templater->fetch('system/tag-result.phtml', array(
+            return $this->templater->fetch('system/tag-result.phtml', [
                 'list'   => $list,
                 'limit'  => $limit,
                 'offset' => $offset,
-            ));
+            ]);
         } else {
             return $this->msg(OPAL_Lang::t('NOTHING_FOUND'), self::STATUS_NOTFOUND);
         }
@@ -55,12 +55,12 @@ class OPMC_System_Tags extends OPAL_Controller {
     public function cloud(){
         $tags = OPAM_Content_Tag::getCloudData($this->arg('limit',50));
         list($min, $max, $avg) = OPAM_Content_Tag::tagsStats($tags);
-        return $this->templater->fetch('system/'.$this->arg('prefix','default').'-tags-cloud.phtml', array(
+        return $this->templater->fetch('system/'.$this->arg('prefix','default').'-tags-cloud.phtml', [
             'tags' => $tags,
             'min'  => $min,
             'max'  => $max,
             'avg'  => $avg,
-        ));
+        ]);
     }
 	
 }

@@ -2,7 +2,7 @@
 
 abstract class OPAL_Module extends OPAM_Module {
 	
-	public function __construct($data = array()){
+	public function __construct($data = []){
 		if (!is_null($data)){
 			$code = strtolower(substr(get_class($this),5));
 			if (is_array($data) && !empty(is_array($data)) && ($data['module_code'] == $code)){
@@ -26,7 +26,7 @@ abstract class OPAL_Module extends OPAM_Module {
 		return null;
 	}
 	
-	public function installModule($params = array()){
+	public function installModule($params = []){
 		if (!$this->id && !$this->get('module_status')){
 			return $this->doInstall($params);
 		}
@@ -75,16 +75,16 @@ abstract class OPAL_Module extends OPAM_Module {
 
     public abstract function getAdminMenu();
 
-	protected $privileges = array();
+	protected $privileges = [];
 
     public function getInfo(){
-        $info = array(
+        $info = [
             'title'       => '',
             'description' => '',
             'code'        => '',
             'author'      => '',
             'author_url'  => '',
-        );
+        ];
         if ($this->get('module_code')) {
             $file = new \Orange\FS\File('modules/' . $this->get('module_code'), 'info.json');
             if ($file->exists()){

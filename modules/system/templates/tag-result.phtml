@@ -9,8 +9,8 @@
 <?php } ?>
 </div>
 <?php
-echo $this->fetch('system/paginator-arrows.phtml', array(
+echo $this->fetch('system/paginator-arrows.phtml', [
     'listcount' => count($list),
     'limit'     => $limit,
     'offset'    => $offset,
-));
+]);

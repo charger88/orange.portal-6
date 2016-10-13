@@ -14,7 +14,7 @@ use \Orange\Forms\Fields\Buttons\Submit;
 
 class OPMX_System_ContentEdit extends Form {
 	
-	private $lang_overwrite = array();
+	private $lang_overwrite = [];
 
     /**
      * @param array $params
@@ -24,10 +24,10 @@ class OPMX_System_ContentEdit extends Form {
         /** @var OPAM_Content_Type $type */
         $type = $params['type'];
 		
-		$this->lang_overwrite = isset($params['lang_overwrite']) ? $params['lang_overwrite'] : array();
+		$this->lang_overwrite = isset($params['lang_overwrite']) ? $params['lang_overwrite'] : [];
 
 		$params['hide'] = $type->get('content_type_hidden');
-		$params['options'] = isset($params['options']) ? $params['options'] : array();
+		$params['options'] = isset($params['options']) ? $params['options'] : [];
 
 		/* Top BEGIN */
 		

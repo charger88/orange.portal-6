@@ -2,7 +2,7 @@
 
 if (!function_exists('default_admin_pages_tree')){
 	function default_admin_pages_tree($root,&$tree,&$refs,&$templater,&$slug){
-		$pages = array();
+		$pages = [];
 		echo '<ul data-root="' . $templater->esc($root) . '" class="pages-tree-node">';
         if (isset($tree[$root])) {
             $pages[] = $root;
@@ -40,7 +40,7 @@ if (!function_exists('default_admin_pages_tree')){
 	}
 }
 
-$pages = array();
+$pages = [];
 
 if (isset($tree[0])){
 	echo '<div class="content-special-list-wrapper" id="pages-tree" id="pages-tree" data-reorder-url="' . OP_WWW . '/' . $slug . '/reorder">';

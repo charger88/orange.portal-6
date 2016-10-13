@@ -12,13 +12,13 @@ class OPTF_Default extends OPAL_Theme {
 	}
 	
 	public function getThemeAreas(){
-		return array(
+		return [
 			'header'      => OPAL_Lang::t('Header'),
 			'sub-header'  => OPAL_Lang::t('Place under the header'),
 			'top-section' => OPAL_Lang::t('Place between header and sub-header'),
 			'column'      => OPAL_Lang::t('Left column'),
 			'footer'      => OPAL_Lang::t('Footer'),
-		);
+		];
 	}
 	
 }

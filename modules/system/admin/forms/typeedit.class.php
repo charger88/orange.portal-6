@@ -26,7 +26,7 @@ class OPMX_System_TypeEdit extends Form {
         $this->addField((new Text('content_type_sitemap_priority', OPAL_Lang::t('content_type_sitemap_priority'))));
         $this->addField((new Text('content_type_class', OPAL_Lang::t('content_type_class'))));
 
-		$content_type_hidden_options = array(
+		$content_type_hidden_options = [
 			'content_title'           => OPAL_Lang::t('content_title'),
 			'content_parent_id'       => OPAL_Lang::t('content_parent_id'),
             'content_tags'            => OPAL_Lang::t('content_tags'),
@@ -41,7 +41,7 @@ class OPMX_System_TypeEdit extends Form {
 			'content_template'        => OPAL_Lang::t('content_template'),
 			'content_image'           => OPAL_Lang::t('content_image'),
 			'content_time_published'  => OPAL_Lang::t('content_time_published'),
-		);
+		];
 
 		$this->addField((new Select('content_type_hidden', OPAL_Lang::t('content_type_hidden')))
             ->setMultiple()

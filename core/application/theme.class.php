@@ -17,20 +17,20 @@ abstract class OPAL_Theme {
     /**
      * @var array
      */
-    public $folders = array();
+    public $folders = [];
 
     /**
      * @var array
      */
-    protected static $head_style = array();
+    protected static $head_style = [];
     /**
      * @var array
      */
-    protected static $head_scripts = array();
+    protected static $head_scripts = [];
     /**
      * @var array
      */
-    protected static $rss_channels = array();
+    protected static $rss_channels = [];
 
     /**
      * Constructor
@@ -59,11 +59,11 @@ abstract class OPAL_Theme {
      * @return array
      */
     public function getAdminAreas(){
-		return array(
+		return [
 			'admin-column' => 'ADMIN_AREA_COLUMN',
 			'admin-docend' => 'ADMIN_AREA_DOCEND',
 			'admin-index'  => 'ADMIN_AREA_INDEX',
-		);
+		];
 	}
 
     /**
@@ -102,7 +102,7 @@ abstract class OPAL_Theme {
 				foreach (self::$head_style as $css_filename){
 					if ($css = OPAL_Downloader::download($css_filename)){
 						//TODO Add support for @import directives
-						$urls = array();
+						$urls = [];
 						preg_match_all('/background(\-image)?:.*[\s]*url\(["|\']+(.*)["|\']+\)/', $css, $urls, PREG_SET_ORDER);
 						foreach ($urls as $url){
 							$url = $url[2];
@@ -113,7 +113,7 @@ abstract class OPAL_Theme {
 				}
 				$file->save(trim($data));
 			}
-			self::$head_style = array(OP_WWW.'/'.$filename);
+			self::$head_style = [OP_WWW.'/'.$filename];
 		}
 		return self::$head_style;
 	}
@@ -134,7 +134,7 @@ abstract class OPAL_Theme {
                 }
                 $file->save(trim($data));
             }
-            self::$head_scripts = array(OP_WWW.'/'.$filename);
+            self::$head_scripts = [OP_WWW.'/'.$filename];
         }
         return self::$head_scripts;
     }
@@ -151,7 +151,7 @@ abstract class OPAL_Theme {
      * @return array
      */
     public function getTemplatesList($prefix = 'main-'){
-		$templates = array();
+		$templates = [];
 		if ($prefix){
 			foreach ($this->folders as $theme){
 				$dir = new \Orange\FS\Dir('themes/'.$theme.'/templates');
@@ -209,7 +209,7 @@ abstract class OPAL_Theme {
      */
     public function getThemeInfo(){
 		$json = new \Orange\FS\File('themes/'.$this->theme_name, 'info.json');
-		$info = array();
+		$info = [];
 		if ($json = $json->getData()){
 			if ($json = json_decode($json,true)){
 				$info = $json;

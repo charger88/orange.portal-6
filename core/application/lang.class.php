@@ -2,7 +2,7 @@
 
 class OPAL_Lang {
 	
-	private static $lang = array();
+	private static $lang = [];
 	
 	public static function load($folder,$lang_to_load,$baselang = 'en'){
 		if ($lang_to_load != $baselang){
@@ -19,13 +19,13 @@ class OPAL_Lang {
 		}
 	}
 	
-	public static function t($text,$params = array()){
+	public static function t($text,$params = []){
 		$text = isset(self::$lang[$text]) ? self::$lang[$text] : $text;
 		return $params ? vsprintf($text, $params) : $text;
 	}
 	
 	public static function langs($langs = null){
-		$return = array();
+		$return = [];
 		$avalible_langs = self::getAvalibleLangsInfo();
 		if (is_null($langs)){
 			if ($avalible_langs){
@@ -44,7 +44,7 @@ class OPAL_Lang {
 	}
 	
 	public static function getAvalibleLangsInfo(){
-		$langs = array();
+		$langs = [];
 		$dirname = 'modules/system/lang';
 		$files = new \Orange\FS\Dir($dirname);
 		if ($dirFiles = $files->readDir()){

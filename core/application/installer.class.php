@@ -4,9 +4,9 @@ abstract class OPAL_Installer {
 	
 	protected $module;
 
-    protected $params = array();
+    protected $params = [];
 
-	protected $errors = array();
+	protected $errors = [];
 	
 	public function __construct($module){
 		$this->module = $module;
@@ -32,8 +32,8 @@ abstract class OPAL_Installer {
      */
     protected function createTables($classes){
         $result = true;
-        $success = array();
-        $errors = array();
+        $success = [];
+        $errors = [];
         foreach ($classes as $classname){
             try {
                 $classname::install();

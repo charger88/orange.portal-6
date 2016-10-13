@@ -2,14 +2,14 @@
 
 class OPMC_System_Menu extends OPAL_Controller {
 	
-	protected $cachemap = array(
-		'indexAction' => array('by_user_access','id_is_arg' => 'root'),
-		'indexAjax' => array('by_user_access','id_is_arg' => 'root'),
-		'indexBlock' => array('by_user_access','id_is_arg' => 'root'),
-		'treeAction' => array('by_user_access','id_is_arg' => 'root'),
-		'treeAjax' => array('by_user_access','id_is_arg' => 'root'),
-		'treeBlock' => array('by_user_access','id_is_arg' => 'root'),
-	);
+	protected $cachemap = [
+		'indexAction' => ['by_user_access','id_is_arg' => 'root'],
+		'indexAjax' => ['by_user_access','id_is_arg' => 'root'],
+		'indexBlock' => ['by_user_access','id_is_arg' => 'root'],
+		'treeAction' => ['by_user_access','id_is_arg' => 'root'],
+		'treeAjax' => ['by_user_access','id_is_arg' => 'root'],
+		'treeBlock' => ['by_user_access','id_is_arg' => 'root'],
+	];
 	
 	public function indexAction(){
 		return $this->index();

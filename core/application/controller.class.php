@@ -36,12 +36,12 @@ class OPAL_Controller {
 	/**
 	 * @var array
 	 */
-	protected $args = array();
+	protected $args = [];
 	
 	/**
 	 * @var array
 	 */
-	protected $cachemap = array();
+	protected $cachemap = [];
 	
 	/**
 	 * @var string|null
@@ -54,7 +54,7 @@ class OPAL_Controller {
 	 * @param OPAL_Templater $templater
 	 * @param array $args
 	 */
-	public function __construct($content,$user,$session,$templater,$args = array()){
+	public function __construct($content,$user,$session,$templater,$args = []){
 		$this->content = $content;
 		$this->user = $user;
         $this->session = $session;
@@ -162,7 +162,7 @@ class OPAL_Controller {
      * @param array $data
      * @return string|null
      */
-    protected function wrapContentWithTemplate($template,$html = '',$data = array()){
+    protected function wrapContentWithTemplate($template,$html = '',$data = []){
 		$data['html'] = $html;
 		return $this->templater->fetch($template,$data);
 	}
@@ -197,7 +197,7 @@ class OPAL_Controller {
      * @return array|string
      */
     protected function msg($message,$status,$redirect = null,$data = null,$ignoreajax = false){
-		$msg_data = array('message' => $message, 'status' => $status, 'redirect' => $redirect);
+		$msg_data = ['message' => $message, 'status' => $status, 'redirect' => $redirect];
 		if (!is_null($data)){
 			$msg_data = is_array($data) ? array_merge($msg_data,$data) : array_merge($msg_data,['html' => $data]);
 		}
@@ -225,7 +225,7 @@ class OPAL_Controller {
      * @param int $status
      * @param \Orange\Database\ActiveRecord|null $object
      */
-    protected function log($message,$vars = array(),$log_name = 'LOG_MISC',$status = self::STATUS_INFO,$object = null){
+    protected function log($message,$vars = [],$log_name = 'LOG_MISC',$status = self::STATUS_INFO,$object = null){
 		$log = new OPAM_Log();
 		$log->set('log_log', $log_name);
 		$log->set('log_status', $status);
@@ -353,7 +353,7 @@ class OPAL_Controller {
      * @param string $message
      * @param array $vars
      */
-    public function alert($message,$vars = array()){
+    public function alert($message,$vars = []){
 		$this->log($message,$vars,'LOG_SYSTEM',self::STATUS_ALERT);
 	}
 	

@@ -2,22 +2,22 @@
 
 class OPMA_System_Users extends OPAL_Controller {
 
-    protected $refs = array();
+    protected $refs = [];
     protected $content_type = 'content';
     protected $wrapper = 'system/admin-content-wrapper.phtml';
-    protected $edit_form_params = array();
+    protected $edit_form_params = [];
 
-    protected $list_columns = array(
-        'id'          => array(),
-        'user_login'  => array('width' => 15,'link' => '_edit'),
-        'user_email'  => array('width' => 15,),
-        'user_name'   => array('width' => 15,),
-        'user_phone'  => array('width' => 15,),
-        'user_groups' => array('width' => 40,),
-    );
+    protected $list_columns = [
+        'id'          => [],
+        'user_login'  => ['width' => 15, 'link' => '_edit'],
+        'user_email'  => ['width' => 15],
+        'user_name'   => ['width' => 15],
+        'user_phone'  => ['width' => 15],
+        'user_groups' => ['width' => 40],
+    ];
 
     public function indexAction(){
-        $params = array();
+        $params = [];
         $params['groups'] = OPAM_User_Group::getRef(true);
         $form = new OPMX_System_UserSearch($params);
         $form->setMethod(\Orange\Forms\Form::METHOD_GET);
@@ -26,7 +26,7 @@ class OPMA_System_Users extends OPAL_Controller {
     }
 
     public function listAction(){
-        $params = array();
+        $params = [];
         $params['limit']   = $this->arg('limit',50);
         $params['order']   = $this->getGet('order',$this->arg('order','id'));
         $params['desc']    = (bool)$this->getGet('desc',$this->arg('desc',false));
@@ -44,16 +44,16 @@ class OPMA_System_Users extends OPAL_Controller {
             $params['offset'] = null;
         }
         $params['list']    = OPAM_User::getList($params);
-        $params['class_fields'] = array('user_status');
+        $params['class_fields'] = ['user_status'];
         $params['columns'] = $this->list_columns;
         $params['refs'] = $this->getFormOptions();
-        $params['columns']['_edit'] = array(
+        $params['columns']['_edit'] = [
             'title' => '',
             'text'  => OPAL_Lang::t('ADMIN_EDIT'),
             'hint'  => OPAL_Lang::t('ADMIN_EDIT'),
             'class' => 'icon icon-edit',
             'link'  => '/'.$this->content->getSlug().'/edit/%id%',
-        );
+        ];
         return $this->templater->fetch('system/admin-users-list-wrapper.phtml',array(
             'html' => $this->templater->fetch('system/admin-list.phtml',$params),
             'slug' => $this->content->getSlug(),
@@ -79,7 +79,7 @@ class OPMA_System_Users extends OPAL_Controller {
      * @return string
      */
     protected function edit($item){
-        $params = array();
+        $params = [];
         $params['options'] = $this->getFormOptions();
         $form = new OPMX_System_UserEdit($params);
         $form->setAction(OP_WWW.'/'.$this->content->getSlug().'/save/'.$item->id);
@@ -99,14 +99,16 @@ class OPMA_System_Users extends OPAL_Controller {
             $item->setPassword($data['user_password_new']);
         }
         $item->save();
-        $this->log('USER_%s_SAVED', array($item->get('user_login')), 'LOG_CONTENT', self::STATUS_OK, $item);
+        $this->log('USER_%s_SAVED', [
+            $item->get('user_login')
+        ], 'LOG_CONTENT', self::STATUS_OK, $item);
         return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, OP_WWW.'/'.$this->content->getSlug().'/edit/'.$item->id);
     }
 
     protected function getFormOptions(){
-        $options = array(
+        $options = [
             'user_groups' => OPAM_User_Group::getRef(),
-        );
+        ];
         return $options;
     }
 
