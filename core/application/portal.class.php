@@ -96,6 +96,11 @@ class OPAL_Portal {
 	 * @var OPAL_Module[]
 	 */
 	private $modules = [];
+
+    /**
+     * @var array
+     */
+    protected $output_file_mode = null;
 	
 	/**
 	 * If there is no installed modules - go to install mode
@@ -139,18 +144,20 @@ class OPAL_Portal {
 	private function init(){
 		mb_internal_encoding("UTF-8");
         \Orange\FS\FS::setRoot(OP_SYS_ROOT);
-		$this->initEnvironment();
-		$this->loadConfig();
-		define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain',$this->getServer('SERVER_NAME','')) . (($bdir = self::config('system_base_dir',trim($this->getURI(),'/'))) ? '/'.$bdir : ''));
-        $sessionclass = $this->config('sessionclass','OPAL_Session');
-        $this->session = new $sessionclass();
-        $this->templater = new OPAL_Templater(self::config('system_theme'));
-        $lang = trim($this->getGet('lang', ''));
-		self::$sitelang = (strlen($lang) == 2) ? $lang : self::config('system_default_lang', self::$sitelang);
-        if (!$this->install_mode){
-			$this->initModules();
-			$this->initUser();
-		}
+        if (is_null($this->output_file_mode = $this->getGet('_rootfile', null))){
+            $this->initEnvironment();
+            $this->loadConfig();
+            define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain', $this->getServer('SERVER_NAME', '')) . (($bdir = self::config('system_base_dir', trim($this->getURI(), '/'))) ? '/' . $bdir : ''));
+            $sessionclass = $this->config('sessionclass', 'OPAL_Session');
+            $this->session = new $sessionclass();
+            $this->templater = new OPAL_Templater(self::config('system_theme'));
+            $lang = trim($this->getGet('lang', ''));
+            self::$sitelang = (strlen($lang) == 2) ? $lang : self::config('system_default_lang', self::$sitelang);
+            if (!$this->install_mode) {
+                $this->initModules();
+                $this->initUser();
+            }
+        }
 	}
 
 	/**
@@ -317,23 +324,27 @@ class OPAL_Portal {
 	}
 	
 	public function execute(){
-		$this->initRequestURI();
-		$this->templater->theme->loadLanguages(OPAL_Portal::$sitelang);
-		$response = $this->processPage();
-		$admin_panel = $this->content->get('content_type') == 'admin';
-		header('Content-Type: '.$this->data_type.'; charset=utf-8');
-		if (($this->data_type == 'text/html')){
-			if (!$this->install_mode){
-				$this->processBlocks($admin_panel);
-			}
-			return $this->templater->fetch($this->main_template,array(
-				'portal'   => $this,
-				'content'  => $this->content,
-				'response' => $response,
-			));
-		} else {
-			return $response;
-		}
+        if ($this->isOutputMode()){
+            return $this->outputFile();
+        } else {
+            $this->initRequestURI();
+            $this->templater->theme->loadLanguages(OPAL_Portal::$sitelang);
+            $response = $this->processPage();
+            $admin_panel = $this->content->get('content_type') == 'admin';
+            header('Content-Type: ' . $this->data_type . '; charset=utf-8');
+            if (($this->data_type == 'text/html')) {
+                if (!$this->install_mode) {
+                    $this->processBlocks($admin_panel);
+                }
+                return $this->templater->fetch($this->main_template, array(
+                    'portal' => $this,
+                    'content' => $this->content,
+                    'response' => $response,
+                ));
+            } else {
+                return $response;
+            }
+        }
 	}
 	
 	public function getRequest(){
@@ -661,17 +672,21 @@ class OPAL_Portal {
 		self::$hooks[$event][] = [$class, $method, $args];
 	}
 
-    public static function outputRootFile($filename){
-        if (strpos($filename,'/') === false) {
+    public function isOutputMode(){
+        return !is_null($this->output_file_mode);
+    }
+
+    public function outputFile(){
+        if (strpos($this->output_file_mode,'/') === false) {
             try {
-                self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
-                $fname = OP_SYS_ROOT . '/sites/' . self::$sitecode . '/static/root/' . $filename;
+                self::loadConfigFromFiles($this->getServer('SERVER_NAME'));
+                $fname = OP_SYS_ROOT . '/sites/' . self::$sitecode . '/static/root/' . $this->output_file_mode;
                 if (file_exists($fname)){
-                    if (strpos($filename, '.xml')){
+                    if (strpos($this->output_file_mode, '.xml')){
                         $type = 'text/xml';
-                    } else if (strpos($filename, '.txt')){
+                    } else if (strpos($this->output_file_mode, '.txt')){
                         $type = 'text/plain';
-                    } else if (strpos($filename, '.ico')){
+                    } else if (strpos($this->output_file_mode, '.ico')){
                         $type = 'image/x-icon';
                     } else {
                         $type = 'application/octet-stream';
@@ -679,18 +694,34 @@ class OPAL_Portal {
                     header('Content-Type: ' .$type);
                     header('Content-Length: ' . filesize($fname));
                     readfile($fname);
-                    die();
+                    return '';
                 }
             } catch (Exception $e){}
         }
         header('HTTP/1.0 404 Not Found');
-        die();
+        return '';
     }
 
-    public static function getWebmasterEmailForException(){
+    public function processException($e){
+        if (!is_null($webmaster_email = $this->getWebmasterEmailForException())){
+            header($this->getServer('SERVER_PROTOCOL') . ' 500 Internal Server Error');
+            $message = 'URL: ' . $this->getServer('HTTP_HOST').$this->getURI() . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
+            if ($e instanceof \Orange\FS\FSException) {
+                $message .= "\n\nFile: " . $e->getFilepath();
+            }
+            if ($webmaster_email === '#'){
+                header('Content-type: text/plain');
+                echo $message;
+            } else {
+                mail($webmaster_email, 'Exception on site '.$this->getServer('HTTP_HOST'), $message);
+            }
+        }
+    }
+
+    private function getWebmasterEmailForException(){
         $email = null;
         try {
-            list($installed, $config) = self::loadConfigFromFiles($_SERVER['SERVER_NAME']);
+            list($installed, $config) = self::loadConfigFromFiles($this->getServer('SERVER_NAME'));
             if ($installed) {
                 $email = isset($config['webmaster_email']) ? $config['webmaster_email'] : null;
             }
