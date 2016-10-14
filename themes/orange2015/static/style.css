@@ -347,6 +347,36 @@ footer {
 }
 
 
+/* Form */
+
+.orange-forms-form .orange-forms-field {
+    margin-bottom: 0.5rem;
+}
+
+.orange-forms-form .orange-forms-field label {
+    font-weight: bold;
+    width: 9rem;
+    padding-right: 1rem;
+    display: inline-block;
+    vertical-align: top;
+    line-height: 1.4rem;
+}
+
+.orange-forms-form .orange-forms-field input,
+.orange-forms-form .orange-forms-field select,
+.orange-forms-form .orange-forms-field textarea {
+    width: 20rem;
+    vertical-align: top;
+}
+
+.orange-forms-form .orange-forms-field textarea {
+    height: 8rem;
+}
+
+.orange-forms-form .orange-forms-field-button {
+    margin-left: 10rem;
+}
+
 /* Adaptive styles for width less than 640 px */
 
 @media all and (max-width: 639px) {
