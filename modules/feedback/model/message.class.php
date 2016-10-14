@@ -34,45 +34,6 @@ class OPMM_Feedback_Message extends \Orange\Database\ActiveRecord {
     const STATUS_REPLIED = 2;
     const STATUS_DELETED = 3;
 
-    public function send($default_to,$form = null){
-        if (is_null($form)){
-            $form = new OPMM_Feedback_Form($this->get('feedback_message_form_id'));
-        }
-        $message = [];
-        if ($this->get('feedback_message_sender_user_id')) {
-            $user = new OPAM_User($this->get('feedback_message_sender_user_id'));
-            $message[] = OPAL_Lang::t('feedback_message_sender_user_id') . ': ' . $user->get('user_login') . ' (ID: ' . $user->id . ')';
-        }
-        if ($this->get('feedback_message_sender_name')) {
-            $message[] = OPAL_Lang::t('feedback_message_sender_name') . ': ' . $this->get('feedback_message_sender_name');
-        }
-        if ($this->get('feedback_message_sender_ip')) {
-            $message[] = OPAL_Lang::t('feedback_message_sender_ip') . ': ' . $this->get('feedback_message_sender_ip');
-        }
-        if ($this->get('feedback_message_sender_email')) {
-            $message[] = OPAL_Lang::t('feedback_message_sender_email') . ': ' . $this->get('feedback_message_sender_email');
-        }
-        if ($this->get('feedback_message_sender_phone')) {
-            $message[] = OPAL_Lang::t('feedback_message_sender_phone') . ': ' . $this->get('feedback_message_sender_phone');
-        }
-        //TODO Fields $message[] = '';
-        $message[] = '';
-        $message[] = OPAL_Lang::t('feedback_message_text').':';
-        $message[] = $this->get('feedback_message_text');
-        $email = new OPAL_Email($form->get('feedback_form_name') . ' / ' . $this->get('feedback_message_subject'),implode("\n",$message));
-        $email->setReturnPath($this->get('feedback_message_sender_email'));
-        $email->send($form->get('feedback_form_send_to') ? $form->get('feedback_form_send_to') : $default_to);
-        return $this;
-    }
-
-    public function reply(){
-        $form = new OPMM_Feedback_Form($this->get('feedback_message_form_id'));
-        $email = new OPAL_Email(OPAL_Lang::t('MODULE_FEEDBACK_REPLY_SUBJECT_PREFIX_%s', $this->get('feedback_message_subject')),$this->get('feedback_message_reply_text'));
-        $email->setReturnPath($this->get('feedback_message_reply_from_email'));
-        $email->send($this->get('feedback_message_sender_email'));
-        return $this;
-    }
-
     public static function getList($statuses = null, $offset = 0, $limit = 25){
         $select = new \Orange\Database\Queries\Select(static::$table);
         if (!is_null($statuses)) {

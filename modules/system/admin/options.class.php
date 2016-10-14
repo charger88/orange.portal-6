@@ -22,7 +22,7 @@ class OPMA_System_Options extends OPAL_Controller {
 		$form = new OPMX_System_Options();
         $form->setAction(OP_WWW.'/admin/options/save');
 		$form->setValues(OPAM_Config::loadActive('system'));
-		return $form->getHTML($this->templater);
+		return $form->getHTML();
 	}
 	
 	public function saveAction(){
@@ -34,7 +34,7 @@ class OPMA_System_Options extends OPAL_Controller {
 		$form = new OPMX_System_Move();
         $form->setAction(OP_WWW.'/admin/options/moveSite');
 		$form->setValues(OPAM_Config::loadActive('system'));
-		return $form->getHTML($this->templater);
+		return $form->getHTML();
 	}
 	
 	public function moveSiteAction(){

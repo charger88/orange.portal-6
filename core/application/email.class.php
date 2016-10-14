@@ -2,29 +2,33 @@
 
 class OPAL_Email {
 
-	private $subject = "";
-	private $headers = "";
-	private $message = "";
+	public $subject = '';
+    public $headers = [];
+    public $plain_text = null;
+    public $html = null;
 	
-	public function __construct($subject,$message){
-		$this->subject = $subject;
-		$this->message = $message;
+	public function __construct(){
 		$this->setCharset("UTF-8");
 	}
 	
 	private function setCharset($charset){
-		$this->headers .= "Content-Type: text/plain; charset=$charset; \r\n";
-		$this->headers .= "MIME-Version: 1.0 \r\n";
-		$this->headers .= "Content-Transfer-Encoding: 8BIT \r\n";
+		$this->headers[] = "Content-Type: text/plain; charset=$charset;";
+		$this->headers[] = "MIME-Version: 1.0";
+		$this->headers[] = "Content-Transfer-Encoding: 8BIT";
 	}	
 	
 	public function setReturnPath($email){
-		$this->headers .= "From: $email \r\n";
-		$this->headers .= "Reply-To: $email \r\n";
+		$this->headers[] = "From: $email";
+		$this->headers[] = "Reply-To: $email";
 	}
 	
 	public function send($to){
-		return @mail($to,"=?UTF-8?B?".base64_encode($this->subject)."?=",$this->message,$this->headers);
+		return @mail(
+            $to,
+            "=?UTF-8?B?" . base64_encode($this->subject) . "?=",
+            !is_null($this->plain_text) ? $this->plain_text : strip_tags($this->html),
+            implode(" \r\n", $this->headers)
+        );
 	}
 	
 }

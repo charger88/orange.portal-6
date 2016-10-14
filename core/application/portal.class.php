@@ -447,7 +447,7 @@ class OPAL_Portal {
         $system = new OPMO_System(null);
 		$form = $system->getInstallForm();
 		if (!$this->getPostArray()){
-			$response = $form->getHTML($this->templater);
+			$response = $form->getHTML();
 		} else {
 			$form->setValues($this->getPostArray());
             $params = $form->getValues();
@@ -466,7 +466,7 @@ class OPAL_Portal {
 				$response = json_encode($errors);
 			} else {
 				if ($errors){
-					$response = $form->getHTML($this->templater);
+					$response = $form->getHTML();
 				} else {
 					header('Location: '.OP_WWW);
 					die();

@@ -54,7 +54,7 @@ class OPMA_System_Groups extends OPAL_Controller {
     protected function edit($item){
 		$form = new OPMX_System_GroupEdit($this->content->getURL().'/save/'.$item->id,'post');
 		$form->setValues($item->getData(),true);
-		return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+		return $form->getHTML();
 	}
 	
 	public function saveAction($id = 0){

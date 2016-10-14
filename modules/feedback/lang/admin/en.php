@@ -52,6 +52,7 @@ return [
 
     'MODULE_FEEDBACK_REPLY_SUBJECT_PREFIX_%s' => 'Re: %s',
     'MODULE_FEEDBACK_FORM_REPLY_SENT' => 'Reply was sent',
+    'MODULE_FEEDBACK_FORM_REPLY_ERROR' => 'Error! Reply was not sent',
     'MODULE_FEEDBACK_FORM_NEW' => 'New form',
 
     'MODULE_FEEDBACK_SPAM_WRONG_TOKEN' => 'Spam detected: wrong token.',

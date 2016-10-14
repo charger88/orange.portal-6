@@ -68,7 +68,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         $form = new OPMX_Feedback_FormEdit();
         $form->setAction($this->content->getURL().'/save/'.$item->id);
         $form->setValues($item->getData(), true);
-        return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+        return $form->getHTML();
     }
 
     public function saveAction($id){
@@ -86,17 +86,21 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         $form_object = new OPMM_Feedback_Form($message_object->get('feedback_message_form_id'));
         $form = new OPMX_Feedback_Reply();
         $form->setAction($this->content->getURL().'/send/'.$message_object->id);
-        $message = explode("\n",$message_object->get('feedback_message_text'));
-        $message = array_map(function($s){
-            return '> '.$s;
-        },$message);
-        $message = implode("\n",$message);
+        if ($message_object->get('feedback_message_reply_text')){
+            $message = $message_object->get('feedback_message_reply_text');
+        } else {
+            $message = explode("\n", $message_object->get('feedback_message_text'));
+            $message = array_map(function ($s) {
+                return '> ' . $s;
+            }, $message);
+            $message = implode("\n", $message);
+        }
         $form->setValues([
             'feedback_message_reply_from_email' => $form_object->get('feedback_form_send_to') ? $form_object->get('feedback_form_send_to') : OPAL_Portal::config('system_email_public'),
             'feedback_message_reply_from_name'  => OPAL_Portal::config('system_sitename'),
             'feedback_message_reply_text' => $message,
         ],true);
-        return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+        return $form->getHTML();
     }
 
     public function sendAction($id){
@@ -110,9 +114,21 @@ class OPMA_Feedback_Main extends OPAL_Controller {
             ->set('feedback_message_reply_user_id', $this->user->id)
             ->set('feedback_message_reply_time', time())
             ->save()
-            ->reply()
         ;
-        return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_FORM_REPLY_SENT'), self::STATUS_OK, $this->content->getURL().'/view/'.$message_object->id);
+        $email = new OPAL_Email();
+        $email->subject = OPAL_Lang::t('MODULE_FEEDBACK_REPLY_SUBJECT_PREFIX_%s', $message_object->get('feedback_message_subject'));
+        //TODO HTML
+        $email->plain_text = $message_object->get('feedback_message_reply_text');
+        $email->setReturnPath($message_object->get('feedback_message_reply_from_email'));
+        $res = $email->send($message_object->get('feedback_message_sender_email'));
+        if ($res) {
+            return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_FORM_REPLY_SENT'), self::STATUS_OK, $this->content->getURL() . '/view/' . $message_object->id);
+        } else {
+            $message_object
+                ->set('feedback_message_status', OPMM_Feedback_Message::STATUS_READ)
+                ->save();
+            return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_FORM_REPLY_ERROR'), self::STATUS_ERROR, $this->content->getURL() . '/view/' . $message_object->id);
+        }
     }
 
     public function deleteAction($id){

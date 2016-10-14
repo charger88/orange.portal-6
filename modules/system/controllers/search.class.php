@@ -96,7 +96,7 @@ class OPMC_System_Search extends OPAL_Controller {
             $form = new OPMF_System_Search(OP_WWW . '/module/system/search/results');
             $form->setMethod(\Orange\Forms\Form::METHOD_GET);
             $form->setValues(array('search' => $this->getGet('search')));
-            return $form->getHTML($this->templater, $this->arg('form-prefix', 'default'));
+            return $form->getHTML();
         } else {
             return '';
         }

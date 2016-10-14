@@ -15,7 +15,7 @@ class OPMC_Feedback_Main extends OPAL_Controller {
     }
 
     protected function index(){
-        $form_id = intval($this->arg('form',0));
+        $form_id = intval($this->arg('form',1));
         $form_object = new OPMM_Feedback_Form($form_id);
         if ($form_object->id) {
             $form = new OPMF_Feedback_Generic($form_object->getData());
@@ -28,7 +28,7 @@ class OPMC_Feedback_Main extends OPAL_Controller {
                 }
             }
             $this->session->set('feedback_spam',$this->getFormToken(time()));
-            return $form->getHTML($this->templater);
+            return $form->getHTML();
         } else {
             $this->log(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'),[],'LOG_FEEDBACK',self::STATUS_NOTFOUND);
             return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'),self::STATUS_NOTFOUND);
@@ -54,7 +54,7 @@ class OPMC_Feedback_Main extends OPAL_Controller {
                 if (OPAL_Portal::getInstance()->env('ajax')){
                     return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, $errors);
                 } else {
-                    return $form->getHTML($this->templater);
+                    return $form->getHTML();
                 }
             } else {
                 if (in_array($this->session->get('feedback_spam'),$this->getAllowedTokens())) {
@@ -80,8 +80,8 @@ class OPMC_Feedback_Main extends OPAL_Controller {
                             'feedback_message_sender_ip' => $this->getIP(),
                             'feedback_message_sender_session' => OPAL_Portal::getInstance()->session->id()
                         ])
-                        ->save()
-                        ->send(OPAL_Portal::config('system_email_public'), $form_object);
+                        ->save();
+                    static::sendMessage($message, $form_object);
                     $this->session->set('feedback_spam',null);
                     $this->log('MODULE_FEEDBACK_MESSAGE_SENT', [], 'LOG_FEEDBACK', self::STATUS_OK);
                     if (OPAL_Portal::env('ajax')) {
@@ -118,6 +118,25 @@ class OPMC_Feedback_Main extends OPAL_Controller {
 
     public static function encodeDataForForm($data){
         return base64_encode(json_encode($data));
+    }
+
+    public static function sendMessage($message, $form = null, $template = 'feedback/default-feedback.phtml'){
+        if (is_null($form)){
+            $form = new OPMM_Feedback_Form($message->get('feedback_message_form_id'));
+        }
+        $email = new OPAL_Email();
+        $email->subject = $form->get('feedback_form_name') . ' / ' . $message->get('feedback_message_subject');
+        $email->html = OPAL_Portal::getInstance()->templater->fetch('email.phtml', [
+            'html' => OPAL_Portal::getInstance()->templater->fetch($template, [
+                'message' => $message,
+            ]),
+        ]);
+        $email->setReturnPath($message->get('feedback_message_sender_email'));
+        return $email->send(
+            $form->get('feedback_form_send_to')
+                ? $form->get('feedback_form_send_to')
+                : OPAL_Portal::config('system_email_public')
+        );
     }
 
 }

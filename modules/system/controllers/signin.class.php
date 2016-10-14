@@ -29,7 +29,7 @@ class OPMC_System_Signin extends OPAL_Controller {
 		} else {
 			$form = new OPMF_System_Signin();
 			$form->setValues(array('signup_redirect' => $redirect));
-			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+			return $form->getHTML();
 		}
 	}
 	

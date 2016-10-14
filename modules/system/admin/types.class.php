@@ -65,7 +65,7 @@ class OPMA_System_Types extends OPAL_Controller {
 		$form = new OPMX_System_TypeEdit();
         $form->setAction($this->content->getURL().'/save/'.$item->id);
         $form->setValues($item->getData(), true);
-		return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+		return $form->getHTML();
 	}
 
 	public function saveAction($id = 0){

@@ -120,7 +120,7 @@ class OPMA_System_Content extends OPAL_Controller {
             $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
             $values['content_tags'] = $item->id ? implode(', ',$item->tags()) : '';
 			$form->setValues($values, true); //TODO Validation
-			return $form->getHTML($this->templater,$this->arg('form-prefix','default'));
+			return $form->getHTML();
 		} else {
 			$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
 			return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
