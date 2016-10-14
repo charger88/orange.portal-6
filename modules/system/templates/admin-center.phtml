@@ -1,6 +1,6 @@
 <div id="admin-index">
 <?php if ($blocks){ foreach ($blocks as $block){ ?>
-	<div class="block"><?php echo $block; ?></div>
+	<div class="block"><?php echo OPAL_Portal::getInstance()->blockDirect($block); ?></div>
 <?php }} ?>
 	<div class="clear"></div>
 </div>

@@ -4,7 +4,7 @@ class OPMA_System_Center extends OPAL_Controller {
 	
 	public function indexAction(){
 		return $this->templater->fetch('system/admin-center.phtml',array(
-			'blocks' => OPAL_Portal::getInstance()->processHooks('adminCenter_index'),
+			'blocks' => OPAL_Portal::getInstance()->processHooks('admin_center_index'),
 		));
 	}
 	
@@ -15,7 +15,7 @@ class OPMA_System_Center extends OPAL_Controller {
 		));
 	}
 
-	public function systemHook(){
+	public function systemBlockDirect(){
 		$version = new \Orange\FS\File('core', 'version.txt');
 		return $this->templater->fetch('system/admin-center-system.phtml',array(
 			'version' => $version->getData(),

@@ -259,24 +259,22 @@ class OPAL_Portal {
 	}
 
     /**
-     * @param string $event
+     * @param string $hook
+     * @param array $args
+     * @throws \Exception
      * @return array
      */
-    public function processHooks($event){
-		$result = [];
-		if (!empty(self::$hooks[$event])){
-			foreach (self::$hooks[$event] as $i => $hook){
-				$module = explode('_', $hook[0]);
-				$module = strtolower($module[1]);
-                $classname = $hook[0];
-				$methodname = $hook[1].'Hook';
-				list($commandResult,$lastExecuteContentStatus) = $this->callMethod($module,$classname,$methodname,$hook[2]);
-				if (!is_null($commandResult)){
-					$result[] = $commandResult;
-				}
+    public function processHooks($hook, $args = []){
+		$results = [];
+		if (!empty(self::$hooks[$hook])){
+			foreach (self::$hooks[$hook] as $hook_function){
+                if (!is_callable($hook_function)) {
+                    throw new \Exception('Hook function is not callable');
+                }
+                $results[] = call_user_func_array($hook_function, $args);
 			}
 		}
-		return $result;
+		return $results;
 	}
 	
 	/**
@@ -290,9 +288,26 @@ class OPAL_Portal {
 			if ($this->session->cookieExists() && !is_null($this->session->get('uid'))){
 				$this->user = new OPAM_User(intval($this->session->get('uid')));
 			} else {
-				$this->processHooks('initUser_noUID');
-				if ($this->user && $this->user->id){
-                    $this->session->set('uid',$this->user->id);
+                $signin_login = $this->getPost('signin_login');
+                $signin_password = $this->getPost('signin_password');
+                if (!is_null($signin_login) && !is_null($signin_password)){
+                    $tmp_user = new OPAM_User('user_login',$signin_login);
+                    if ($tmp_user->id){
+                        if ($this->user->verifyPassword($signin_password)){
+                            if ($this->user->get('user_status') > 0){
+                                $this->user = $tmp_user;
+                            } else {
+                                OPAM_User::$auth_error = OPAL_Lang::t('Account was blocked.');
+                            }
+                        } else {
+                            OPAM_User::$auth_error = OPAL_Lang::t('Password is wrong.');
+                        }
+                    } else {
+                        OPAM_User::$auth_error = OPAL_Lang::t('Account was not found.');
+                    }
+                }
+				if (is_null(OPAM_User::$auth_error) && $this->user && $this->user->id){
+                    $this->session->set('uid', $this->user->id);
 				} else {
 					$this->user = new OPAM_User();
 				}
@@ -665,11 +680,11 @@ class OPAL_Portal {
 		return isset(self::$enviroment[$param]) ? self::$enviroment[$param] : $default;
 	}
 	
-	public static function addHook($event,$class,$method,$args = []){
-		if (!isset(self::$hooks[$event])){
-			self::$hooks[$event] = [];
+	public static function addHook($hook,$hook_function){
+		if (!isset(self::$hooks[$hook])){
+			self::$hooks[$hook] = [];
 		}
-		self::$hooks[$event][] = [$class, $method, $args];
+		self::$hooks[$hook][] = $hook_function;
 	}
 
     public function isOutputMode(){

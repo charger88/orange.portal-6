@@ -7,12 +7,7 @@ class OPMO_News extends OPAL_Module {
 	protected $privileges = array();
 
 	protected function doInit(){
-		$this->initHooks();
 		return true;
-	}
-
-	private function initHooks(){
-
 	}
 
     protected function doInstall($params = array()){

@@ -8,20 +8,10 @@ class OPMO_System extends OPAL_Module {
 	);
 	
 	protected function doInit(){
-		$this->initHooks();
 		OPAL_Theme::addScriptFile('modules/system/static/js/main.js');
 		return true;
 	}
-	
-	private function initHooks(){
-		OPAL_Portal::addHook('initUser_noUID', 'OPMC_System_Signin', 'go');
-		OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Center', 'system');
-		OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Cache', 'summary');
-        OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Log', 'last');
-        OPAL_Portal::addHook('adminCenter_index', 'OPMA_System_Sitemap', 'sitemap');
-        OPAL_Portal::addHook('adminCenter_sitemap', 'OPMA_System_Sitemap', 'buildSitemap');
-	}
-	
+
 	public function getInstallForm(){
 		return new OPMX_System_Install();
 	}

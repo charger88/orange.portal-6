@@ -9,7 +9,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
 
     public static function rebuild(){
         $index = new \Orange\Sitemap\Index();
-        if ($sitemaps = OPAL_Portal::getInstance()->processHooks('adminCenter_sitemap')) {
+        if ($sitemaps = OPAL_Portal::getInstance()->processHooks('build_sitemaps')) {
             foreach ($sitemaps as $sitemapsByHook) {
                 foreach ($sitemapsByHook as $sitemap_name => $lastmod) {
                     $index->addSitemap(OP_WWW.'/sitemap_'.$sitemap_name.'.xml', $lastmod);
@@ -20,7 +20,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
         $indexFile->save($index->build());
     }
 
-    public function sitemapHook(){
+    public function sitemapBlockDirect(){
         $index = new \Orange\FS\File('sites/'.OPAL_Portal::$sitecode.'/static/root', 'sitemap.xml');
         if ($index->exists()) {
             $sitemap = simplexml_load_string($index->getData());
@@ -53,7 +53,7 @@ class OPMA_System_Sitemap extends OPAL_Controller {
         ));
     }
 
-    public function buildSitemapHook(){
+    public static function buildTypesSitemaps(){
         $sitemaps = array();
         if ($types = OPAM_Content_Type::getTypesForSitemap()){
             $custom = OPAM_Content_Field::getRef('seo_sitemap_priority');

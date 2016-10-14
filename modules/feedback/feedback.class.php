@@ -10,11 +10,8 @@ class OPMO_Feedback extends OPAL_Module {
     );
 
     protected function doInit(){
-        $this->initHooks();
         return true;
     }
-
-    private function initHooks(){}
 
     protected function doInstall($params = array()){
         return (new OPMI_Feedback('feedback'))->installModule($params);

@@ -15,6 +15,11 @@ class OPAM_User extends \Orange\Database\ActiveRecord {
     /**
      * @var string
      */
+    public static $auth_error = null;
+
+    /**
+     * @var string
+     */
     protected static $table = 'user';
 
     /**

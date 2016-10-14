@@ -30,7 +30,7 @@ class OPMC_Feedback_Main extends OPAL_Controller {
             $this->session->set('feedback_spam',$this->getFormToken(time()));
             return $form->getHTML();
         } else {
-            $this->log(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'),[],'LOG_FEEDBACK',self::STATUS_NOTFOUND);
+            $this->log(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'),[],'LOG_FEEDBACK',self::STATUS_WARNING);
             return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'),self::STATUS_NOTFOUND);
         }
     }

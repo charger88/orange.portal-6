@@ -6,7 +6,7 @@ class OPMA_System_Cache extends OPAL_Controller {
 		return '';
 	}
 	
-	public function summaryHook(){
+	public function summaryBlockDirect(){
 		$data = array();
 		$methodCacheDir = new \Orange\FS\Dir('sites/'.OPAL_Portal::$sitecode.'/tmp/cache/methods');
         try {

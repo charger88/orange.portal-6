@@ -57,7 +57,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord {
      * @return OPAM_Log[]
      */
     public static function loadLog($params = array()){
-		
+
 		$log        = isset($params['log'])        ? $params['log'] : null;
 		$date_start = isset($params['date_start']) ? date("Y-m-d H:i:s",strtotime($params['date_start'])) : null;
 		$min_status = isset($params['min_status']) ? intval($params['min_status']) : null;
@@ -105,7 +105,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord {
 
 		$select->setOrder('id',\Orange\Database\Queries\Select::SORT_DESC);
 		$select->setLimit($limit);
-		
+
 		return $select->execute()->getResultArray(null,__CLASS__);
 	}
 	

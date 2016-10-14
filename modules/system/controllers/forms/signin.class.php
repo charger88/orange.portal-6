@@ -8,9 +8,7 @@ use \Orange\Forms\Fields\Buttons\Submit;
 use \Orange\Forms\Fields\Html;
 
 class OPMF_System_Signin extends Form {
-	
-	public static $error = null;
-	
+
 	protected function init($params){
 
         $this->addField((new Text('signin_login', OPAL_Lang::t('Username'))));
@@ -24,8 +22,8 @@ class OPMF_System_Signin extends Form {
 		if (isset($params['registration'])){
             $this->addField(new Html($params['registration']));
 		}
-		if (!is_null(self::$error)){
-			$this->addError('signin_submit', self::$error);
+		if (!is_null(OPAM_User::$auth_error)){
+			$this->addError('signin_submit', OPAM_User::$auth_error);
 		}
 
 	}

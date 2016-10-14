@@ -17,7 +17,7 @@ abstract class OPAL_Module extends OPAM_Module {
 	
 	public function init(){
 		if ($this->id && $this->get('module_status')){
-			return $this->doInit();
+            return $this->initHooks()->doInit();
 		}
 		return null;
 	}
@@ -58,7 +58,24 @@ abstract class OPAL_Module extends OPAM_Module {
 		}
 		return null;
 	}
-	
+
+    protected function initHooks(){
+        try {
+            $hooks_file = new \Orange\FS\File('modules/' . $this->get('module_code') . '/hooks.php');
+            if ($hooks_file->exists()){
+                $hooks = include $hooks_file->getPath();
+                if ($hooks && is_array($hooks)){
+                    foreach ($hooks as $hook => $hook_functions){
+                        foreach ($hook_functions as $hook_function){
+                            OPAL_Portal::addHook($hook, $hook_function);
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e){}
+        return $this;
+    }
+
 	protected abstract function doInit();
 
     protected abstract function doInstall($params);
