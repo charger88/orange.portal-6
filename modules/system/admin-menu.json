@@ -1,0 +1,168 @@
+{
+  "pages": {
+    "name": "ADMIN_PAGES",
+    "url": "/admin/pages",
+    "icon": "/modules/system/static/icons/pages.png",
+    "order": 0,
+    "sub": {
+      "tree": {
+        "name": "ADMIN_PAGES_TREE",
+        "url": "/admin/pages",
+        "icon": "/modules/system/static/icons/pages-tree.png",
+        "order": 10
+      }
+    }
+  },
+  "blocks": {
+    "name": "ADMIN_BLOCKS",
+    "url": "/admin/blocks",
+    "icon": "/modules/system/static/icons/blocks.png",
+    "order": 10,
+    "sub": {
+      "list": {
+        "name": "ADMIN_BLOCKS_LIST",
+        "url": "/admin/blocks",
+        "icon": "/modules/system/static/icons/blocks.png",
+        "order": 10
+      }
+    }
+  },
+  "types": {
+    "name": "ADMIN_CONTENT",
+    "url": "/admin/types",
+    "icon": "/modules/system/static/icons/types.png",
+    "order": 20,
+    "sub": {
+      "types": {
+        "name": "ADMIN_TYPES",
+        "url": "/admin/types",
+        "icon": "/modules/system/static/icons/types.png",
+        "order": 10
+      }
+    }
+  },
+  "files": {
+    "name": "ADMIN_FILES",
+    "url": "/admin/files",
+    "icon": "/modules/system/static/icons/files.png",
+    "order": 30,
+    "sub": {
+      "files-list": {
+        "name": "ADMIN_FILES",
+        "url": "/admin/files",
+        "icon": "/modules/system/static/icons/files.png",
+        "order": 10
+      },
+      "media": {
+        "name": "ADMIN_FILES_MEDIA",
+        "url": "/admin/files/media",
+        "icon": "/modules/system/static/icons/media.png",
+        "order": 20
+      }
+    }
+  },
+  "users": {
+    "name": "ADMIN_USERS",
+    "url": "/admin/users",
+    "icon": "/modules/system/static/icons/users.png",
+    "order": 40,
+    "sub": {
+      "admin-users-index": {
+        "name": "ADMIN_USERS",
+        "url": "/admin/users",
+        "icon": "/modules/system/static/icons/users.png",
+        "order": 10
+      },
+      "admin-users-list": {
+        "name": "ADMIN_USERS_LIST",
+        "url": "/admin/users/list",
+        "icon": "/modules/system/static/icons/users-list.png",
+        "order": 20
+      },
+      "admin-users-new": {
+        "name": "ADMIN_CREATE_NEW_USER",
+        "url": "/admin/users/new",
+        "icon": "/modules/system/static/icons/user-new.png",
+        "order": 30
+      }
+    }
+  },
+  "modules": {
+    "name": "ADMIN_MODULES",
+    "url": "/admin/modules",
+    "icon": "/modules/system/static/icons/modules.png",
+    "order": 50,
+    "sub": {
+      "modules-installed": {
+        "name": "ADMIN_MODULES_INSTALLED",
+        "url": "/admin/modules",
+        "icon": "/modules/system/static/icons/modules.png",
+        "order": 10
+      },
+      "modules-install": {
+        "name": "ADMIN_MODULES_INSTALL",
+        "url": "/admin/modules/new",
+        "icon": "/modules/system/static/icons/add.png",
+        "order": 20
+      },
+      "modules-discover": {
+        "name": "ADMIN_MODULES_DISCOVER",
+        "url": "/admin/modules/discover",
+        "icon": "/modules/system/static/icons/world.png",
+        "order": 30
+      }
+    }
+  },
+  "options": {
+    "name": "ADMIN_OPTIONS",
+    "url": "/admin/options",
+    "icon": "/modules/system/static/icons/options.png",
+    "order": 60,
+    "sub": {
+      "system": {
+        "name": "ADMIN_OPTIONS_SYSTEM",
+        "url": "/admin/options/system",
+        "icon": "/modules/system/static/icons/options-system.png",
+        "order": 10
+      },
+      "move": {
+        "name": "ADMIN_OPTIONS_MOVE",
+        "url": "/admin/options/move",
+        "icon": "/modules/system/static/icons/options-domain.png",
+        "order": 20
+      }
+    }
+  },
+  "access": {
+    "name": "ADMIN_ACCESS",
+    "url": "/admin/panel",
+    "icon": "/modules/system/static/icons/access.png",
+    "order": 70,
+    "sub": {
+      "admin-groups": {
+        "name": "ADMIN_GROUPS",
+        "url": "/admin/groups",
+        "icon": "/modules/system/static/icons/groups.png",
+        "order": 10
+      },
+      "admin-privileges": {
+        "name": "ADMIN_PRIVILEGES",
+        "url": "/admin/privileges",
+        "icon": "/modules/system/static/icons/privileges.png",
+        "order": 20
+      },
+      "admin-panel": {
+        "name": "ADMIN_ADMIN_PAGES",
+        "url": "/admin/panel",
+        "icon": "/modules/system/static/icons/access-admin.png",
+        "order": 30
+      }
+    }
+  },
+  "log": {
+    "name": "ADMIN_LOGS",
+    "url": "/admin/log",
+    "icon": "/modules/system/static/icons/log.png",
+    "order": 80
+  }
+}

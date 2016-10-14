@@ -73,7 +73,19 @@ abstract class OPAL_Module extends OPAM_Module {
 
     protected abstract function doUninstall();
 
-    public abstract function getAdminMenu();
+    public function getAdminMenu(){
+        $menu = [];
+        try {
+            $menu_file = new \Orange\FS\File('modules/' . $this->get('module_code') . '/admin-menu.json');
+            if ($menu_file->exists()){
+                $menu = json_decode($menu_file->getData(), true);
+                if (!$menu){
+                    $menu = [];
+                }
+            }
+        } catch (Exception $e){}
+        return $menu;
+    }
 
 	protected $privileges = [];
 

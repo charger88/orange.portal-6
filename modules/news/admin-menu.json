@@ -1,0 +1,28 @@
+{
+  "news": {
+    "name": "MODULE_NEWS",
+    "url": "/admin/news",
+    "icon": "/modules/news/static/icons/news.png",
+    "order": 15,
+    "sub": {
+      "tree": {
+        "name": "MODULE_NEWS_LIST",
+        "url": "/admin/news",
+        "icon": "/modules/news/static/icons/news.png",
+        "order": 10
+      },
+      "add": {
+        "name": "ADMIN_ADD_NEW",
+        "url": "/admin/news/new",
+        "icon": "/modules/news/static/icons/news-add.png",
+        "order": 20
+      },
+      "categories": {
+        "name": "ADMIN_CATEGORIES",
+        "url": "/admin/news/categories",
+        "icon": "/modules/system/static/icons/categories.png",
+        "order": 30
+      }
+    }
+  }
+}

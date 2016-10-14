@@ -1,0 +1,28 @@
+{
+  "feedback": {
+    "name": "MODULE_FEEDBACK",
+    "url": "/admin/feedback",
+    "icon": "/modules/feedback/static/icons/feedback.png",
+    "order": 52,
+    "sub": {
+      "feedback-messages-actual": {
+        "name": "MODULE_FEEDBACK_MESSAGES_ACTUAL",
+        "url": "/admin/feedback",
+        "icon": "/modules/feedback/static/icons/feedback-actual.png",
+        "order": 10
+      },
+      "feedback-messages-all": {
+        "name": "MODULE_FEEDBACK_MESSAGES_ALL",
+        "url": "/admin/feedback/all",
+        "icon": "/modules/feedback/static/icons/feedback-all.png",
+        "order": 20
+      },
+      "feedback-forms": {
+        "name": "MODULE_FEEDBACK_FORMS",
+        "url": "/admin/feedback/forms",
+        "icon": "/modules/feedback/static/icons/feedback-forms.png",
+        "order": 30
+      }
+    }
+  }
+}
