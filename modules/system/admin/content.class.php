@@ -1,7 +1,5 @@
 <?php
 
-//TODO Commands
-
 class OPMA_System_Content extends OPAL_Controller {
 
 	protected $refs = array();
@@ -34,13 +32,15 @@ class OPMA_System_Content extends OPAL_Controller {
         $params['types']   = OPAM_Content_Type::getTypes($this->allowed_type_type,$this->content_type);
 		$params['access_level'] = $this->user->get('user_status');
 		$params['list']    = OPAM_Content::getList($params,$type->getClass());
-        $listMoreData      = OPAM_Content::getListMoreData();
-		$params['class_fields'] = $this->list_class_fields;
-		if (isset($this->list_columns['content_user_id'])){
-			$params['refs']['content_user_id'] = OPAM_User::loadByIDs($listMoreData['content_user_id'],'user_name');
+        $params['class_fields'] = $this->list_class_fields;
+        $params['refs'] = $this->getFormOptions();
+        if (isset($this->list_columns['content_user_id'])){
+			$params['refs']['content_user_id'] = array_map(function($item){
+                return $item->get('content_user_id');
+            }, $params['list']);
+            $params['refs']['content_user_id'] = OPAM_User::getRef($params['refs']['content_user_id']);
 		}
 		$params['columns'] = $this->list_columns;
-		$params['refs'] = $this->getFormOptions();
 		$params['columns']['_edit'] = array(
 			'title' => '',
 			'text'  => OPAL_Lang::t('ADMIN_EDIT'),

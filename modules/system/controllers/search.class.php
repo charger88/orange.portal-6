@@ -93,7 +93,8 @@ class OPMC_System_Search extends OPAL_Controller {
 	
 	private function form(){
         if (OPAM_Privilege::hasPrivilege('METHOD_SYSTEM_SEARCH_RESULTS',$this->user)) {
-            $form = new OPMF_System_Search(OP_WWW . '/module/system/search/results');
+            $form = new OPMF_System_Search();
+            $form->setAction(OP_WWW . '/module/system/search/results');
             $form->setMethod(\Orange\Forms\Form::METHOD_GET);
             $form->setValues(array('search' => $this->getGet('search')));
             return $form->getHTML();

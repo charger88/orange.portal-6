@@ -7,7 +7,8 @@ class OPMA_News_Main extends OPMA_System_Content {
     protected $allowed_type_type = 3;
 
     protected $list_columns = array(
-        'content_title'          => array('width' => 90,'link' => '_edit'),
+        'content_title'          => array('width' => 70,'link' => '_edit'),
+        'content_user_id'        => array('width' => 20,),
         'content_status'         => array('width' => 10,),
     );
 

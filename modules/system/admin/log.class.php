@@ -1,7 +1,5 @@
 <?php
 
-//TODO Load language for all modules...
-
 class OPMA_System_Log extends OPAL_Controller {
 	
 	public function indexAction(){

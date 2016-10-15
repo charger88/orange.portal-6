@@ -2,7 +2,6 @@
 
 use \Orange\Database\Queries\Parts\Condition;
 
-// TODO Add field for protocol (both, HTTP, HTTPS)
 // TODO Create tags support
 /**
  * Class OPAM_Content
@@ -61,11 +60,6 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @var array
      */
     protected static $keys = array('content_type','content_parent_id','content_order','content_lang','content_area','content_slug','content_on_site_mode','content_status','content_time_published','content_user_id');
-
-    /**
-     * @var array
-     */
-    private static $listMoreData = array();
 
     /**
      * @return int|null
@@ -200,13 +194,6 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
         $this->tags = OPAM_Content_Tag::updateTagsForContent($this->id,$tags);
         return $this;
     }
-
-    /**
-     * @return array
-     */
-    public static function getListMoreData() {
-		return self::$listMoreData;
-	}
 
     /**
      * @param null $default_lang
@@ -448,34 +435,28 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
             $select->setOffset($offset * $limit);
 		}
 
-        //TODO WTF? If wont work with new DB (see return)
+        $is_column = false;
+
 		if (is_array($classname)) {
 			foreach($classname as $key => $field){
                 if (!is_numeric($key)){
                     $select->addField($key);
+                    $is_column = true;
                 }
 				$select->addField($field);
 			}
-            //TODO Add here 'id'
+            if (!$is_column){
+                if (!in_array('id', $classname)){
+                    $select->addField('id');
+                }
+            }
 		}
 
 		$select->execute();
 
-		self::$listMoreData = array(
-            'content_image' => array(),
-            'content_user_id' => array()
-		);
-        $is_column = null;
-        if (is_array($classname)){
-            $is_column = array_keys($classname)[0];
-            if (is_numeric($is_column)){
-                $is_column = null;
-            }
-        }
-        //TODO Fill self::$listMoreData with values from returned array
-		return is_array($classname)
+        return is_array($classname)
             ? ( $is_column
-                ? $select->getResultColumn($is_column, array_shift($classname))
+                ? $select->getResultColumn(key($classname), current($classname))
                 : $select->getResultArray('id')
             )
             : $select->getResultArray('id', is_null($classname)? __CLASS__ : $classname)
@@ -555,7 +536,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		return ($this->id > 0) && $this->isAllowedForGroups($user_groups);
 	}
 
-	// TODO Possible to make some type restrictions
+	// TODO Possible I should make some type restrictions
     /**
      * @return bool
      */

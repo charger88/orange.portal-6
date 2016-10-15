@@ -52,7 +52,8 @@ class OPMA_System_Groups extends OPAL_Controller {
      * @return string
      */
     protected function edit($item){
-		$form = new OPMX_System_GroupEdit($this->content->getURL().'/save/'.$item->id,'post');
+		$form = new OPMX_System_GroupEdit();
+        $form->setAction($this->content->getURL().'/save/'.$item->id);
 		$form->setValues($item->getData(),true);
 		return $form->getHTML();
 	}

@@ -1,6 +1,6 @@
 <p class="search-info"><?php $this->ee(OPAL_Lang::t('SEARCH_BY_REQUEST_%s_RETURNS_%s',array($search,count($results)))); ?></p>
 <ol class="search-results">
-<?php foreach ($results as $item) { $url = $item->getURL(OPAL_Portal::config('system_default_lang')); ?>
+<?php foreach ($results as $item) { $url = $item->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang); ?>
 	<li><a href="<?php $this->ee($url); ?>" class="search-title"><?php $this->ee($item->get('content_title')); ?></a><br/><a href="<?php $this->ee($url); ?>" class="search-url"><?php $this->ee(urldecode($url)); ?></a></li>
 <?php } ?>
 </ol>

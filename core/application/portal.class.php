@@ -517,9 +517,7 @@ class OPAL_Portal {
 			'postHTML' => $postHTML,
 		));
 	}
-	
-	//TODO PHP7 Adaptation
-	
+
 	private $lastExecuteContentStatus = '';
 
     /**

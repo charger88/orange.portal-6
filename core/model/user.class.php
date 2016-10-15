@@ -123,5 +123,13 @@ class OPAM_User extends \Orange\Database\ActiveRecord {
 		$select->setOrder($order,$desc ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC);
 		return $select->execute()->getResultArray(null,__CLASS__);
 	}
+
+    public static function getRef($IDs){
+        $select = new \Orange\Database\Queries\Select(self::$table);
+        $select->addField('id');
+        $select->addField('user_name');
+        $select->addWhere(new Condition('id', 'IN', $IDs));
+        return $select->execute()->getResultArray('id',['id' => 'user_name']);
+    }
 	
 }
