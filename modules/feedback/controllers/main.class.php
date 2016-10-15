@@ -105,7 +105,7 @@ class OPMC_Feedback_Main extends OPAL_Controller {
     }
 
     protected function getFormToken($time){
-        return md5(date("YmdH",$time).''.$this->getIP().'-feedback-'.OPAL_Portal::config('system_secretkey'));
+        return md5(date("YmdH",$time).'-'.$this->getIP().'-feedback-'.OPAL_Portal::config('system_secretkey'));
     }
 
     protected function getAllowedTokens(){

@@ -525,7 +525,7 @@ aside#column nav ul li:hover ul {
 
 .orange-forms-form fieldset,
 .orange-forms-form .orange-forms-field-wrapper {
-	margin-bottom: 2.2rem;
+	margin-bottom: 1.2rem;
 }
 
 .orange-forms-form .orange-forms-field-wrapper.orange-forms-field-checkbox {
@@ -562,11 +562,11 @@ aside#column nav ul li:hover ul {
 }
 
 .orange-forms-form .orange-forms-multirow {
-	margin-bottom: 2.2rem;
+	margin-bottom: 1.2rem;
 }
 
 .orange-forms-form .orange-forms-multirow .orange-forms-row-wrapper {
-	margin-bottom: 2.2rem;
+	margin-bottom: 1.2rem;
 	display: flex;
 	flex-direction: row;
     cursor: move;
@@ -608,7 +608,7 @@ aside#column nav ul li:hover ul {
 /* Form special */
 
 #form-region-header {
-	margin-bottom: 2.2rem;
+	margin-bottom: 1.2rem;
 }
 
 #form-region-main {
@@ -818,4 +818,56 @@ aside#column nav ul li:hover ul {
     margin-top: -0.5rem;
     margin-bottom: 0.9rem;
     font-size: 0.9rem;
+}
+
+/* Commands */
+
+#commands-view-list {
+    font-size: 0.8rem;
+}
+
+#commands-view-list, #commands-new-list {
+    list-style: square outside;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px dotted;
+}
+
+#commands-view-list li {
+    margin-bottom: 0.5rem;
+}
+
+#commands-view-list li span.command-name {
+    font-weight: bold;
+}
+
+#commands-view dl:empty {
+    display: none !important;
+}
+
+#commands-view #commands-new-list {
+    padding: 0.5rem;
+    padding-left: 1.5rem;
+    border-top: 0;
+    font-size: 0.8rem;
+    background: #edf0f2;
+    border-left: 6px solid rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+#commands-view #commands-add-wrapper {
+    font-size: 0.8rem;
+}
+
+#commands-view dl {
+    margin-top: 0.25rem;
+}
+
+#commands-view dl dt,
+#commands-view dl dd {
+    width: 50%;
+}
+
+#commands-view dl dd {
+    margin-left: 50%;
 }

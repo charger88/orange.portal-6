@@ -330,7 +330,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$time_published_from = isset($params['time_published_from'])? $params['time_published_from']: null;
 		$time_published_to = isset($params['time_published_to'])? $params['time_published_to']: null;
 		$user_id = isset($params['user_id'])? $params['user_id']: null;
-		$parent_id = isset($params['parent_id'])? $params['parent_id']: null;
+		$parent_id = isset($params['parent_id'])? $params['parent_id'] : null;
 
 		$limit = isset($params['limit'])? $params['limit']: null;
 		$offset = isset($params['offset'])? $params['offset']: 0;

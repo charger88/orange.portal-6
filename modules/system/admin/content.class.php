@@ -264,6 +264,24 @@ class OPMA_System_Content extends OPAL_Controller {
 		}
 		return $options;
 	}
+
+    public function commandsAction(){
+        $commands = [];
+        $modules = OPAL_Module::getModules(true);
+        foreach ($modules as $module){
+            $commands_file = new \Orange\FS\File('modules/' . $module->get('module_code') . '/commands.php');
+            if ($commands_file->exists()) {
+                $module_commands = include $commands_file->getPath();
+                $commands[$module->get('module_code')] = $module_commands;
+            }
+        }
+        OPAL_Portal::getInstance()->data_type = 'application/javascript';
+        $defaultStatic = $this->getGet('type', 'page') == 'block' ? 1 : 0;
+        return $this->templater->fetch('system/commands-js.phtml', [
+            'commands' => $commands,
+            'defaultStatic' => $defaultStatic,
+        ]);
+    }
 	
 	protected function deleteRelatedCache($ids){
 		if ($ids = array_unique($ids)){

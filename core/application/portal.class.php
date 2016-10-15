@@ -321,7 +321,8 @@ class OPAL_Portal {
 	private function initRequestURI(){
 		$u = explode('?', $this->getURI());
 		if (isset($u[1])){
-			parse_str($u[1],$this->getGetArray());
+            $ga = $this->getGetArray();
+			parse_str($u[1],$ga);
 		}
 		$u = trim($u[0],'/');
 		if (!empty(self::config('system_base_dir')) && (strpos($u, self::config('system_base_dir')) === 0)){

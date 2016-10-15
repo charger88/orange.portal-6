@@ -71,7 +71,7 @@ class OPMX_System_ContentEdit extends Form {
 			}
             $this->addField($fieldset, 'column');
 		}
-		
+
 		if (!in_array('content_parent_id', $params['hide']) || !in_array('content_tags', $params['hide'])){
             $fieldset = new Fieldset('structure', $this->lng('STRUCTURE'));
             if (!in_array('content_parent_id', $params['hide'])) {
@@ -211,6 +211,7 @@ class OPMX_System_ContentEdit extends Form {
             'system/admin-media-init.phtml'
         )));
 
+        OPAL_Theme::addScriptFile('admin/content/commands?type=' . $type->get('content_type_code'));
         OPAL_Theme::addScriptFile('modules/system/static/js/admin-content-form.js');
 
 	}

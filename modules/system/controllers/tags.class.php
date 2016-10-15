@@ -1,14 +1,6 @@
 <?php
 
 class OPMC_System_Tags extends OPAL_Controller {
-	
-	public function indexAction(){
-		$return = $this->form();
-		if ($tag = $this->getGet('tag')){
-			$return .= $this->results($tag);
-		}
-        return $return;
-	}
 
 	public function searchActionDirect($tag){
 		return $this->results($tag,$this->getGet('offset',0));
