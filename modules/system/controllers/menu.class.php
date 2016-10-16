@@ -42,7 +42,7 @@ class OPMC_System_Menu extends OPAL_Controller {
 	}
 	
 	private function tree(){
-        $levels = $this->arg('levels', 0); //TODO Implement functionality
+        $levels = $this->arg('levels', 0);
         $root = $this->arg('root', 0);
 		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-menu-tree.phtml',array(
 			'menu' => OPAM_Page::getTreeMenu($this->user,OPAL_Portal::$sitelang,$root,$levels),

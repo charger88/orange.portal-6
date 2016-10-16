@@ -9,7 +9,7 @@ class OPMA_System_Pages extends OPMA_System_Content {
         return $this->wrapContentWithTemplate(
 			$this->wrapper,
 			$this->templater->fetch('system/admin-pages-tree.phtml',array(
-				'tree' => array_merge(OPAM_Page::getPagesByParents($this->user,true)),
+				'tree' => OPAM_Page::getPagesByParents($this->user,true),
 				'refs' => $this->getFormOptions(),
 				'slug' => $this->content->getSlug(),
 			))
@@ -23,7 +23,8 @@ class OPMA_System_Pages extends OPMA_System_Content {
         $item = new $classname();
 		$item->set('content_type',$type->get('content_type_code'));
 		if ($item->isNewAllowed()){
-			$item->set('content_time_published',time());
+            $item->set('content_on_site_mode',3);
+            $item->set('content_time_published',time());
 			$item->set('content_template','main-html.phtml');
             $item->set('content_commands',array( array( 'module' => 'system', 'controller' => 'text', 'method' => 'index', 'static' => false, 'args' => array() ) ));
             $item->set('content_access_groups',array(0));

@@ -303,7 +303,7 @@ class OPMI_System extends OPAL_Installer {
 				'content_slug'           => 'main-menu',
 				'content_on_site_mode'   => 0,
 				'content_status'         => 6,
-				'content_commands'       => array( array( 'module' => 'system', 'controller' => 'menu', 'method' => 'tree', 'static' => true, 'args' => array() ), ),
+				'content_commands'       => array( array( 'module' => 'system', 'controller' => 'menu', 'method' => 'tree', 'static' => true, 'args' => array('levels' => 1) ), ),
 				'content_template'       => 'block-element.phtml',
 			),
 			array(

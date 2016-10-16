@@ -1,22 +1,26 @@
 <?php
 
-if (!function_exists('default_default_menu')){
-	function default_default_menu(&$menu,$root,&$templater){
-		if (!empty($menu[$root])) {
-			echo '<ul>';
-			foreach ($menu[$root] as $page) {
-				echo '<li>';
-				echo '<a href="' . $page->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang) . '">' . $templater->esc($page->get('content_title')) . '</a>';
-				if (!empty($menu[$page->id])) {
-					default_default_menu($menu, $page->id, $templater);
-				}
-				echo '</li>';
-			}
-			echo '</ul>';
-		}
-	}
-}
+$build_menu = function(&$menu,$root,&$templater,$build_menu,$levels){
+    if (!empty($menu[$root])) {
+        if (is_null($levels)){
+            $show_next_level = true;
+        } else {
+            $show_next_level = $levels > 0;
+            $levels--;
+        }
+        echo '<ul>';
+        foreach ($menu[$root] as $page) {
+            echo '<li>';
+            echo '<a href="' . $page->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang) . '">' . $templater->esc($page->get('content_title')) . '</a>';
+            if ($show_next_level && !empty($menu[$page->id])) {
+                $build_menu($menu, $page->id, $templater, $build_menu, $levels);
+            }
+            echo '</li>';
+        }
+        echo '</ul>';
+    }
+};
 
 echo '<nav class="menu menu-default menu-tree">';
-default_default_menu($menu,$root,$this);
+$build_menu($menu,$root,$this,$build_menu,$levels ? $levels : null);
 echo '</nav>';

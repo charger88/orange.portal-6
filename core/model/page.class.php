@@ -30,7 +30,7 @@ class OPAM_Page extends OPAM_Content {
      * @return array
      */
     public function getParentsRef(){
-		return array_merge([0 => ''], self::getList(
+		return [0 => ''] + self::getList(
             [
                 'types' => array('page'),
                 'exclude' => array($this->id)
@@ -38,7 +38,7 @@ class OPAM_Page extends OPAM_Content {
             [
                 'id' => 'content_title',
             ]
-        ));
+        );
 	}
 
     /**
@@ -100,7 +100,7 @@ class OPAM_Page extends OPAM_Content {
 		return self::getList($params,__CLASS__);
 	}
 
-    //TODO Think about optimization of request
+    //TODO Think about optimization
     /**
      * @param OPAM_User $user
      * @param string $lang
