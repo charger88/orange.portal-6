@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'text' => [
+        'index' => [
+            'name'   => 'Text',
+            'action' => true,
+            'block'  => true,
+            'args'   => [
+                'prefix' => [
+                    'name' => 'Prefix',
+                    'type' => 'string',
+                    'default' => 'default',
+                ],
+            ],
+        ],
+    ],
     'menu' => [
         'index' => [
             'name'   => 'Simple menu',
@@ -140,16 +154,21 @@ return [
             ],
         ],
     ],
-    'text' => [
+    'redirect' => [
         'index' => [
-            'name'   => 'Text',
+            'name'   => 'Redirect',
             'action' => true,
-            'block'  => true,
+            'block'  => false,
             'args'   => [
-                'prefix' => [
-                    'name' => 'Prefix',
+                'url' => [
+                    'name' => 'URL',
                     'type' => 'string',
-                    'default' => 'default',
+                    'default' => OP_WWW,
+                ],
+                'prefix' => [
+                    'name' => 'Permanent',
+                    'type' => 'boolean',
+                    'default' => '0',
                 ],
             ],
         ],
