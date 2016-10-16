@@ -13,6 +13,7 @@ $(document).ready(function(){
     }
     // TODO Refactor this... But I did it... After 10 years of shame with textarea...
     // TODO Use action and block arguments for "block" checkbox
+    // TODO Drag and drop sorting
     var $commandsSource = $('#multirow-content_commands').hide();
     var $commandsView = $('<div>')
         .attr('id', 'commands-view')
