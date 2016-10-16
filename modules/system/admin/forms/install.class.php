@@ -25,7 +25,7 @@ class OPMX_System_Install extends Form {
 		$this->addField((new Text('db_user', OPAL_Lang::t('INSTALL_DB_USER')))->requireField(), 'step-1');
 		$this->addField((new Text('db_password', OPAL_Lang::t('INSTALL_DB_PASSWORD'))), 'step-1');
 		$this->addField((new Select('db_type', OPAL_Lang::t('INSTALL_DB_DRIVER')))
-            ->setOptions(['MySQL' => 'MySQL'])
+            ->setOptions($this->getDrivers())
             ->setDefault('MySQL')
             ->requireField(), 'step-1');
 
@@ -35,8 +35,7 @@ class OPMX_System_Install extends Form {
         $this->addField((new Text('copyright', OPAL_Lang::t('INSTALL_COPYRIGHT'))), 'step-2');
         $this->addField((new Select('timezone', OPAL_Lang::t('INSTALL_TIMEZONE')))
             ->setOptions($timezones), 'step-2');
-        //TODO Get DB drivers
-		$this->addField((new Select('theme', OPAL_Lang::t('INSTALL_THEME')))
+        $this->addField((new Select('theme', OPAL_Lang::t('INSTALL_THEME')))
             ->setOptions(OPAL_Theme::getAvailableThemes('name'))
             ->setDefault('default')
             ->requireField(), 'step-2');
@@ -66,5 +65,16 @@ class OPMX_System_Install extends Form {
 		$this->addField((new Submit('go', OPAL_Lang::t('INSTALL'))), 'step-last');
 				
 	}
+
+    protected function getDrivers(){
+        $drivers = (new \Orange\FS\Dir('vendor/charger88/orange.database/src/Orange/Database/Drivers'))->readDir();
+        $drivers = array_map(function($val){
+            $val = explode('.', $val->getName());
+            return $val[0];
+        }, $drivers);
+        $drivers = array_combine($drivers, $drivers);
+        unset($drivers['Driver']);
+        return $drivers;
+    }
 
 }
