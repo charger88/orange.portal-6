@@ -41,8 +41,9 @@ class OPMA_System_Pages extends OPMA_System_Content {
 	}
 
     public function reorderAjax(){
-        $updated = OPAM_Page::reorder($root = $this->getPost('root'),$this->getPost('order'),'content_parent_id',$this->user);
-        //TODO Clear cache
+        $item = new OPAM_Page(intval($this->getPost('root', 0)));
+        $updated = OPAM_Page::reorder($item->id,$this->getPost('order'),'content_parent_id',$this->user);
+        $this->deleteRelatedCache([$item->id, $item->get('content_parent_id')]);
         return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK, null, array('IDs' => $updated));
     }
 	
