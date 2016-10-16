@@ -117,7 +117,11 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         ;
         $email = new OPAL_Email();
         $email->subject = OPAL_Lang::t('MODULE_FEEDBACK_REPLY_SUBJECT_PREFIX_%s', $message_object->get('feedback_message_subject'));
-        //TODO HTML
+        $email->html = OPAL_Portal::getInstance()->templater->fetch('email.phtml', [
+            'html' => OPAL_Portal::getInstance()->templater->fetch('feedback/default-reply.phtml', [
+                'text' => $message_object->get('feedback_message_reply_text'),
+            ]),
+        ]);
         $email->plain_text = $message_object->get('feedback_message_reply_text');
         $email->setReturnPath($message_object->get('feedback_message_reply_from_email'));
         $res = $email->send($message_object->get('feedback_message_sender_email'));

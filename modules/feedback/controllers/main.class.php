@@ -49,10 +49,9 @@ class OPMC_Feedback_Main extends OPAL_Controller {
             $form = new OPMF_Feedback_Generic($form_object->getData());
             $form->setAction(OP_WWW.'/module/feedback/main/send/'.$form_object->id);
             $form->setValues($this->getPostArray(), true);
-            $errors = false; //TODO Validation
-            if ($errors){
+            if ($errors = $form->validateValues()->getErrors()){
                 if (OPAL_Portal::getInstance()->env('ajax')){
-                    return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, $errors);
+                    return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, ['errors' => $errors]);
                 } else {
                     return $form->getHTML();
                 }

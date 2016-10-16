@@ -1,0 +1,11 @@
+<?php
+
+$text = explode("\n", str_replace("\r", '', $text));
+foreach ($text as $row) {
+    $span = ($row{0} == '>');
+    $row = $this->esc($row);
+    if ($span){
+        $row = '<span style="color: #808080; font-style: italic;">' . $row . '</span>';
+    }
+    echo "$row<br/>\n";
+}

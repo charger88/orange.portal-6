@@ -28,6 +28,7 @@ $(document).ready(function(){
             var static = $(this).find('[name="content_commands[static][]"]').val();
             var args_values = JSON.parse($(this).find('[name="content_commands[args][]"]').val());
             var command_info = commands[module][controller][method];
+            static = (!static || static == '0') ? 0 : 1;
             $command.data('module', module);
             $command.data('controller', controller);
             $command.data('method', method);

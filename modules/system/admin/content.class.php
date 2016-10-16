@@ -119,7 +119,7 @@ class OPMA_System_Content extends OPAL_Controller {
 			}
             $values['content_time_published'] = date("Y-m-d H:i:s", $values['content_time_published']);
             $values['content_tags'] = $item->id ? implode(', ',$item->tags()) : '';
-			$form->setValues($values, true); //TODO Validation
+			$form->setValues($values, true);
 			return $form->getHTML();
 		} else {
 			$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
@@ -162,7 +162,6 @@ class OPMA_System_Content extends OPAL_Controller {
 				]);
                 $form->setAction($this->content->getURL().'/save/'.$item->id);
 				$form->setValues($this->getPostArray());
-                $errors = []; //TODO Form validation
                 $values = $form->getValues();
 				$item->setData($values);
 				$item->set('content_slug',str_replace('%2F','/',urlencode($item->get('content_slug'))));
@@ -171,7 +170,7 @@ class OPMA_System_Content extends OPAL_Controller {
 						$item->setField($field_id,isset($values['content_field_'.$field_id]) ? $values['content_field_'.$field_id] : null);
 					}
 				}
-                if (!$errors){
+                if (!($errors = $form->validateValues()->getErrors())){
 					if ($id = $item->save()->id) {
                         if (isset($values['content_tags'])) {
                             $item->updateTags(trim($values['content_tags']) ? explode(',', $values['content_tags']) : []);
