@@ -37,7 +37,7 @@ class OPMX_System_Install extends Form {
             ->setOptions($timezones), 'step-2');
         $this->addField((new Select('theme', OPAL_Lang::t('INSTALL_THEME')))
             ->setOptions(OPAL_Theme::getAvailableThemes('name'))
-            ->setDefault('default')
+            ->setDefault('orange2016')
             ->requireField(), 'step-2');
 
         $this->addField((new Html('<h3>'.OPAL_Lang::t('INSTALL_LANGUAGE').'</h3>')), 'step-3');

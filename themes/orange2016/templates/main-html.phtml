@@ -2,21 +2,25 @@
 <html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
 	<head><?php
 			if (in_array(2,OPAL_Portal::getInstance()->user->get('user_groups'))){
-				OPAL_Theme::addStyleFile('themes/orange2015/static/admin-front.css');
+				OPAL_Theme::addStyleFile('themes/orange2016/static/admin-front.css');
 			}
 			OPAL_Theme::addStyleFile('themes/default/static/system.css');
-			OPAL_Theme::addStyleFile('themes/orange2015/static/style.css');
+			OPAL_Theme::addStyleFile('themes/orange2016/static/style.css');
 			echo $this->fetch('head.phtml',array('content' => $content));
 		?>
         <meta name="viewport" content="width=device-width" />
     </head>
 	<body>
-		<?php echo $portal->blocksArea('header','<header>','</header>'); ?>
-		<?php echo $portal->blocksArea('top-section','<section id="top-section">','</section>'); ?>
-		<?php echo $portal->blocksArea('sub-header','<section id="sub-header">','</section>'); ?>
-		<?php $aside = $portal->blocksArea('column','<aside>','</aside>'); ?>
+        <div id="header-wrapper">
+            <?php echo $portal->blocksArea('header','<header>','</header>'); ?>
+            <?php echo $portal->blocksArea('top-section','<section id="top-section">','</section>'); ?>
+        </div>
+        <?php echo $portal->blocksArea('sub-header','<section id="sub-header">','</section>'); ?>
+        <div id="content-wrapper">
+        <?php $aside = $portal->blocksArea('column','<aside>','</aside>'); ?>
 		<section id="body" <?php echo strlen($aside) ? 'class="with-aside"' : ''; ?>><?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?></section>
 		<?php if (strlen($aside)){ echo $aside; } ?>
+        </div>
         <?php echo $portal->blocksArea('footer','<footer>','</footer>'); ?>
 	</body>
 </html>

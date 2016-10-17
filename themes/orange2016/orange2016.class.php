@@ -1,6 +1,6 @@
 <?php
 
-class OPTF_Orange2015 extends OPTF_Default {
+class OPTF_Orange2016 extends OPTF_Default {
 
 	public function __construct(){
 		$theme_name = $this->getThemeNameByClass(__CLASS__);

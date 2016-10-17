@@ -3,19 +3,27 @@ html {
     box-sizing: border-box;
 }
 
+#block_main-menu {
+    top: 2.5rem !important;
+}
+
+#block_lang-switcher {
+    top: 3.4rem !important;
+}
+
 #admin-bar {
 	position: fixed;
 	left: 0;
 	right: 0;
 	top: 0;
 	z-index: 9999;
-	background: rgba(0,0,0,0.85);
-	padding: 0.75rem 2em;
-	color: #ffffff;
+	background: #fdc619;
+	padding: 0.75rem 3em;
+	color: #000000;
 	font-family: sans-serif;
 	height: 1rem;
 	line-height: 1rem;
-	text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+	text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
 }
 
 #admin-bar ul {
