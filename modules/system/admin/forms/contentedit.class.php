@@ -41,9 +41,9 @@ class OPMX_System_ContentEdit extends Form {
 		if (!in_array('content_lang', $params['hide']) && (count($params['options']['content_lang']) > 1)){
 			$fieldset = new Fieldset('fieldset-lang', $this->lng('LANG_OPTIONS'));
             $fieldset->addField((new Select('content_lang', $this->lng('content_lang')))
-                ->setOptions(isset($params['options']['content_lang']) ? $params['options']['content_lang'] : []));
+                ->setOptions(isset($params['options']['content_lang']) ? ([0 => ''] + $params['options']['content_lang']) : []));
             $fieldset->addField((new Select('content_default_lang_id', $this->lng('content_default_lang_id')))
-                ->setOptions(isset($params['options']['content_default_lang_id']) ? $params['options']['content_default_lang_id'] : []));
+                ->setOptions(isset($params['options']['content_default_lang_id']) ? ([0 => ''] + $params['options']['content_default_lang_id']) : []));
             $this->addField($fieldset, 'column');
 		}
 		
