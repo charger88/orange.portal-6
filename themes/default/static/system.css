@@ -23,7 +23,7 @@ article, aside, figcaption, figure, footer, header, nav, section, time {display:
 /* Orange.Portal 5 recommended styles */
 img { vertical-align: top; }
 th { font-weight: bold; }
-button { padding: 2px 5px; margin-top: 0.5em; font-size: 1em; margin-left: -1px;}
+button { padding: 2px 5px; font-size: 1em; }
 .smaller { font-size: smaller; }
 .larger { font-size: larger; }
 .clear { clear: both; }

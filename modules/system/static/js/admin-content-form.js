@@ -91,7 +91,13 @@ $(document).ready(function(){
                 var args_values = $object.data('args-values');
                 $dl.append($('<dt>').text(val.name));
                 var value = args_values[key] ? args_values[key] : null;
-                var $selector = $('<input>').attr('type', 'text').addClass('arg-value').data('arg-name', key).val(value).attr('placeholder', val.default);
+                var $selector = $('<input>');
+                if (val.type == 'number'){
+                    $selector.attr('type', 'number');
+                } else {
+                    $selector.attr('type', 'text');
+                }
+                $selector.addClass('arg-value').data('arg-name', key).val(value).attr('placeholder', val.default);
                 $dl.append($('<dd>').append($selector));
             });
             $object.append($dl);

@@ -28,6 +28,7 @@ abstract class OPAL_Module extends OPAM_Module {
 	
 	public function installModule($params = []){
 		if (!$this->id && !$this->get('module_status')){
+            OPAL_Lang::load('modules/'.$this->get('module_code').'/lang/admin', OPAL_Portal::$sitelang);
 			return $this->doInstall($params);
 		}
 		return null;
