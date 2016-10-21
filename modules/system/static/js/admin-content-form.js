@@ -13,7 +13,7 @@ $(document).ready(function(){
     }
     $('#content_edit_submit').parents('form').eq(0).on('submit', function(){
         if ($('#commands-view-list li a.opened').length > 0){
-            return confirm('Changes of some commands were not applied. Do you want to proceed anyway?');
+            return confirm(commandsLanguage.COMMANDS_PROCEED_IF);
         } else {
             return true;
         }
@@ -44,8 +44,8 @@ $(document).ready(function(){
             $command.data('allow-action', command_info.action);
             $command.data('allow-block', command_info.block);
             var $argsObject = $('<dl>').addClass('command-arguments');
-            $argsObject.append($('<dt>').text('Use as block'));
-            $argsObject.append($('<dd>').text(static ? 'Yes' : 'No'));
+            $argsObject.append($('<dt>').text(commandsLanguage.COMMANDS_USE_AS_BLOCK));
+            $argsObject.append($('<dd>').text(static ? commandsLanguage.COMMANDS_YES : commandsLanguage.COMMANDS_NO));
             $.each(command_info.args, function(key, val){
                 if (args_values[key]) {
                     $argsObject.append($('<dt>').text(val.name));
@@ -54,9 +54,9 @@ $(document).ready(function(){
             });
             $command.append($('<span>').addClass('command-name').text(command_info.name))
                 .append($('<span>').text(' / '))
-                .append($('<a>').attr('href', '#').text('Edit').on('click', editArguments))
+                .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_EDIT).on('click', editArguments))
                 .append($('<span>').text(' / '))
-                .append($('<a>').attr('href', '#').text('Delete').on('click', deleteCommand));
+                .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_DELETE).on('click', deleteCommand));
             $command.append($argsObject);
             $commandsViewList.append($command);
             $commandsViewList.sortable({
@@ -135,7 +135,7 @@ $(document).ready(function(){
             $object.append($dl);
         } else {
             // Save
-            $(this).text('Edit');
+            $(this).text(commandsLanguage.COMMANDS_EDIT);
             $(this).removeClass('opened');
             var static = $object.find('input.static').is(':checked');
             $object.data('static', static ? 1 : 0);
@@ -149,8 +149,8 @@ $(document).ready(function(){
             // Show
             $object.find('dl').remove();
             var $dl = $('<dl>');
-            $dl.append($('<dt>').text('Use as block'));
-            $dl.append($('<dd>').text($object.data('static') ? 'Yes' : 'No'));
+            $dl.append($('<dt>').text(commandsLanguage.COMMANDS_USE_AS_BLOCK));
+            $dl.append($('<dd>').text($object.data('static') ? commandsLanguage.COMMANDS_YES : commandsLanguage.COMMANDS_NO));
             $.each($object.data('args'), function (key, val) {
                 if (args_values[key]) {
                     $dl.append($('<dt>').text(val.name));
@@ -197,8 +197,8 @@ $(document).ready(function(){
                             .append($('<span>').text(' / '))
                             .append($('<a>').attr('href', '#').text('Delete').on('click', deleteCommand))
                         ;
-                        $argsObject.append($('<dt>').text('Use as block'));
-                        $argsObject.append($('<dd>').text(commandsDefaultStatic ? 'Yes' : 'No'));
+                        $argsObject.append($('<dt>').text(commandsLanguage.COMMANDS_USE_AS_BLOCK));
+                        $argsObject.append($('<dd>').text(commandsDefaultStatic ? commandsLanguage.COMMANDS_YES : commandsLanguage.COMMANDS_NO));
                         $command.append($argsObject);
                         $commandsViewList.append($command);
                         rebuildCommandsForm();

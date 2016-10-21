@@ -1,2 +1,10 @@
 var commands = <?php echo json_encode($commands); ?>;
 var commandsDefaultStatic = <?php $this->ee($defaultStatic); ?>;
+var commandsLanguage = {
+    'COMMANDS_PROCEED_IF': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_PROCEED_IF')); ?>',
+    'COMMANDS_USE_AS_BLOCK': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_USE_AS_BLOCK')); ?>',
+    'COMMANDS_YES': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_YES')); ?>',
+    'COMMANDS_NO': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_NO')); ?>',
+    'COMMANDS_EDIT': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_EDIT')); ?>',
+    'COMMANDS_DELETE': '<?php echo addslashes(OPAL_Lang::t('COMMANDS_DELETE')); ?>'
+};

@@ -334,4 +334,11 @@ return [
 
     'ERROR_UNAUTHORIZED' => 'Authorization required',
 
+    'COMMANDS_PROCEED_IF' => 'Changes of some commands were not applied. Do you want to proceed anyway?',
+    'COMMANDS_USE_AS_BLOCK' => 'Use as block',
+    'COMMANDS_YES' => 'Yes',
+    'COMMANDS_NO' => 'No',
+    'COMMANDS_EDIT' => 'Edit',
+    'COMMANDS_DELETE' => 'Delete',
+
 ];
