@@ -58,6 +58,7 @@ class OPMC_System_Menu extends OPAL_Controller {
         } else if ($root_id === '{parent_id}'){
             $root_id = OPAL_Portal::getInstance()->content->get('content_parent_id');
         }
+        return $root_id;
     }
 	
 }
