@@ -1,7 +1,7 @@
 <form action="<?php $this->ee(OP_WWW.'/admin/files/upload'); ?>" class="form-default" id="files-upload">
     <input type="file" name="upload" multiple="multiple"  class="mk-filemanager-files" />
     <input type="hidden" name="path" value="" class="mk-filemanager-path" />
-    <div class="buttons-area"><button class="form-element-submit"><?php $this->el('ADMIN_UPLOAD'); ?></button></div>
+    <div id="form-region-top"><button class="admin-button"><?php $this->el('ADMIN_UPLOAD'); ?></button></div>
 </form>
 <div id="files-newfolder-wrapper"><a href="<?php $this->ee(OP_WWW.'/admin/files/newfolder'); ?>" id="files-newfolder"><?php $this->el('ADMIN_FILES_NEW_FOLDER'); ?></a></div>
 <table class="op-admin-list-table" id="filemanager">

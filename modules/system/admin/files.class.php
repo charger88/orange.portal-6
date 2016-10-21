@@ -1,5 +1,7 @@
 <?php
 
+//TODO Implement files editing
+
 class OPMA_System_Files extends OPAL_Controller {
 	
 	public function indexAction(){
@@ -7,7 +9,6 @@ class OPMA_System_Files extends OPAL_Controller {
 	}
 
     public function readdirAjax(){
-        //TODO XXX Add checkings for path!!!
         $org_path = $this->getGet('path');
         $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$org_path,'/');
         if ($this->checkFilepath($path)){
@@ -40,7 +41,6 @@ class OPMA_System_Files extends OPAL_Controller {
     }
 
     public function uploadAjax(){
-        //TODO XXX Add checkings for path!!!
         $path = trim('sites/'.OPAL_Portal::$sitecode.'/static/'.$this->getPost('path'), '/');
         if ($this->checkFilepath($path)){
             $files = $this->getFile('uploads');
@@ -94,6 +94,8 @@ class OPMA_System_Files extends OPAL_Controller {
         $path = explode('/',$path);
         foreach ($path as $path_element){
             if (strlen(trim($path_element,'.')) == 0){
+                $status = false;
+            } else if (strpbrk($path_element, "\\/?%*:|\"<>") !== false) {
                 $status = false;
             }
         }
