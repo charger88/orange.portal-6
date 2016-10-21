@@ -12,7 +12,6 @@ $(document).ready(function(){
         });
     }
     // TODO Refactor this... But I did it... After 10 years of shame with textarea...
-    // TODO Use action and block arguments for "block" checkbox
     var $commandsSource = $('#multirow-content_commands').hide();
     var $commandsView = $('<div>')
         .attr('id', 'commands-view')
@@ -35,6 +34,8 @@ $(document).ready(function(){
             $command.data('static', static);
             $command.data('args', command_info.args);
             $command.data('args-values', args_values);
+            $command.data('allow-action', command_info.action);
+            $command.data('allow-block', command_info.block);
             var $argsObject = $('<dl>').addClass('command-arguments');
             $argsObject.append($('<dt>').text('Use as block'));
             $argsObject.append($('<dd>').text(static ? 'Yes' : 'No'));
@@ -77,10 +78,13 @@ $(document).ready(function(){
             $(this).addClass('opened');
             $object.find('dl').remove();
             var $dl = $('<dl>');
-            $dl.append($('<dt>').text('Use as block')); //$object.data('static')
+            $dl.append($('<dt>').text('Use as block'));
             var $selector = $('<input>').attr('type', 'checkbox').addClass('static').val(1);
             if ($object.data('static')){
                 $selector.prop('checked', 'checked');
+            }
+            if (!($object.data('allow-action') && $object.data('allow-block'))){
+                $selector.prop('disabled', true);
             }
             $dl.append($('<dd>').append($selector));
             $.each($object.data('args'), function (key, val) {
@@ -134,28 +138,34 @@ $(document).ready(function(){
     $.each(commands, function(module, controllers){
         $.each(controllers, function(controller, methods){
             $.each(methods, function(method, info){
-                $newCommands.append($('<li>').append($('<a>').attr('href', '#').text(info.name).data('info', info).on('click', function(e){
-                    e.preventDefault();
-                    var $command = $('<li>');
-                    var args = {};
-                    var command_info = commands[module][controller][method];
-                    $command.data('module', module);
-                    $command.data('controller', controller);
-                    $command.data('method', method);
-                    $command.data('static', commandsDefaultStatic);
-                    $command.data('args', command_info.args);
-                    $command.data('args-values', args);
-                    var $argsObject = $('<dl>').addClass('command-arguments');
-                    $command.append($('<span>').addClass('command-name').text(command_info.name))
-                        .append($('<span>').text(' / '))
-                        .append($('<a>').attr('href', '#').text('Edit').on('click', editArguments))
-                        .append($('<span>').text(' / '))
-                        .append($('<a>').attr('href', '#').text('Delete').on('click', deleteCommand))
-                    ;
-                    $command.append($argsObject);
-                    $commandsViewList.append($command);
-                    rebuildCommandsForm();
-                })));
+                if (info.block && commandsDefaultStatic || !commandsDefaultStatic) {
+                    $newCommands.append($('<li>').append($('<a>').attr('href', '#').text(info.name).data('info', info).on('click', function (e) {
+                        e.preventDefault();
+                        var $command = $('<li>');
+                        var args = {};
+                        var command_info = commands[module][controller][method];
+                        $command.data('module', module);
+                        $command.data('controller', controller);
+                        $command.data('method', method);
+                        $command.data('static', commandsDefaultStatic);
+                        $command.data('args', command_info.args);
+                        $command.data('args-values', args);
+                        $command.data('allow-action', command_info.action);
+                        $command.data('allow-block', command_info.block);
+                        var $argsObject = $('<dl>').addClass('command-arguments');
+                        $command.append($('<span>').addClass('command-name').text(command_info.name))
+                            .append($('<span>').text(' / '))
+                            .append($('<a>').attr('href', '#').text('Edit').on('click', editArguments))
+                            .append($('<span>').text(' / '))
+                            .append($('<a>').attr('href', '#').text('Delete').on('click', deleteCommand))
+                        ;
+                        $argsObject.append($('<dt>').text('Use as block'));
+                        $argsObject.append($('<dd>').text(commandsDefaultStatic ? 'Yes' : 'No'));
+                        $command.append($argsObject);
+                        $commandsViewList.append($command);
+                        rebuildCommandsForm();
+                    })));
+                }
             });
         });
     });
