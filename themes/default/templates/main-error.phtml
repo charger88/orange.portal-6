@@ -6,7 +6,7 @@
 		?>
 	</head>
 	<body>
-		<header></header>
+		<header><?php $this->ee(OPAL_Portal::config('system_sitename', 'Orange.Portal 6')); ?></header>
 		<section>
 			<?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?>
 		</section>

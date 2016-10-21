@@ -293,8 +293,8 @@ class OPAL_Portal {
                 if (!is_null($signin_login) && !is_null($signin_password)){
                     $tmp_user = new OPAM_User('user_login',$signin_login);
                     if ($tmp_user->id){
-                        if ($this->user->verifyPassword($signin_password)){
-                            if ($this->user->get('user_status') > 0){
+                        if ($tmp_user->verifyPassword($signin_password)){
+                            if ($tmp_user->get('user_status') > 0){
                                 $this->user = $tmp_user;
                             } else {
                                 OPAM_User::$auth_error = OPAL_Lang::t('Account was blocked.');
