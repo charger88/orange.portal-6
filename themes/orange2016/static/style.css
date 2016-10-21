@@ -51,6 +51,7 @@ a {
     width: 60%;
     left: 20%;
     bottom: 1.75rem;
+    max-width: 1200px;
 }
 
 #header-wrapper header #block_sitename {
@@ -87,6 +88,7 @@ a {
 #header-wrapper header #block_slogan a {
     color: inherit;
 }
+
 
 /* Menu */
 
