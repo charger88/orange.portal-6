@@ -13,7 +13,6 @@ $(document).ready(function(){
     }
     // TODO Refactor this... But I did it... After 10 years of shame with textarea...
     // TODO Use action and block arguments for "block" checkbox
-    // TODO Drag and drop sorting
     var $commandsSource = $('#multirow-content_commands').hide();
     var $commandsView = $('<div>')
         .attr('id', 'commands-view')
@@ -52,6 +51,11 @@ $(document).ready(function(){
                 .append($('<a>').attr('href', '#').text('Delete').on('click', deleteCommand));
             $command.append($argsObject);
             $commandsViewList.append($command);
+            $commandsViewList.sortable({
+                update: function(event, ui){
+                    rebuildCommandsForm();
+                }
+            });
         }
     };
     var rebuildCommandsForm = function () {

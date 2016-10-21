@@ -50,6 +50,7 @@ header {
 
 input, select, textarea {
 	box-sizing: border-box;
+    vertical-align: bottom;
 }
 
 header > * {
@@ -835,6 +836,7 @@ aside#column nav ul li:hover ul {
 
 #commands-view-list li {
     margin-bottom: 0.5rem;
+    cursor: move;
 }
 
 #commands-view-list li span.command-name {
@@ -870,4 +872,8 @@ aside#column nav ul li:hover ul {
 
 #commands-view dl dd {
     margin-left: 50%;
+}
+
+#commands-view .ui-sortable-placeholder {
+    height: 2rem;
 }
