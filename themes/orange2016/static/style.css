@@ -350,6 +350,10 @@ footer #block_copyrights li:last-child {
     margin-bottom: 0.5rem;
 }
 
+.orange-forms-form .orange-forms-field:last-child {
+    margin-bottom: 0;
+}
+
 .orange-forms-form .orange-forms-field label {
     font-weight: bold;
     width: 9rem;
