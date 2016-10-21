@@ -299,7 +299,7 @@ class OPMI_System extends OPAL_Installer {
                 'content_title'          => OPAL_Lang::t('Lang switcher'),
                 'content_access_groups'  => [0],
                 'content_lang'           => '',
-                'content_area'           => 'header',
+                'content_area'           => 'sub-header',
                 'content_slug'           => 'lang-switcher',
                 'content_on_site_mode'   => 0,
                 'content_status'         => 6,
