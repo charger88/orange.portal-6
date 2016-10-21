@@ -4,9 +4,11 @@
 
 class OPMA_System_Media extends OPAL_Controller {
 
+    /*TODO Implement
 	public function indexAction(){
 		return ':)';
 	}
+    */
 	
 	public function indexAjax(){
 		$prepared = array();

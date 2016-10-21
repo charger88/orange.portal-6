@@ -25,7 +25,7 @@ class OPMC_System_Menu extends OPAL_Controller {
 	
 	private function index(){
 		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-menu.phtml',array(
-			'menu' => OPAM_Page::getMenu($this->user,$this->arg('root',0))
+			'menu' => OPAM_Page::getMenu($this->user,$this->getRoot())
 		));
 	}
 	
@@ -43,12 +43,21 @@ class OPMC_System_Menu extends OPAL_Controller {
 	
 	private function tree(){
         $levels = $this->arg('levels', 0);
-        $root = $this->arg('root', 0);
+        $root = $this->getRoot();
 		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-menu-tree.phtml',array(
 			'menu' => OPAM_Page::getTreeMenu($this->user,OPAL_Portal::$sitelang,$root,$levels),
             'root' => $root,
             'levels' => $levels,
 		));
 	}
+
+    private function getRoot(){
+        $root_id = $this->arg('root', 0);
+        if ($root_id === '{page_id}'){
+            $root_id = OPAL_Portal::getInstance()->content->id;
+        } else if ($root_id === '{parent_id}'){
+            $root_id = OPAL_Portal::getInstance()->content->get('content_parent_id');
+        }
+    }
 	
 }

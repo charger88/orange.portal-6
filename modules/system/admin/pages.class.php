@@ -46,5 +46,22 @@ class OPMA_System_Pages extends OPMA_System_Content {
         $this->deleteRelatedCache([$item->id, $item->get('content_parent_id')]);
         return $this->msg(OPAL_Lang::t('ADMIN_CONTENT_REORDERED'), self::STATUS_OK, null, array('IDs' => $updated));
     }
+
+    public function selectAjax(){
+        $list = OPAM_Page::getList(
+            [
+                'types' => OPAM_Content_Type::getPageTypes(),
+                'access_user' => $this->user
+            ],
+            [
+                'id' => 'content_title'
+            ]
+        );
+        return ['data' => [
+                '{page_id}' => OPAL_Lang::t('ADMIN_MENU_THIS_PAGE'),
+                '{parent_id}' => OPAL_Lang::t('ADMIN_MENU_PARENT_PAGE'),
+                '0' => OPAL_Lang::t('ADMIN_MENU_ROOT'),
+            ] + $list];
+    }
 	
 }

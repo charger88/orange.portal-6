@@ -24,7 +24,7 @@ return [
                 'root' => [
                     'name' => 'Menu root',
                     'type' => 'select',
-                    'data' => '', // TODO Here will be URL for ajax request for data
+                    'data' => OP_WWW . '/admin/pages/select',
                 ],
                 'prefix' => [
                     'name' => 'Prefix',
@@ -42,13 +42,12 @@ return [
                     'name' => 'Menu root',
                     'type' => 'select',
                     'default' => 0,
-                    'data' => '', // TODO Here will be URL for ajax request for data
+                    'data' => OP_WWW . '/admin/pages/select',
                 ],
                 'levels' => [
                     'name' => 'Tree levels',
                     'type' => 'number',
                     'default' => 0,
-                    'data' => '',
                 ],
                 'prefix' => [
                     'name' => 'Prefix',
@@ -167,8 +166,9 @@ return [
                 ],
                 'prefix' => [
                     'name' => 'Permanent',
-                    'type' => 'boolean',
+                    'type' => 'select',
                     'default' => '0',
+                    'data' => [0 => 'No', 1 => 'Yes'],
                 ],
             ],
         ],

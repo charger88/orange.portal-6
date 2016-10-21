@@ -204,7 +204,7 @@ class OPMX_System_ContentEdit extends Form {
 		
 		$this->addField((new Hidden('content_type')), 'top');
 
-        $this->addField((new Submit('type_edit_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
+        $this->addField((new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
 		
 		/* Buttons END */
 		

@@ -50,7 +50,7 @@ header {
 
 input, select, textarea {
 	box-sizing: border-box;
-    vertical-align: bottom;
+    vertical-align: middle;
 }
 
 header > * {
@@ -502,6 +502,11 @@ aside#column nav ul li:hover ul {
 	text-decoration: none;
 }
 
+.orange-forms-form dt,
+.orange-forms-form dd {
+    line-height: 1.7rem;
+}
+
 .orange-forms-form label {
 	display: block;
 	margin-bottom: 0.25rem;
@@ -523,7 +528,6 @@ aside#column nav ul li:hover ul {
     float: left;
 }
 
-
 .orange-forms-form fieldset,
 .orange-forms-form .orange-forms-field-wrapper {
 	margin-bottom: 1.2rem;
@@ -540,12 +544,21 @@ aside#column nav ul li:hover ul {
 
 .orange-forms-form .orange-forms-field-input input,
 .orange-forms-form .orange-forms-field-select select,
-.orange-forms-form .orange-forms-field-textarea textarea {
+.orange-forms-form .orange-forms-field-textarea textarea,
+.orange-forms-form #commands-view-list input[type="text"],
+.orange-forms-form #commands-view-list input[type="number"],
+.orange-forms-form #commands-view-list select {
 	outline: none;
 	padding: 0.5rem;
 	width: 100%;
 	border: 1px solid #848484;
 	background: #ffffff;
+}
+
+.orange-forms-form #commands-view-list input[type="text"],
+.orange-forms-form #commands-view-list input[type="number"],
+.orange-forms-form #commands-view-list select {
+    padding: 0.25rem 0.5rem;
 }
 
 .orange-forms-form .orange-forms-field-textarea textarea {
@@ -558,7 +571,10 @@ aside#column nav ul li:hover ul {
 
 .orange-forms-form .orange-forms-field-input input:focus,
 .orange-forms-form .orange-forms-field-select select:focus,
-.orange-forms-form .orange-forms-field-textarea textarea:focus {
+.orange-forms-form .orange-forms-field-textarea textarea:focus,
+.orange-forms-form #commands-view-list input[type="text"]:focus,
+.orange-forms-form #commands-view-list input[type="number"]:focus,
+.orange-forms-form #commands-view-list select:focus {
 	border: 1px solid #e6b522;
 }
 
@@ -841,6 +857,14 @@ aside#column nav ul li:hover ul {
 
 #commands-view-list li span.command-name {
     font-weight: bold;
+}
+
+#commands-view dl {
+    opacity: 0.5;
+}
+
+#commands-view li:hover dl {
+    opacity: 1;
 }
 
 #commands-view dl:empty {

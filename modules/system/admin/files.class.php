@@ -3,9 +3,7 @@
 class OPMA_System_Files extends OPAL_Controller {
 	
 	public function indexAction(){
-		return $this->templater->fetch('system/admin-files.phtml',array(
-
-		));
+		return $this->templater->fetch('system/admin-files.phtml', []);
 	}
 
     public function readdirAjax(){

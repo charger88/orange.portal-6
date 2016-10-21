@@ -11,6 +11,13 @@ $(document).ready(function(){
             $slugElement.addClass('edited')
         });
     }
+    $('#content_edit_submit').parents('form').eq(0).on('submit', function(){
+        if ($('#commands-view-list li a.opened').length > 0){
+            return confirm('Changes of some commands were not applied. Do you want to proceed anyway?');
+        } else {
+            return true;
+        }
+    });
     // TODO Refactor this... But I did it... After 10 years of shame with textarea...
     var $commandsSource = $('#multirow-content_commands').hide();
     var $commandsView = $('<div>')
@@ -92,7 +99,32 @@ $(document).ready(function(){
                 $dl.append($('<dt>').text(val.name));
                 var value = args_values[key] ? args_values[key] : null;
                 var $selector = $('<input>');
-                if (val.type == 'number'){
+                if (val.type == 'select'){
+                    $selector = $('<select>');
+                    if (Array.isArray(val.data)) {
+                        $.each(val.data, function (k, v) {
+                            $selector.append($('<option>').attr('value', k).text(v));
+                        });
+                        var tmp_value = !value ? 0 : value;
+                        setTimeout(function () {
+                            $selector.val(tmp_value);
+                        }, 1);
+                    } else {
+                        $.ajax(val.data, {
+                            success: function (response) {
+                                $.each(response.data, function (k, v) {
+                                    var option = $('<option>').attr('value', k).text(v);
+                                    if (k.indexOf('{') == 0) {
+                                        $selector.prepend(option);
+                                    } else {
+                                        $selector.append(option);
+                                    }
+                                });
+                                $selector.val(value);
+                            }
+                        });
+                    }
+                } else if (val.type == 'number'){
                     $selector.attr('type', 'number');
                 } else {
                     $selector.attr('type', 'text');

@@ -263,6 +263,10 @@ return [
     'ADMIN_ARE_YOU_SURE'     => 'Are you sure?',
     'ADMIN_FILES_NEW_FOLDER' => 'Create new folder',
 
+    'ADMIN_MENU_ROOT'        => 'Root',
+    'ADMIN_MENU_THIS_PAGE'   => 'This page',
+    'ADMIN_MENU_PARENT_PAGE' => 'Parent page',
+
     'MODULE_SYSTEM'              => 'System module',
 
 	'LOG_OPTIONS'             => 'Options',
