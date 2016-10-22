@@ -3,8 +3,8 @@ html, body {
 }
 
 body {
-	font-family: 'Georgia', sans-serif;
-	color: #000000;
+    font-family: 'Georgia', sans-serif;
+    color: #000000;
     background: #ffffff linear-gradient(to right, #d7d7d7, #ffffff);
     background-image: -moz-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
     background-image: -webkit-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
@@ -13,7 +13,7 @@ body {
 }
 
 a {
-	color: #2e99e5;
+    color: #2e99e5;
 }
 
 .navigation {
@@ -32,7 +32,6 @@ a {
     border-top: 1px dotted;
     padding-top: 0.5rem;
 }
-
 
 /* Header */
 
@@ -71,7 +70,7 @@ a {
     color: #ffffff;
     padding: 1rem 1.25rem;
     min-height: 4rem;
-    box-shadow: 0 0 4rem rgba(255,255,255,0.5);
+    box-shadow: 0 0 4rem rgba(255, 255, 255, 0.5);
 }
 
 #header-wrapper header #block_slogan .text p {
@@ -86,7 +85,6 @@ a {
 #header-wrapper header #block_slogan a {
     color: inherit;
 }
-
 
 /* Menu */
 
@@ -160,24 +158,23 @@ a {
 }
 
 #block_lang-switcher > ul > li {
-	margin-bottom: 0.4rem;
-	text-indent: -10000px;
-	width: 1.5rem;
-	height: 0.9rem;
+    margin-bottom: 0.4rem;
+    text-indent: -10000px;
+    width: 1.5rem;
+    height: 0.9rem;
 }
 
 #block_lang-switcher > ul > li > a {
-	display: block;
-	width: 100%;
-	height: 100%;
-	background: #ffffff 50% 50% no-repeat;
-	background-size: cover;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #ffffff 50% 50% no-repeat;
+    background-size: cover;
 }
 
 #block_lang-switcher > ul > li > a.selected {
     opacity: 0.8;
 }
-
 
 /* Search form */
 
@@ -188,12 +185,12 @@ a {
 }
 
 #block_search-form form {
-	position: relative;
+    position: relative;
     width: 100%;
 }
 
 #block_search-form form > div {
-	position: absolute;
+    position: absolute;
 }
 
 #block_search-form form > div.orange-forms-field-input-search {
@@ -201,7 +198,7 @@ a {
 }
 
 #block_search-form form > div.orange-forms-field-button-submit {
-    right: 0; 
+    right: 0;
 }
 
 #block_search-form form > div > input {
@@ -215,7 +212,7 @@ a {
     background: #ffffff;
     border-radius: 5rem;
     overflow: hidden;
-    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
 
 #block_search-form form > div > input:focus {
@@ -225,24 +222,23 @@ a {
 #block_search-form form > div > input::-webkit-input-placeholder,
 #block_search-form form > div > input::-moz-placeholder,
 #block_search-form form > div > input:-ms-input-placeholder {
-	color:#74787a;
+    color: #74787a;
 }
 
 #block_search-form form > div > button {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
     margin-right: 0.2rem;
-	background: transparent url('icon-search.png') 50% 50% no-repeat;
-	background-size: contain;
-	text-indent: -10000px;
-	overflow: hidden;
-	border: 0;
-	cursor: pointer;
+    background: transparent url('icon-search.png') 50% 50% no-repeat;
+    background-size: contain;
+    text-indent: -10000px;
+    overflow: hidden;
+    border: 0;
+    cursor: pointer;
     line-height: 1.6rem;
     width: 1.6rem;
     height: 1.6rem;
 }
-
 
 /* Search results */
 
@@ -265,10 +261,7 @@ ol.search-results li a.search-url {
     color: #74787a;
 }
 
-
 /* Menu */
-
-
 
 /* Body */
 
@@ -279,8 +272,8 @@ div#content-wrapper {
 }
 
 section#body {
-	padding: 2.5rem 0 3rem 0;
-	text-shadow: 1px 1px 0 rgba(255,255,255,0.75);
+    padding: 2.5rem 0 3rem 0;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.75);
 }
 
 section#body.with-aside {
@@ -291,15 +284,13 @@ section#body.with-aside {
 }
 
 section#body h1 {
-	font-size: 2.5rem;
-	line-height: 2.5rem;
-	margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    margin-bottom: 1.5rem;
     margin-left: -0.0775em;
 }
 
-
 /* Aside */
-
 
 /* Footer */
 
@@ -308,7 +299,7 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     border-top: 5px solid #000000;
-	padding: 1.25rem 0;
+    padding: 1.25rem 0;
     clear: both;
     font-size: 0.85rem;
 }
@@ -320,7 +311,6 @@ footer #block_copyrights li {
 footer #block_copyrights li:last-child {
     margin-bottom: 0;
 }
-
 
 /* News Module */
 
@@ -340,7 +330,6 @@ footer #block_copyrights li:last-child {
 .news-block li {
     margin-top: 0.5rem;
 }
-
 
 /* Form */
 
