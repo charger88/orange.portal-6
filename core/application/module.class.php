@@ -112,6 +112,7 @@ abstract class OPAL_Module extends OPAM_Module {
             'title'       => '',
             'description' => '',
             'code'        => '',
+            'version'     => '',
             'author'      => '',
             'author_url'  => '',
         ];

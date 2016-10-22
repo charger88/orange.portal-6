@@ -112,6 +112,7 @@ return [
     'module_code'    => 'Code',
     'module_status'  => 'Status',
     'module_description' => 'Description',
+    'module_version' => 'Version',
     'module_author'  => 'Author',
 
     'user_login'        => 'Login',

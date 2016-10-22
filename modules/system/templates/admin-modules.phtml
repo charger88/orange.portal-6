@@ -1,10 +1,11 @@
 <table class="op-admin-list-table">
 	<thead>
 		<tr>
-            <th style="width: 20%;"><?php echo OPAL_Lang::t('module_title'); ?></th>
-            <th style="width: 45%;"><?php echo OPAL_Lang::t('module_description'); ?></th>
+            <th style="width: 17.5%;"><?php echo OPAL_Lang::t('module_title'); ?></th>
+            <th style="width: 42.5%;"><?php echo OPAL_Lang::t('module_description'); ?></th>
             <th style="width: 20%;"><?php echo OPAL_Lang::t('module_author'); ?></th>
-            <th style="width: 15%;"><?php echo OPAL_Lang::t('module_status'); ?></th>
+            <th style="width: 10%;"><?php echo OPAL_Lang::t('module_version'); ?></th>
+            <th style="width: 10%;"><?php echo OPAL_Lang::t('module_status'); ?></th>
             <th><br/></th>
             <th><br/></th>
 		</tr>
@@ -15,7 +16,7 @@
         foreach ($list as $item){ $info = $item->getInfo(); ?>
 		<tr>
             <td><strong><?php $this->el($info['title']); ?></strong></td>
-            <td><?php $this->el($info['description']); ?></td>
+            <td><?php $this->ee($info['description']); ?></td>
             <td><?php
                 $a = is_array($info['author']) ? $info['author'] : [$info['author']];
                 $au = is_array($info['author_url']) ? $info['author_url'] : [$info['author_url']];
@@ -24,6 +25,7 @@
                     echo '<br/>';
                 } ?>
             </td>
+            <td><?php $this->ee($info['version']); ?></td>
             <?php if ($item->id){ ?>
                 <td><?php $this->el($item->get('module_status') ? OPAL_Lang::t('ADMIN_ENABLED') : OPAL_Lang::t('ADMIN_DISABLED')); ?></td>
                 <td class="icon icon-switch">
