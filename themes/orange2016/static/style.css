@@ -5,13 +5,11 @@ html, body {
 body {
 	font-family: 'Georgia', sans-serif;
 	color: #000000;
-	background: #ffffff;
-    background-image: linear-gradient(to right, #d7d7d7, #ffffff);
-    background: rgba(226,226,226,1);
-    background: -moz-linear-gradient(left, #d7d7d7 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, #d7d7d7 100%);
-    background: -webkit-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
-    background: -o-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
-    background: -ms-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
+    background: #ffffff linear-gradient(to right, #d7d7d7, #ffffff);
+    background-image: -moz-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
+    background-image: -webkit-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
+    background-image: -o-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
+    background-image: -ms-linear-gradient(left, #d7d7d7 0%, #ffffff 50%, #ffffff 51%, #d7d7d7 100%);
 }
 
 a {

@@ -659,6 +659,7 @@ aside#column nav ul li:hover ul {
 .op-admin-list-table td {
 	padding: 0.3rem 2px;
 	font-size: 0.9rem;
+    vertical-align: top;
 }
 
 .op-admin-list-table tbody tr:nth-child(even) {

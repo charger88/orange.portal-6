@@ -57,8 +57,6 @@ div.text ul ul { margin-left: 2em; }
 div.text table { border-width: 0; border-bottom: 1px solid; }
 div.text table td { border-color: inherit; border-top: 1px solid; }
 div.text ul { margin-left: 1.15em; }
-div.text ul li { text-indent: -1.15em; }
-div.text ul li:before { content: "— "; }
 div.text ol { list-style-type: decimal; margin-left: 2.3em; }
 div.text h1 { font-size: 1.8em; }
 div.text h2 { font-size: 1.6em; }
@@ -68,6 +66,8 @@ div.text h5 { font-size: 1em; font-weight: bold; }
 div.text h6 { font-size: 0.9em; font-weight: bold; }
 div.text form h4 { font-size: 1em; font-weight: normal; margin-bottom: 0.1em; }
 div.text form button { margin-top: 1em; }
+div.text em { font-style: italic; }
+div.text strong { font-weight: bold; }
 
 div.text form .title { width: 100%; font-size: 1.4em; }
 div.text form textarea.small { height: 150px; }

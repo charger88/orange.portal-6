@@ -230,6 +230,21 @@ abstract class OPAL_Theme {
     }
 
     /**
+     * @return string
+     */
+    public function getEditorCSSFile(){
+        $css_file = '';
+        foreach ($this->folders as $folder) {
+            $css = new \Orange\FS\File('themes/'.$folder.'/static', 'editor.css');
+            if ($css->exists()){
+                $css_file = 'themes/'.$folder.'/static/editor.css';
+                break;
+            }
+        }
+        return $css_file;
+    }
+
+    /**
      * @param string|null $field
      * @return array
      */
