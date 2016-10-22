@@ -40,7 +40,6 @@
     "charger88/orange.forms": "dev-master",
     "charger88/orange.filters": "dev-master",
     "charger88/orange.fs": "dev-master",
-    "charger88/orange.sitemap": "dev-master",
-    "phpmailer/phpmailer": "^5.2"
+    "charger88/orange.sitemap": "dev-master"
   }
 }

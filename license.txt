@@ -13,3 +13,4 @@ jQuery, jQuery UI - MIT License - http://jquery.org/license
 Sizzle selector engine - MIT License - http://sizzlejs.com/ - http://ru.wikipedia.org/wiki/MIT_License
 YUI - BSD License - http://yuilibrary.com/license/
 Farm-Fresh Web Icons - http://www.fatcow.com/free-icons - Creative Commons (Attribution 3.0 United States) - http://creativecommons.org/licenses/by/3.0/us/
+Orange.* Libraries by Mikhail Kelner - MIT License
