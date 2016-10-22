@@ -3,5 +3,6 @@
   "description": "Basic news module.",
   "code": "news",
   "author": "Mikhail Kelner",
-  "author_url": "http://cms.b-web.ru"
+  "author_url": "http://cms.b-web.ru",
+  "version": "master"
 }
