@@ -56,14 +56,15 @@ class OPMC_System extends OPAL_Controller {
 	 * @return string
 	 */
 	public function langswitcherBlock(){
-		$pages = OPAL_Portal::getInstance()->content->getLanguagePages(OPAL_Portal::config('system_default_lang',''),$this->user);
-		if (isset($pages['']) && ($pages[''] == '')){
-			$request = str_replace('&&', '&', str_replace('?&', '?', str_replace('lang='.OPAL_Portal::$sitelang, '', OPAL_Portal::env('request'))));
-			$pages[''] = OPAL_Portal::env('protocol') . '://' .OPAL_Portal::env('hostname') . $request;
-		}
-		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-lang-switcher.phtml',array(
-			'languages' => OPAL_Lang::langs(OPAL_Portal::config('system_enabled_langs',array())),
+        $default_lang = OPAL_Portal::config('system_default_lang','');
+        $current_lang = OPAL_Portal::$sitelang;
+        $languages = OPAL_Lang::langs(OPAL_Portal::config('system_enabled_langs',[]));
+		$pages = OPAL_Portal::getInstance()->content->getLanguagePages($default_lang, $this->user);
+        return $this->templater->fetch('system/'.$this->arg('prefix','default').'-lang-switcher.phtml',array(
+			'languages' => $languages,
 			'pages' => $pages,
+            'default_lang' => $default_lang,
+            'current_lang' => $current_lang,
 		));
 	}
 	

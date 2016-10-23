@@ -196,7 +196,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     }
 
     /**
-     * @param null $default_lang
+     * @param string|null $default_lang
      * @return string
      */
     public function getSlug($default_lang = null) {
@@ -213,16 +213,18 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     /**
      * @param string $default_lang
      * @param string $current_lang
+     * @param string $for_lang
      * @return string
      */
-    public function getURL($default_lang = null,$current_lang = null) {
+    public function getURL($default_lang = null,$current_lang = null,$for_lang = null) {
         $url = OP_WWW . '/' . $this->getSlug($default_lang);
-        if (
-            ($this->get('content_lang') || ($current_lang != $default_lang))
-            &&
-            ($this->get('content_lang') != $current_lang)
-        ){
-            $url .= '?lang=' . $current_lang;
+        if (is_null($for_lang)){
+            $for_lang = $current_lang;
+        }
+        if (!is_null($default_lang) && !is_null($current_lang) && !is_null($for_lang)) {
+            if (empty($this->get('content_lang')) && ($default_lang !== $for_lang)){
+                $url .= '?lang=' . $for_lang;
+            }
         }
         return $url;
     }
@@ -546,12 +548,15 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 
     /**
      * @param string $default_lang
+     * @param string|null $current_lang
      * @param OPAM_User|null $user
      * @return array
      */
-    public function getLanguagePages($default_lang, $user = null) {
-		$links = array();
-		$id_def = (!$this->get('content_lang')|| ($this->get('content_lang')== $default_lang)) ? $this->id : $this->get('content_default_lang_id');
+    public function getLanguagePages($default_lang, $access_user = null) {
+		$links = [];
+		$id_def = (empty($this->get('content_lang')) || ($this->get('content_lang') == $default_lang))
+            ? $this->id
+            : $this->get('content_default_lang_id');
 		if ($id_def) {
 			$select = new \Orange\Database\Queries\Select(self::$table);
 			$select->addWhereBracket(true);
@@ -571,15 +576,13 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
                 $select->addWhereBracket(false);
 			$select->addWhereBracket(false);
 			if ($pages = self::getList([
-                'access_user' => $user,
-                'status_min' => OPAM_Content::STATUS_DRAFT,
+                'access_user' => $access_user,
+                'status_min' => OPAM_Content::STATUS_ENABLED,
 			], null, $select)) {
 				foreach($pages as $page){
-					$links[$page->get('content_lang')]= $page->getURL($default_lang);
+					$links[$page->get('content_lang')] = $page;
 				}
 			}
-		} else {
-			$links['']= '';
 		}
 		return $links;
 	}
