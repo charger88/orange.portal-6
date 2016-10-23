@@ -32,7 +32,7 @@
 		<meta name="original-source" content="<?php $this->ee($url); ?>" />
 		<link rel="canonical" href="<?php $this->ee($url); ?>" />
 <?php } ?>
-<?php if ($alternate){ foreach ($alternate as $alternate_lang => $alternate_url){ if ($alternate_lang){ ?>
+<?php if ($alternate){ foreach ($alternate as $alternate_lang => $alternate_url){ if ($alternate_lang && ($alternate_lang !== OPAL_Portal::$sitelang)){ ?>
 		<link rel="alternate" href="<?php $this->ee($alternate_url); ?>" hreflang="<?php $this->ee($alternate_lang); ?>" />
 <?php }}} ?>
 		<meta name="robots" content="<?php echo $hidden ? 'noindex, follow' : 'all'; ?>" />
