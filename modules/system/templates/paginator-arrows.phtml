@@ -1,24 +1,24 @@
 <?php if (isset($offset) && ($offset || $listcount)){
-    $getString = '';
+    $get_string = '';
     if (isset($get)) {
         if (isset($get['offset'])) {
             unset($get['offset']);
         }
         foreach ($get as $param => $value) {
-            $getString .= urlencode($param) . '=' . urlencode($value) . '&';
+            $get_string .= urlencode($param) . '=' . urlencode($value) . '&';
         }
-        $getString = htmlspecialchars($getString);
+        $get_string = htmlspecialchars($get_string);
     }
 ?>
     <div class="paginator-arrow">
         <?php if ($offset){ ?>
-            <a href="?<?php echo $getString; ?>offset=<?php echo ($offset - 1); ?>" class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></a>
+            <a href="?<?php echo $get_string; ?>offset=<?php echo ($offset - 1); ?>" class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></a>
         <?php } else { ?>
             <span class="op-admin-arrow">&larr; <?php $this->el('Previous'); ?></span>
         <?php } ?>
         <span>[<?php echo ($offset * $limit) + 1; ?>-<?php echo ($offset * $limit) + $listcount; ?>]</span>
         <?php if ($limit == $listcount){ ?>
-            <a href="?<?php echo $getString; ?>offset=<?php echo($offset + 1); ?>" class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</a>
+            <a href="?<?php echo $get_string; ?>offset=<?php echo($offset + 1); ?>" class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</a>
         <?php } else { ?>
             <span class="op-admin-arrow"><?php $this->el('Next'); ?> &rarr;</span>
         <?php } ?>

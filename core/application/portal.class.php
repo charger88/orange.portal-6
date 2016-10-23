@@ -434,7 +434,7 @@ class OPAL_Portal {
 		$this->content = new OPAM_Page();
 		$this->content->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$this->content->set('content_type','module');
-		$this->content->set('content_slug',implode('/', $this->request));
+		$this->content->set('content_slug','module/'.strtolower($module).'/'.implode('/', $this->request));
 		$this->content->set('content_lang',self::$sitelang);
 		$this->content->set('content_status',6);
 		$this->content->set('content_commands',array(
@@ -451,7 +451,7 @@ class OPAL_Portal {
 		$block = new OPAM_Block();
 		$block->set('content_title',OPAL_Lang::t('MODULE_'.strtoupper($module)));
 		$block->set('content_type','module');
-		$block->set('content_slug',implode('/', $request));
+		$block->set('content_slug','module/'.strtolower($module).'/'.implode('/', $request));
 		$block->set('content_lang',self::$sitelang);
 		$block->set('content_status',6);
 		$block->set('content_commands',array(

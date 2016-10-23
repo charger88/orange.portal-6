@@ -214,17 +214,24 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @param string $default_lang
      * @param string $current_lang
      * @param string $for_lang
+     * @param string $get_string
      * @return string
      */
-    public function getURL($default_lang = null,$current_lang = null,$for_lang = null) {
+    public function getURL($default_lang = null,$current_lang = null,$for_lang = null, $get_string = '') {
         $url = OP_WWW . '/' . $this->getSlug($default_lang);
         if (is_null($for_lang)){
             $for_lang = $current_lang;
         }
+        $get_string = trim($get_string,'&');
+        $get_added = false;
         if (!is_null($default_lang) && !is_null($current_lang) && !is_null($for_lang)) {
             if (empty($this->get('content_lang')) && ($default_lang !== $for_lang)){
-                $url .= '?lang=' . $for_lang;
+                $url .= '?' . ($get_string ? $get_string . '&' : '') . 'lang=' . $for_lang;
+                $get_added = '';
             }
+        }
+        if (!$get_added && $get_string){
+            $url .= '?' . $get_string;
         }
         return $url;
     }
