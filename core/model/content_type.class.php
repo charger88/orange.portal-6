@@ -88,14 +88,6 @@ class OPAM_Content_Type extends \Orange\Database\ActiveRecord {
 	}
 
     /**
-     * @param string $output
-     * @return array
-     */
-    public static function getSearchableTypes($output = 'codes'){
-        return self::getTypes(array(1,3,4),null,$output);
-    }
-
-    /**
      * @return array
      */
     public static function getTypesForSitemap(){

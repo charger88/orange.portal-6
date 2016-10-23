@@ -28,39 +28,44 @@ class OPMC_System_Search extends OPAL_Controller {
         } else if (substr_count($search,' ') >= 10){
             return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_TOO_MUCH_WORDS'), self::STATUS_NOTFOUND);
         } else {
+            $searchable_types = OPAL_Portal::getInstance()->processHooks('get_searchable_types');
             $baselimit = $this->arg('limit', 50);
             $results = OPAM_Page::getList(array(
-                'types' => OPAM_Content_Type::getSearchableTypes(),
+                'types' => $searchable_types,
                 'search' => $search,
                 'searchmode' => 1,
-                'access_user' => $this->user
+                'access_user' => $this->user,
+                'lang' => [OPAL_Portal::$sitelang, ''],
             ), 'OPAM_Page');
             if (($limit = ($baselimit - count($results))) > 0) {
                 $results += OPAM_Page::getList(array(
-                    'types' => OPAM_Content_Type::getSearchableTypes(),
+                    'types' => $searchable_types,
                     'search' => $search,
                     'searchmode' => 2,
                     'access_user' => $this->user,
+                    'lang' => [OPAL_Portal::$sitelang, ''],
                     'exclude' => array_keys($results),
                     'limit' => $limit,
                 ), 'OPAM_Page');
             }
             if (($limit = ($baselimit - count($results))) > 0) {
                 $results += OPAM_Page::getList(array(
-                    'types' => OPAM_Content_Type::getSearchableTypes(),
+                    'types' => $searchable_types,
                     'search' => str_replace(' ', '%', $search),
                     'searchmode' => 1,
                     'access_user' => $this->user,
+                    'lang' => [OPAL_Portal::$sitelang, ''],
                     'exclude' => array_keys($results),
                     'limit' => $limit,
                 ), 'OPAM_Page');
             }
             if (($limit = ($baselimit - count($results))) > 0) {
                 $results += OPAM_Page::getList(array(
-                    'types' => OPAM_Content_Type::getSearchableTypes(),
+                    'types' => $searchable_types,
                     'search' => str_replace(' ', '%', $search),
                     'searchmode' => 2,
                     'access_user' => $this->user,
+                    'lang' => [OPAL_Portal::$sitelang, ''],
                     'exclude' => array_keys($results),
                     'limit' => $limit,
                 ), 'OPAM_Page');

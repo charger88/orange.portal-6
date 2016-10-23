@@ -15,7 +15,7 @@ class OPMC_System_Tags extends OPAL_Controller {
         OPAL_Portal::getInstance()->content->set('content_title', OPAL_Lang::t('SEARCH_BY_TAG_%s',[$tag]));
         $limit = $this->arg('limit', 25);
         $list = OPAM_Page::getList(array(
-            'types'       => OPAM_Content_Type::getSearchableTypes(),
+            'types'       => OPAL_Portal::getInstance()->processHooks('get_searchable_types'),
             'tag'         => $tag,
             'access_user' => $this->user,
             'limit'       => $limit,

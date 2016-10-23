@@ -227,7 +227,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
         if (!is_null($default_lang) && !is_null($current_lang) && !is_null($for_lang)) {
             if (empty($this->get('content_lang')) && ($default_lang !== $for_lang)){
                 $url .= '?' . ($get_string ? $get_string . '&' : '') . 'lang=' . $for_lang;
-                $get_added = '';
+                $get_added = true;
             }
         }
         if (!$get_added && $get_string){
@@ -314,7 +314,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$exclude = isset($params['exclude'])? $params['exclude']: null;
 		$types = isset($params['types'])? $params['types']: null;
 		$search = isset($params['search'])? $params['search']: null;
-		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;;
+		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;
         $tag = isset($params['tag'])? $params['tag']: null;
         $fields = isset($params['fields'])? $params['fields'] : null;
         $fields_not = !empty($params['fields_not']);

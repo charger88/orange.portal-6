@@ -17,6 +17,12 @@ return [
         },
     ],
 
+    'get_searchable_types' => [
+        function(){
+            return 'page';
+        },
+    ],
+
     'build_sitemaps' => [
         function(){
             $sitemaps = [];
