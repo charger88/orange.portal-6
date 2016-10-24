@@ -77,6 +77,8 @@ class OPMF_Feedback_Generic extends Form {
         }
 
 		$this->addField(new Submit('feedback_form_submit', OPAL_Lang::t('MODULE_FEEDBACK_SEND')));
+
+        $this->enableXSRFProtection();
 	}
 	
 }

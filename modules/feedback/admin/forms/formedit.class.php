@@ -34,6 +34,8 @@ class OPMX_Feedback_FormEdit extends Form {
 
         $this->addField((new Submit('feedback_form_edit_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
 
+        $this->enableXSRFProtection();
+
 	}
 
     public function getValues()

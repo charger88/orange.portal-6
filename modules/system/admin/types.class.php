@@ -73,7 +73,7 @@ class OPMA_System_Types extends OPAL_Controller {
 		$item = new OPAM_Content_Type($id);
 		$form = new OPMX_System_TypeEdit();
 		$form->setValues($this->getPostArray());
-		$item->setData($form->getValues());
+		$item->setData($form->getValuesWithXSRFCheck());
 		$item->save();
 		$this->log('CONTENT_TYPE_%s_SAVED', array($item->get('content_type_name')), 'LOG_CONTENT', self::STATUS_OK, $item);
 		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);

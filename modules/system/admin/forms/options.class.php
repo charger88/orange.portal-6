@@ -55,6 +55,8 @@ class OPMX_System_Options extends Form {
 
         $this->addField(new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
 
+        $this->enableXSRFProtection();
+
 	}
 	
 	

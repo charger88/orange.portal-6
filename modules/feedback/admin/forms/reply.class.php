@@ -15,6 +15,8 @@ class OPMX_Feedback_Reply extends Form {
 
         $this->addField((new Submit('feedback_message_reply_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
 
+        $this->enableXSRFProtection();
+
 	}
 		
 }

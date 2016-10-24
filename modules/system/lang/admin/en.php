@@ -268,7 +268,9 @@ return [
     'ADMIN_MENU_THIS_PAGE'   => 'This page',
     'ADMIN_MENU_PARENT_PAGE' => 'Parent page',
 
-    'MODULE_SYSTEM'              => 'System module',
+    'ADMIN_XSRF'             => 'Form session is expired',
+
+    'MODULE_SYSTEM'           => 'System module',
 
 	'LOG_OPTIONS'             => 'Options',
     'LOG_CONTENT'             => 'Content',
@@ -289,6 +291,8 @@ return [
     'ADMIN_MOVED_FAIL' => 'Error! Domain changing was failed.',
     'ADMIN_MOVED_NOT_CHANGED' => 'Domain was not changed',
     'ADMIN_MOVED_INCORRECT_DATA' => 'Error! Incorrect data.',
+
+    'ADMIN_CATEGORY_ADDED' => 'Category added',
 
 	'CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER' => 'Content type is not allowed for this controller',
 	'CONTENT_TYPE_%s_SAVED'   => 'Content "%s" is saved',

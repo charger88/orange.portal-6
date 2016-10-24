@@ -12,6 +12,7 @@ class OPMX_System_Move extends Form {
         $this->addField(new Text('system_base_dir', OPAL_Lang::t('ADMIN_URL_PATH')));
         $this->addField(new Html('<p>' . OPAL_Lang::t('ADMIN_URL_ACTION_INFO') . '</p>'));
         $this->addField(new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_MOVE')), 'top');
+        $this->enableXSRFProtection();
     }
 	
 }

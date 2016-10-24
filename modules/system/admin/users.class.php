@@ -92,7 +92,7 @@ class OPMA_System_Users extends OPAL_Controller {
         $item = new OPAM_User($id);
         $form = new OPMX_System_UserEdit();
         $form->setValues($this->getPostArray());
-        $item->setData($data = $form->getValues());
+        $item->setData($data = $form->getValuesWithXSRFCheck());
         $groups = $this->getPost('user_groups');
         $item->set('user_groups',$groups);
         if (!empty($data['user_password_new'])){

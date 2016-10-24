@@ -162,7 +162,7 @@ class OPMA_System_Content extends OPAL_Controller {
 				]);
                 $form->setAction($this->content->getURL().'/save/'.$item->id);
 				$form->setValues($this->getPostArray());
-                $values = $form->getValues();
+                $values = $form->getValuesWithXSRFCheck();
 				$item->setData($values);
 				$item->set('content_slug',str_replace('%2F','/',urlencode($item->get('content_slug'))));
 				if ($fields = $type->get('content_type_fields')){

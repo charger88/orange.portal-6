@@ -32,6 +32,8 @@ class OPMX_System_UserEdit extends Form {
 
         $this->addField(new Submit('user_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
 
+        $this->enableXSRFProtection();
+
     }
 		
 }

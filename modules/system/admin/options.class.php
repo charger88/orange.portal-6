@@ -42,7 +42,7 @@ class OPMA_System_Options extends OPAL_Controller {
 		$oldBasedir = OPAL_Portal::config('system_base_dir','');
 		$form = new OPMX_System_Move();
 		$form->setValues($this->getPostArray());
-		if ($data = $form->getValues()){
+		if ($data = $form->getValuesWithXSRFCheck()){
 			$newDomain = $data['system_domain'];
 			$newBasedir = $data['system_base_dir'];
 			$newUrlChecking = parse_url(OPAL_Portal::env('protocol').'://'.$newDomain.'/'.$newBasedir);
@@ -78,7 +78,7 @@ class OPMA_System_Options extends OPAL_Controller {
      */
     public function saveOptions($form){
 		$form->setValues($this->getPostArray());
-		if ($data = $form->getValues()){
+		if ($data = $form->getValuesWithXSRFCheck()){
             unset($data['content_edit_submit']);
 			foreach ($data as $key => $value){
 				$config = new OPAM_Config('config_key',$key);

@@ -10,6 +10,7 @@ class OPMX_System_GroupEdit extends Form {
         $this->addField((new Text('group_name', OPAL_Lang::t('group_name')))->requireField());
         $this->addField((new Text('group_description', OPAL_Lang::t('group_description'))));
         $this->addField(new Submit('group_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
+        $this->enableXSRFProtection();
     }
     
 }

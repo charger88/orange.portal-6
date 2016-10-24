@@ -75,7 +75,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         $item = new OPMM_Feedback_Form(intval($id));
         $form = new OPMX_Feedback_FormEdit();
         $form->setValues($this->getPostArray());
-        $item->setData($form->getValues());
+        $item->setData($form->getValuesWithXSRFCheck());
         $item->save();
         $this->log('MODULE_FEEDBACK_FORM_%s_SAVED', array($item->get('feedback_form_name')), 'LOG_FEEDBACK', self::STATUS_OK, $item);
         return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);
@@ -109,7 +109,7 @@ class OPMA_Feedback_Main extends OPAL_Controller {
         $form->setAction($this->content->getURL().'/send/'.$message_object->id);
         $form->setValues($this->getPostArray());
         $message_object
-            ->setData($form->getValues())
+            ->setData($form->getValuesWithXSRFCheck())
             ->set('feedback_message_status', OPMM_Feedback_Message::STATUS_REPLIED)
             ->set('feedback_message_reply_user_id', $this->user->id)
             ->set('feedback_message_reply_time', time())

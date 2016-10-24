@@ -49,49 +49,53 @@ class OPMC_Feedback_Main extends OPAL_Controller {
             $form = new OPMF_Feedback_Generic($form_object->getData());
             $form->setAction(OP_WWW.'/module/feedback/main/send/'.$form_object->id);
             $form->setValues($this->getPostArray(), true);
-            if ($errors = $form->validateValues()->getErrors()){
-                if (OPAL_Portal::getInstance()->env('ajax')){
-                    return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, ['errors' => $errors]);
+            if ($form->checkXSRF()) {
+                if ($errors = $form->validateValues()->getErrors()) {
+                    if (OPAL_Portal::getInstance()->env('ajax')) {
+                        return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, ['errors' => $errors]);
+                    } else {
+                        return $form->getHTML();
+                    }
                 } else {
-                    return $form->getHTML();
+                    if (in_array($this->session->get('feedback_spam'), $this->getAllowedTokens())) {
+                        $fields = [];
+                        if ($fields_from = $form_object->get('feedback_form_fields')) {
+                            foreach ($fields_from as $field) {
+                                $fields[$field['name']] = $this->getPost('field_' . md5($field['name']), '');
+                            }
+                        }
+                        $message = new OPMM_Feedback_Message();
+                        $message
+                            ->setData([
+                                'feedback_message_status' => 0,
+                                'feedback_message_subject' => $this->getPost('theme', ''),
+                                'feedback_message_text' => $this->getPost('text', ''),
+                                'feedback_message_form_id' => $form_object->id,
+                                'feedback_message_fields' => $fields,
+                                'feedback_message_time' => time(),
+                                'feedback_message_sender_user_id' => $this->user->id,
+                                'feedback_message_sender_name' => $this->getPost('uname', $this->user->get('user_name')),
+                                'feedback_message_sender_email' => $this->getPost('email', $this->user->get('user_email')),
+                                'feedback_message_sender_phone' => $this->getPost('phone', $this->user->get('user_phone')),
+                                'feedback_message_sender_ip' => $this->getIP(),
+                                'feedback_message_sender_session' => OPAL_Portal::getInstance()->session->id()
+                            ])
+                            ->save();
+                        static::sendMessage($message, $form_object);
+                        $this->session->set('feedback_spam', null);
+                        $this->log('MODULE_FEEDBACK_MESSAGE_SENT', [], 'LOG_FEEDBACK', self::STATUS_OK);
+                        if (OPAL_Portal::env('ajax')) {
+                            return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
+                        } else {
+                            return $this->redirect(OP_WWW . '/module/feedback/main/sent');
+                        }
+                    } else {
+                        $this->log('MODULE_FEEDBACK_SPAM_WRONG_TOKEN', [], 'LOG_FEEDBACK', self::STATUS_INFO);
+                        return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_SPAM_DETECTED'), self::STATUS_WARNING);
+                    }
                 }
             } else {
-                if (in_array($this->session->get('feedback_spam'),$this->getAllowedTokens())) {
-                    $fields = [];
-                    if ($fields_from = $form_object->get('feedback_form_fields')) {
-                        foreach ($fields_from as $field) {
-                            $fields[$field['name']] = $this->getPost('field_' . md5($field['name']), '');
-                        }
-                    }
-                    $message = new OPMM_Feedback_Message();
-                    $message
-                        ->setData([
-                            'feedback_message_status' => 0,
-                            'feedback_message_subject' => $this->getPost('theme', ''),
-                            'feedback_message_text' => $this->getPost('text', ''),
-                            'feedback_message_form_id' => $form_object->id,
-                            'feedback_message_fields' => $fields,
-                            'feedback_message_time' => time(),
-                            'feedback_message_sender_user_id' => $this->user->id,
-                            'feedback_message_sender_name' => $this->getPost('uname', $this->user->get('user_name')),
-                            'feedback_message_sender_email' => $this->getPost('email', $this->user->get('user_email')),
-                            'feedback_message_sender_phone' => $this->getPost('phone', $this->user->get('user_phone')),
-                            'feedback_message_sender_ip' => $this->getIP(),
-                            'feedback_message_sender_session' => OPAL_Portal::getInstance()->session->id()
-                        ])
-                        ->save();
-                    static::sendMessage($message, $form_object);
-                    $this->session->set('feedback_spam',null);
-                    $this->log('MODULE_FEEDBACK_MESSAGE_SENT', [], 'LOG_FEEDBACK', self::STATUS_OK);
-                    if (OPAL_Portal::env('ajax')) {
-                        return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
-                    } else {
-                        return $this->redirect(OP_WWW . '/module/feedback/main/sent');
-                    }
-                } else {
-                    $this->log('MODULE_FEEDBACK_SPAM_WRONG_TOKEN',[],'LOG_FEEDBACK',self::STATUS_INFO);
-                    return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_SPAM_DETECTED'),self::STATUS_WARNING);
-                }
+                return $this->msg(OPAL_Lang::t('ADMIN_XSRF'), self::STATUS_WARNING);
             }
         } else {
             $this->log('MODULE_FEEDBACK_NO_FORM',[],'LOG_FEEDBACK',self::STATUS_NOTFOUND);

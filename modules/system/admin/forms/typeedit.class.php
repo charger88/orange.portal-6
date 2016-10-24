@@ -68,6 +68,8 @@ class OPMX_System_TypeEdit extends Form {
 
         $this->addField(new Submit('type_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
 
+        $this->enableXSRFProtection();
+
 	}
 
     public function getValues()
