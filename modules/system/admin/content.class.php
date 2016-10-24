@@ -163,6 +163,9 @@ class OPMA_System_Content extends OPAL_Controller {
                 $form->setAction($this->content->getURL().'/save/'.$item->id);
 				$form->setValues($this->getPostArray());
                 $values = $form->getValuesWithXSRFCheck();
+                if (!isset($values['content_lang'])){
+                    $values['content_lang'] = $type->get('content_type_multilang') ? OPAL_Portal::config('system_default_lang','en') : '';
+                }
 				$item->setData($values);
 				$item->set('content_slug',str_replace('%2F','/',urlencode($item->get('content_slug'))));
 				if ($fields = $type->get('content_type_fields')){

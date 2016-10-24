@@ -77,15 +77,15 @@ class OPMA_News_Main extends OPMA_System_Content {
     public function addcategoryAction(){
         $values = (new OPMX_System_Category())->setValues($this->getPostArray())->getValuesWithXSRFCheck();
         $IDs = OPAL_Portal::getInstance()->config('news_categories',[]);
-        if (intval($values['category'])){
-            $IDs[] = intval($values['category']);
+        if ($id = intval($values['category'])){
+            $IDs[] = $id;
         }
         $option = new OPAM_Config('config_key','news_categories');
         if (!$option->id){
             $option->set('config_type','LIST');
             $option->set('config_key','news_categories');
         }
-        $option->set('config_value',$IDs);
+        $option->set('config_value',array_unique($IDs));
         $option->save();
         return $this->msg(OPAL_Lang::t('ADMIN_CATEGORY_ADDED'), self::STATUS_OK, $this->content->getURL().'/categories');
     }

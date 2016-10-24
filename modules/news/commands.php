@@ -24,5 +24,17 @@ return [
                 ],
             ],
         ],
+        'view' => [
+            'name'   => 'News element',
+            'action' => true,
+            'block'  => false,
+            'args'   => [
+                'prefix' => [
+                    'name' => 'Prefix',
+                    'type' => 'string',
+                    'default' => 'default',
+                ],
+            ],
+        ],
     ],
 ];
