@@ -72,5 +72,48 @@ class OPMI_News extends OPAL_Installer {
         }
         return $result;
     }
+
+    public function createdAdditionalContent(){
+        $lang = OPAL_Portal::config('system_default_lang','en');
+        OPAL_Lang::load('modules/news/lang/admin', $lang);
+        $content = new OPAM_Block();
+        $content->setData([
+            'content_title'          => OPAL_Lang::t('MODULE_NEWS'),
+            'content_access_groups'  => [0],
+            'content_lang'           => '',
+            'content_area'           => 'column',
+            'content_slug'           => 'news-list',
+            'content_on_site_mode'   => 0,
+            'content_status'         => 6,
+            'content_commands'       => [[ 'module' => 'news', 'controller' => 'main', 'method' => 'index', 'static' => true, 'args' => [] ], ],
+            'content_template'       => 'block-portal.phtml',
+            'content_user_id'        => 1,
+        ]);
+        $content->save();
+        $content = new OPMM_News_Item();
+        $content->setData([
+            'content_title'          => OPAL_Lang::t('INSTALL_NEWS_TITLE_1'),
+            'content_access_groups'  => [0],
+            'content_lang'           => $lang,
+            'content_slug'           => 'welcome-news.html',
+            'content_on_site_mode'   => 0,
+            'content_status'         => 6,
+            'content_time_published' => time(),
+            'content_commands'       => [[ 'module' => 'news', 'controller' => 'main', 'method' => 'view', 'static' => false, 'args' => [] ], ],
+            'content_template'       => 'main-html.phtml',
+            'content_user_id'        => 1,
+        ]);
+        $id = $content->save()->id;
+        $text = new OPAM_Content_Text();
+        $text->set('content_id', $id);
+        $text->set('content_text_role', 'excerpt');
+        $text->set('content_text_value', OPAL_Lang::t('INSTALL_NEWS_EXCERPT_1'));
+        $text->save();
+        $text = new OPAM_Content_Text();
+        $text->set('content_id', $id);
+        $text->set('content_text_role', 'text');
+        $text->set('content_text_value', OPAL_Lang::t('INSTALL_NEWS_TEXT_1'));
+        $text->save();
+    }
 	
 }

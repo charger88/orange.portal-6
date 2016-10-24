@@ -189,7 +189,7 @@ class OPMI_System extends OPAL_Installer {
 				'content_type_type'       => 3,
 				'content_type_multilang'  => false,
 				'content_type_class'      => 'OPAM_Admin',
-				'content_type_hidden'     => array('content_parent_id','content_tags','content_order','content_lang','content_area','content_slug','content_default_lang_id','content_on_site_mode','content_status','content_template','content_image','content_time_modified','content_time_published','content_user_id'),
+				'content_type_hidden'     => array('content_parent_id','content_tags','content_order','content_lang','content_area','content_slug','content_default_lang_id','content_on_site_mode','content_status','content_template','content_image','content_time_modified','content_time_published','content_user_id','content_commands'),
 				'content_type_fields'     => [],
 				'content_type_texts'      => [],
 			),

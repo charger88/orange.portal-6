@@ -33,37 +33,39 @@ $(document).ready(function(){
             var method = $(this).find('[name="content_commands[method][]"]').val();
             var static = $(this).find('[name="content_commands[static][]"]').val();
             var args_values = JSON.parse($(this).find('[name="content_commands[args][]"]').val());
-            var command_info = commands[module][controller][method];
-            static = (!static || static == '0') ? 0 : 1;
-            $command.data('module', module);
-            $command.data('controller', controller);
-            $command.data('method', method);
-            $command.data('static', static);
-            $command.data('args', command_info.args);
-            $command.data('args-values', args_values);
-            $command.data('allow-action', command_info.action);
-            $command.data('allow-block', command_info.block);
-            var $argsObject = $('<dl>').addClass('command-arguments');
-            $argsObject.append($('<dt>').text(commandsLanguage.COMMANDS_USE_AS_BLOCK));
-            $argsObject.append($('<dd>').text(static ? commandsLanguage.COMMANDS_YES : commandsLanguage.COMMANDS_NO));
-            $.each(command_info.args, function(key, val){
-                if (args_values[key]) {
-                    $argsObject.append($('<dt>').text(val.name));
-                    $argsObject.append($('<dd>').text(args_values[key]));
-                }
-            });
-            $command.append($('<span>').addClass('command-name').text(command_info.name))
-                .append($('<span>').text(' / '))
-                .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_EDIT).on('click', editArguments))
-                .append($('<span>').text(' / '))
-                .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_DELETE).on('click', deleteCommand));
-            $command.append($argsObject);
-            $commandsViewList.append($command);
-            $commandsViewList.sortable({
-                update: function(event, ui){
-                    rebuildCommandsForm();
-                }
-            });
+            if (commands[module] && commands[module][controller] && commands[module][controller][method]) {
+                var command_info = commands[module][controller][method];
+                static = (!static || static == '0') ? 0 : 1;
+                $command.data('module', module);
+                $command.data('controller', controller);
+                $command.data('method', method);
+                $command.data('static', static);
+                $command.data('args', command_info.args);
+                $command.data('args-values', args_values);
+                $command.data('allow-action', command_info.action);
+                $command.data('allow-block', command_info.block);
+                var $argsObject = $('<dl>').addClass('command-arguments');
+                $argsObject.append($('<dt>').text(commandsLanguage.COMMANDS_USE_AS_BLOCK));
+                $argsObject.append($('<dd>').text(static ? commandsLanguage.COMMANDS_YES : commandsLanguage.COMMANDS_NO));
+                $.each(command_info.args, function (key, val) {
+                    if (args_values[key]) {
+                        $argsObject.append($('<dt>').text(val.name));
+                        $argsObject.append($('<dd>').text(args_values[key]));
+                    }
+                });
+                $command.append($('<span>').addClass('command-name').text(command_info.name))
+                    .append($('<span>').text(' / '))
+                    .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_EDIT).on('click', editArguments))
+                    .append($('<span>').text(' / '))
+                    .append($('<a>').attr('href', '#').text(commandsLanguage.COMMANDS_DELETE).on('click', deleteCommand));
+                $command.append($argsObject);
+                $commandsViewList.append($command);
+                $commandsViewList.sortable({
+                    update: function (event, ui) {
+                        rebuildCommandsForm();
+                    }
+                });
+            }
         }
     };
     var rebuildCommandsForm = function () {

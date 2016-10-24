@@ -222,18 +222,20 @@ class OPMX_System_ContentEdit extends Form {
     public function getValues()
     {
         $values = parent::getValues();
-        $content_commands = $values['content_commands'];
-        $values['content_commands'] = [];
-        $first_column = $content_commands[key($content_commands)];
-        foreach ($first_column as $i => $id) {
-            if (!empty($id) && !empty($content_commands['controller'][$i]) && !empty($content_commands['method'][$i])) {
-                $values['content_commands'][] = [
-                    'module' => $id,
-                    'controller' => $content_commands['controller'][$i],
-                    'method' => $content_commands['method'][$i],
-                    'static' => $content_commands['static'][$i],
-                    'args' => $content_commands['args'][$i] ? json_decode($content_commands['args'][$i], true) : [],
-                ];
+        if (isset($values['content_commands'])) {
+            $content_commands = $values['content_commands'];
+            $values['content_commands'] = [];
+            $first_column = $content_commands[key($content_commands)];
+            foreach ($first_column as $i => $id) {
+                if (!empty($id) && !empty($content_commands['controller'][$i]) && !empty($content_commands['method'][$i])) {
+                    $values['content_commands'][] = [
+                        'module' => $id,
+                        'controller' => $content_commands['controller'][$i],
+                        'method' => $content_commands['method'][$i],
+                        'static' => $content_commands['static'][$i],
+                        'args' => $content_commands['args'][$i] ? json_decode($content_commands['args'][$i], true) : [],
+                    ];
+                }
             }
         }
         return $values;
@@ -242,19 +244,21 @@ class OPMX_System_ContentEdit extends Form {
     public function setValues($values, $from_db = false)
     {
         if ($from_db) {
-            $content_commands = $values['content_commands'];
-            $values['content_commands'] = [];
-            $values['content_commands']['module'] = [];
-            $values['content_commands']['controller'] = [];
-            $values['content_commands']['method'] = [];
-            $values['content_commands']['static'] = [];
-            $values['content_commands']['args'] = [];
-            foreach ($content_commands as $i => $row) {
-                $values['content_commands']['module'][$i] = $row['module'];
-                $values['content_commands']['controller'][$i] = $row['controller'];
-                $values['content_commands']['method'][$i] = $row['method'];
-                $values['content_commands']['static'][$i] = $row['static'];
-                $values['content_commands']['args'][$i] = json_encode($row['args']);
+            if (isset($values['content_commands'])) {
+                $content_commands = $values['content_commands'];
+                $values['content_commands'] = [];
+                $values['content_commands']['module'] = [];
+                $values['content_commands']['controller'] = [];
+                $values['content_commands']['method'] = [];
+                $values['content_commands']['static'] = [];
+                $values['content_commands']['args'] = [];
+                foreach ($content_commands as $i => $row) {
+                    $values['content_commands']['module'][$i] = $row['module'];
+                    $values['content_commands']['controller'][$i] = $row['controller'];
+                    $values['content_commands']['method'][$i] = $row['method'];
+                    $values['content_commands']['static'][$i] = $row['static'];
+                    $values['content_commands']['args'][$i] = json_encode($row['args']);
+                }
             }
         }
         return parent::setValues($values);

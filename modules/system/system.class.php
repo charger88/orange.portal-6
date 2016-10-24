@@ -16,8 +16,15 @@ class OPMO_System extends OPAL_Module {
 		return new OPMX_System_Install();
 	}
 
-    protected function doInstall($params = array()){
-		return (new OPMI_System('system'))->installModule($params);
+    protected function doInstall($params = []){
+        $res = (new OPMI_System('system'))->installModule($params);
+        $feedback = (new OPMI_Feedback('feedback'));
+        $feedback->installModule($params);
+        $feedback->createdAdditionalContent();
+        $news = (new OPMI_News('news'));
+        $news->installModule($params);
+        $news->createdAdditionalContent();
+		return $res;
 	}
 
     protected function doEnable(){

@@ -53,5 +53,24 @@ class OPMI_Feedback extends OPAL_Installer {
         ;
         return $result;
     }
+
+    public function createdAdditionalContent(){
+        $lang = OPAL_Portal::config('system_default_lang','en');
+        OPAL_Lang::load('modules/feedback/lang/admin', $lang);
+        $content = new OPAM_Page();
+        $content->setData([
+            'content_title'          => OPAL_Lang::t('MODULE_FEEDBACK'),
+            'content_access_groups'  => [0],
+            'content_lang'           => $lang,
+            'content_slug'           => 'feedback.html',
+            'content_on_site_mode'   => 3,
+            'content_status'         => 6,
+            'content_time_published' => time(),
+            'content_commands'       => [[ 'module' => 'feedback', 'controller' => 'main', 'method' => 'index', 'static' => false, 'args' => [] ], ],
+            'content_template'       => 'main-html.phtml',
+            'content_user_id'        => 1,
+        ]);
+        $content->save();
+    }
 	
 }

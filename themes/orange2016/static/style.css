@@ -467,4 +467,34 @@ footer #block_copyrights li:last-child {
         display: none;
     }
 
+    .orange-forms-form .orange-forms-field label {
+        display: block;
+    }
+
+    .orange-forms-form .orange-forms-field-button {
+        margin-left: 0;
+    }
+
+}
+
+
+/* Adaptive styles for width less than 800 px */
+
+@media all and (max-width: 799px) {
+
+    div#content-wrapper {
+        display: block;
+    }
+
+    section#body.with-aside {
+        width: 100%;
+    }
+
+    #content-wrapper > aside {
+        width: 100%;
+        padding-top: 0;
+        padding-left: 0;
+        padding-bottom: 2rem;
+    }
+
 }
