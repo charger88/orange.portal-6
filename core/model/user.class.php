@@ -125,11 +125,15 @@ class OPAM_User extends \Orange\Database\ActiveRecord {
 	}
 
     public static function getRef($IDs){
-        $select = new \Orange\Database\Queries\Select(self::$table);
-        $select->addField('id');
-        $select->addField('user_name');
-        $select->addWhere(new Condition('id', 'IN', $IDs));
-        return $select->execute()->getResultArray('id',['id' => 'user_name']);
+        if ($IDs) {
+            $select = new \Orange\Database\Queries\Select(self::$table);
+            $select->addField('id');
+            $select->addField('user_name');
+            $select->addWhere(new Condition('id', 'IN', $IDs));
+            return $select->execute()->getResultArray('id', ['id' => 'user_name']);
+        } else {
+            return [];
+        }
     }
 	
 }
