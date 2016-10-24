@@ -180,7 +180,7 @@ a {
 
 #block_search-form {
     float: right;
-    width: 25%;
+    width: 30%;
     height: 2rem;
 }
 
@@ -278,8 +278,8 @@ section#body {
 }
 
 section#body.with-aside {
-    width: 65%;
-    padding-right: 0;
+    width: 70%;
+    padding-right: 3rem;
     box-sizing: border-box;
 }
 
@@ -293,9 +293,9 @@ section#body h1 {
 /* Aside */
 
 #content-wrapper > aside {
-    width: 35%;
+    width: 30%;
     box-sizing: border-box;
-    padding: 2.5rem 0 3rem 2rem;
+    padding: 2.5rem 0 3rem 0;
 }
 
 #content-wrapper > aside > div.block {
@@ -477,7 +477,6 @@ footer #block_copyrights li:last-child {
 
 }
 
-
 /* Adaptive styles for width less than 800 px */
 
 @media all and (max-width: 799px) {
@@ -488,12 +487,12 @@ footer #block_copyrights li:last-child {
 
     section#body.with-aside {
         width: 100%;
+        padding-right: 0;
     }
 
     #content-wrapper > aside {
         width: 100%;
         padding-top: 0;
-        padding-left: 0;
         padding-bottom: 2rem;
     }
 

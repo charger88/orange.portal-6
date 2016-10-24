@@ -83,7 +83,7 @@ class OPMI_News extends OPAL_Installer {
             'content_lang'           => '',
             'content_area'           => 'column',
             'content_slug'           => 'news-list',
-            'content_on_site_mode'   => 0,
+            'content_on_site_mode'   => 3,
             'content_status'         => 6,
             'content_commands'       => [[ 'module' => 'news', 'controller' => 'main', 'method' => 'index', 'static' => true, 'args' => [] ], ],
             'content_template'       => 'block-portal.phtml',
