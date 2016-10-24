@@ -156,6 +156,7 @@ class OPAL_Portal {
             if (!$this->install_mode) {
                 $this->initModules();
                 $this->initUser();
+                $this->initXSRFFormProtection();
             }
         }
 	}
@@ -243,6 +244,12 @@ class OPAL_Portal {
 			$this->install_mode = true;
 		}
 	}
+
+    private function initXSRFFormProtection(){
+        \Orange\Forms\XSRFProtection::addUniqueKeyComponent(OP_WWW);
+        \Orange\Forms\XSRFProtection::addUniqueKeyComponent(self::config('system_secretkey'));
+        \Orange\Forms\XSRFProtection::addUniqueKeyComponent($this->user->id ? $this->user->id : $this->getIP());
+    }
 
 	/**
 	 * Load and init enabled modules

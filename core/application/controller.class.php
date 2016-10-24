@@ -46,11 +46,6 @@ class OPAL_Controller {
 	protected $cachemap = [];
 	
 	/**
-	 * @var string|null
-	 */
-	private static $ip = null;
-	
-	/**
 	 * @param OPAM_Content $content
      * @param OPAM_User $user
 	 * @param OPAL_Templater $templater

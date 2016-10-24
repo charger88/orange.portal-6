@@ -6,6 +6,11 @@
 trait OPAL_Request {
 
     /**
+     * @var string|null
+     */
+    private static $ip = null;
+
+    /**
      * @param $name
      * @param mixed $default
      * @return mixed
