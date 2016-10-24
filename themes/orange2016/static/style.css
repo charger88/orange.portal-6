@@ -269,6 +269,7 @@ div#content-wrapper {
     width: 80%;
     max-width: 1200px;
     margin: 0 auto;
+    display: flex;
 }
 
 section#body {
@@ -280,7 +281,6 @@ section#body.with-aside {
     width: 65%;
     padding-right: 0;
     box-sizing: border-box;
-    float: left;
 }
 
 section#body h1 {
@@ -291,6 +291,20 @@ section#body h1 {
 }
 
 /* Aside */
+
+#content-wrapper > aside {
+    width: 35%;
+    box-sizing: border-box;
+    padding: 2.5rem 0 3rem 2rem;
+}
+
+#content-wrapper > aside > div.block {
+    margin-bottom: 2rem;
+}
+
+#content-wrapper > aside > div.block:last-child {
+    margin-bottom: 0;
+}
 
 /* Footer */
 
