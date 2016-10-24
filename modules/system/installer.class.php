@@ -565,7 +565,7 @@ class OPMI_System extends OPAL_Installer {
 		$text = new OPAM_Content_Text();
 		$text->set('content_id', 3);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', '<p>' . OPAL_Lang::t('Welcome to new instance of Orange.Portal 6.') . '</p><p>' . OPAL_Lang::t('If you need more information, go to') . ' <a href="http://cms.b-web.ru">cms.b-web.ru</a>' . '.</p>');
+		$text->set('content_text_value', '<p>' . OPAL_Lang::t('Welcome to new instance of Orange.Portal 6.') . '</p><p>' . OPAL_Lang::t('If you need more information, go to') . ' <a href="http://orange-portal.org">orange-portal.org</a>' . '.</p>');
 		$text->save();
 		return $result;
 	}
