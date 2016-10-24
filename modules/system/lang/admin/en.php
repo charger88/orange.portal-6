@@ -293,6 +293,7 @@ return [
     'ADMIN_MOVED_INCORRECT_DATA' => 'Error! Incorrect data.',
 
     'ADMIN_CATEGORY_ADDED' => 'Category added',
+    'ADMIN_CATEGORY_DELETED' => 'Category deleted',
 
 	'CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER' => 'Content type is not allowed for this controller',
 	'CONTENT_TYPE_%s_SAVED'   => 'Content "%s" is saved',

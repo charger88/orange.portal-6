@@ -56,24 +56,31 @@ class OPMA_News_Main extends OPMA_System_Content {
     }
 
     public function categoriesAction(){
-        if ($IDs = OPAL_Portal::getInstance()->config('news_categories',array())){
-            $pages = OPAM_Page::getList(array(
+        $pages = OPAM_Page::getList(
+            [
                 'types' => OPAM_Content_Type::getPageTypes(),
-                'IDs' => $IDs,
+                'access_user' => $this->user,
                 'order' => 'content_title',
                 'status_min' => OPAM_Content::STATUS_DRAFT,
-            ), 'OPAM_Page');
-        } else {
-            $pages = array();
+            ], 'OPAM_Page'
+        );
+        $selector_pages = array_map(function($page) {
+            return $page->get('content_title');
+        }, $pages);
+        if ($IDs = OPAL_Portal::getInstance()->config('news_categories', [])) {
+            foreach ($IDs as $id) {
+                unset($selector_pages[$id]);
+            }
         }
-        return $this->templater->fetch('system/admin-categories.phtml',array(
+        return $this->templater->fetch('system/admin-categories.phtml', [
             'IDs' => $IDs,
             'pages' => $pages,
-            'add_form' => (new OPMX_System_Category())->setAction(OP_WWW.'/admin/news/addcategory'),
-        ));
+            'add_form' => (new OPMX_System_Category(['selector_pages' => $selector_pages]))->setAction(OP_WWW.'/admin/news/addcategory'),
+            'url_base' => $this->content->getURL(),
+            'selector_pages' => $selector_pages,
+        ]);
     }
 
-    //TODO Improve (delete, selector)
     public function addcategoryAction(){
         $values = (new OPMX_System_Category())->setValues($this->getPostArray())->getValuesWithXSRFCheck();
         $IDs = OPAL_Portal::getInstance()->config('news_categories',[]);
@@ -88,6 +95,19 @@ class OPMA_News_Main extends OPMA_System_Content {
         $option->set('config_value',array_unique($IDs));
         $option->save();
         return $this->msg(OPAL_Lang::t('ADMIN_CATEGORY_ADDED'), self::STATUS_OK, $this->content->getURL().'/categories');
+    }
+
+    public function deletecategoryAction($id){
+        $IDs = OPAL_Portal::getInstance()->config('news_categories',[]);
+        foreach ($IDs as $i => $cid){
+            if ($cid == $id){
+                unset($IDs[$i]);
+            }
+        }
+        $option = new OPAM_Config('config_key','news_categories');
+        $option->set('config_value',$IDs);
+        $option->save();
+        return $this->msg(OPAL_Lang::t('ADMIN_CATEGORY_DELETED'), self::STATUS_OK, $this->content->getURL().'/categories');
     }
 
 }
