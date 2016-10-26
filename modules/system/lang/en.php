@@ -11,6 +11,7 @@ return [
     'LOG_OUT'                         => 'Log out',
     'NOTHING_FOUND'                   => 'Nothing found',
     'ADMIN_PANEL'                     => 'Admin panel',
+    'EDIT_PAGE'                       => 'Edit page',
     'ERROR_NOT_FOUND'                 => 'Page not found',
     'SEARCH'                          => 'Search',
     'FIND'                            => 'Find',

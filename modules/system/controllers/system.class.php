@@ -38,8 +38,6 @@ class OPMC_System extends OPAL_Controller {
 		));
 	}
 
-    public static $adminBarLinks = [];
-
 	/**
 	 * Print administrator's bar on front-end
 	 * @return string
@@ -47,7 +45,7 @@ class OPMC_System extends OPAL_Controller {
 	public function adminbarBlock(){
 		return $this->templater->fetch('system/'.$this->arg('prefix','default').'-admin-bar.phtml',array(
 			'content'  => OPAL_Portal::getInstance()->content,
-            'adminBarLinks' => self::$adminBarLinks,
+            'adminBarLinks' => OPAL_Portal::getInstance()->processHooks('admin_bar_links'),
 		));
 	}
 

@@ -38,7 +38,7 @@ class OPAL_Portal {
 	 * @static
 	 * @var array
 	 */
-	private static $hooks = [];
+	private $hooks = [];
 	
 	/**
 	 * Unique object of class OPAL_Portal
@@ -273,8 +273,8 @@ class OPAL_Portal {
      */
     public function processHooks($hook, $args = []){
 		$results = [];
-		if (!empty(self::$hooks[$hook])){
-			foreach (self::$hooks[$hook] as $hook_function){
+		if (!empty($this->hooks[$hook])){
+			foreach ($this->hooks[$hook] as $hook_function){
                 if (!is_callable($hook_function)) {
                     throw new \Exception('Hook function is not callable');
                 }
@@ -689,11 +689,11 @@ class OPAL_Portal {
 		return isset(self::$enviroment[$param]) ? self::$enviroment[$param] : $default;
 	}
 	
-	public static function addHook($hook,$hook_function){
-		if (!isset(self::$hooks[$hook])){
-			self::$hooks[$hook] = [];
+	public function addHook($hook,$hook_function){
+		if (!isset($this->hooks[$hook])){
+			$this->hooks[$hook] = [];
 		}
-		self::$hooks[$hook][] = $hook_function;
+        $this->hooks[$hook][] = $hook_function;
 	}
 
     public function isOutputMode(){

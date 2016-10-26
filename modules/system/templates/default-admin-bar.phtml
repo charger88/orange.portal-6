@@ -2,8 +2,10 @@
 	<ul>
 		<li id="admin-bar-logout"><a href="<?php echo OP_WWW.'/module/system/signin/off'; ?>"><?php $this->el('LOG_OUT'); ?></a></li>
 		<li><a href="<?php echo OP_WWW.'/admin'; ?>"><?php $this->el('ADMIN_PANEL'); ?></a></li>
-        <?php if ($adminBarLinks){ foreach ($adminBarLinks as $link => $title) { ?>
-        <li><a href="<?php $this->ee(OP_WWW.$link); ?>"><?php $this->ee($title); ?></a></li>
-        <?php }} ?>
+        <?php if ($adminBarLinks){ foreach ($adminBarLinks as $l) {
+            if (!is_null($l)){
+                list($link, $title) = $l; ?>
+        <li><a href="<?php $this->ee($link); ?>"><?php $this->ee($title); ?></a></li>
+        <?php }}} ?>
 	</ul>
 </nav>

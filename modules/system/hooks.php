@@ -23,6 +23,16 @@ return [
         },
     ],
 
+    'admin_bar_links' => [
+        function(){
+            if (OPAL_Portal::getInstance()->content->id){
+                return [OP_WWW . '/admin/pages/edit/' . OPAL_Portal::getInstance()->content->id, OPAL_Lang::t('EDIT_PAGE')];
+            } else {
+                return null;
+            }
+        },
+    ],
+
     'build_sitemaps' => [
         function(){
             $sitemaps = [];

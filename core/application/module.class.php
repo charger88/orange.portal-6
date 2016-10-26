@@ -68,7 +68,7 @@ abstract class OPAL_Module extends OPAM_Module {
                 if ($hooks && is_array($hooks)){
                     foreach ($hooks as $hook => $hook_functions){
                         foreach ($hook_functions as $hook_function){
-                            OPAL_Portal::addHook($hook, $hook_function);
+                            OPAL_Portal::getInstance()->addHook($hook, $hook_function);
                         }
                     }
                 }
