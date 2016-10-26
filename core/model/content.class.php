@@ -62,6 +62,22 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     protected static $keys = array('content_type','content_parent_id','content_order','content_lang','content_area','content_slug','content_on_site_mode','content_status','content_time_published','content_user_id');
 
     /**
+     * @param null $key
+     * @param null $value
+     * @throws \Orange\Database\DBException, Exception
+     */
+    public function __construct($key = null, $value = null){
+        parent::__construct($key, $value);
+        if ($this->id) {
+            if (!in_array($this->get('content_type'), static::getTypesAllowedForThisClass())) {
+                throw new \Exception('Wrong combination of content type and class: ' . $this->get('content_type') . ' / ' . get_class($this));
+            }
+        } else {
+            $this->set('content_type', explode('_', strtolower(get_class($this)), 2)[1]);
+        }
+    }
+
+    /**
      * @return int|null
      */
     public function save(){
@@ -279,12 +295,14 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @return mixed
      */
     public static function getContent($type = null, $lang = null, $slug = null) {
-		$select = new \Orange\Database\Queries\Select(self::$table);
+		$select = new \Orange\Database\Queries\Select(static::$table);
 		$select->addWhere(new Condition('id', '>', 0));
 		if (!is_null($type)) {
 			$select->addWhere(new Condition('content_type', 'LIKE', $type));
+            $typeObject = new OPAM_Content_Type('content_type_code', $type);
+            $classname = $typeObject->getClass();
 		} else {
-            $type = 'page';
+            $classname = 'OPAM_Content';
         }
 		if (!is_null($lang)) {
 			$select->addWhereOperator(Condition::L_AND);
@@ -298,10 +316,27 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 			$select->addWhere(new Condition('content_slug', 'LIKE', $slug));
 		}
 		$select->setLimit(1);
-		$typeObject = new OPAM_Content_Type('content_type_code', $type);
-		$classname = $typeObject->getClass();
 		return new $classname($select->execute()->getResultNextRow());
 	}
+
+    protected static function getTypesAllowedForThisClass($requested_types = null){
+        if (!is_null($requested_types)){
+            if (!is_array($requested_types)){
+                $requested_types = [$requested_types];
+            }
+        }
+        $class = strtolower(explode('_', get_called_class(), 2)[1]);
+        if ($class == 'content'){
+            $allowed_types = is_null($requested_types) ? OPAM_Content_Type::getTypes(null, null, 'codes') : $requested_types;
+        } else if (in_array($class, ($page_types = OPAM_Content_Type::getPageTypes()))){
+            $allowed_types = is_null($requested_types) ? $page_types : array_intersect($requested_types, $page_types);
+        } else if (in_array($class, ($block_types = OPAM_Content_Type::getBlockTypes()))){
+            $allowed_types = is_null($requested_types) ? $block_types : array_intersect($requested_types, $block_types);
+        } else {
+            $allowed_types = [$class];
+        }
+        return $allowed_types;
+    }
 
     /**
      * @param array $params
@@ -312,8 +347,11 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     public static function getList($params = array(), $classname = null, $select_base = null) {
 		$IDs = isset($params['IDs'])? $params['IDs']: null;
 		$exclude = isset($params['exclude'])? $params['exclude']: null;
-		$types = isset($params['types'])? $params['types']: null;
-		$search = isset($params['search'])? $params['search']: null;
+		$types = static::getTypesAllowedForThisClass(isset($params['types']) ? $params['types'] : null);
+		if (empty($types)){
+            return [];
+        }
+        $search = isset($params['search'])? $params['search']: null;
 		$searchmode = isset($params['searchmode'])? $params['searchmode']: 0;
         $tag = isset($params['tag'])? $params['tag']: null;
         $fields = isset($params['fields'])? $params['fields'] : null;
@@ -333,7 +371,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		$order = isset($params['order'])? $params['order']: 'content_time_published';
 		$desc = isset($params['desc']) && $params['desc'] ? \Orange\Database\Queries\Select::SORT_DESC : \Orange\Database\Queries\Select::SORT_ASC;
 
-		$select = is_null($select_base)? new \Orange\Database\Queries\Select(self::$table): $select_base;
+		$select = is_null($select_base)? new \Orange\Database\Queries\Select(static::$table): $select_base;
 
 		if (!is_null($IDs)&& $IDs) {
 			$select->addWhere(new Condition('id', 'IN', $IDs), Condition::L_AND);
@@ -501,7 +539,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
      * @return array
      */
     public function getDefaultLanguageRef($lang) {
-		$tmp = self::getList([
+		$tmp = static::getList([
             'types' => $this->get('content_type'),
             'lang' => $lang,
             'status_min' => OPAM_Content::STATUS_DRAFT,
@@ -565,7 +603,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
             ? $this->id
             : $this->get('content_default_lang_id');
 		if ($id_def) {
-			$select = new \Orange\Database\Queries\Select(self::$table);
+			$select = new \Orange\Database\Queries\Select(static::$table);
 			$select->addWhereBracket(true);
                 $select->addWhereBracket(true);
                     $select->addWhere(new Condition('content_lang', 'LIKE', $default_lang));
@@ -604,7 +642,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
     public static function reorder($root,$order,$group_field,$access_user){
         $updated = array();
         if ($order){
-            if ($list = self::getList(['IDs' => $order,'access_user' => $access_user], __CLASS__)){
+            if ($list = static::getList(['IDs' => $order,'access_user' => $access_user], __CLASS__)){
                 foreach ($order as $ord => $id){
                     if (isset($list[$id])){
                         $item = $list[$id];

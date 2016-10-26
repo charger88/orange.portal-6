@@ -1,5 +1,4 @@
 <?php
-//TODO Check content_type status in OPAM_Content::getList, or...
 error_reporting(E_ALL);
 define('OP_SYS_ROOT',__DIR__ . '/');
 require_once OP_SYS_ROOT.'core/autoloader.php';
