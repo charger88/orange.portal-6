@@ -415,20 +415,19 @@ class OPAL_Portal {
 				$slug = 'admin/'.(!empty($this->request[1]) ? $this->request[1] : 'center');
 				array_shift($this->request);
 				$this->content = OPAM_Content::getContent('admin','',$slug);
-                static::processHooks('admin_page_before_process', [$this->content]);
+                $this->processHooks('admin_page_before_process', [$this->content]);
 			} else {
 				$slug = $this->request[0];
 				$this->content = OPAM_Content::getContent(null,self::$sitelang,$slug);
-                static::processHooks('public_page_before_process', [$this->content]);
+                $this->processHooks('public_page_before_process', [$this->content]);
             }
-            static::processHooks('any_page_before_process', [$this->content]);
+            $this->processHooks('any_page_before_process', [$this->content]);
         }
 		if ((strpos($this->content->get('content_template'),'main-') === false) || ($this->content->get('content_status') < 5)){
 			$status = 'not-found';
 		}  else if (!$this->content->isAllowedForGroups($this->user->get('user_groups'))){
 			$status = 'unauthorized';
 		} else {
-            $this->processHooks('mainContent_loaded');
 			$status = 'found';
 		}
 		return [$status, $this->executeContent($this->content)];
