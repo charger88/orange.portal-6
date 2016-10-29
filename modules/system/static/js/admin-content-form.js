@@ -167,7 +167,7 @@ $(document).ready(function(){
         e.preventDefault();
         $(this).parents('li').eq(0).remove();
         rebuildCommandsForm();
-    }
+    };
     $commandsSource.find('.orange-forms-rows-container .orange-forms-row-wrapper').each(createLineFromFormRow);
     var $addBtn = $('<a>').attr('href', '#').text('Add command').on('click', function (e) {
         e.preventDefault();

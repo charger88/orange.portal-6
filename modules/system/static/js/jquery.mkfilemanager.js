@@ -45,7 +45,7 @@ jQuery.fn.mkfilemanager = function(options){
                 var request = {
                     path: $(this).attr('data-path'),
                     folder: folderName
-                }
+                };
                 $.ajax($(this).attr('href'),{
                     data: request,
                     type: 'post',
@@ -98,7 +98,7 @@ jQuery.fn.mkfilemanager = function(options){
                         path: options.defaultPath,
                         not_editable: true
                     });
-                    var upperPath = path.split('/')
+                    var upperPath = path.split('/');
                     upperPath.pop();
                     upperPath = upperPath.join('/');
                     $plugin.addToList({

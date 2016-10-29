@@ -7,7 +7,7 @@ $(document).ready(function(){
         update: function(event){
             var request = {};
             request.root = $(event.target).attr('data-root');
-            request.order = new Array();
+            request.order = [];
             $(event.target).children().each(function(){
                 request.order.push($(this).attr('data-id'));
             });
