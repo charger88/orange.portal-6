@@ -583,7 +583,6 @@ class OPAM_Content extends \Orange\Database\ActiveRecord {
 		return ($this->id > 0) && $this->isAllowedForGroups($user_groups);
 	}
 
-	// TODO Possible I should make some type restrictions
     /**
      * @return bool
      */
