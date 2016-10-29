@@ -1,9 +1,9 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Fields\Html;
-use \Orange\Forms\Fields\Inputs\Text;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Html;
+use Orange\Forms\Fields\Inputs\Text;
+use Orange\Forms\Form;
 
 class OPMX_System_Move extends Form
 {

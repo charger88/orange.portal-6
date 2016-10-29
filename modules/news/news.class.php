@@ -1,6 +1,6 @@
 <?php
 
-use \Orange\Database\Queries\Parts\Condition;
+use Orange\Database\Queries\Parts\Condition;
 
 class OPMO_News extends OPAL_Module
 {

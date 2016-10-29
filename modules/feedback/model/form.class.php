@@ -1,7 +1,5 @@
 <?php
 
-use \Orange\Database\Queries\Parts\Condition;
-
 class OPMM_Feedback_Form extends \Orange\Database\ActiveRecord
 {
 

@@ -1,8 +1,8 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Fields\Inputs\Search;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Inputs\Search;
+use Orange\Forms\Form;
 
 class OPMF_System_Search extends Form
 {

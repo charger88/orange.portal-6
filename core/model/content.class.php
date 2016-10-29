@@ -1,6 +1,6 @@
 <?php
 
-use \Orange\Database\Queries\Parts\Condition;
+use Orange\Database\Queries\Parts\Condition;
 
 // TODO Create tags support
 /**

@@ -1,8 +1,8 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Fields\Selectors\Select;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Selectors\Select;
+use Orange\Forms\Form;
 
 class OPMX_System_Category extends Form
 {

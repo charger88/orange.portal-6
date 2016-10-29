@@ -1,12 +1,12 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Fields\Selectors\Select;
-use \Orange\Forms\Fields\Inputs\Hidden;
-use \Orange\Forms\Fields\Inputs\Text;
-use \Orange\Forms\Fields\Inputs\Email;
-use \Orange\Forms\Fields\Inputs\Textarea;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Inputs\Email;
+use Orange\Forms\Fields\Inputs\Hidden;
+use Orange\Forms\Fields\Inputs\Text;
+use Orange\Forms\Fields\Inputs\Textarea;
+use Orange\Forms\Fields\Selectors\Select;
+use Orange\Forms\Form;
 
 class OPMF_Feedback_Generic extends Form
 {

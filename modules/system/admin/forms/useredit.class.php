@@ -1,10 +1,10 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Components\Fieldset;
-use \Orange\Forms\Fields\Selectors\Checkbox;
-use \Orange\Forms\Fields\Inputs\Text;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Components\Fieldset;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Inputs\Text;
+use Orange\Forms\Fields\Selectors\Checkbox;
+use Orange\Forms\Form;
 
 class OPMX_System_UserEdit extends Form
 {

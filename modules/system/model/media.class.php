@@ -1,6 +1,6 @@
 <?php
 
-use \Orange\Database\Queries\Parts\Condition;
+use Orange\Database\Queries\Parts\Condition;
 
 class OPMM_System_Media extends \Orange\Database\ActiveRecord
 {

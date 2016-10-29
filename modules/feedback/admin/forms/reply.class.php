@@ -1,9 +1,9 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Fields\Inputs\Text;
-use \Orange\Forms\Fields\Inputs\Textarea;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Inputs\Text;
+use Orange\Forms\Fields\Inputs\Textarea;
+use Orange\Forms\Form;
 
 class OPMX_Feedback_Reply extends Form
 {

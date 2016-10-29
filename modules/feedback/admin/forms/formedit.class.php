@@ -1,11 +1,11 @@
 <?php
 
-use \Orange\Forms\Form;
-use \Orange\Forms\Components\Multirow;
-use \Orange\Forms\Fields\Selectors\Select;
-use \Orange\Forms\Fields\Inputs\Text;
-use \Orange\Forms\Fields\Inputs\Textarea;
-use \Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Components\Multirow;
+use Orange\Forms\Fields\Buttons\Submit;
+use Orange\Forms\Fields\Inputs\Text;
+use Orange\Forms\Fields\Inputs\Textarea;
+use Orange\Forms\Fields\Selectors\Select;
+use Orange\Forms\Form;
 
 class OPMX_Feedback_FormEdit extends Form
 {
