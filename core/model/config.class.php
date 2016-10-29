@@ -7,20 +7,20 @@ class OPAM_Config extends \Orange\Database\ActiveRecord
 
 	protected static $table = 'config';
 
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'config_status' => array('type' => 'BOOLEAN', 'default' => true),
-		'config_type' => array('type' => 'STRING', 'length' => 16),
-		'config_key' => array('type' => 'STRING', 'length' => 64),
-		'config_value' => array('type' => 'DATA', 'length' => 512),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'config_status' => ['type' => 'BOOLEAN', 'default' => true],
+		'config_type' => ['type' => 'STRING', 'length' => 16],
+		'config_key' => ['type' => 'STRING', 'length' => 64],
+		'config_value' => ['type' => 'DATA', 'length' => 512],
+	];
 
-	protected static $keys = array('config_status');
-	protected static $u_keys = array('config_key');
+	protected static $keys = ['config_status'];
+	protected static $u_keys = ['config_key'];
 
 	public static function loadActive($module = null)
 	{
-		$ref = array();
+		$ref = [];
 		$select = new \Orange\Database\Queries\Select(self::$table);
 		$select->addWhere(new Condition('config_status', '=', 1));
 		if (!is_null($module)) {

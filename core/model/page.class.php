@@ -19,7 +19,7 @@ class OPAM_Page extends OPAM_Content
 		if (!$this->id) {
 			$select = new \Orange\Database\Queries\Select(self::$table);
 			$select
-				->addField(array('max', 'content_order'))
+				->addField(['max', 'content_order'])
 				->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
 				->execute();
 			$this->set('content_order', intval($select->getResultValue()));
@@ -34,8 +34,8 @@ class OPAM_Page extends OPAM_Content
 	{
 		return [0 => ''] + self::getList(
 			[
-				'types' => array('page'),
-				'exclude' => array($this->id)
+				'types' => ['page'],
+				'exclude' => [$this->id]
 			],
 			[
 				'id' => 'content_title',
@@ -52,7 +52,7 @@ class OPAM_Page extends OPAM_Content
 		$select = new \Orange\Database\Queries\Select(self::$table);
 		$select
 			->addWhere(new Condition('content_status', '=', 7))
-			->addWhere(new Condition('content_lang', 'IN', array($lang, '')))
+			->addWhere(new Condition('content_lang', 'IN', [$lang, '']))
 			->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
 			->setOrder('content_lang', \Orange\Database\Queries\Select::SORT_DESC)
 			->execute();
@@ -66,20 +66,20 @@ class OPAM_Page extends OPAM_Content
 	 */
 	public static function getPagesByParents($user, $ignoreOnSiteMode = false)
 	{
-		$grouped = array();
-		$params = array(
+		$grouped = [];
+		$params = [
 			'access_user' => $user,
 			'order' => 'content_order',
 			'types' => OPAM_Content_Type::getPageTypes(),
-		);
+		];
 		if (!$ignoreOnSiteMode) {
-			$params['on_site_mode'] = array(2, 3);
+			$params['on_site_mode'] = [2, 3];
 		}
 		$pages = self::getList($params, __CLASS__);
 		if ($pages) {
 			foreach ($pages as $item) {
 				if (!isset($grouped[$item->get('content_parent_id')])) {
-					$grouped[$item->get('content_parent_id')] = array();
+					$grouped[$item->get('content_parent_id')] = [];
 				}
 				$grouped[$item->get('content_parent_id')][] = $item;
 			}
@@ -94,13 +94,13 @@ class OPAM_Page extends OPAM_Content
 	 */
 	public static function getMenu($user, $root = 0)
 	{
-		$params = array(
+		$params = [
 			'types' => OPAM_Content_Type::getPageTypes(),
 			'access_user' => $user,
 			'parent_id' => $root,
-			'on_site_mode' => array(1, 3),
+			'on_site_mode' => [1, 3],
 			'order' => 'content_order',
-		);
+		];
 		return self::getList($params, __CLASS__);
 	}
 
@@ -114,18 +114,18 @@ class OPAM_Page extends OPAM_Content
 	 */
 	public static function getTreeMenu($user, $lang, $root = 0, $tree_levels = 0)
 	{
-		$params = array(
+		$params = [
 			'types' => OPAM_Content_Type::getPageTypes(),
 			'access_user' => $user,
-			'lang' => array($lang, ''),
+			'lang' => [$lang, ''],
 			'on_site_mode' => [2, 3],
 			'order' => 'content_order',
-		);
-		$menu = array();
+		];
+		$menu = [];
 		$pages = self::getList($params, __CLASS__);
 		foreach ($pages as $page) {
 			if (!isset($menu[$page->get('content_parent_id')])) {
-				$menu[$page->get('content_parent_id')] = array();
+				$menu[$page->get('content_parent_id')] = [];
 			}
 			$menu[$page->get('content_parent_id')][$page->get('content_default_lang_id') ? $page->get('content_default_lang_id') : $page->id] = $page;
 		}

@@ -226,9 +226,8 @@ a {
 }
 
 #block_search-form form > div > button {
-    margin: 0;
+    margin: 0 0.2rem 0 0;
     padding: 0;
-    margin-right: 0.2rem;
     background: transparent url('icon-search.png') 50% 50% no-repeat;
     background-size: contain;
     text-indent: -10000px;
@@ -407,7 +406,6 @@ footer #block_copyrights li:last-child {
     #block_main-menu {
         position: static;
         padding: 0;
-        box-shadow: 5px 0 0 #000000 inset;
         box-shadow: none;
         text-transform: none;
     }

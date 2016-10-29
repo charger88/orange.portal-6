@@ -14,12 +14,12 @@ class OPAM_User_Group extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'group_name' => array('type' => 'STRING', 'length' => 32),
-		'group_description' => array('type' => 'STRING', 'length' => 256),
-		'group_module' => array('type' => 'STRING', 'length' => 32),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'group_name' => ['type' => 'STRING', 'length' => 32],
+		'group_description' => ['type' => 'STRING', 'length' => 256],
+		'group_module' => ['type' => 'STRING', 'length' => 32],
+	];
 
 	/**
 	 * @param bool $translate

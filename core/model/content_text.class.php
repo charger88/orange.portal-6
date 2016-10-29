@@ -20,23 +20,23 @@ class OPAM_Content_Text extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'content_id' => array('type' => 'INTEGER'),
-		'content_text_role' => array('type' => 'STRING', 'length' => 16),
-		'content_text_format' => array('type' => 'TINYINT'),
-		'content_text_value' => array('type' => 'LONGTEXT'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'content_id' => ['type' => 'INTEGER'],
+		'content_text_role' => ['type' => 'STRING', 'length' => 16],
+		'content_text_format' => ['type' => 'TINYINT'],
+		'content_text_value' => ['type' => 'LONGTEXT'],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('content_id');
+	protected static $keys = ['content_id'];
 
 	/**
 	 * @var array
 	 */
-	protected static $uniq = array(array('content_id', 'content_text_role'));
+	protected static $uniq = [['content_id', 'content_text_role']];
 
 	public function format()
 	{

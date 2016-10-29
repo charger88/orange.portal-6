@@ -5,18 +5,18 @@ class OPMM_Feedback_Form extends \Orange\Database\ActiveRecord
 
 	protected static $table = 'feedback_form';
 
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'feedback_form_name' => array('type' => 'STRING', 'length' => 256),
-		'feedback_form_themes' => array('type' => 'STRING', 'length' => 4096),
-		'feedback_form_theme' => array('type' => 'TINYINT'),
-		'feedback_form_phone' => array('type' => 'TINYINT'),
-		'feedback_form_email' => array('type' => 'TINYINT'),
-		'feedback_form_uname' => array('type' => 'TINYINT'),
-		'feedback_form_text' => array('type' => 'TINYINT'),
-		'feedback_form_fields' => array('type' => 'ARRAY', 'length' => 8192),
-		'feedback_form_send_to' => array('type' => 'STRING', 'length' => 256),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'feedback_form_name' => ['type' => 'STRING', 'length' => 256],
+		'feedback_form_themes' => ['type' => 'STRING', 'length' => 4096],
+		'feedback_form_theme' => ['type' => 'TINYINT'],
+		'feedback_form_phone' => ['type' => 'TINYINT'],
+		'feedback_form_email' => ['type' => 'TINYINT'],
+		'feedback_form_uname' => ['type' => 'TINYINT'],
+		'feedback_form_text' => ['type' => 'TINYINT'],
+		'feedback_form_fields' => ['type' => 'ARRAY', 'length' => 8192],
+		'feedback_form_send_to' => ['type' => 'STRING', 'length' => 256],
+	];
 
 	const FIELD_STATUS_DISABLED = 0;
 	const FIELD_STATUS_ENABLED = 1;

@@ -49,6 +49,7 @@ class OPAL_Controller
 	/**
 	 * @param OPAM_Content $content
 	 * @param OPAM_User $user
+	 * @param OPAL_SessionInterface $session
 	 * @param OPAL_Templater $templater
 	 * @param array $args
 	 */
@@ -112,12 +113,14 @@ class OPAL_Controller
 	/**
 	 * @param string $url
 	 * @param bool $permanent
+	 * @return bool
 	 */
 	protected function redirect($url, $permanent = false)
 	{
 		header($this->getServer('SERVER_PROTOCOL') . ($permanent ? ' 301 Moved Permanently' : ' 302 Found'));
 		header('Location: ' . $url);
 		die();
+		return true;
 	}
 
 	/**
@@ -230,7 +233,7 @@ class OPAL_Controller
 		if ($filename = $this->getMethodFileName($methodname, $request)) {
 			$file = new \Orange\FS\File($filename);
 			if (!($status = $file->save($data))) {
-				$this->log('CACHE_NOT_SAVED %s', array($filename), 'LOG_CACHE', self::STATUS_ALERT);
+				$this->log('CACHE_NOT_SAVED %s', [$filename], 'LOG_CACHE', self::STATUS_ALERT);
 			}
 			return (bool)$status;
 		} else {

@@ -17,26 +17,26 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'content_type' => array('type' => 'STRING', 'length' => 32),
-		'content_title' => array('type' => 'STRING', 'length' => 1024),
-		'content_parent_id' => array('type' => 'INTEGER'),
-		'content_order' => array('type' => 'INTEGER'),
-		'content_access_groups' => array('type' => 'LIST', 'length' => 256),
-		'content_lang' => array('type' => 'STRING', 'length' => 2),
-		'content_area' => array('type' => 'STRING', 'length' => 32),
-		'content_slug' => array('type' => 'STRING', 'length' => 1024),
-		'content_default_lang_id' => array('type' => 'INTEGER'),
-		'content_on_site_mode' => array('type' => 'TINYINT'),
-		'content_status' => array('type' => 'TINYINT'),
-		'content_commands' => array('type' => 'ARRAY', 'length' => 8192),
-		'content_template' => array('type' => 'STRING', 'length' => 32),
-		'content_image' => array('type' => 'INTEGER'),
-		'content_time_modified' => array('type' => 'TIME'),
-		'content_time_published' => array('type' => 'TIME'),
-		'content_user_id' => array('type' => 'INTEGER'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'content_type' => ['type' => 'STRING', 'length' => 32],
+		'content_title' => ['type' => 'STRING', 'length' => 1024],
+		'content_parent_id' => ['type' => 'INTEGER'],
+		'content_order' => ['type' => 'INTEGER'],
+		'content_access_groups' => ['type' => 'LIST', 'length' => 256],
+		'content_lang' => ['type' => 'STRING', 'length' => 2],
+		'content_area' => ['type' => 'STRING', 'length' => 32],
+		'content_slug' => ['type' => 'STRING', 'length' => 1024],
+		'content_default_lang_id' => ['type' => 'INTEGER'],
+		'content_on_site_mode' => ['type' => 'TINYINT'],
+		'content_status' => ['type' => 'TINYINT'],
+		'content_commands' => ['type' => 'ARRAY', 'length' => 8192],
+		'content_template' => ['type' => 'STRING', 'length' => 32],
+		'content_image' => ['type' => 'INTEGER'],
+		'content_time_modified' => ['type' => 'TIME'],
+		'content_time_published' => ['type' => 'TIME'],
+		'content_user_id' => ['type' => 'INTEGER'],
+	];
 
 	const STATUS_REMOVED = 0;
 	const STATUS_CANCELED = 1;
@@ -50,7 +50,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	private $fields = array();
+	private $fields = [];
 
 	/**
 	 * @var array
@@ -60,12 +60,13 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('content_type', 'content_parent_id', 'content_order', 'content_lang', 'content_area', 'content_slug', 'content_on_site_mode', 'content_status', 'content_time_published', 'content_user_id');
+	protected static $keys = ['content_type', 'content_parent_id', 'content_order', 'content_lang', 'content_area', 'content_slug', 'content_on_site_mode', 'content_status', 'content_time_published', 'content_user_id'];
 
 	/**
 	 * @param null $key
 	 * @param null $value
-	 * @throws \Orange\Database\DBException, Exception
+	 * @throws \Orange\Database\DBException
+	 * @throws \Exception
 	 */
 	public function __construct($key = null, $value = null)
 	{
@@ -90,7 +91,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 		$this->set('content_time_modified', time());
 		$id = parent::save()->id;
 		$type = new OPAM_Content_Type('content_type_code', $this->get('content_type'));
-		$field_IDs = array();
+		$field_IDs = [];
 		if ($fields = $type->get('content_type_fields')) {
 			$this->loadFields();
 			foreach ($fields as $field_id => $field) {
@@ -129,7 +130,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 				->execute();
 			OPAM_Content_Tag::deleteTagsByContent($this->id);
 		}
-		return parent::delete($null);
+		return parent::delete();
 	}
 
 
@@ -355,7 +356,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	 * @param \Orange\Database\Queries\Select|null $select_base
 	 * @return OPAM_Content[]|array
 	 */
-	public static function getList($params = array(), $classname = null, $select_base = null)
+	public static function getList($params = [], $classname = null, $select_base = null)
 	{
 		$IDs = isset($params['IDs']) ? $params['IDs'] : null;
 		$exclude = isset($params['exclude']) ? $params['exclude'] : null;
@@ -396,7 +397,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 		}
 
 		if (!is_null($types)) {
-			$select->addWhere($types ? new Condition('content_type', 'IN', is_array($types) ? $types : array($types)) : new Condition('id', '=', 0));
+			$select->addWhere($types ? new Condition('content_type', 'IN', is_array($types) ? $types : [$types]) : new Condition('id', '=', 0));
 		}
 
 		if ($fields) {
@@ -410,7 +411,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 				$select->addWhere(new Condition('id', $fields_not ? 'NOT IN' : 'IN', $fids));
 			} else {
 				if (!$fields_not) {
-					return array();
+					return [];
 				}
 			}
 		}
@@ -478,11 +479,11 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 		}
 
 		if (!is_null($user_id)) {
-			$select->addWhere(new Condition('content_user_id', 'IN', is_array($user_id) ? $user_id : array($user_id)));
+			$select->addWhere(new Condition('content_user_id', 'IN', is_array($user_id) ? $user_id : [$user_id]));
 		}
 
 		if (!is_null($parent_id)) {
-			$select->addWhere(new Condition('content_parent_id', 'IN', is_array($parent_id) ? $parent_id : array($parent_id)));
+			$select->addWhere(new Condition('content_parent_id', 'IN', is_array($parent_id) ? $parent_id : [$parent_id]));
 		}
 
 		if (!is_null($order)) {
@@ -609,8 +610,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 
 	/**
 	 * @param string $default_lang
-	 * @param string|null $current_lang
-	 * @param OPAM_User|null $user
+	 * @param OPAM_User|null $access_user
 	 * @return array
 	 */
 	public function getLanguagePages($default_lang, $access_user = null)
@@ -659,7 +659,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	 */
 	public static function reorder($root, $order, $group_field, $access_user)
 	{
-		$updated = array();
+		$updated = [];
 		if ($order) {
 			if ($list = static::getList(['IDs' => $order, 'access_user' => $access_user], __CLASS__)) {
 				foreach ($order as $ord => $id) {
@@ -684,17 +684,17 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 	 */
 	public static function getRssData($list)
 	{
-		$rss = array();
+		$rss = [];
 		if ($list) {
 			foreach ($list as $item) {
 				$image = new OPMM_System_Media($item->get('content_image'));
-				$rss[] = array(
+				$rss[] = [
 					'title' => $item->get('content_title'),
 					'link' => $item->getURL(),
 					'time' => $item->get('content_time_published'),
 					'image_url' => $image->id ? $image->getURL('m') : '',
 					'image_type' => $image->id ? $image->getMimeType() : '',
-				);
+				];
 			}
 		}
 		return $rss;

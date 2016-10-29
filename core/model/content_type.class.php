@@ -16,28 +16,28 @@ class OPAM_Content_Type extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'content_type_name' => array('type' => 'STRING', 'length' => 64),
-		'content_type_code' => array('type' => 'STRING', 'length' => 32),
-		'content_type_status' => array('type' => 'BOOLEAN'),
-		'content_type_type' => array('type' => 'TINYINT'), // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
-		'content_type_multilang' => array('type' => 'BOOLEAN'),
-		'content_type_class' => array('type' => 'STRING', 'length' => 32),
-		'content_type_hidden' => array('type' => 'ARRAY', 'length' => 2048),
-		'content_type_fields' => array('type' => 'ARRAY'),
-		'content_type_texts' => array('type' => 'ARRAY', 'length' => 1024),
-		'content_type_sitemap_priority' => array('type' => 'TINYINT'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'content_type_name' => ['type' => 'STRING', 'length' => 64],
+		'content_type_code' => ['type' => 'STRING', 'length' => 32],
+		'content_type_status' => ['type' => 'BOOLEAN'],
+		'content_type_type' => ['type' => 'TINYINT'], // 0 - system, 1 - page, 2 - block, 3 - module, 4 - custom
+		'content_type_multilang' => ['type' => 'BOOLEAN'],
+		'content_type_class' => ['type' => 'STRING', 'length' => 32],
+		'content_type_hidden' => ['type' => 'ARRAY', 'length' => 2048],
+		'content_type_fields' => ['type' => 'ARRAY'],
+		'content_type_texts' => ['type' => 'ARRAY', 'length' => 1024],
+		'content_type_sitemap_priority' => ['type' => 'TINYINT'],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('content_type_status');
+	protected static $keys = ['content_type_status'];
 	/**
 	 * @var array
 	 */
-	protected static $u_keys = array('content_type_code');
+	protected static $u_keys = ['content_type_code'];
 
 	/**
 	 * @return string
@@ -100,7 +100,7 @@ class OPAM_Content_Type extends \Orange\Database\ActiveRecord
 	{
 		return (new \Orange\Database\Queries\Select(self::$table))
 			->addWhere(new Condition('content_type_status', '=', 1))
-			->addWhere(new Condition('content_type_type', 'NOT IN', array(0, 2)))
+			->addWhere(new Condition('content_type_type', 'NOT IN', [0, 2]))
 			->addWhere(new Condition('content_type_code', 'NOT LIKE', 'admin'))
 			->addField('content_type_code')
 			->addField('content_type_sitemap_priority')

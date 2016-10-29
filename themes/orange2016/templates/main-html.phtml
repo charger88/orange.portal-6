@@ -6,7 +6,7 @@
 			}
 			OPAL_Theme::addStyleFile('themes/default/static/system.css');
 			OPAL_Theme::addStyleFile('themes/orange2016/static/style.css');
-			echo $this->fetch('head.phtml',array('content' => $content));
+			echo $this->fetch('head.phtml', ['content' => $content]);
 		?>
         <meta name="viewport" content="width=device-width" />
     </head>
@@ -18,7 +18,7 @@
         <?php echo $portal->blocksArea('sub-header','<section id="sub-header">','</section>'); ?>
         <div id="content-wrapper">
         <?php $aside = $portal->blocksArea('column','<aside>','</aside>'); ?>
-		<section id="body" <?php echo strlen($aside) ? 'class="with-aside"' : ''; ?>><?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?></section>
+		<section id="body" <?php echo strlen($aside) ? 'class="with-aside"' : ''; ?>><?php echo $this->fetch($this->theme->getContentTemplate($content), ['content' => $content, 'response' => $response]); ?></section>
 		<?php if (strlen($aside)){ echo $aside; } ?>
         </div>
         <?php echo $portal->blocksArea('footer','<footer>','</footer>'); ?>

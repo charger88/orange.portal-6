@@ -3,10 +3,10 @@
 class OPMO_System extends OPAL_Module
 {
 
-	protected $privileges = array(
+	protected $privileges = [
 		'OPMC_System_Search::resultsActionDirect' => 'METHOD_SYSTEM_SEARCH_RESULTS',
 		'OPMC_System_Search::resultsAjaxDirect' => 'METHOD_SYSTEM_SEARCH_RESULTS',
-	);
+	];
 
 	protected function doInit()
 	{
@@ -23,10 +23,10 @@ class OPMO_System extends OPAL_Module
 	{
 		$res = (new OPMI_System('system'))->installModule($params);
 		$feedback = (new OPMI_Feedback('feedback'));
-		$feedback->installModule($params);
+		$feedback->installModule();
 		$feedback->createdAdditionalContent();
 		$news = (new OPMI_News('news'));
-		$news->installModule($params);
+		$news->installModule();
 		$news->createdAdditionalContent();
 		return $res;
 	}
@@ -65,12 +65,12 @@ class OPMO_System extends OPAL_Module
 					$menu = $addlink = '';
 				}
 				if ($menu) {
-					$adminMenu[$menu]['sub']['add_' . $cType->get('content_type_code')] = array(
+					$adminMenu[$menu]['sub']['add_' . $cType->get('content_type_code')] = [
 						'name' => OPAL_Lang::t('ADMIN_ADD_NEW') . ' ' . OPAL_Lang::t($cType->get('content_type_name')),
 						'url' => $addlink,
 						'icon' => '/modules/system/static/icons/' . $menu . '-new.png',
 						'order' => $i,
-					);
+					];
 					$i++;
 				}
 			}

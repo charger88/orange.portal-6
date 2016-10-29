@@ -6,7 +6,7 @@
 			}
 			OPAL_Theme::addStyleFile('themes/default/static/system.css');
 			OPAL_Theme::addStyleFile('themes/default/static/style.css');
-			echo $this->fetch('head.phtml',array('content' => $content));
+			echo $this->fetch('head.phtml', ['content' => $content]);
 		?>
 	</head>
 	<body>
@@ -14,7 +14,7 @@
 		<?php echo $portal->blocksArea('sub-header','<section id="sub-header">','</section>'); ?>
 		<?php echo $portal->blocksArea('top-section','<section id="top-section">','</section>'); ?>
 		<?php echo $portal->blocksArea('column','<aside>','</aside>'); ?>
-		<section id="body"><?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?></section>
+		<section id="body"><?php echo $this->fetch($this->theme->getContentTemplate($content), ['content' => $content, 'response' => $response]); ?></section>
 		<?php echo $portal->blocksArea('footer','<footer>','</footer>'); ?>
 	</body>
 </html>

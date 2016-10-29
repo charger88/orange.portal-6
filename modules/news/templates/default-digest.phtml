@@ -10,9 +10,9 @@
     <a href="<?php $this->ee($category->getURL()); ?>"><?php $this->el('NEWS_MORE_ITEMS'); ?></a>
 </div>
 <?php } else {
-    echo $this->fetch('system/paginator-arrows.phtml', array(
+    echo $this->fetch('system/paginator-arrows.phtml', [
         'listcount' => count($list),
         'limit'     => $limit,
         'offset'    => $offset,
-    ));
+	]);
 }

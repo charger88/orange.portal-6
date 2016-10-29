@@ -29,7 +29,7 @@ class OPAL_Session implements OPAL_SessionInterface
 	public function close()
 	{
 		if (session_status() === PHP_SESSION_ACTIVE) {
-			return session_commit();
+			session_commit();
 		}
 		return true;
 	}

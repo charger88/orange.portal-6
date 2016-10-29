@@ -26,23 +26,23 @@ class OPAM_User extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'user_login' => array('type' => 'STRING', 'length' => 128),
-		'user_email' => array('type' => 'STRING', 'length' => 128),
-		'user_pwdhash' => array('type' => 'STRING', 'length' => 256),
-		'user_status' => array('type' => 'BOOLEAN'),
-		'user_groups' => array('type' => 'LIST', 'length' => 256),
-		'user_provider' => array('type' => 'SMALLINT'),
-		'user_phone' => array('type' => 'STRING', 'length' => 32),
-		'user_name' => array('type' => 'STRING', 'length' => 256),
-		'user_key' => array('type' => 'CHAR', 'length' => 32),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'user_login' => ['type' => 'STRING', 'length' => 128],
+		'user_email' => ['type' => 'STRING', 'length' => 128],
+		'user_pwdhash' => ['type' => 'STRING', 'length' => 256],
+		'user_status' => ['type' => 'BOOLEAN'],
+		'user_groups' => ['type' => 'LIST', 'length' => 256],
+		'user_provider' => ['type' => 'SMALLINT'],
+		'user_phone' => ['type' => 'STRING', 'length' => 32],
+		'user_name' => ['type' => 'STRING', 'length' => 256],
+		'user_key' => ['type' => 'CHAR', 'length' => 32],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $u_keys = array('user_login', 'user_email');
+	protected static $u_keys = ['user_login', 'user_email'];
 
 	/**
 	 * @return int|null
@@ -79,7 +79,7 @@ class OPAM_User extends \Orange\Database\ActiveRecord
 	 * @param array $params
 	 * @return OPAM_User[]
 	 */
-	public static function getList($params = array())
+	public static function getList($params = [])
 	{
 		$offset = isset($params['offset']) ? abs(intval($params['offset'])) : 0;
 		$limit = isset($params['limit']) ? abs(intval($params['limit'])) : null;

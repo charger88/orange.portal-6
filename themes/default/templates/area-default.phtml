@@ -4,10 +4,10 @@ if ($blocks){
 	echo $preHTML;
     /** @var OPAM_Block $block */
     foreach ($blocks as list($block,$block_data)){
-		echo $this->fetch($block->get('content_template'),array(
+		echo $this->fetch($block->get('content_template'), [
 			'content'  => $block,
 			'response' => $block_data,
-		));
+		]);
 	}
 	echo $postHTML;
 }

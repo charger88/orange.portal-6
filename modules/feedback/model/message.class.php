@@ -7,26 +7,26 @@ class OPMM_Feedback_Message extends \Orange\Database\ActiveRecord
 
 	protected static $table = 'feedback_message';
 
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'feedback_message_status' => array('type' => 'TINYINT', 'default' => 0),
-		'feedback_message_subject' => array('type' => 'STRING', 'length' => 256),
-		'feedback_message_text' => array('type' => 'TEXT'),
-		'feedback_message_form_id' => array('type' => 'BIGINT', 'default' => 0),
-		'feedback_message_fields' => array('type' => 'ARRAY', 'length' => 4096),
-		'feedback_message_time' => array('type' => 'TIME'),
-		'feedback_message_sender_user_id' => array('type' => 'BIGINT'),
-		'feedback_message_sender_name' => array('type' => 'STRING', 'length' => 64),
-		'feedback_message_sender_email' => array('type' => 'STRING', 'length' => 128),
-		'feedback_message_sender_phone' => array('type' => 'STRING', 'length' => 32),
-		'feedback_message_sender_ip' => array('type' => 'STRING', 'length' => 15),
-		'feedback_message_sender_session' => array('type' => 'STRING', 'length' => 32),
-		'feedback_message_reply_user_id' => array('type' => 'BIGINT', 'default' => 0),
-		'feedback_message_reply_text' => array('type' => 'TEXT', 'default' => ''),
-		'feedback_message_reply_from_name' => array('type' => 'STRING', 'default' => '', 'length' => 64),
-		'feedback_message_reply_from_email' => array('type' => 'STRING', 'default' => '', 'length' => 64),
-		'feedback_message_reply_time' => array('type' => 'TIME'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'feedback_message_status' => ['type' => 'TINYINT', 'default' => 0],
+		'feedback_message_subject' => ['type' => 'STRING', 'length' => 256],
+		'feedback_message_text' => ['type' => 'TEXT'],
+		'feedback_message_form_id' => ['type' => 'BIGINT', 'default' => 0],
+		'feedback_message_fields' => ['type' => 'ARRAY', 'length' => 4096],
+		'feedback_message_time' => ['type' => 'TIME'],
+		'feedback_message_sender_user_id' => ['type' => 'BIGINT'],
+		'feedback_message_sender_name' => ['type' => 'STRING', 'length' => 64],
+		'feedback_message_sender_email' => ['type' => 'STRING', 'length' => 128],
+		'feedback_message_sender_phone' => ['type' => 'STRING', 'length' => 32],
+		'feedback_message_sender_ip' => ['type' => 'STRING', 'length' => 15],
+		'feedback_message_sender_session' => ['type' => 'STRING', 'length' => 32],
+		'feedback_message_reply_user_id' => ['type' => 'BIGINT', 'default' => 0],
+		'feedback_message_reply_text' => ['type' => 'TEXT', 'default' => ''],
+		'feedback_message_reply_from_name' => ['type' => 'STRING', 'default' => '', 'length' => 64],
+		'feedback_message_reply_from_email' => ['type' => 'STRING', 'default' => '', 'length' => 64],
+		'feedback_message_reply_time' => ['type' => 'TIME'],
+	];
 
 	protected static $keys = ['feedback_message_status', 'feedback_message_form_id', 'feedback_message_time'];
 

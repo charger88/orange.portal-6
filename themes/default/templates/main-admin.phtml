@@ -5,7 +5,7 @@
 			OPAL_Theme::addStyleFile('modules/system/static/css/admin.css');
 			OPAL_Theme::addScriptFile('modules/system/static/js/admin.js');
 			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
-			echo $this->fetch('head.phtml',array('content' => $content));
+			echo $this->fetch('head.phtml', ['content' => $content]);
 		?>
         <meta name="referrer" content="origin-when-crossorigin" />
     </head>
@@ -18,7 +18,7 @@
 			<?php echo $portal->blockDirect('system/admin-center/menu'); ?>
 		</aside>
 		<section id="workspace">
-			<?php echo $this->fetch($this->theme->getContentTemplate($content),array('content' => $content, 'response' => $response)); ?>
+			<?php echo $this->fetch($this->theme->getContentTemplate($content), ['content' => $content, 'response' => $response]); ?>
 		</section>
 	</body>
 </html>

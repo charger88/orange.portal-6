@@ -5,19 +5,19 @@ use Orange\Database\Queries\Parts\Condition;
 class OPMO_Feedback extends OPAL_Module
 {
 
-	protected $privileges = array(
+	protected $privileges = [
 		'OPMC_Feedback_Main::sendActionDirect' => 'METHOD_FEEDBACK_SEND_MESSAGE',
 		'OPMC_Feedback_Main::sendAjaxDirect' => 'METHOD_FEEDBACK_SEND_MESSAGE',
-	);
+	];
 
 	protected function doInit()
 	{
 		return true;
 	}
 
-	protected function doInstall($params = array())
+	protected function doInstall($params = [])
 	{
-		return (new OPMI_Feedback('feedback'))->installModule($params);
+		return (new OPMI_Feedback('feedback'))->installModule();
 	}
 
 	protected function doEnable()

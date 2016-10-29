@@ -21,9 +21,9 @@ class OPMC_System_Text extends OPAL_Controller
 
 	private function index($is_block = false)
 	{
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-text-' . ($is_block ? 'block' : 'page') . '.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-text-' . ($is_block ? 'block' : 'page') . '.phtml', [
 			'content' => $this->content
-		));
+		]);
 	}
 
 }

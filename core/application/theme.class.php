@@ -90,6 +90,7 @@ abstract class OPAL_Theme
 
 	/**
 	 * @param string $filename
+	 * @param string $title
 	 * @param bool $external
 	 */
 	public static function addRSSChannel($url, $title, $external = false)

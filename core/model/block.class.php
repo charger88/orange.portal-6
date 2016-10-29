@@ -33,7 +33,7 @@ class OPAM_Block extends OPAM_Content
 	 */
 	public static function getBlocksByAreas($areas = null, $lang = null, $exclude_areas = null, $content = null, $user = null, $activeOnly = false)
 	{
-		$by_areas = array();
+		$by_areas = [];
 		if (is_null($areas) || !empty($areas)) {
 			$select = new \Orange\Database\Queries\Select(self::$table);
 			$select->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getBlockTypes()));
@@ -56,7 +56,7 @@ class OPAM_Block extends OPAM_Content
 				$select->addOrder('content_lang', true);
 			}
 			if (!is_null($content)) {
-				$page_modes = array(0);
+				$page_modes = [0];
 				$page_modes[] = $content->get('content_parent_id') == 0 ? 1 : 2;
 				$page_modes[] = $content->get('content_status') == 7 ? 3 : 4;
 				$select->addWhere(new Condition('content_on_site_mode', 'IN', $page_modes));
@@ -72,12 +72,12 @@ class OPAM_Block extends OPAM_Content
 				$select->addWhereBracket(false);
 			}
 			$blocks = $select->execute()->getResultArray(null, __CLASS__);
-			$added = array();
+			$added = [];
 			foreach ($blocks as $block) {
 				$dlID = $block->get('content_default_lang_id') ? $block->get('content_default_lang_id') : $block->id;
 				if (!in_array($dlID, $added)) {
 					if (!isset($by_areas[$block->get('content_area')])) {
-						$by_areas[$block->get('content_area')] = array();
+						$by_areas[$block->get('content_area')] = [];
 					}
 					$by_areas[$block->get('content_area')][] = $block;
 					$added[] = $dlID;

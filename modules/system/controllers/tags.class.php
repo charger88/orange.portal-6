@@ -18,13 +18,13 @@ class OPMC_System_Tags extends OPAL_Controller
 		$tag = urldecode($tag);
 		OPAL_Portal::getInstance()->content->set('content_title', OPAL_Lang::t('SEARCH_BY_TAG_%s', [$tag]));
 		$limit = $this->arg('limit', 25);
-		$list = OPAM_Page::getList(array(
+		$list = OPAM_Page::getList([
 			'types' => OPAL_Portal::getInstance()->processHooks('get_searchable_types'),
 			'tag' => $tag,
 			'access_user' => $this->user,
 			'limit' => $limit,
 			'offset' => $offset,
-		), 'OPAM_Page');
+		], 'OPAM_Page');
 		if ($list) {
 			return $this->templater->fetch('system/tag-result.phtml', [
 				'list' => $list,

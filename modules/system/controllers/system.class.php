@@ -36,11 +36,11 @@ class OPMC_System extends OPAL_Controller
 	 */
 	private function copyrights()
 	{
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-copyrights' . '.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-copyrights' . '.phtml', [
 			'copyright' => OPAL_Portal::config('system_copyright'),
 			'year_opened' => $this->arg('year_opened', date('Y')),
 			'theme' => $this->templater->theme->getThemeInfo(),
-		));
+		]);
 	}
 
 	/**
@@ -49,10 +49,10 @@ class OPMC_System extends OPAL_Controller
 	 */
 	public function adminbarBlock()
 	{
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-admin-bar.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-admin-bar.phtml', [
 			'content' => OPAL_Portal::getInstance()->content,
 			'adminBarLinks' => OPAL_Portal::getInstance()->processHooks('admin_bar_links'),
-		));
+		]);
 	}
 
 	/**
@@ -79,13 +79,13 @@ class OPMC_System extends OPAL_Controller
 				$get_string .= urlencode($param) . '=' . urlencode($value) . '&';
 			}
 		}
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-lang-switcher.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-lang-switcher.phtml', [
 			'languages' => $languages,
 			'pages' => $pages,
 			'default_lang' => $default_lang,
 			'current_lang' => $current_lang,
 			'get_string' => $get_string,
-		));
+		]);
 	}
 
 }

@@ -101,7 +101,7 @@ trait OPAL_Request
 	{
 		if (is_null(self::$ip)) {
 			self::$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
-			if (isset($_SERVER['X-FORWARDED-FOR']) && in_array(self::$ip, OPAL_Portal::config('system_proxy_ip', array()))) {
+			if (isset($_SERVER['X-FORWARDED-FOR']) && in_array(self::$ip, OPAL_Portal::config('system_proxy_ip', []))) {
 				self::$ip = $_SERVER['X-FORWARDED-FOR'];
 			}
 		}

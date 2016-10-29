@@ -5,7 +5,7 @@ class OPMI_Feedback extends OPAL_Installer
 
 	public function installModule()
 	{
-		$this->errors = array();
+		$this->errors = [];
 		if (empty($this->errors)) {
 			$this->createThisModule();
 		}
@@ -26,12 +26,12 @@ class OPMI_Feedback extends OPAL_Installer
 			->setData([
 				'content_type' => 'admin',
 				'content_title' => 'MODULE_FEEDBACK',
-				'content_access_groups' => array(1, 2),
+				'content_access_groups' => [1, 2],
 				'content_lang' => '',
 				'content_slug' => 'admin/feedback',
 				'content_on_site_mode' => 0,
 				'content_status' => 6,
-				'content_commands' => array(array('module' => 'feedback', 'controller' => 'admin-main', 'method' => '', 'static' => false, 'args' => array()),),
+				'content_commands' => [['module' => 'feedback', 'controller' => 'admin-main', 'method' => '', 'static' => false, 'args' => []],],
 				'content_template' => 'main-admin.phtml',
 				'content_time_published' => time(),
 				'content_user_id' => 1,

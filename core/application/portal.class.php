@@ -190,6 +190,9 @@ class OPAL_Portal
 
 	/**
 	 * Load config from files
+	 * @param string $hostname
+	 * @return array
+	 * @throws Exception
 	 */
 	private static function loadConfigFromFiles($hostname)
 	{
@@ -349,7 +352,7 @@ class OPAL_Portal
 			$u = trim(substr($u, strlen(self::config('system_base_dir'))), '/');
 		}
 		$request = !empty($u) ? explode('/', $u) : [];
-		if (!empty($request[0]) && in_array($request[0], self::config('system_enabled_langs', array()))) {
+		if (!empty($request[0]) && in_array($request[0], self::config('system_enabled_langs', []))) {
 			self::$sitelang = array_shift($request);
 
 		}
@@ -373,11 +376,11 @@ class OPAL_Portal
 				if (!$this->install_mode) {
 					$this->processBlocks($admin_panel);
 				}
-				return $this->templater->fetch($this->main_template, array(
+				return $this->templater->fetch($this->main_template, [
 					'portal' => $this,
 					'content' => $this->content,
 					'response' => $response,
-				));
+				]);
 			} else {
 				return $response;
 			}
@@ -461,9 +464,9 @@ class OPAL_Portal
 		$this->content->set('content_slug', 'module/' . strtolower($module) . '/' . implode('/', $this->request));
 		$this->content->set('content_lang', self::$sitelang);
 		$this->content->set('content_status', 6);
-		$this->content->set('content_commands', array(
-			array('module' => $module, 'controller' => $this->request[0], 'method' => $this->request[1], 'static' => false, 'args' => []),
-		));
+		$this->content->set('content_commands', [
+			['module' => $module, 'controller' => $this->request[0], 'method' => $this->request[1], 'static' => false, 'args' => []],
+		]);
 		$this->content->set('content_template', 'main-html.phtml');
 		$output = $this->executeContent($this->content);
 		return [$this->lastExecuteContentStatus, $output];
@@ -479,9 +482,9 @@ class OPAL_Portal
 		$block->set('content_slug', 'module/' . strtolower($module) . '/' . implode('/', $request));
 		$block->set('content_lang', self::$sitelang);
 		$block->set('content_status', 6);
-		$block->set('content_commands', array(
-			array('module' => $module, 'controller' => $request[0], 'method' => $request[1], 'static' => true, 'args' => $args),
-		));
+		$block->set('content_commands', [
+			['module' => $module, 'controller' => $request[0], 'method' => $request[1], 'static' => true, 'args' => $args],
+		]);
 		$output = $this->executeContent($block);
 		return $output;
 	}
@@ -542,11 +545,11 @@ class OPAL_Portal
 
 	public function blocksArea($area, $preHTML = '', $postHTML = '', $template = 'area-default.phtml')
 	{
-		return $this->templater->fetch($template, array(
+		return $this->templater->fetch($template, [
 			'blocks' => isset($this->areas_data[$area]) ? $this->areas_data[$area] : [],
 			'preHTML' => $preHTML,
 			'postHTML' => $postHTML,
-		));
+		]);
 	}
 
 	private $lastExecuteContentStatus = '';
@@ -572,7 +575,7 @@ class OPAL_Portal
 					}
 				} else {
 					$this->lastExecuteContentStatus = 'not-found';
-					$controller = new OPAL_Controller($content, $this->user, $this->session, $this->templater, array());
+					$controller = new OPAL_Controller($content, $this->user, $this->session, $this->templater, []);
 					$controller->alert('PORTAL_MODULE_NOT_FOUND');
 				}
 			}
@@ -646,8 +649,8 @@ class OPAL_Portal
 				}
 			} else {
 				$execStatus = 'not-found';
-				$controller = new OPAL_Controller($content, $this->user, $this->session, $this->templater, array());
-				$controller->alert('PORTAL_%s_CONTROLLER_NOT_FOUND', array($classname));
+				$controller = new OPAL_Controller($content, $this->user, $this->session, $this->templater, []);
+				$controller->alert('PORTAL_%s_CONTROLLER_NOT_FOUND', [$classname]);
 			}
 		} else {
 			$execStatus = 'unauthorized';

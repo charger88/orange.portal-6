@@ -29,9 +29,9 @@ class OPMC_System_Menu extends OPAL_Controller
 
 	private function index()
 	{
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-menu.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-menu.phtml', [
 			'menu' => OPAM_Page::getMenu($this->user, $this->getRoot())
-		));
+		]);
 	}
 
 	public function treeAction()
@@ -53,11 +53,11 @@ class OPMC_System_Menu extends OPAL_Controller
 	{
 		$levels = $this->arg('levels', 0);
 		$root = $this->getRoot();
-		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-menu-tree.phtml', array(
+		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-menu-tree.phtml', [
 			'menu' => OPAM_Page::getTreeMenu($this->user, OPAL_Portal::$sitelang, $root, $levels),
 			'root' => $root,
 			'levels' => $levels,
-		));
+		]);
 	}
 
 	private function getRoot()

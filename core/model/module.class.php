@@ -16,21 +16,21 @@ class OPAM_Module extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'module_code' => array('type' => 'STRING', 'length' => 32),
-		'module_title' => array('type' => 'STRING', 'length' => 128),
-		'module_status' => array('type' => 'BOOLEAN'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'module_code' => ['type' => 'STRING', 'length' => 32],
+		'module_title' => ['type' => 'STRING', 'length' => 128],
+		'module_status' => ['type' => 'BOOLEAN'],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('module_status');
+	protected static $keys = ['module_status'];
 	/**
 	 * @var array
 	 */
-	protected static $u_keys = array('module_code');
+	protected static $u_keys = ['module_code'];
 
 	/**
 	 * @param bool $active_only
@@ -38,7 +38,7 @@ class OPAM_Module extends \Orange\Database\ActiveRecord
 	 */
 	public static function getModules($active_only = false)
 	{
-		$modules = array();
+		$modules = [];
 		$select = new \Orange\Database\Queries\Select(self::$table);
 		if ($active_only) {
 			$select->addWhere(new Condition('module_status', '=', 1));
@@ -60,7 +60,7 @@ class OPAM_Module extends \Orange\Database\ActiveRecord
 	 */
 	public static function getNotInstalledModules()
 	{
-		$modules = array();
+		$modules = [];
 		$modulesDir = new \Orange\FS\Dir('modules');
 		$dirs = $modulesDir->readDir();
 		foreach ($dirs as $dir) {

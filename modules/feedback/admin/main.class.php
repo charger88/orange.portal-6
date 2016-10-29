@@ -86,7 +86,7 @@ class OPMA_Feedback_Main extends OPAL_Controller
 		$form->setValues($this->getPostArray());
 		$item->setData($form->getValuesWithXSRFCheck());
 		$item->save();
-		$this->log('MODULE_FEEDBACK_FORM_%s_SAVED', array($item->get('feedback_form_name')), 'LOG_FEEDBACK', self::STATUS_OK, $item);
+		$this->log('MODULE_FEEDBACK_FORM_%s_SAVED', [$item->get('feedback_form_name')], 'LOG_FEEDBACK', self::STATUS_OK, $item);
 		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL() . '/edit/' . $item->id);
 	}
 
@@ -109,7 +109,7 @@ class OPMA_Feedback_Main extends OPAL_Controller
 			'feedback_message_reply_from_email' => $form_object->get('feedback_form_send_to') ? $form_object->get('feedback_form_send_to') : OPAL_Portal::config('system_email_public'),
 			'feedback_message_reply_from_name' => OPAL_Portal::config('system_sitename'),
 			'feedback_message_reply_text' => $message,
-		], true);
+		]);
 		return $form->getHTML();
 	}
 

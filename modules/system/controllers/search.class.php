@@ -35,15 +35,15 @@ class OPMC_System_Search extends OPAL_Controller
 		} else {
 			$searchable_types = OPAL_Portal::getInstance()->processHooks('get_searchable_types');
 			$baselimit = $this->arg('limit', 50);
-			$results = OPAM_Page::getList(array(
+			$results = OPAM_Page::getList([
 				'types' => $searchable_types,
 				'search' => $search,
 				'searchmode' => 1,
 				'access_user' => $this->user,
 				'lang' => [OPAL_Portal::$sitelang, ''],
-			), 'OPAM_Page');
+			], 'OPAM_Page');
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList(array(
+				$results += OPAM_Page::getList([
 					'types' => $searchable_types,
 					'search' => $search,
 					'searchmode' => 2,
@@ -51,10 +51,10 @@ class OPMC_System_Search extends OPAL_Controller
 					'lang' => [OPAL_Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				), 'OPAM_Page');
+				], 'OPAM_Page');
 			}
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList(array(
+				$results += OPAM_Page::getList([
 					'types' => $searchable_types,
 					'search' => str_replace(' ', '%', $search),
 					'searchmode' => 1,
@@ -62,10 +62,10 @@ class OPMC_System_Search extends OPAL_Controller
 					'lang' => [OPAL_Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				), 'OPAM_Page');
+				], 'OPAM_Page');
 			}
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList(array(
+				$results += OPAM_Page::getList([
 					'types' => $searchable_types,
 					'search' => str_replace(' ', '%', $search),
 					'searchmode' => 2,
@@ -73,7 +73,7 @@ class OPMC_System_Search extends OPAL_Controller
 					'lang' => [OPAL_Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				), 'OPAM_Page');
+				], 'OPAM_Page');
 			}
 			//TODO Add some less relevant requests
 			$this->content->set('content_type', 'SEARCH_RESULTS');
@@ -110,7 +110,7 @@ class OPMC_System_Search extends OPAL_Controller
 			$form = new OPMF_System_Search();
 			$form->setAction(OP_WWW . '/module/system/search/results');
 			$form->setMethod(\Orange\Forms\Form::METHOD_GET);
-			$form->setValues(array('search' => $this->getGet('search')));
+			$form->setValues(['search' => $this->getGet('search')]);
 			return $form->getHTML();
 		} else {
 			return '';

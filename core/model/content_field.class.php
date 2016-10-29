@@ -7,16 +7,16 @@ class OPAM_Content_Field extends \Orange\Database\ActiveRecord
 
 	protected static $table = 'content_field';
 
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'content_id' => array('type' => 'INTEGER'),
-		'content_field_name' => array('type' => 'STRING', 'length' => 32),
-		'content_field_type' => array('type' => 'STRING', 'length' => 16),
-		'content_field_value' => array('type' => 'DATA', 'length' => 2048),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'content_id' => ['type' => 'INTEGER'],
+		'content_field_name' => ['type' => 'STRING', 'length' => 32],
+		'content_field_type' => ['type' => 'STRING', 'length' => 16],
+		'content_field_value' => ['type' => 'DATA', 'length' => 2048],
+	];
 
-	protected static $keys = array('content_id');
-	protected static $u_keys = array(array('content_id', 'content_field_name'));
+	protected static $keys = ['content_id'];
+	protected static $u_keys = [['content_id', 'content_field_name']];
 
 
 	public static function getObject($content_id, $field)

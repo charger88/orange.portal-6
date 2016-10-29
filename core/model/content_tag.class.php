@@ -16,16 +16,16 @@ class OPAM_Content_Tag extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'content_id' => array('type' => 'INTEGER'),
-		'content_tag_value' => array('type' => 'STRING', 'length' => 64),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'content_id' => ['type' => 'INTEGER'],
+		'content_tag_value' => ['type' => 'STRING', 'length' => 64],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('content_id');
+	protected static $keys = ['content_id'];
 
 	public static function getTagsForContent($id)
 	{

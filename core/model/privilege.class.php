@@ -16,16 +16,16 @@ class OPAM_Privilege extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'privilege_name' => array('type' => 'STRING', 'length' => 64),
-		'user_group_id' => array('type' => 'INTEGER'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'privilege_name' => ['type' => 'STRING', 'length' => 64],
+		'user_group_id' => ['type' => 'INTEGER'],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $u_keys = array(array('privilege_name', 'user_group_id'));
+	protected static $u_keys = [['privilege_name', 'user_group_id']];
 
 	/**
 	 * @param string $name
@@ -99,14 +99,14 @@ class OPAM_Privilege extends \Orange\Database\ActiveRecord
 	 */
 	public static function getPrivilegesByGroup()
 	{
-		$privileges = array();
+		$privileges = [];
 		$result = (new \Orange\Database\Queries\Select(self::$table))
 			->execute()
 			->getResultArray();
 		if ($result) {
 			foreach ($result as $row) {
 				if (!isset($privileges[$row['user_group_id']])) {
-					$privileges[$row['user_group_id']] = array();
+					$privileges[$row['user_group_id']] = [];
 				}
 				$privileges[$row['user_group_id']][] = $row['privilege_name'];
 			}

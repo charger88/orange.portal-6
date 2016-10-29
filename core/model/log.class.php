@@ -16,25 +16,25 @@ class OPAM_Log extends \Orange\Database\ActiveRecord
 	/**
 	 * @var array
 	 */
-	protected static $scheme = array(
-		'id' => array('type' => 'ID'),
-		'log_log' => array('type' => 'STRING', 'length' => 16),
-		'log_status' => array('type' => 'TINYINT'),
-		'log_time' => array('type' => 'TIME'),
-		'log_uri' => array('type' => 'STRING', 'length' => 512),
-		'log_ip' => array('type' => 'STRING', 'length' => 15),
-		'log_useragent' => array('type' => 'STRING', 'length' => 256),
-		'log_user_id' => array('type' => 'INTEGER'),
-		'log_classname' => array('type' => 'STRING', 'length' => 32),
-		'log_object_id' => array('type' => 'INTEGER'),
-		'log_message' => array('type' => 'STRING', 'length' => 512),
-		'log_vars' => array('type' => 'ARRAY'),
-	);
+	protected static $scheme = [
+		'id' => ['type' => 'ID'],
+		'log_log' => ['type' => 'STRING', 'length' => 16],
+		'log_status' => ['type' => 'TINYINT'],
+		'log_time' => ['type' => 'TIME'],
+		'log_uri' => ['type' => 'STRING', 'length' => 512],
+		'log_ip' => ['type' => 'STRING', 'length' => 15],
+		'log_useragent' => ['type' => 'STRING', 'length' => 256],
+		'log_user_id' => ['type' => 'INTEGER'],
+		'log_classname' => ['type' => 'STRING', 'length' => 32],
+		'log_object_id' => ['type' => 'INTEGER'],
+		'log_message' => ['type' => 'STRING', 'length' => 512],
+		'log_vars' => ['type' => 'ARRAY'],
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $keys = array('log_log', 'log_status');
+	protected static $keys = ['log_log', 'log_status'];
 
 	/**
 	 * @param string $to
@@ -58,7 +58,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord
 	 * @param array $params
 	 * @return OPAM_Log[]
 	 */
-	public static function loadLog($params = array())
+	public static function loadLog($params = [])
 	{
 
 		$log = isset($params['log']) ? $params['log'] : null;

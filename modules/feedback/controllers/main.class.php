@@ -15,7 +15,7 @@ class OPMC_Feedback_Main extends OPAL_Controller
 
 	public function indexBlock()
 	{
-		return $this->index(0, true);
+		return $this->index();
 	}
 
 	protected function index()
@@ -56,7 +56,7 @@ class OPMC_Feedback_Main extends OPAL_Controller
 		if ($form_object->id) {
 			$form = new OPMF_Feedback_Generic($form_object->getData());
 			$form->setAction(OP_WWW . '/module/feedback/main/send/' . $form_object->id);
-			$form->setValues($this->getPostArray(), true);
+			$form->setValues($this->getPostArray());
 			if ($form->checkXSRF()) {
 				if ($errors = $form->validateValues()->getErrors()) {
 					if (OPAL_Portal::getInstance()->env('ajax')) {

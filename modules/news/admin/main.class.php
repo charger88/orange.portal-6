@@ -7,11 +7,11 @@ class OPMA_News_Main extends OPMA_System_Content
 	protected $wrapper = 'news/admin-news-wrapper.phtml';
 	protected $allowed_type_type = 3;
 
-	protected $list_columns = array(
-		'content_title' => array('width' => 70, 'link' => '_edit'),
-		'content_user_id' => array('width' => 20,),
-		'content_status' => array('width' => 10,),
-	);
+	protected $list_columns = [
+		'content_title' => ['width' => 70, 'link' => '_edit'],
+		'content_user_id' => ['width' => 20,],
+		'content_status' => ['width' => 10,],
+	];
 
 	public function newAction($type = null)
 	{
@@ -21,8 +21,8 @@ class OPMA_News_Main extends OPMA_System_Content
 		if ($item->isNewAllowed()) {
 			$item->set('content_time_published', time());
 			$item->set('content_template', 'main-html.phtml');
-			$item->set('content_commands', array(array('module' => 'news', 'controller' => 'main', 'method' => 'view', 'static' => false, 'args' => array())));
-			$item->set('content_access_groups', array(0));
+			$item->set('content_commands', [['module' => 'news', 'controller' => 'main', 'method' => 'view', 'static' => false, 'args' => []]]);
+			$item->set('content_access_groups', [0]);
 			return $this->edit($item, $type);
 		} else {
 			return $this->msg(OPAL_Lang::t('ADMIN_WARNING_NEW_CONTENT'), self::STATUS_WARNING);
@@ -31,21 +31,21 @@ class OPMA_News_Main extends OPMA_System_Content
 
 	protected function edit($item, $type, $validate = false)
 	{
-		$this->edit_form_params['lang_overwrite'] = array('content_parent_id' => OPAL_Lang::t('ADMIN_CATEGORY'));
+		$this->edit_form_params['lang_overwrite'] = ['content_parent_id' => OPAL_Lang::t('ADMIN_CATEGORY')];
 		return parent::edit($item, $type, $validate);
 	}
 
 	protected function getFormOptions($item = null)
 	{
 		$options = parent::getFormOptions($item);
-		if ($IDs = OPAL_Portal::getInstance()->config('news_categories', array())) {
-			$pages = OPAM_Page::getList(array(
+		if ($IDs = OPAL_Portal::getInstance()->config('news_categories', [])) {
+			$pages = OPAM_Page::getList([
 				'types' => OPAM_Content_Type::getPageTypes(),
 				'IDs' => $IDs,
 				'order' => 'content_title',
 				'status_min' => OPAM_Content::STATUS_DRAFT,
-			), 'OPAM_Page');
-			$categories = array();
+			], 'OPAM_Page');
+			$categories = [];
 			foreach ($pages as $page) {
 				if ($page->isReadable($this->user->get('user_groups'))) {
 					$categories[$page->id] = $page->get('content_title');

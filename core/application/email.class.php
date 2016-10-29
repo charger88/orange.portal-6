@@ -28,7 +28,7 @@ class OPAL_Email
 
 	public function send($to)
 	{
-		return @mail(
+		return mail(
 			$to,
 			"=?UTF-8?B?" . base64_encode($this->subject) . "?=",
 			!is_null($this->plain_text) ? $this->plain_text : strip_tags($this->html),
