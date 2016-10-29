@@ -1,9 +1,11 @@
 <?php
 
-class OPAL_Downloader {
-	
-	public static function download($url,$timeout = 30){
-		if (function_exists('curl_exec')){
+class OPAL_Downloader
+{
+
+	public static function download($url, $timeout = 30)
+	{
+		if (function_exists('curl_exec')) {
 			$curlRes = curl_init($url);
 			curl_setopt($curlRes, CURLOPT_RETURNTRANSFER, true);
 			//curl_setopt($curlRes, CURLOPT_FOLLOWLOCATION, true);
@@ -15,7 +17,7 @@ class OPAL_Downloader {
 			curl_setopt($curlRes, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($curlRes, CURLOPT_SSL_VERIFYHOST, 0);
 			$data = curl_exec($curlRes);
-			if ($data){
+			if ($data) {
 				curl_close($curlRes);
 				return $data;
 			} else {
@@ -25,5 +27,5 @@ class OPAL_Downloader {
 			return file_get_contents($url);
 		}
 	}
-	
+
 }

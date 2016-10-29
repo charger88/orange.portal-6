@@ -1,18 +1,20 @@
 <?php
 
-class OPMA_System_Types extends OPAL_Controller {
-	
+class OPMA_System_Types extends OPAL_Controller
+{
+
 	protected $list_columns = array(
-		'id'                   => array(),
-		'content_type_name'    => array('width' => 50,'link' => '_edit'),
-		'content_type_code'    => array('width' => 20,),
-		'content_type_type'    => array('width' => 20,),
-		'content_type_status'  => array('width' => 10,),
+		'id' => array(),
+		'content_type_name' => array('width' => 50, 'link' => '_edit'),
+		'content_type_code' => array('width' => 20,),
+		'content_type_type' => array('width' => 20,),
+		'content_type_status' => array('width' => 10,),
 	);
-	
+
 	protected $list_class_fields = array('content_type_status');
-	
-	public function indexAction(){
+
+	public function indexAction()
+	{
 		$params = array();
 		$params['list'] = OPAM_Content_Type::getList();
 		$params['class_fields'] = $this->list_class_fields;
@@ -32,51 +34,55 @@ class OPMA_System_Types extends OPAL_Controller {
 		);
 		$params['columns']['_edit'] = array(
 			'title' => '',
-			'text'  => OPAL_Lang::t('ADMIN_EDIT'),
-			'hint'  => OPAL_Lang::t('ADMIN_EDIT'),
+			'text' => OPAL_Lang::t('ADMIN_EDIT'),
+			'hint' => OPAL_Lang::t('ADMIN_EDIT'),
 			'class' => 'icon icon-edit',
-			'link'  => '/'.$this->content->getSlug().'/edit/%id%',
+			'link' => '/' . $this->content->getSlug() . '/edit/%id%',
 		);
-		return $this->templater->fetch('system/admin-types-list-wrapper.phtml',array(
-			'html' => $this->templater->fetch('system/admin-list.phtml',$params),
+		return $this->templater->fetch('system/admin-types-list-wrapper.phtml', array(
+			'html' => $this->templater->fetch('system/admin-list.phtml', $params),
 			'slug' => $this->content->getSlug(),
 		));
 	}
-	
-	public function newAction(){
+
+	public function newAction()
+	{
 		return $this->edit(new OPAM_Content_Type());
 	}
-	
-	public function editAction($id){
-        $id = intval($id);
+
+	public function editAction($id)
+	{
+		$id = intval($id);
 		$item = new OPAM_Content_Type($id);
-		if ($item->id){
+		if ($item->id) {
 			return $this->edit($item);
 		} else {
 			return $this->msg(OPAL_Lang::t('ADMIN_WARNING_NEW_CONTENT_TYPE'), self::STATUS_WARNING);
 		}
 	}
 
-    /**
-     * @param OPAM_Content_Type $item
-     * @return string
-     */
-	protected function edit($item){
+	/**
+	 * @param OPAM_Content_Type $item
+	 * @return string
+	 */
+	protected function edit($item)
+	{
 		$form = new OPMX_System_TypeEdit();
-        $form->setAction($this->content->getURL().'/save/'.$item->id);
-        $form->setValues($item->getData(), true);
+		$form->setAction($this->content->getURL() . '/save/' . $item->id);
+		$form->setValues($item->getData(), true);
 		return $form->getHTML();
 	}
 
-	public function saveAction($id = 0){
-        $id = intval($id);
+	public function saveAction($id = 0)
+	{
+		$id = intval($id);
 		$item = new OPAM_Content_Type($id);
 		$form = new OPMX_System_TypeEdit();
 		$form->setValues($this->getPostArray());
 		$item->setData($form->getValuesWithXSRFCheck());
 		$item->save();
 		$this->log('CONTENT_TYPE_%s_SAVED', array($item->get('content_type_name')), 'LOG_CONTENT', self::STATUS_OK, $item);
-		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL().'/edit/'.$item->id);
+		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL() . '/edit/' . $item->id);
 	}
-	
+
 }

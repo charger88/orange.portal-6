@@ -1,40 +1,45 @@
 <?php
 
-class OPMA_System_Center extends OPAL_Controller {
-	
-	public function indexAction(){
-		return $this->templater->fetch('system/admin-center.phtml',array(
+class OPMA_System_Center extends OPAL_Controller
+{
+
+	public function indexAction()
+	{
+		return $this->templater->fetch('system/admin-center.phtml', array(
 			'blocks' => OPAL_Portal::getInstance()->processHooks('admin_center_index'),
 		));
 	}
-	
-	public function licenseAction(){
+
+	public function licenseAction()
+	{
 		$license = new \Orange\FS\File('license.txt');
-		return $this->templater->fetch('system/admin-center-license.phtml',array(
+		return $this->templater->fetch('system/admin-center-license.phtml', array(
 			'license' => $license->getData(),
 		));
 	}
 
-	public function systemBlockDirect(){
+	public function systemBlockDirect()
+	{
 		$version = new \Orange\FS\File('core', 'version.txt');
-		return $this->templater->fetch('system/admin-center-system.phtml',array(
+		return $this->templater->fetch('system/admin-center-system.phtml', array(
 			'version' => $version->getData(),
-			'server' => $this->getServer('SERVER_SOFTWARE',''),
+			'server' => $this->getServer('SERVER_SOFTWARE', ''),
 		));
 	}
 
-	public function menuBlockDirect(){
+	public function menuBlockDirect()
+	{
 		$menu = array();
-		if ($modules = OPAM_Module::getModules(true)){
-			foreach ($modules as $module){
-				if ($module_menu = $module->getAdminMenu()){
-					$menu = array_merge($menu,$module_menu);
+		if ($modules = OPAM_Module::getModules(true)) {
+			foreach ($modules as $module) {
+				if ($module_menu = $module->getAdminMenu()) {
+					$menu = array_merge($menu, $module_menu);
 				}
 			}
 		}
-		return $this->templater->fetch('system/admin-menu.phtml',array(
+		return $this->templater->fetch('system/admin-menu.phtml', array(
 			'menu' => $menu,
 		));
 	}
-	
+
 }

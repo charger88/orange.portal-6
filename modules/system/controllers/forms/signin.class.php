@@ -7,25 +7,27 @@ use \Orange\Forms\Fields\Inputs\Hidden;
 use \Orange\Forms\Fields\Buttons\Submit;
 use \Orange\Forms\Fields\Html;
 
-class OPMF_System_Signin extends Form {
+class OPMF_System_Signin extends Form
+{
 
-	protected function init($params){
+	protected function init($params)
+	{
 
-        $this->addField((new Text('signin_login', OPAL_Lang::t('Username'))));
-        $this->addField((new Password('signin_password', OPAL_Lang::t('Password'))));
-        $this->addField((new Hidden('signin_redirect')));
-        $this->addField((new Submit('signin_submit', OPAL_Lang::t('Sign In'))));
+		$this->addField((new Text('signin_login', OPAL_Lang::t('Username'))));
+		$this->addField((new Password('signin_password', OPAL_Lang::t('Password'))));
+		$this->addField((new Hidden('signin_redirect')));
+		$this->addField((new Submit('signin_submit', OPAL_Lang::t('Sign In'))));
 
-		if (isset($params['recovery'])){
+		if (isset($params['recovery'])) {
 			$this->addField(new Html($params['recovery']));
 		}
-		if (isset($params['registration'])){
-            $this->addField(new Html($params['registration']));
+		if (isset($params['registration'])) {
+			$this->addField(new Html($params['registration']));
 		}
-		if (!is_null(OPAM_User::$auth_error)){
+		if (!is_null(OPAM_User::$auth_error)) {
 			$this->addError('signin_submit', OPAM_User::$auth_error);
 		}
 
 	}
-	
+
 }
