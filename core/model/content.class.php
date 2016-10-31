@@ -2,7 +2,6 @@
 
 use Orange\Database\Queries\Parts\Condition;
 
-// TODO Create tags support
 /**
  * Class OPAM_Content
  */
