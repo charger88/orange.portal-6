@@ -1,7 +1,5 @@
 <?php
 
-//TODO Implement files editing
-
 class OPMA_System_Files extends OPAL_Controller
 {
 
@@ -10,10 +8,79 @@ class OPMA_System_Files extends OPAL_Controller
 		return $this->templater->fetch('system/admin-files.phtml', []);
 	}
 
+	public function editAction(){
+		$filename = $this->getGet('file');
+		if ($filename && $this->checkFilepath($this->getPathBase() . $filename)) {
+			$file = $this->getFileObject($filename);
+			$form = new OPMX_System_FileEdit($this->getFileEditFormParams($file));
+			$form->setAction($this->content->getURL() . '/save');
+			$form->setValues([
+				'file_data' => $this->isFileDataEditable($file) && $file->exists() ? $file->getData() : '',
+				'file_name' => $filename,
+				'file_name_org' => $filename,
+			]);
+			return $form->getHTML();
+		} else {
+			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+		}
+	}
+
+	public function saveAction()
+	{
+		$filename = $this->getPost('file_name_org');
+		$file = $this->getFileObject($filename);
+		$form = new OPMX_System_FileEdit($this->getFileEditFormParams($file));
+		$form->setValues($this->getPostArray());
+		if ($form->checkXSRF()) {
+			$new_filename = $this->getPost('file_name');
+			if (!empty($filename) && !empty($new_filename) && $this->checkFilepath($this->getPathBase() . $filename) && $this->checkFilepath($this->getPathBase() . $new_filename)) {
+				try {
+					if ($filename !== $new_filename) {
+						if ($file->exists()) {
+							$file->move($this->getPathBase() . $new_filename);
+						} else {
+							$file = new \Orange\FS\File($this->getPathBase() . $new_filename);
+						}
+					}
+					if ($this->isFileDataEditable($file)) {
+						$file->save($this->getPost('file_data'));
+					}
+					return $this->redirect($this->content->getURL() . '/edit?file=' . urlencode($new_filename));
+				} catch (Exception $e) {
+					return $this->msg($e->getMessage(), self::STATUS_ERROR);
+				}
+			} else {
+				return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			}
+		} else {
+			return $this->msg(OPAL_Lang::t('ADMIN_XSRF'), self::STATUS_ERROR);
+		}
+	}
+
+	private function getFileObject($filename){
+		try {
+			$file = \Orange\FS\FS::open($this->getPathBase() . $filename);
+		} catch (Exception $e){
+			$file = new \Orange\FS\File($this->getPathBase() . $filename);
+		}
+		return $file;
+	}
+
+	private function getFileEditFormParams($file){
+		return [
+			'editable' => $this->isFileDataEditable($file),
+			'is_new' => $file->exists(),
+		];
+	}
+
+	private function isFileDataEditable($file){
+		return ($file instanceof \Orange\FS\File) && (!$file->exists() || ($file->getFileSize() < 1048576));
+	}
+
 	public function readdirAjax()
 	{
 		$org_path = $this->getGet('path');
-		$path = trim('sites/' . OPAL_Portal::$sitecode . '/static/' . $org_path, '/');
+		$path = trim($this->getPathBase() . $org_path, '/');
 		if ($this->checkFilepath($path)) {
 			$dir = new \Orange\FS\Dir($path);
 			if ($dir->exists()) {
@@ -45,7 +112,7 @@ class OPMA_System_Files extends OPAL_Controller
 
 	public function uploadAjax()
 	{
-		$path = trim('sites/' . OPAL_Portal::$sitecode . '/static/' . $this->getPost('path'), '/');
+		$path = trim($this->getPathBase() . $this->getPost('path'), '/');
 		if ($this->checkFilepath($path)) {
 			$files = $this->getFile('uploads');
 			if (!empty($files['name'])) {
@@ -70,7 +137,7 @@ class OPMA_System_Files extends OPAL_Controller
 
 	public function newfolderAjax()
 	{
-		$path = trim('sites/' . OPAL_Portal::$sitecode . '/static/' . $this->getPost('path'), '/') . '/' . $this->getPost('folder');
+		$path = trim($this->getPathBase() . $this->getPost('path'), '/') . '/' . $this->getPost('folder');
 		if ($this->checkFilepath($path)) {
 			$dir = new \Orange\FS\Dir($path);
 			$dir->create();
@@ -82,7 +149,7 @@ class OPMA_System_Files extends OPAL_Controller
 
 	public function deleteAjax()
 	{
-		$path = trim('sites/' . OPAL_Portal::$sitecode . '/static/' . $this->getPost('file'), '/');
+		$path = trim($this->getPathBase() . $this->getPost('file'), '/');
 		if ($this->checkFilepath($path)) {
 			try {
 				\Orange\FS\FS::open($path)->remove();
@@ -110,6 +177,10 @@ class OPMA_System_Files extends OPAL_Controller
 			$status = ((count($path) >= 3) && ($path[0] == 'sites') && ($path[1] == OPAL_Portal::$sitecode) && ($path[2] == 'static'));
 		}
 		return $status;
+	}
+
+	private function getPathBase(){
+		return 'sites/' . OPAL_Portal::$sitecode . '/static/';
 	}
 
 }

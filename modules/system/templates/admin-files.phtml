@@ -3,7 +3,10 @@
     <input type="hidden" name="path" value="" class="mk-filemanager-path" />
     <div id="form-region-top"><button class="admin-button"><?php $this->el('ADMIN_UPLOAD'); ?></button></div>
 </form>
-<div id="files-newfolder-wrapper"><a href="<?php $this->ee(OP_WWW.'/admin/files/newfolder'); ?>" id="files-newfolder"><?php $this->el('ADMIN_FILES_NEW_FOLDER'); ?></a></div>
+<div id="files-newfolder-wrapper">
+	<a href="<?php $this->ee(OP_WWW.'/admin/files/edit'); ?>" id="files-newfile"><?php $this->el('ADMIN_FILES_NEW_FILE'); ?></a> /
+	<a href="<?php $this->ee(OP_WWW.'/admin/files/newfolder'); ?>" id="files-newfolder"><?php $this->el('ADMIN_FILES_NEW_FOLDER'); ?></a>
+</div>
 <table class="op-admin-list-table" id="filemanager">
     <thead>
         <tr>
@@ -38,8 +41,14 @@
         getDirDataURL: '<?php $this->ee(OP_WWW.'/admin/files/readdir'); ?>',
         filesDataContainerID: '#files-contaner',
         fileTemplateElementID: '#file-template',
-        newFolderLinkID: '#files-newfolder',
+		newFileLinkID: '#files-newfile',
+		newFolderLinkID: '#files-newfolder',
         uploadFormID: '#files-upload',
         textAreYouSure: '<?php $this->el('ADMIN_ARE_YOU_SURE'); ?>',
+		editFile: function(e){
+			console.log(e);
+			window.open('<?php echo OP_WWW.'/admin/files/edit/?file='; ?>' + encodeURIComponent($(this).attr('data-file')));
+			return false;
+		}
     });
 </script>

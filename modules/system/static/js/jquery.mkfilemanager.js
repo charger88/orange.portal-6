@@ -10,20 +10,20 @@ jQuery.fn.mkfilemanager = function(options){
         defaultPath: '',
         filesDataContainerID: '',
         fileTemplateElementID: '',
+        newFileLinkID: '',
         newFolderLinkID: '',
         uploadFormID: '',
         textTreeRoot: '.',
         textTreeUpper: '..',
         textAreYouSure: 'Are you sure?',
+        textNewFile: 'New file name:',
         textNewFolder: 'New folder name:',
         sortKey: 'name',
         sortAsc: true,
         openFile: function(path){
             console.log('Open file',path);
         },
-        editFile: function(){
-            return false;
-        },
+        editFile: false,
         deleteFile: function(){
             if (confirm(options.textAreYouSure)) {
                 var request = {
@@ -36,6 +36,13 @@ jQuery.fn.mkfilemanager = function(options){
                         $plugin.reloadFiles();
                     }
                 });
+            }
+            return false;
+        },
+        newFile: function(){
+            var fileName = prompt(options.textNewFile);
+            if (fileName.length > 0){
+                window.open($(this).attr('href') + '?file=' + encodeURIComponent($(this).attr('data-path') + '/' + fileName));
             }
             return false;
         },
@@ -62,6 +69,9 @@ jQuery.fn.mkfilemanager = function(options){
     var $uploadform = null;
 
     var make = function(){
+        if (options.newFileLinkID) {
+            $(options.newFileLinkID).on('click',options.newFile);
+        }
         if (options.newFolderLinkID) {
             $(options.newFolderLinkID).on('click',options.newFolder);
         }
@@ -73,6 +83,9 @@ jQuery.fn.mkfilemanager = function(options){
     };
 
     $plugin.readDir = function(path){
+        if (options.newFileLinkID) {
+            $(options.newFileLinkID).attr('data-path',path);
+        }
         if (options.newFolderLinkID) {
             $(options.newFolderLinkID).attr('data-path',path);
         }
@@ -129,8 +142,16 @@ jQuery.fn.mkfilemanager = function(options){
             $file.find('.mk-filemanager-edit, .mk-filemanager-delete').remove();
         }
         $file.find('.mk-filemanager-edit, .mk-filemanager-delete').attr('data-file',file.path);
-        $file.find('.mk-filemanager-edit').eq(0).on('click',options.editFile);
-        $file.find('.mk-filemanager-delete').eq(0).on('click',options.deleteFile);
+        if (options.editFile !== false) {
+            $file.find('.mk-filemanager-edit').eq(0).on('click', options.editFile);
+        } else {
+            $file.find('.mk-filemanager-edit').remove();
+        }
+        if (options.deleteFile !== false) {
+            $file.find('.mk-filemanager-delete').eq(0).on('click', options.deleteFile);
+        } else {
+            $file.find('.mk-filemanager-delete').remove();
+        }
         if (file.ext == '.'){
             if (file.not_editable && (file.name == options.textTreeRoot)){
                 $file.find('.mk-filemanager-ico').addClass('mk-filemanager-tree');

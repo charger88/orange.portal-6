@@ -59,7 +59,7 @@ class OPMA_System_Groups extends OPAL_Controller
 	{
 		$form = new OPMX_System_GroupEdit();
 		$form->setAction($this->content->getURL() . '/save/' . $item->id);
-		$form->setValues($item->getData(), true);
+		$form->setValues($item->getData());
 		return $form->getHTML();
 	}
 

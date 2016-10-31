@@ -262,6 +262,7 @@ return [
 	'ADMIN_MODULE_FAILED' => 'Module installation was failed',
 	'ADMIN_MODULE_UNINSTALLED' => 'Module uninstalled',
 	'ADMIN_ARE_YOU_SURE' => 'Are you sure?',
+	'ADMIN_FILES_NEW_FILE' => 'Create new file',
 	'ADMIN_FILES_NEW_FOLDER' => 'Create new folder',
 
 	'ADMIN_MENU_ROOT' => 'Root',
