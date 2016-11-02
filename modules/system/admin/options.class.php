@@ -87,6 +87,7 @@ class OPMA_System_Options extends OPAL_Controller
 		$form->setValues($this->getPostArray());
 		if ($data = $form->getValuesWithXSRFCheck()) {
 			unset($data['content_edit_submit']);
+			unset($data[\Orange\Forms\Form::XSRF_FIELD_NAME]);
 			foreach ($data as $key => $value) {
 				$config = new OPAM_Config('config_key', $key);
 				if ($config->id) {
