@@ -49,6 +49,7 @@ class OPAM_Log extends \Orange\Database\ActiveRecord
 		$message .= "\n";
 		$message .= $this->get('log_uri');
 		$email = new OPAL_Email();
+		$email->setReturn($to);
 		$email->subject = $subject;
 		$email->plain_text = $message;
 		return $email->send($to);

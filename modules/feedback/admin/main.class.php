@@ -133,7 +133,7 @@ class OPMA_Feedback_Main extends OPAL_Controller
 			]),
 		]);
 		$email->plain_text = $message_object->get('feedback_message_reply_text');
-		$email->setReturnPath($message_object->get('feedback_message_reply_from_email'));
+		$email->setReturn($message_object->get('feedback_message_reply_from_email'));
 		$res = $email->send($message_object->get('feedback_message_sender_email'));
 		if ($res) {
 			return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_FORM_REPLY_SENT'), self::STATUS_OK, $this->content->getURL() . '/view/' . $message_object->id);

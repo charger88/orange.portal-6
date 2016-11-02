@@ -20,7 +20,7 @@ class OPAL_Email
 		$this->headers[] = "Content-Transfer-Encoding: 8BIT";
 	}
 
-	public function setReturnPath($email)
+	public function setReturn($email)
 	{
 		$this->headers[] = "From: $email";
 		$this->headers[] = "Reply-To: $email";

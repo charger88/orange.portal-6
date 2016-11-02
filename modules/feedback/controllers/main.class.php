@@ -147,7 +147,7 @@ class OPMC_Feedback_Main extends OPAL_Controller
 				'message' => $message,
 			]),
 		]);
-		$email->setReturnPath($message->get('feedback_message_sender_email'));
+		$email->setReturn($message->get('feedback_message_sender_email'));
 		return $email->send(
 			$form->get('feedback_form_send_to')
 				? $form->get('feedback_form_send_to')
