@@ -14,6 +14,12 @@ return [
 				],
 			],
 		],
+		'data' => [
+			'name' => 'Data',
+			'action' => true,
+			'block' => true,
+			'args' => [],
+		],
 	],
 	'menu' => [
 		'index' => [

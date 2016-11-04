@@ -26,4 +26,24 @@ class OPMC_System_Text extends OPAL_Controller
 		]);
 	}
 
+	public function dataAction()
+	{
+		return $this->data();
+	}
+
+	public function dataAjax()
+	{
+		return $this->data();
+	}
+
+	public function dataBlock()
+	{
+		return $this->data();
+	}
+
+	private function data()
+	{
+		return $this->content->text('text')->format();
+	}
+
 }
