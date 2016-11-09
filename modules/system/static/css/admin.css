@@ -638,6 +638,10 @@ aside#column nav ul li:hover ul {
 	width: 16rem;
 }
 
+#system_enabled_langs {
+    height: 16rem;
+}
+
 /* List */
 
 .op-admin-list-table {

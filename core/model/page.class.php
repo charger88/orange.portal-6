@@ -62,9 +62,10 @@ class OPAM_Page extends OPAM_Content
 	/**
 	 * @param OPAM_User $user
 	 * @param boolean $ignoreOnSiteMode
+	 * @param null $status_min
 	 * @return array
 	 */
-	public static function getPagesByParents($user, $ignoreOnSiteMode = false)
+	public static function getPagesByParents($user, $ignoreOnSiteMode = false, $status_min = null)
 	{
 		$grouped = [];
 		$params = [
@@ -72,6 +73,9 @@ class OPAM_Page extends OPAM_Content
 			'order' => 'content_order',
 			'types' => OPAM_Content_Type::getPageTypes(),
 		];
+		if (!is_null($status_min)){
+			$params['status_min'] = $status_min;
+		}
 		if (!$ignoreOnSiteMode) {
 			$params['on_site_mode'] = [2, 3];
 		}

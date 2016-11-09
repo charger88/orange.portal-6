@@ -154,7 +154,7 @@ class OPMA_System_Content extends OPAL_Controller
 		$classname = $type->getClass();
 		/** @var OPAM_Content $item */
 		$item = new $classname($id);
-		$cacheids = array();
+		$cacheids = [];
 		if (($item->id && $item->isEditable($this->user->get('user_groups'))) || (!$item->id && $item->isNewAllowed())) {
 			if (!$item->id) {
 				$item->set('content_type', $type->get('content_type_code'));
@@ -172,7 +172,11 @@ class OPMA_System_Content extends OPAL_Controller
 				$form->setValues($this->getPostArray());
 				$values = $form->getValuesWithXSRFCheck();
 				if (!isset($values['content_lang'])) {
-					$values['content_lang'] = $type->get('content_type_multilang') ? OPAL_Portal::config('system_default_lang', 'en') : '';
+					if ($type->get('content_type_type') == 2){
+						$values['content_lang'] = '';
+					} else {
+						$values['content_lang'] = $type->get('content_type_multilang') ? OPAL_Portal::config('system_default_lang', 'en') : '';
+					}
 				}
 				$item->setData($values);
 				$item->set('content_slug', str_replace('%2F', '/', urlencode($item->get('content_slug'))));
@@ -232,17 +236,20 @@ class OPMA_System_Content extends OPAL_Controller
 				$template_prefix = 'main-';
 			}
 		} else {
-			$template_prefix = $item ? explode('-', $item->get('content_template')) : array();
+			$template_prefix = $item ? explode('-', $item->get('content_template')) : [];
 			$template_prefix = count($template_prefix) > 1 ? $template_prefix[0] . '-' : '';
 		}
 		$options = array(
 			'content_template' => $this->templater->theme->getTemplatesList($template_prefix),
-			'content_lang' => OPAL_Lang::langs(OPAL_Portal::config('system_enabled_langs', array())),
-			'content_status' => array(0 => OPAL_Lang::t('STATUS_REMOVED'), OPAL_Lang::t('STATUS_CANCELED'), OPAL_Lang::t('STATUS_DISABLED'), OPAL_Lang::t('STATUS_DRAFT'), OPAL_Lang::t('STATUS_MODERATION'), OPAL_Lang::t('STATUS_ENABLED'), OPAL_Lang::t('STATUS_APPROVED'), OPAL_Lang::t('STATUS_HOMEPAGE')),
+			'content_lang' => OPAL_Lang::langs(),
+			'content_status' => array(0 => OPAL_Lang::t('STATUS_REMOVED'), OPAL_Lang::t('STATUS_CANCELED'), OPAL_Lang::t('STATUS_DISABLED'), OPAL_Lang::t('STATUS_DRAFT'), OPAL_Lang::t('STATUS_MODERATION'), OPAL_Lang::t('STATUS_ENABLED'), OPAL_Lang::t('STATUS_APPROVED')),
 			'content_text_format' => array(0 => OPAL_Lang::t('CONTENT_TEXT_FORMAT_0'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_1'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_2'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_3'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_4')),
 			'content_access_groups' => OPAM_User_Group::getRef(),
 			'content_area' => array_merge($this->templater->theme->getThemeAreas(), $this->templater->theme->getAdminAreas()),
 		);
+		if (is_null($type) || $type->get('content_type_type') == 1){
+			$options['content_status'][] = OPAL_Lang::t('STATUS_HOMEPAGE');
+		}
 		foreach ($options['content_access_groups'] as $key => $value) {
 			$options['content_access_groups'][$key] = OPAL_Lang::t($value);
 		}

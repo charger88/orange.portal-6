@@ -63,7 +63,12 @@ class OPMC_System extends OPAL_Controller
 	{
 		$default_lang = OPAL_Portal::config('system_default_lang', '');
 		$current_lang = OPAL_Portal::$sitelang;
-		$languages = OPAL_Lang::langs(OPAL_Portal::config('system_enabled_langs', []));
+		$languages = OPAL_Lang::langs();
+		$enabled_languages = [];
+		foreach (OPAL_Portal::config('system_enabled_langs', []) as $lang){
+			$enabled_languages[$lang] = $languages[$lang];
+		}
+		$enabled_languages = $languages;
 		$pages = OPAL_Portal::getInstance()->content->getLanguagePages($default_lang, $this->user);
 		if (empty($pages)) {
 			$page = clone OPAL_Portal::getInstance()->content;
@@ -80,7 +85,7 @@ class OPMC_System extends OPAL_Controller
 			}
 		}
 		return $this->templater->fetch('system/' . $this->arg('prefix', 'default') . '-lang-switcher.phtml', [
-			'languages' => $languages,
+			'languages' => $enabled_languages,
 			'pages' => $pages,
 			'default_lang' => $default_lang,
 			'current_lang' => $current_lang,

@@ -188,6 +188,7 @@ jQuery.fn.mkfilemanager = function(options){
         options.sortKey = mode;
         var $rows = $(options.filesDataContainerID).find('tr');
         $rows.sort(function(a, b) {
+            console.log(a,b);
             var valueA = $(a).attr('data-sort-' + options.sortKey);
             var valueB = $(b).attr('data-sort-' + options.sortKey);
             if ( (options.sortKey == 'size') || (options.sortKey == 'time') ){
@@ -195,9 +196,9 @@ jQuery.fn.mkfilemanager = function(options){
                 valueB = parseInt(valueB);
             }
             if (options.sortAsc) {
-                return (valueA > valueB) ? 1 : 0;
+                return (valueA > valueB) ? 1 : -1;
             } else {
-                return (valueA < valueB) ? 1 : 0;
+                return (valueA < valueB) ? 1 : -1;
             }
         });
         $.each($rows, function(){

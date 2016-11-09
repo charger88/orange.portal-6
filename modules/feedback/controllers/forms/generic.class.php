@@ -22,13 +22,12 @@ class OPMF_Feedback_Generic extends Form
 				}
 			} else {
 				$themes = explode("\n", $params['feedback_form_themes']);
+				$themes = array_combine($themes, $themes);
 				if (count($themes) == 1) {
 					$field = new Hidden('theme');
-					$field->setDefault($themes[0]);
+					$field->setDefault(current($themes));
 				} else {
-					$themes = array_combine($themes, $themes);
 					$field = new Select('theme', OPAL_Lang::t('MODULE_FEEDBACK_THEME'));
-					$field->setDefault($themes[0]);
 					if ($req) {
 						$field->requireField();
 					}

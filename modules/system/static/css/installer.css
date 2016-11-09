@@ -118,3 +118,7 @@ body > section button {
 	cursor: pointer;
 	padding: 7px 14px;
 }
+
+#enabled_langs {
+    height: 16rem;
+}

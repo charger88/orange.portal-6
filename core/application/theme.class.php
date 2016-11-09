@@ -170,8 +170,10 @@ abstract class OPAL_Theme
 				if ($dir->exists()) {
 					$files = $dir->readDir();
 					foreach ($files as $file) {
-						if (strpos($file->getName(), $prefix) === 0) {
-							$templates[$file->getName()] = $file->getName() . ' / ' . $theme;
+						if (!isset($templates[$file->getName()])) {
+							if (strpos($file->getName(), $prefix) === 0) {
+								$templates[$file->getName()] = $file->getName() . ' / ' . $theme;
+							}
 						}
 					}
 				}

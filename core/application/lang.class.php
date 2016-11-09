@@ -27,43 +27,57 @@ class OPAL_Lang
 		return $params ? vsprintf($text, $params) : $text;
 	}
 
-	public static function langs($langs = null)
+	public static function langs()
 	{
-		$return = [];
-		$avalible_langs = self::getAvalibleLangsInfo();
-		if (is_null($langs)) {
-			if ($avalible_langs) {
-				foreach ($avalible_langs as $l => $lData) {
-					$return[$l] = isset($avalible_langs[$l]) ? $lData['name'] : $l;
-				}
-			}
-		} else {
-			if ($langs) {
-				foreach ($langs as $l) {
-					$return[$l] = isset($avalible_langs[$l]) ? $avalible_langs[$l]['name'] : $l;
-				}
-			}
-		}
-		return $return;
-	}
-
-	public static function getAvalibleLangsInfo()
-	{
-		$langs = [];
-		$dirname = 'modules/system/lang';
-		$files = new \Orange\FS\Dir($dirname);
-		if ($dirFiles = $files->readDir()) {
-			foreach ($dirFiles as $file) {
-				if ($file instanceof \Orange\FS\File) {
-					if ($file->getExt() == 'json') {
-						if ($data = json_decode($file->getData(), true)) {
-							$langs[$data['code']] = $data;
-						}
-					}
-				}
-			}
-		}
-		return $langs;
+		return array_merge([
+			'en' => 'English',
+			'ru' => 'Russian',
+			'af' => 'Afrikaans',
+			'sq' => 'Albanian',
+			'am' => 'Amharic',
+			'ar' => 'Arabic',
+			'hy' => 'Armenian',
+			'az' => 'Azerbaijani',
+			'be' => 'Belarusian',
+			'bg' => 'Bulgarian',
+			'zh' => 'Chinese',
+			'hr' => 'Croatian',
+			'cs' => 'Czech',
+			'da' => 'Danish',
+			'nl' => 'Dutch',
+			'eo' => 'Esperanto',
+			'et' => 'Estonian',
+			'fi' => 'Finnish',
+			'fr' => 'French',
+			'ka' => 'Georgian',
+			'de' => 'German',
+			'el' => 'Greek',
+			'he' => 'Hebrew',
+			'hi' => 'Hindi',
+			'hu' => 'Hungarian',
+			'id' => 'Indonesian',
+			'is' => 'Icelandic',
+			'it' => 'Italian',
+			'ja' => 'Japanese',
+			'kk' => 'Kazakh',
+			'ko' => 'Korean',
+			'lt' => 'Lithuanian',
+			'lv' => 'Latvian',
+			'no' => 'Norwegian',
+			'fa' => 'Persian (Farsi)',
+			'pl' => 'Polish',
+			'ps' => 'Pashto, Pushto',
+			'pt' => 'Portuguese',
+			'ro' => 'Romanian',
+			'sr' => 'Serbian',
+			'es' => 'Spanish',
+			'sv' => 'Swedish',
+			'th' => 'Thai',
+			'tr' => 'Turkish',
+			'uk' => 'Ukrainian',
+			'uz' => 'Uzbek',
+			'vi' => 'Vietnamese',
+		], OPAL_Portal::config('additional_langs', []));
 	}
 
 }

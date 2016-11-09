@@ -11,7 +11,7 @@ class OPMA_System_Pages extends OPMA_System_Content
 		return $this->wrapContentWithTemplate(
 			$this->wrapper,
 			$this->templater->fetch('system/admin-pages-tree.phtml', array(
-				'tree' => OPAM_Page::getPagesByParents($this->user, true),
+				'tree' => OPAM_Page::getPagesByParents($this->user, true, OPAM_Content::STATUS_DISABLED),
 				'refs' => $this->getFormOptions(),
 				'slug' => $this->content->getSlug(),
 			))
