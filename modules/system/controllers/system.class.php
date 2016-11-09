@@ -68,7 +68,6 @@ class OPMC_System extends OPAL_Controller
 		foreach (OPAL_Portal::config('system_enabled_langs', []) as $lang){
 			$enabled_languages[$lang] = $languages[$lang];
 		}
-		$enabled_languages = $languages;
 		$pages = OPAL_Portal::getInstance()->content->getLanguagePages($default_lang, $this->user);
 		if (empty($pages)) {
 			$page = clone OPAL_Portal::getInstance()->content;
