@@ -55,4 +55,8 @@
 <?php if ($files = $this->theme->getHeadScriptFiles()){ foreach ($files as $file){ ?>
 		<script type="text/javascript" src="<?php $this->ee($file); ?>"></script>
 <?php }} ?>
-		<link rel="shortcut icon" href="<?php echo OP_WWW.'/favicon.ico'; ?>" />
+<?php if (\Orange\FS\FS::open('sites/' . OPAL_Portal::$sitecode . '/static/root/favicon.png')->exists()){ ?>
+	<link rel="icon" href="<?php echo OP_WWW.'/favicon.png'; ?>" />
+<?php } else { ?>
+	<link rel="shortcut icon" href="<?php echo OP_WWW.'/favicon.ico'; ?>" />
+<?php } ?>
