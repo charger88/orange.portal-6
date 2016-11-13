@@ -95,7 +95,7 @@ class OPMI_System extends OPAL_Installer
 				'password' => $this->params['db_password'],
 				'charset' => 'utf8',
 				'collation' => 'utf8_general_ci',
-				'table_prefix' => $this->params['db_prefix']
+				'prefix' => $this->params['db_prefix']
 			]
 		];
 		$connection = new \Orange\Database\Connection($config['db']['master']);
@@ -115,7 +115,7 @@ class OPMI_System extends OPAL_Installer
 				. "\n\t\t" . '\'password\' => \'' . $this->params['db_password'] . '\','
 				. "\n\t\t" . '\'charset\' => \'utf8\','
 				. "\n\t\t" . '\'collation\' => \'utf8_general_ci\','
-				. "\n\t\t" . '\'table_prefix\' => \'' . $this->params['db_prefix'] . '\''
+				. "\n\t\t" . '\'prefix\' => \'' . $this->params['db_prefix'] . '\''
 				. "\n\t" . ']'
 				. "\n" . '];';
 			$dir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/config');

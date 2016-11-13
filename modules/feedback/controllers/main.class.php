@@ -137,6 +137,7 @@ class OPMC_Feedback_Main extends OPAL_Controller
 
 	public static function sendMessage($message, $form = null, $template = 'feedback/default-feedback.phtml')
 	{
+		OPAL_Lang::load('modules/feedback/lang/admin', OPAL_Portal::$sitelang);
 		if (is_null($form)) {
 			$form = new OPMM_Feedback_Form($message->get('feedback_message_form_id'));
 		}

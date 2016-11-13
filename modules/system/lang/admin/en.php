@@ -298,7 +298,7 @@ return [
 
 	'CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER' => 'Content type is not allowed for this controller',
 	'CONTENT_TYPE_%s_SAVED' => 'Content "%s" is saved',
-	'CONTENT_%s_SAVED' => 'Content type "%s" is saved',
+	'CONTENT_%s_SAVED' => 'Content "%s" is saved',
 	'PORTAL_%s_CONTROLLER_NOT_FOUND' => 'Controller "%s" was not found',
 
 	'%s_PRIVILEGES_ADDED__%s_PRIVILEGES_DELETED' => 'Privileges updated: %s added, %s deleted.',
