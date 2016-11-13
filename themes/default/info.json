@@ -1,4 +1,11 @@
 {
 	"code": "default",
-	"name": "Default theme without styles"
+	"name": "Default theme without styles",
+    "extends": "",
+	"areas": {
+        "header": "Header",
+        "sub-header": "Place under the header",
+        "column": "Left column",
+        "footer": "Footer"
+    }
 }

@@ -12,10 +12,7 @@ class OPAL_Templater
 
 	public function __construct($theme_name = null)
 	{
-		$theme_name = $theme_name ? $theme_name : 'default';
-		$classname = 'OPTF_' . $theme_name;
-		$classname{5} = strtoupper($classname{5});
-		$this->theme = new $classname($theme_name);
+		$this->theme = new OPAL_Theme($theme_name);
 	}
 
 	public function assign($p1, $p2 = null)

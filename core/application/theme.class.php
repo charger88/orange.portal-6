@@ -3,7 +3,7 @@
 /**
  * Class OPAL_Theme
  */
-abstract class OPAL_Theme
+class OPAL_Theme
 {
 
 	/**
@@ -35,11 +35,18 @@ abstract class OPAL_Theme
 
 	/**
 	 * Constructor
+	 * @param string $theme_name
 	 */
-	public function __construct()
+	public function __construct($theme_name)
 	{
-		$this->theme_url = OP_WWW . '/themes/' . $this->theme_name . '/';
+		$this->theme_name = $theme_name;
+		$this->theme_url = OP_WWW . '/themes/' . $theme_name . '/';
+		$extends = $this->getAvailableThemes('extends');
 		self::addScriptFile('modules/system/static/js/jquery.min.js');
+		do {
+			array_push($this->folders, $theme_name);
+			$theme_name = !empty($extends[$theme_name]) ? $extends[$theme_name] : null;
+		} while(!empty($theme_name));
 	}
 
 	/**
@@ -56,7 +63,28 @@ abstract class OPAL_Theme
 	/**
 	 * @return array
 	 */
-	abstract public function getThemeAreas();
+	public function getInfo()
+	{
+		$file = new \Orange\FS\File('themes/' . current($this->folders), 'info.json');
+		if ($file->exists()){
+			return json_decode($file->getData(), true);
+		} else {
+			return [];
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getThemeAreas()
+	{
+		$info = $this->getInfo();
+		$areas = isset($info['areas']) ? $info['areas'] : [];
+		foreach ($areas as $code => $name){
+			$areas[$code] = OPAL_Lang::t($name);
+		}
+		return $areas;
+	}
 
 	/**
 	 * @return array
@@ -220,11 +248,12 @@ abstract class OPAL_Theme
 	}
 
 	/**
+	 * @param string|null $theme
 	 * @return array
 	 */
-	public function getThemeInfo()
+	public function getThemeInfo($theme = null)
 	{
-		$json = new \Orange\FS\File('themes/' . $this->theme_name, 'info.json');
+		$json = new \Orange\FS\File('themes/' . (is_null($theme) ? $this->theme_name : $theme), 'info.json');
 		$info = [];
 		if ($json = $json->getData()) {
 			if ($json = json_decode($json, true)) {
