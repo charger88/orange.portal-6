@@ -45,21 +45,7 @@
     "name": "ADMIN_FILES",
     "url": "/admin/files",
     "icon": "/modules/system/static/icons/files.png",
-    "order": 30,
-    "sub": {
-      "files-list": {
-        "name": "ADMIN_FILES",
-        "url": "/admin/files",
-        "icon": "/modules/system/static/icons/files.png",
-        "order": 10
-      },
-      "media": {
-        "name": "ADMIN_FILES_MEDIA",
-        "url": "/admin/files/media",
-        "icon": "/modules/system/static/icons/media.png",
-        "order": 20
-      }
-    }
+    "order": 30
   },
   "users": {
     "name": "ADMIN_USERS",
