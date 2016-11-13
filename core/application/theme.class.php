@@ -65,12 +65,20 @@ class OPAL_Theme
 	 */
 	public function getInfo()
 	{
-		$file = new \Orange\FS\File('themes/' . current($this->folders), 'info.json');
+		$file = new \Orange\FS\File('themes/' . $this->theme_name, 'info.json');
 		if ($file->exists()){
 			return json_decode($file->getData(), true);
 		} else {
 			return [];
 		}
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getShareImage(){
+		$info = $this->getInfo();
+		return !empty($info['share-image']) ? $this->theme_url . 'static/' . $info['share-image'] : null;
 	}
 
 	/**
