@@ -61,5 +61,19 @@ class OPMX_System_Options extends Form
 
 	}
 
+	public function getValues()
+	{
+		if (empty($this->values['system_cache_css'])){
+			$this->values['system_cache_css'] = 0;
+		}
+		if (empty($this->values['system_cache_js'])){
+			$this->values['system_cache_js'] = 0;
+		}
+		if (empty($this->values['system_cache_method'])){
+			$this->values['system_cache_method'] = 0;
+		}
+		return $this->values;
+	}
+
 
 }

@@ -395,15 +395,23 @@ class OPAL_Portal
 	private function processPage()
 	{
 		OPAL_Lang::load('modules/system/lang', self::$sitelang);
-		if (!empty($this->request[0]) && ($this->request[0] == 'admin')) {
+		if ( (!empty($this->request[0]) && ($this->request[0] == 'admin')) || (!empty($this->request[1]) && ($this->request[0] == 'module') && ($this->request[1] == 'admin'))) {
 			$modules = OPAL_Module::getModules(true);
 			foreach ($modules as $module) {
 				OPAL_Lang::load('modules/' . $module->get('module_code') . '/lang/admin', self::$sitelang);
 			}
 		}
 		if (!$this->install_mode) {
-			if (!empty($this->request[0]) && ($this->request[0] == 'module') && (count($this->request) >= 4)) {
-				list($status, $output) = $this->processContentDirect();
+			if (!empty($this->request[0]) && !empty($this->request[1]) && ($this->request[0] == 'module')) {
+				array_shift($this->request);
+				if ($admin = ($this->request[0] == 'admin')){
+					array_shift($this->request);
+				}
+				if (count($this->request) >= 3) {
+					list($status, $output) = $this->processContentDirect($admin);
+				} else {
+					list($status, $output) = $this->processContentRegular();
+				}
 			} else {
 				list($status, $output) = $this->processContentRegular();
 			}
@@ -453,9 +461,8 @@ class OPAL_Portal
 		return [$status, $this->executeContent($this->content)];
 	}
 
-	private function processContentDirect()
+	private function processContentDirect($admin)
 	{
-		array_shift($this->request);
 		$module = array_shift($this->request);
 		OPAL_Lang::load('modules/' . $module . '/lang', self::$sitelang);
 		$this->content = new OPAM_Page();
@@ -465,7 +472,7 @@ class OPAL_Portal
 		$this->content->set('content_lang', self::$sitelang);
 		$this->content->set('content_status', 6);
 		$this->content->set('content_commands', [
-			['module' => $module, 'controller' => $this->request[0], 'method' => $this->request[1], 'static' => false, 'args' => []],
+			['module' => $module, 'controller' => ($admin ? 'admin-' : '') . $this->request[0], 'method' => $this->request[1], 'static' => false, 'args' => []],
 		]);
 		$this->content->set('content_template', 'main-html.phtml');
 		$output = $this->executeContent($this->content);
