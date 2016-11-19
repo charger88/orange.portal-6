@@ -155,7 +155,7 @@ class OPAL_Portal
 			define('OP_WWW', self::env('protocol') . '://' . self::config('system_domain', $this->getServer('SERVER_NAME', '')) . (($bdir = self::config('system_base_dir', trim($this->getURI(), '/'))) ? '/' . $bdir : ''));
 			$sessionclass = $this->config('sessionclass', 'OPAL_Session');
 			$this->session = new $sessionclass();
-			$this->templater = new OPAL_Templater(self::config('system_theme'));
+			$this->templater = new OPAL_Templater(self::config('system_theme', 'default'));
 			$lang = trim($this->getGet('lang', ''));
 			self::$sitelang = (strlen($lang) == 2) ? $lang : self::config('system_default_lang', self::$sitelang);
 			if (!$this->install_mode) {
