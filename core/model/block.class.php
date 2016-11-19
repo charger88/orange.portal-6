@@ -19,6 +19,14 @@ class OPAM_Block extends OPAM_Content
 		if (!$this->id) {
 			$this->set('content_time_published', time());
 		}
+		if (!$this->id) {
+			$select = new \Orange\Database\Queries\Select(self::$table);
+			$select
+				->addField(['max', 'content_order'])
+				->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getBlockTypes()))
+				->execute();
+			$this->set('content_order', intval($select->getResultValue()) + 1);
+		}
 		return parent::save();
 	}
 

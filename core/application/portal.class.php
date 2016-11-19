@@ -770,9 +770,9 @@ class OPAL_Portal
 
 	public function processException($e)
 	{
+		$message = 'URL: ' . $this->getServer('HTTP_HOST') . $this->getURI() . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
 		if (!is_null($webmaster_email = $this->getWebmasterEmailForException())) {
 			header($this->getServer('SERVER_PROTOCOL') . ' 500 Internal Server Error');
-			$message = 'URL: ' . $this->getServer('HTTP_HOST') . $this->getURI() . "\n\n" . $e->getMessage() . "\n\n" . $e->getTraceAsString();
 			if ($e instanceof \Orange\FS\FSException) {
 				$message .= "\n\nFile: " . $e->getFilepath();
 			}
@@ -782,6 +782,9 @@ class OPAL_Portal
 			} else {
 				mail($webmaster_email, 'Exception on site ' . $this->getServer('HTTP_HOST'), $message);
 			}
+		} else {
+			header('Content-type: text/plain');
+			echo $message;
 		}
 	}
 

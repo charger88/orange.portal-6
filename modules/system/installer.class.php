@@ -74,10 +74,14 @@ class OPMI_System extends OPAL_Installer
 		}
 		if (!empty($this->errors)) {
 			$site_config_dir = new \Orange\FS\Dir('sites', $configname);
-			$site_config_dir->remove();
-			$site_config_dir = new \Orange\FS\Dir('sites');
-			if (empty($site_config_dir->readDir())) {
+			if ($site_config_dir->exists()) {
 				$site_config_dir->remove();
+			}
+			$site_config_dir = new \Orange\FS\Dir('sites');
+			if ($site_config_dir->exists()) {
+				if (empty($site_config_dir->readDir())) {
+					$site_config_dir->remove();
+				}
 			}
 		}
 		return $this->errors;
@@ -548,7 +552,15 @@ class OPMI_System extends OPAL_Installer
 			],
 		];
 		foreach ($content_data as $data) {
-			$content = new OPAM_Content();
+			if ($data['content_type'] === 'page'){
+				$content = new OPAM_Page();
+			} else if ($data['content_type'] === 'block'){
+				$content = new OPAM_Block();
+			} else if ($data['content_type'] === 'admin'){
+				$content = new OPAM_Admin();
+			} else {
+				$content = new OPAM_Content();
+			}
 			$content->setData($data);
 			$content->set('content_time_published', time());
 			$content->set('content_user_id', 1);

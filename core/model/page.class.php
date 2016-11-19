@@ -22,7 +22,7 @@ class OPAM_Page extends OPAM_Content
 				->addField(['max', 'content_order'])
 				->addWhere(new Condition('content_type', 'IN', OPAM_Content_Type::getPageTypes()))
 				->execute();
-			$this->set('content_order', intval($select->getResultValue()));
+			$this->set('content_order', intval($select->getResultValue()) + 1);
 		}
 		return parent::save();
 	}
