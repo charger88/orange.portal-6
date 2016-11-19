@@ -23,7 +23,7 @@ class OPMX_System_Install extends Form
 		$this->addField((new Text('db_server', OPAL_Lang::t('INSTALL_DB_SERVER')))->setDefault('localhost')->requireField(), 'step-1');
 		$this->addField((new Number('db_port', OPAL_Lang::t('INSTALL_DB_PORT')))->setDefault('3306'), 'step-1');
 		$this->addField((new Text('db_name', OPAL_Lang::t('INSTALL_DB_NAME')))->requireField(), 'step-1');
-		$this->addField((new Text('db_prefix', OPAL_Lang::t('INSTALL_DB_PREFIX')))->setDefault('op6_'), 'step-1');
+		$this->addField((new Text('db_prefix', OPAL_Lang::t('INSTALL_DB_PREFIX')))->setDefault('op6_')->requireField(), 'step-1');
 		$this->addField((new Text('db_user', OPAL_Lang::t('INSTALL_DB_USER')))->requireField(), 'step-1');
 		$this->addField((new Text('db_password', OPAL_Lang::t('INSTALL_DB_PASSWORD'))), 'step-1');
 		$this->addField((new Select('db_type', OPAL_Lang::t('INSTALL_DB_DRIVER')))
