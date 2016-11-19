@@ -216,7 +216,7 @@ class OPMX_System_ContentEdit extends Form
 
 		$this->enableXSRFProtection();
 
-		OPAL_Theme::addScriptFile('module/admin/system/content/commands?type=' . $type->get('content_type_code') . '&key=' . \Orange\Forms\XSRFProtection::getInstance()->key(['content_commands']));
+		OPAL_Theme::addScriptFile('module/admin/system/content/commands?type=' . $type->get('content_type_code') . '&key=' . \Orange\Forms\XSRFProtection::getInstance()->key([OP_WWW, OPAL_Portal::config('system_secretkey'), 'content_commands'], null, true));
 		OPAL_Theme::addScriptFile('modules/system/static/js/admin-content-form.js');
 
 	}

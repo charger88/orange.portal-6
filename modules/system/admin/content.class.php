@@ -286,7 +286,7 @@ class OPMA_System_Content extends OPAL_Controller
 	public function commandsActionDirect()
 	{
 		OPAL_Portal::getInstance()->data_type = 'application/javascript';
-		if (\Orange\Forms\XSRFProtection::getInstance()->check($this->getGet('key'), ['content_commands'])) {
+		if (\Orange\Forms\XSRFProtection::getInstance()->check($this->getGet('key'), [OP_WWW, OPAL_Portal::config('system_secretkey'), 'content_commands'], true)) {
 			$commands = [];
 			$modules = OPAL_Module::getModules(true);
 			foreach ($modules as $module) {
