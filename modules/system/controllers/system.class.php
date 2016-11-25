@@ -92,4 +92,29 @@ class OPMC_System extends OPAL_Controller
 		]);
 	}
 
+	/**
+	 * Print language switcher
+	 * @return string
+	 */
+	public function headBlockDirect()
+	{
+		$content = OPAL_Portal::getInstance()->content;
+		$data = [];
+		$data['hidden'] = $content->field('seo_hidden');
+		$data['title'] = $content->field('seo_title') ? $content->field('seo_title') : (OPAL_Portal::config('system_sitename',null) ? $content->get('content_title') . ' - ' . OPAL_Portal::config('system_sitename') : $content->get('content_title') );
+		$data['name'] = $content->field('seo_title') ? $content->field('seo_title') : $content->get('content_title');
+		$data['description'] = $content->field('seo_description') ? $content->field('seo_description') : ( $content->text('story')->get('content_text_value') ? strip_tags($content->text('story')->get('content_text_value')) : OPAL_Portal::config('system_seo_description','') );
+		$data['keywords'] = $content->field('seo_keywords') ? $content->field('seo_keywords') : ( OPAL_Portal::config('system_seo_keywords','') );
+		$data['author'] = OPAL_Portal::config('system_copyright','');
+		$data['url'] = count(OPAL_Portal::getInstance()->getRequest()) <= 1 ? ( $content->field('seo_canonical') ? $content->field('seo_canonical') : OP_WWW.'/'.$content->getSlug(OPAL_Portal::config('system_default_lang')) ) : null;
+		$data['image'] = $content->get('content_image') ? OP_WWW.'/'.$content->getImageUrl('m') : $this->templater->theme->getShareImage();
+		$data['alternate'] = (count(OPAL_Portal::config('system_enabled_langs', [])) > 1)
+			? $content->getLanguagePages(OPAL_Portal::config('system_default_lang',''), OPAL_Portal::getInstance()->user)
+			: [];
+		$data['styles'] = $this->templater->theme->getHeadStyleFiles();
+		$data['scripts'] = $this->templater->theme->getHeadScriptFiles();
+		$data['png_icon'] = (new \Orange\FS\File('sites/' . OPAL_Portal::$sitecode . '/static/root/favicon.png'))->exists();
+		return $this->templater->fetch('system/head.phtml', $data);
+	}
+
 }

@@ -316,6 +316,12 @@ class OPMA_System_Content extends OPAL_Controller
 				$this->deleteMethodCache('OPMC_System_Menu', 'treeAction', $id);
 				$this->deleteMethodCache('OPMC_System_Menu', 'treeAjax', $id);
 				$this->deleteMethodCache('OPMC_System_Menu', 'treeBlock', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'indexAction', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'indexAjax', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'indexBlock', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'dataAction', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'dataAjax', $id);
+				$this->deleteMethodCache('OPMC_System_Text', 'dataBlock', $id);
 			}
 		}
 	}

@@ -3,6 +3,14 @@
 class OPMC_System_Text extends OPAL_Controller
 {
 
+	protected $cachemap = [
+		'indexAction' => ['by_user_access', 'id_is_content_id'],
+		'indexAjax' => ['by_user_access', 'id_is_content_id'],
+		'indexBlock' => ['by_user_access', 'id_is_content_id'],
+		'dataAction' => ['by_user_access', 'id_is_content_id'],
+		'dataAjax' => ['by_user_access', 'id_is_content_id'],
+		'dataBlock' => ['by_user_access', 'id_is_content_id'],
+	];
 
 	public function indexAction()
 	{

@@ -34,17 +34,18 @@ class OPAM_Privilege extends \Orange\Database\ActiveRecord
 	 */
 	public static function hasPrivilege($name, $user)
 	{
+		if (is_null(static::$privileges_by_group)){
+			static::getPrivilegesByGroup();
+		}
 		$user_groups = $user->get('user_groups');
+		$user_groups[] = 0;
 		if (!in_array(OPAM_User::GROUP_ADMIN, $user_groups)) {
-			$user_groups[] = 0;
-			$num = (new \Orange\Database\Queries\Select(self::$table))
-				->addWhere(new Condition('privilege_name', '=', $name))
-				->addWhere(new Condition('user_group_id', 'IN', $user_groups))
-				->addField('id')
-				->addField('privilege_name')
-				->execute()
-				->getResultNumRow();
-			return $num > 0;
+			foreach (static::$privileges_by_group as $group_id => $privilegies) {
+				if (in_array($name, $privilegies)){
+					return true;
+				}
+			}
+			return false;
 		} else {
 			return true;
 		}
@@ -95,23 +96,34 @@ class OPAM_Privilege extends \Orange\Database\ActiveRecord
 	}
 
 	/**
+	 * @var array
+	 */
+	private static $privileges_by_group;
+
+	/**
 	 * @return array
 	 */
 	public static function getPrivilegesByGroup()
 	{
-		$privileges = [];
-		$result = (new \Orange\Database\Queries\Select(self::$table))
-			->execute()
-			->getResultArray();
-		if ($result) {
-			foreach ($result as $row) {
-				if (!isset($privileges[$row['user_group_id']])) {
-					$privileges[$row['user_group_id']] = [];
+		$key = 'privilegies';
+		if (is_null(static::$privileges_by_group)){
+			if (!(static::$privileges_by_group = OPAL_Portal::getInstance()->cache->get($key))) {
+				static::$privileges_by_group = [];
+				$result = (new \Orange\Database\Queries\Select(self::$table))
+					->execute()
+					->getResultArray();
+				if ($result) {
+					foreach ($result as $row) {
+						if (!isset(static::$privileges_by_group[$row['user_group_id']])) {
+							static::$privileges_by_group[$row['user_group_id']] = [];
+						}
+						static::$privileges_by_group[$row['user_group_id']][] = $row['privilege_name'];
+					}
 				}
-				$privileges[$row['user_group_id']][] = $row['privilege_name'];
+				OPAL_Portal::getInstance()->cache->set($key, static::$privileges_by_group);
 			}
 		}
-		return $privileges;
+		return static::$privileges_by_group;
 	}
 
 }

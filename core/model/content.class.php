@@ -72,7 +72,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 		parent::__construct($key, $value);
 		if ($this->id) {
 			if (!in_array($this->get('content_type'), static::getTypesAllowedForThisClass())) {
-				throw new \Exception('Wrong combination of content type and class: ' . $this->get('content_type') . ' / ' . get_class($this));
+				throw new \Exception('Wrong combination of content (#' . $this->id . ') type and class: ' . $this->get('content_type') . ' / ' . get_class($this));
 			}
 		} else {
 			$this->set('content_type', explode('_', strtolower(get_class($this)), 2)[1]);
@@ -309,10 +309,6 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 		$select->addWhere(new Condition('id', '>', 0));
 		if (!is_null($type)) {
 			$select->addWhere(new Condition('content_type', 'LIKE', $type));
-			$typeObject = new OPAM_Content_Type('content_type_code', $type);
-			$classname = $typeObject->getClass();
-		} else {
-			$classname = 'OPAM_Content';
 		}
 		if (!is_null($lang)) {
 			$select->addWhereOperator(Condition::L_AND);
@@ -326,7 +322,13 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 			$select->addWhere(new Condition('content_slug', 'LIKE', $slug));
 		}
 		$select->setLimit(1);
-		return new $classname($select->execute()->getResultNextRow());
+		$row = $select->execute()->getResultNextRow();
+		if (is_null($type)) {
+			$type = $row['content_type'];
+		}
+		$typeObject = new OPAM_Content_Type('content_type_code', $type);
+		$classname = $typeObject->getClass();
+		return new $classname($row);
 	}
 
 	protected static function getTypesAllowedForThisClass($requested_types = null)
@@ -639,7 +641,7 @@ class OPAM_Content extends \Orange\Database\ActiveRecord
 			if ($pages = self::getList([
 				'access_user' => $access_user,
 				'status_min' => OPAM_Content::STATUS_ENABLED,
-			], null, $select)
+			], get_class($this), $select)
 			) {
 				foreach ($pages as $page) {
 					$links[$page->get('content_lang')] = $page;

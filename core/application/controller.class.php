@@ -171,17 +171,20 @@ class OPAL_Controller
 			$key[] = str_replace('_', '-', strtolower(get_class($this)));
 			$key[] = strtolower($methodname);
 			if (in_array('id_is_page_id', $map)) {
-				$key[] = OPAL_Portal::getInstance()->content->id . '-PID';
+				$key[] = OPAL_Portal::getInstance()->content->id . '_PID';
+			}
+			if (in_array('id_is_content_id', $map)) {
+				$key[] = $this->content->id . '_PID';
 			}
 			if (in_array('id_is_first_argument', $map)) {
-				$key[] = (isset($request[0]) ? intval($request[0]) : 0) . '-IDF';
+				$key[] = (isset($request[0]) ? intval($request[0]) : 0) . '_IDF';
 			}
 			if (isset($map['id_is_arg'])) {
-				$key[] = intval($this->arg($map['id_is_arg'], 0)) . '-IDA';
+				$key[] = intval($this->arg($map['id_is_arg'], 0)) . '_IDA';
 			}
 			if (in_array('by_user_access', $map)) {
 				$key[] = intval($this->user->get('user_status')) . '-US';
-				$key[] = implode('-', $this->user->get('user_groups')) . '-UG';
+				$key[] = implode('-', $this->user->get('user_groups') ? $this->user->get('user_groups') : [0]) . '-UG';
 			}
 			if (in_array('by_user_id', $map)) {
 				$key[] = $this->user->id . '-UI';
@@ -249,9 +252,9 @@ class OPAL_Controller
 	 */
 	public function deleteMethodCache($classname = null, $methodname = null, $id = null)
 	{
-		$key_mask[] = !is_null($classname) ? $classname : get_class($this);
+		$key_mask[] = str_replace('_', '-', strtolower(!is_null($classname) ? $classname : get_class($this)));
 		if (!is_null($methodname)) {
-			$key_mask[] = $methodname;
+			$key_mask[] = strtolower($methodname);
 		}
 		if (!is_null($id)) {
 			$key_mask[] = intval($id);

@@ -5,7 +5,7 @@
 			OPAL_Theme::addStyleFile('modules/system/static/css/admin.css');
 			OPAL_Theme::addScriptFile('modules/system/static/js/admin.js');
 			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
-			echo $this->fetch('head.phtml', ['content' => $content]);
+			echo $portal->blockDirect('system/system/head');
 		?>
         <meta name="referrer" content="origin-when-crossorigin" />
     </head>
