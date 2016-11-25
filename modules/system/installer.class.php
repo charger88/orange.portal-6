@@ -6,7 +6,6 @@ class OPMI_System extends OPAL_Installer
 	protected $params = [
 		'cache_css' => 0,
 		'cache_js' => 0,
-		'cache_method' => 0,
 	];
 
 	public function installModule($params)
@@ -51,7 +50,6 @@ class OPMI_System extends OPAL_Installer
 				'proxy_ip' => 'ARRAY',
 				'cache_css' => 'BOOLEAN',
 				'cache_js' => 'BOOLEAN',
-				'cache_method' => 'BOOLEAN',
 			]);
 		}
 		if (empty($this->errors)) {

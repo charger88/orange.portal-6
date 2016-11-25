@@ -53,7 +53,6 @@ class OPMX_System_Options extends Form
 		$this->addField((new Html('<h3>' . OPAL_Lang::t('ADMIN_CACHING') . '</h3>')));
 		$this->addField((new Checkbox('system_cache_css', OPAL_Lang::t('OPT_system_cache_css')))->setDefault(1));
 		$this->addField((new Checkbox('system_cache_js', OPAL_Lang::t('OPT_system_cache_js')))->setDefault(1));
-		$this->addField((new Checkbox('system_cache_method', OPAL_Lang::t('OPT_system_cache_method')))->setDefault(1));
 
 		$this->addField(new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
 
@@ -68,9 +67,6 @@ class OPMX_System_Options extends Form
 		}
 		if (empty($this->values['system_cache_js'])){
 			$this->values['system_cache_js'] = 0;
-		}
-		if (empty($this->values['system_cache_method'])){
-			$this->values['system_cache_method'] = 0;
 		}
 		return $this->values;
 	}

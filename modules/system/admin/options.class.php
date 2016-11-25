@@ -64,6 +64,7 @@ class OPMA_System_Options extends OPAL_Controller
 					$config = new \Orange\FS\Dir('sites', $newDomain);
 					if ($config->exists()) {
 						$this->saveOptions($form);
+						OPAL_Portal::getInstance()->cache->remove('config_', true);
 						return $this->msg(OPAL_Lang::t('ADMIN_MOVED_SUCCESSFUL'), self::STATUS_COMPLETE, $newUrl);
 					} else {
 						return $this->msg(OPAL_Lang::t('ADMIN_MOVED_FAIL'), self::STATUS_ERROR, OP_WWW . '/admin/options/move');
@@ -98,6 +99,7 @@ class OPMA_System_Options extends OPAL_Controller
 					}
 					$config->set('config_value', $value);
 					$config->save();
+					OPAL_Portal::getInstance()->cache->remove('config_', true);
 				} else {
 					$this->log('ALERT_CONFIG_UNKNOWN_SAVE:%s', array($key), 'LOG_OPTIONS', self::STATUS_ALERT);
 				}

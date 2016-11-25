@@ -163,45 +163,47 @@ class OPAL_Controller
 	 * @param array $request
 	 * @return string
 	 */
-	private function getMethodFileName($methodname, $request)
+	private function getMethodKey($methodname, $request)
 	{
 		if (isset($this->cachemap[$methodname])) {
 			$map = $this->cachemap[$methodname];
-			$file = 'sites/' . OPAL_Portal::$sitecode . '/tmp/cache/methods/' . get_class($this) . '/' . $methodname;
+			$key = [];
+			$key[] = str_replace('_', '-', strtolower(get_class($this)));
+			$key[] = strtolower($methodname);
 			if (in_array('id_is_page_id', $map)) {
-				$file .= '/' . OPAL_Portal::getInstance()->content->id;
+				$key[] = OPAL_Portal::getInstance()->content->id . '-PID';
 			}
 			if (in_array('id_is_first_argument', $map)) {
-				$file .= '/' . (isset($request[0]) ? intval($request[0]) : 0);
+				$key[] = (isset($request[0]) ? intval($request[0]) : 0) . '-IDF';
 			}
 			if (isset($map['id_is_arg'])) {
-				$file .= '/' . intval($this->arg($map['id_is_arg'], 0));
+				$key[] = intval($this->arg($map['id_is_arg'], 0)) . '-IDA';
 			}
-			$file .= '/';
 			if (in_array('by_user_access', $map)) {
-				$file .= intval($this->user->get('user_status')) . '-US_';
-				$file .= implode('-', $this->user->get('user_groups')) . '-UG_';
+				$key[] = intval($this->user->get('user_status')) . '-US';
+				$key[] = implode('-', $this->user->get('user_groups')) . '-UG';
 			}
 			if (in_array('by_user_id', $map)) {
-				$file .= $this->user->id . '-UI_';
+				$key[] = $this->user->id . '-UI';
 			}
 			if (in_array('by_content_id', $map)) {
-				$file .= $this->content->id . '-CI_';
+				$key[] = $this->content->id . '-CI';
 			}
 			if (in_array('by_page_id', $map)) {
-				$file .= OPAL_Portal::getInstance()->content->id . '-PI_';
-			}
-			if (in_array('by_date', $map)) {
-				$file .= date("Ymd");
+				$key[] = OPAL_Portal::getInstance()->content->id . '-PI';
 			}
 			if ($request) {
-				$file .= md5(implode(';', $request)) . '-RP_';
+				$key[] = md5(implode(';', $request)) . '-REQ';
+			}
+			if (in_array('by_date', $map)) {
+				$key[] = date("Ymd");
 			}
 			if ($this->args) {
-				$file .= md5(http_build_query($this->args)) . '-CA_';
+				$key[] = md5(http_build_query($this->args)) . '-CA';
 			}
-			$file .= ($this->content->get('content_lang') ? $this->content->get('content_lang') : 'xx') . '-' . OPAL_Portal::env('protocol') . '.html';
-			return $file;
+			$key[] = ($this->content->get('content_lang') ? $this->content->get('content_lang') : 'xx');
+			$key[] = OPAL_Portal::env('protocol');
+			return implode('_', $key);
 		} else {
 			return '';
 		}
@@ -214,9 +216,8 @@ class OPAL_Controller
 	 */
 	public function getMethodCache($methodname, $request)
 	{
-		if ($filename = $this->getMethodFileName($methodname, $request)) {
-			$file = new \Orange\FS\File($filename);
-			return $file->exists() ? $file->getData() : null;
+		if ($key = $this->getMethodKey($methodname, $request)) {
+			return OPAL_Portal::getInstance()->cache->get($key);
 		} else {
 			return null;
 		}
@@ -230,10 +231,10 @@ class OPAL_Controller
 	 */
 	public function setMethodCache($methodname, $request, $data)
 	{
-		if ($filename = $this->getMethodFileName($methodname, $request)) {
-			$file = new \Orange\FS\File($filename);
-			if (!($status = $file->save($data))) {
-				$this->log('CACHE_NOT_SAVED %s', [$filename], 'LOG_CACHE', self::STATUS_ALERT);
+		if ($key = $this->getMethodKey($methodname, $request)) {
+			$status = OPAL_Portal::getInstance()->cache->set($key, $data);
+			if (!$status) {
+				$this->log('CACHE_NOT_SAVED %s', [$key], 'LOG_CACHE', self::STATUS_ALERT);
 			}
 			return (bool)$status;
 		} else {
@@ -248,17 +249,14 @@ class OPAL_Controller
 	 */
 	public function deleteMethodCache($classname = null, $methodname = null, $id = null)
 	{
-		$path = 'sites/' . OPAL_Portal::$sitecode . '/tmp/cache/methods';
-		$path .= !is_null($classname) ? '/' . $classname : '/' . get_class($this);
-		$path .= !is_null($methodname) ? '/' . $methodname : '';
-		$path .= !is_null($id) ? '/' . intval($id) : '';
-		try {
-			$dir = \Orange\FS\FS::open($path);
-			if ($dir->exists()) {
-				$dir->remove();
-			}
-		} catch (\Exception $e) {
+		$key_mask[] = !is_null($classname) ? $classname : get_class($this);
+		if (!is_null($methodname)) {
+			$key_mask[] = $methodname;
 		}
+		if (!is_null($id)) {
+			$key_mask[] = intval($id);
+		}
+		OPAL_Portal::getInstance()->cache->remove(implode('_', $key_mask) . '_', true);
 	}
 
 	/**

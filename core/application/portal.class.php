@@ -65,6 +65,11 @@ class OPAL_Portal
 	public $session;
 
 	/**
+	 * @var OPAL_CacheInterface
+	 */
+	public $cache;
+
+	/**
 	 * @var string
 	 */
 	public $data_type = 'text/html';
@@ -240,6 +245,8 @@ class OPAL_Portal
 		list($installed, $config) = self::loadConfigFromFiles(self::$enviroment['hostname']);
 		if ($installed) {
 			self::$configs = $config;
+			$cacheclass = $this->config('cacheclass', 'OPAL_Nocache');
+			$this->cache = new $cacheclass($this->config('cache', []));
 			$connection = new \Orange\Database\Connection($config['db']['master']);
 			if (!empty($config['db_debug'])) {
 				$connection->logfile = OP_SYS_ROOT . 'database.log';
@@ -252,6 +259,7 @@ class OPAL_Portal
 				$connection->driver->setTimezone($timezone);
 			}
 		} else {
+			$this->cache = new OPAL_Nocache();
 			$this->install_mode = true;
 		}
 	}
@@ -631,7 +639,7 @@ class OPAL_Portal
 					$methodReflection = $controllerReflection->getMethod($methodname);
 					$cache_loaded = false;
 					$method_result = '';
-					$is_method_cacheable = self::config('system_cache_method', false) && $controller->isMethodCacheable($methodname);
+					$is_method_cacheable = $controller->isMethodCacheable($methodname);
 					if ($is_method_cacheable) {
 						$method_result = $controller->getMethodCache($methodname, $request);
 						if (!is_null($method_result)) {

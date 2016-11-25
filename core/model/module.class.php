@@ -38,19 +38,23 @@ class OPAM_Module extends \Orange\Database\ActiveRecord
 	 */
 	public static function getModules($active_only = false)
 	{
-		$modules = [];
-		$select = new \Orange\Database\Queries\Select(self::$table);
-		if ($active_only) {
-			$select->addWhere(new Condition('module_status', '=', 1));
-		}
-		$select->setOrder('id');
-		if ($result = $select->execute()->getResultArray(null, __CLASS__)) {
-			foreach ($result as $module) {
-				/** @var OPAM_Module $module */
-				if ($moduleObject = $module->getModuleObject()) {
-					$modules[] = $moduleObject;
+		$key = 'modules_' . ($active_only ? 'active' : 'all');
+		if (!($modules = OPAL_Portal::getInstance()->cache->get($key))) {
+			$modules = [];
+			$select = new \Orange\Database\Queries\Select(self::$table);
+			if ($active_only) {
+				$select->addWhere(new Condition('module_status', '=', 1));
+			}
+			$select->setOrder('id');
+			if ($result = $select->execute()->getResultArray(null, __CLASS__)) {
+				foreach ($result as $module) {
+					/** @var OPAM_Module $module */
+					if ($moduleObject = $module->getModuleObject()) {
+						$modules[] = $moduleObject;
+					}
 				}
 			}
+			OPAL_Portal::getInstance()->cache->set($key, $modules);
 		}
 		return $modules;
 	}

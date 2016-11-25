@@ -1,11 +1,11 @@
 <h3><?php $this->el('SYSTEM_CACHE'); ?></h3>
 <dl>
 	<dt><?php $this->el('ADMIN_FILES_NUMBER'); ?></dt>
-	<dd><?php $this->ee($methodCacheCount ? $methodCacheCount : 0); ?></dd>
+	<dd><?php $this->ee($systemCacheCount ? $systemCacheCount : 0); ?></dd>
 	<dt><?php $this->el('ADMIN_FILES_SIZE'); ?></dt>
-	<dd><?php echo $this->getFilesize($methodCacheSize); ?></dd>
+	<dd><?php echo $this->getFilesize($systemCacheSize); ?></dd>
 </dl>
-<div><a href="<?php echo OP_WWW.'/admin/cache/clearMethodCache'; ?>"><?php $this->el('ADMIN_CLEAR'); ?></a></div>
+<div><a href="<?php echo OP_WWW.'/admin/cache/clearSystemCache'; ?>"><?php $this->el('ADMIN_CLEAR'); ?></a></div>
 <h3><?php $this->el('STATIC_CACHE'); ?></h3>
 <dl>
 	<dt><?php $this->el('ADMIN_FILES_NUMBER'); ?></dt>

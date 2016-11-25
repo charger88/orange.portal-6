@@ -39,6 +39,7 @@ class OPMA_System_Modules extends OPAL_Controller
 					$module->disable();
 					$msg = OPAL_Lang::t('ADMIN_DISABLED');
 					$status = self::STATUS_COMPLETE;
+					OPAL_Portal::getInstance()->cache->remove('modules_', true);
 				} else {
 					$module->enable();
 					$msg = OPAL_Lang::t('ADMIN_ENABLED');
@@ -61,6 +62,7 @@ class OPMA_System_Modules extends OPAL_Controller
 			if (empty($errors)) {
 				$msg = OPAL_Lang::t('ADMIN_MODULE_INSTALLED');
 				$status = self::STATUS_COMPLETE;
+				OPAL_Portal::getInstance()->cache->remove('modules_', true);
 			} else {
 				$msg = OPAL_Lang::t('ADMIN_MODULE_FAILED') . ': ' . implode(', ', $errors) . '.';
 				$status = self::STATUS_ERROR;
@@ -80,6 +82,7 @@ class OPMA_System_Modules extends OPAL_Controller
 			$msg = OPAL_Lang::t('ADMIN_MODULE_UNINSTALLED');
 			$status = self::STATUS_COMPLETE;
 		}
+		OPAL_Portal::getInstance()->cache->remove('modules_', true);
 		return $this->msg($msg, $status, OP_WWW . '/admin/modules');
 	}
 

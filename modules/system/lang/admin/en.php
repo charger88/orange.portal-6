@@ -239,7 +239,6 @@ return [
 	'OPT_system_secretkey' => 'Secret key',
 	'OPT_system_cache_css' => 'Group CSS files (experimental)',
 	'OPT_system_cache_js' => 'Group JavaScript files (experimental)',
-	'OPT_system_cache_method' => 'System cache (per controller\'s method)',
 
 	'PORTAL_MODULE_NOT_FOUND' => 'Module not found',
 

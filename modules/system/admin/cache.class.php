@@ -11,11 +11,11 @@ class OPMA_System_Cache extends OPAL_Controller
 	public function summaryBlockDirect()
 	{
 		$data = array();
-		$methodCacheDir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/methods');
+		$systemCacheDir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/system');
 		try {
-			list($data['methodCacheCount'], $data['methodCacheSize']) = $methodCacheDir->getDirInfo();
+			list($data['systemCacheCount'], $data['systemCacheSize']) = $systemCacheDir->getDirInfo();
 		} catch (\Orange\FS\FSException $e) {
-			$data['methodCacheCount'] = $data['methodCacheSize'] = 0;
+			$data['systemCacheCount'] = $data['systemCacheSize'] = 0;
 		}
 		$staticCacheDir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/static');
 		try {
@@ -26,29 +26,28 @@ class OPMA_System_Cache extends OPAL_Controller
 		return $this->templater->fetch('system/admin-cache-summary.phtml', $data);
 	}
 
-	public function clearMethodCacheAction()
+	public function clearSystemCacheAction()
 	{
-		if ($this->clearMethodCache()) {
+		if ($this->clearSystemCache()) {
 			return $this->msg(OPAL_Lang::t('ADMIN_CACHE_DELETED'), self::STATUS_COMPLETE, OP_WWW . '/admin/center/');
 		} else {
 			return $this->msg(OPAL_Lang::t('ADMIN_CACHE_NOT_DELETED'), self::STATUS_WARNING, OP_WWW . '/admin/center/');
 		}
 	}
 
-	public function clearMethodCacheCli()
+	public function clearSystemCacheCli()
 	{
-		if ($this->clearMethodCache()) {
+		if ($this->clearSystemCache()) {
 			return '';
 		} else {
-			return 'OPMA_System_Cache::clearMethodCacheCli - Cache was not removed';
+			return 'OPMA_System_Cache::clearSystemCacheCli - Cache was not removed';
 		}
 	}
 
-	private function clearMethodCache()
+	private function clearSystemCache()
 	{
 		try {
-			$dir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/tmp/cache/methods');
-			$dir->clear();
+			OPAL_Portal::getInstance()->cache->reset();
 			return true;
 		} catch (\Orange\FS\FSException $e) {
 			return false;
@@ -69,7 +68,7 @@ class OPMA_System_Cache extends OPAL_Controller
 		if ($this->clearStaticCache()) {
 			return '';
 		} else {
-			return 'OPMA_System_Cache::clearMethodCacheCli - Cache was not removed';
+			return 'OPMA_System_Cache::clearStaticCacheCli - Cache was not removed';
 		}
 	}
 

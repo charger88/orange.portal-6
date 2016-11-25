@@ -20,15 +20,19 @@ class OPAM_Config extends \Orange\Database\ActiveRecord
 
 	public static function loadActive($module = null)
 	{
-		$ref = [];
-		$select = new \Orange\Database\Queries\Select(self::$table);
-		$select->addWhere(new Condition('config_status', '=', 1));
-		if (!is_null($module)) {
-			$select->addWhere(new Condition('config_key', 'LIKE', $module . '_%'));
-		}
-		$select->execute();
-		while ($row = $select->getResultNextRow()) {
-			$ref[$row['config_key']] = unserialize($row['config_value']);
+		$key = 'config_active_' . (is_null($module) ? 'all' : $module);
+		if (!($ref = OPAL_Portal::getInstance()->cache->get($key))) {
+			$ref = [];
+			$select = new \Orange\Database\Queries\Select(self::$table);
+			$select->addWhere(new Condition('config_status', '=', 1));
+			if (!is_null($module)) {
+				$select->addWhere(new Condition('config_key', 'LIKE', $module . '_%'));
+			}
+			$select->execute();
+			while ($row = $select->getResultNextRow()) {
+				$ref[$row['config_key']] = unserialize($row['config_value']);
+			}
+			OPAL_Portal::getInstance()->cache->set($key, $ref);
 		}
 		return $ref;
 	}
