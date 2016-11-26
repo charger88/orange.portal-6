@@ -1,6 +1,6 @@
 <?php
 
-class OPMO_System extends OPAL_Module
+class OPMO_System extends \Orange\Portal\Core\App\Module
 {
 
 	protected $privileges = [
@@ -10,7 +10,7 @@ class OPMO_System extends OPAL_Module
 
 	protected function doInit()
 	{
-		OPAL_Theme::addScriptFile('modules/system/static/js/main.js');
+		\Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/main.js');
 		return true;
 	}
 
@@ -49,7 +49,7 @@ class OPMO_System extends OPAL_Module
 	public function getAdminMenu()
 	{
 		$adminMenu = parent::getAdminMenu();
-		if ($customTypes = OPAM_Content_Type::getTypes(null, null, '*')) {
+		if ($customTypes = \Orange\Portal\Core\Model\ContentType::getTypes(null, null, '*')) {
 			$i = 100;
 			foreach ($customTypes as $cType) {
 				if ($cType->get('content_type_type') == 1) {
@@ -66,7 +66,7 @@ class OPMO_System extends OPAL_Module
 				}
 				if ($menu) {
 					$adminMenu[$menu]['sub']['add_' . $cType->get('content_type_code')] = [
-						'name' => OPAL_Lang::t('ADMIN_ADD_NEW') . ' ' . OPAL_Lang::t($cType->get('content_type_name')),
+						'name' => \Orange\Portal\Core\App\Lang::t('ADMIN_ADD_NEW') . ' ' . \Orange\Portal\Core\App\Lang::t($cType->get('content_type_name')),
 						'url' => $addlink,
 						'icon' => '/modules/system/static/icons/' . $menu . '-new.png',
 						'order' => $i,

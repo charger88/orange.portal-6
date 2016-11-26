@@ -2,7 +2,7 @@
 
 //TODO Create functionality for protected files.
 
-class OPMA_System_Media extends OPAL_Controller
+class OPMA_System_Media extends \Orange\Portal\Core\App\Controller
 {
 
 	/*TODO Implement
@@ -39,7 +39,7 @@ class OPMA_System_Media extends OPAL_Controller
 		if ($media->id) {
 			return $this->msg('OK', self::STATUS_OK, null, array('one' => $this->getArray($media)));
 		} else {
-			return $this->msg(OPAL_Lang::t('NOT_FOUND'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('NOT_FOUND'), self::STATUS_NOTFOUND);
 		}
 	}
 
@@ -64,7 +64,7 @@ class OPMA_System_Media extends OPAL_Controller
 				$this->log($message, array(), 'LOG_FILES', self::STATUS_ERROR);
 			}
 		}
-		return $this->msg(OPAL_Lang::t('Uploaded'), self::STATUS_OK, null, array('ids' => $ids));
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('Uploaded'), self::STATUS_OK, null, array('ids' => $ids));
 	}
 
 	/**

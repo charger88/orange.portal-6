@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_System_Redirect extends OPAL_Controller
+class OPMC_System_Redirect extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()

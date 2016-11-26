@@ -85,7 +85,7 @@ return [
 	'content_type_type' => 'Type',
 	'content_type_multilang' => 'Support content translations',
 	'content_type_sitemap_priority' => 'Sitemap priority (0-100)',
-	'content_type_class' => 'Class (default OPAM_Content)',
+	'content_type_class' => 'Class (default \Orange\Portal\Core\Model\Content)',
 	'content_type_hidden' => 'Disabled fields',
 	'content_type_fields' => 'Custom fields',
 	'content_type_fields:_' => 'Code',

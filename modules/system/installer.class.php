@@ -1,6 +1,6 @@
 <?php
 
-class OPMI_System extends OPAL_Installer
+class OPMI_System extends \Orange\Portal\Core\App\Installer
 {
 
 	protected $params = [
@@ -10,7 +10,7 @@ class OPMI_System extends OPAL_Installer
 
 	public function installModule($params)
 	{
-		OPAL_Portal::$sitecode = $params['sitecode'];
+		\Orange\Portal\Core\App\Portal::$sitecode = $params['sitecode'];
 		$configname = isset($params['configname']) ? $params['configname'] : 'default.php';
 		$this->params = array_merge($this->params, $params);
 		$this->errors = [];
@@ -19,18 +19,18 @@ class OPMI_System extends OPAL_Installer
 		}
 		if (empty($this->errors)) {
 			$this->createTables([
-				'OPAM_Content_Type',
-				'OPAM_Content_Text',
-				'OPAM_Content_Field',
-				'OPAM_Content_Tag',
-				'OPAM_Content',
+				'\Orange\Portal\Core\Model\ContentType',
+				'\Orange\Portal\Core\Model\ContentText',
+				'\Orange\Portal\Core\Model\ContentField',
+				'\Orange\Portal\Core\Model\ContentTag',
+				'\Orange\Portal\Core\Model\Content',
 				'OPMM_System_Media',
-				'OPAM_Privilege',
-				'OPAM_User_Group',
-				'OPAM_User',
-				'OPAM_Log',
-				'OPAM_Module',
-				'OPAM_Config',
+				'\Orange\Portal\Core\Model\Privilege',
+				'\Orange\Portal\Core\Model\UserGroup',
+				'\Orange\Portal\Core\Model\User',
+				'\Orange\Portal\Core\Model\Log',
+				'\Orange\Portal\Core\Model\Module',
+				'\Orange\Portal\Core\Model\Config',
 			]);
 		}
 		if (empty($this->errors)) {
@@ -120,7 +120,7 @@ class OPMI_System extends OPAL_Installer
 				. "\n\t\t" . '\'prefix\' => \'' . $this->params['db_prefix'] . '\''
 				. "\n\t" . ']'
 				. "\n" . '];';
-			$dir = new \Orange\FS\Dir('sites/' . OPAL_Portal::$sitecode . '/config');
+			$dir = new \Orange\FS\Dir('sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/config');
 			$file = new \Orange\FS\File($dir, $configname);
 			if (!($result = $file->save($php_code))) {
 				$this->errors['db_prefix'] = 'Config file was not saved';
@@ -143,21 +143,21 @@ class OPMI_System extends OPAL_Installer
 
 	private function createAdminUser()
 	{
-		$ug = new OPAM_User_Group();
+		$ug = new \Orange\Portal\Core\Model\UserGroup();
 		$ug->setData([
 			'group_name' => 'USER_GROUP_ADMIN',
 			'group_description' => 'USER_GROUP_ADMIN_DESCRIPTION',
 			'group_module' => 'system',
 		]);
 		$ug->save();
-		$ug = new OPAM_User_Group();
+		$ug = new \Orange\Portal\Core\Model\UserGroup();
 		$ug->setData([
 			'group_name' => 'USER_GROUP_MANAGER',
 			'group_description' => 'USER_GROUP_MANAGER_DESCRIPTION',
 			'group_module' => 'system',
 		]);
 		$ug->save();
-		$ug = new OPAM_User_Group();
+		$ug = new \Orange\Portal\Core\Model\UserGroup();
 		$ug->setData([
 			'group_name' => 'USER_GROUP_USER',
 			'group_description' => 'USER_GROUP_USER_DESCRIPTION',
@@ -165,12 +165,12 @@ class OPMI_System extends OPAL_Installer
 		]);
 		$ug->save();
 
-		$user = new OPAM_User();
+		$user = new \Orange\Portal\Core\Model\User();
 		$user->setData([
 			'user_login' => $this->params['admin_username'],
 			'user_email' => $this->params['admin_email'],
 			'user_status' => 1,
-			'user_groups' => [OPAM_User::GROUP_ADMIN, OPAM_User::GROUP_MANAGER, OPAM_User::GROUP_USER],
+			'user_groups' => [\Orange\Portal\Core\Model\User::GROUP_ADMIN, \Orange\Portal\Core\Model\User::GROUP_MANAGER, \Orange\Portal\Core\Model\User::GROUP_USER],
 			'user_provider' => 0,
 			'user_phone' => '',
 			'user_name' => $this->params['admin_username'],
@@ -195,7 +195,7 @@ class OPMI_System extends OPAL_Installer
 				'content_type_code' => 'admin',
 				'content_type_type' => 3,
 				'content_type_multilang' => false,
-				'content_type_class' => 'OPAM_Admin',
+				'content_type_class' => '\Orange\Portal\Core\Model\Admin',
 				'content_type_hidden' => ['content_parent_id', 'content_tags', 'content_order', 'content_lang', 'content_area', 'content_slug', 'content_default_lang_id', 'content_on_site_mode', 'content_status', 'content_template', 'content_image', 'content_time_modified', 'content_time_published', 'content_user_id', 'content_commands'],
 				'content_type_fields' => [],
 				'content_type_texts' => [],
@@ -205,7 +205,7 @@ class OPMI_System extends OPAL_Installer
 				'content_type_code' => 'error',
 				'content_type_type' => 0,
 				'content_type_multilang' => false,
-				'content_type_class' => 'OPAM_Error',
+				'content_type_class' => '\Orange\Portal\Core\Model\Error',
 				'content_type_hidden' => [],
 				'content_type_fields' => [],
 				'content_type_texts' => [],
@@ -215,7 +215,7 @@ class OPMI_System extends OPAL_Installer
 				'content_type_code' => 'page',
 				'content_type_type' => 1,
 				'content_type_multilang' => true,
-				'content_type_class' => 'OPAM_Page',
+				'content_type_class' => '\Orange\Portal\Core\Model\Page',
 				'content_type_hidden' => ['content_type', 'content_area', 'content_order',],
 				'content_type_fields' => [
 					'seo_title' => ['type' => 'TEXT', 'group' => 'SEO', 'title' => 'CONTENT_FIELD_SEO_TITLE'],
@@ -233,14 +233,14 @@ class OPMI_System extends OPAL_Installer
 				'content_type_code' => 'block',
 				'content_type_type' => 2,
 				'content_type_multilang' => true,
-				'content_type_class' => 'OPAM_Block',
+				'content_type_class' => '\Orange\Portal\Core\Model\Block',
 				'content_type_hidden' => ['content_type', 'content_tags', 'content_time_published', 'content_order', 'content_image', 'content_parent_id'],
 				'content_type_fields' => [],
 				'content_type_texts' => ['text' => 'ADMIN_CONTENT_TEXT_CONTENT'],
 			],
 		];
 		foreach ($content_types_data as $data) {
-			$content = new OPAM_Content_Type();
+			$content = new \Orange\Portal\Core\Model\ContentType();
 			$content
 				->setData($data)
 				->set('content_type_status', 1);
@@ -252,11 +252,11 @@ class OPMI_System extends OPAL_Installer
 	private function createContent()
 	{
 		$result = true;
-		$lang = OPAL_Portal::config('system_default_lang', 'en');
+		$lang = \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en');
 		$content_data = [
 			[
 				'content_type' => 'page',
-				'content_title' => OPAL_Lang::t('Homepage'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Homepage'),
 				'content_access_groups' => [0],
 				'content_lang' => $lang,
 				'content_slug' => 'homepage',
@@ -267,7 +267,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Site name'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Site name'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'header',
@@ -279,7 +279,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Slogan'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Slogan'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'header',
@@ -291,7 +291,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Lang switcher'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Lang switcher'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'sub-header',
@@ -303,7 +303,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Menu'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Menu'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'sub-header',
@@ -315,7 +315,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Search'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Search'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'footer',
@@ -327,7 +327,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Copytights'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Copytights'),
 				'content_access_groups' => [0],
 				'content_lang' => '',
 				'content_area' => 'footer',
@@ -339,7 +339,7 @@ class OPMI_System extends OPAL_Installer
 			],
 			[
 				'content_type' => 'block',
-				'content_title' => OPAL_Lang::t('Admin bar'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('Admin bar'),
 				'content_access_groups' => [1, 2],
 				'content_lang' => '',
 				'content_area' => 'footer',
@@ -551,13 +551,13 @@ class OPMI_System extends OPAL_Installer
 		];
 		foreach ($content_data as $data) {
 			if ($data['content_type'] === 'page'){
-				$content = new OPAM_Page();
+				$content = new \Orange\Portal\Core\Model\Page();
 			} else if ($data['content_type'] === 'block'){
-				$content = new OPAM_Block();
+				$content = new \Orange\Portal\Core\Model\Block();
 			} else if ($data['content_type'] === 'admin'){
-				$content = new OPAM_Admin();
+				$content = new \Orange\Portal\Core\Model\Admin();
 			} else {
-				$content = new OPAM_Content();
+				$content = new \Orange\Portal\Core\Model\Content();
 			}
 			$content->setData($data);
 			$content->set('content_time_published', time());
@@ -567,35 +567,35 @@ class OPMI_System extends OPAL_Installer
 				$result = false;
 			}
 		}
-		$text = new OPAM_Content_Text();
+		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 1);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', OPAL_Lang::t('Hi! We are glad to show you homepage of new portal.'));
+		$text->set('content_text_value', \Orange\Portal\Core\App\Lang::t('Hi! We are glad to show you homepage of new portal.'));
 		$text->save();
-		$text = new OPAM_Content_Text();
+		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 2);
 		$text->set('content_text_role', 'text');
 		$text->set('content_text_value', '<a href="' . '%%url%%' . '">' . '%%sitename%%' . '</a>');
 		$text->save();
-		$text = new OPAM_Content_Text();
+		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 3);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', '<p>' . OPAL_Lang::t('Welcome to new instance of Orange.Portal 6.') . '</p><p>' . OPAL_Lang::t('If you need more information, go to') . ' <a href="http://orange-portal.org">orange-portal.org</a>' . '.</p>');
+		$text->set('content_text_value', '<p>' . \Orange\Portal\Core\App\Lang::t('Welcome to new instance of Orange.Portal 6.') . '</p><p>' . \Orange\Portal\Core\App\Lang::t('If you need more information, go to') . ' <a href="http://orange-portal.org">orange-portal.org</a>' . '.</p>');
 		$text->save();
 		return $result;
 	}
 
 	private function createPrivileges()
 	{
-		$priv = new OPAM_Privilege();
+		$priv = new \Orange\Portal\Core\Model\Privilege();
 		$priv->set('privilege_name', 'METHOD_SYSTEM_SEARCH_RESULTS');
-		$priv->set('user_group_id', OPAM_User::GROUP_EVERYBODY);
+		$priv->set('user_group_id', \Orange\Portal\Core\Model\User::GROUP_EVERYBODY);
 		$priv->save();
 	}
 
 	private function createFiles()
 	{
-		$root_path = 'sites/' . OPAL_Portal::$sitecode . '/static/root';
+		$root_path = 'sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/root';
 		$file = new \Orange\FS\File($root_path, 'robots.txt');
 		$file->save("User-agent: *\nAllow: /");
 		$file = new \Orange\FS\File($root_path, 'favicon.ico');

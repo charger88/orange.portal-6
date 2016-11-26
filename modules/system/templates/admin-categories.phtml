@@ -5,7 +5,7 @@
         <?php foreach($IDs as $id){ ?><li>
             <?php
                 if ($page = isset($pages[$id]) ? $pages[$id] : null){
-                    $page->isEditable(OPAL_Portal::getInstance()->user->get('user_groups'))
+                    $page->isEditable(\Orange\Portal\Core\App\Portal::getInstance()->user->get('user_groups'))
                         ? $this->ee($page->get('content_title'))
                         : $this->el('ADMIN_NO_ACCESS_FOR_CONTENT');
                 } else {

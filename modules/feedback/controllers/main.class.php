@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_Feedback_Main extends OPAL_Controller
+class OPMC_Feedback_Main extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
@@ -35,8 +35,8 @@ class OPMC_Feedback_Main extends OPAL_Controller
 			$this->session->set('feedback_spam', $this->getFormToken(time()));
 			return $form->getHTML();
 		} else {
-			$this->log(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'), [], 'LOG_FEEDBACK', self::STATUS_WARNING);
-			return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'), self::STATUS_NOTFOUND);
+			$this->log(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_NO_FORM'), [], 'LOG_FEEDBACK', self::STATUS_WARNING);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_NO_FORM'), self::STATUS_NOTFOUND);
 		}
 	}
 
@@ -59,8 +59,8 @@ class OPMC_Feedback_Main extends OPAL_Controller
 			$form->setValues($this->getPostArray());
 			if ($form->checkXSRF()) {
 				if ($errors = $form->validateValues()->getErrors()) {
-					if (OPAL_Portal::getInstance()->env('ajax')) {
-						return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, ['errors' => $errors]);
+					if (\Orange\Portal\Core\App\Portal::getInstance()->env('ajax')) {
+						return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_ERROR'), self::STATUS_ERROR, null, ['errors' => $errors]);
 					} else {
 						return $form->getHTML();
 					}
@@ -86,39 +86,39 @@ class OPMC_Feedback_Main extends OPAL_Controller
 								'feedback_message_sender_email' => $this->getPost('email', $this->user->get('user_email')),
 								'feedback_message_sender_phone' => $this->getPost('phone', $this->user->get('user_phone')),
 								'feedback_message_sender_ip' => $this->getIP(),
-								'feedback_message_sender_session' => OPAL_Portal::getInstance()->session->id()
+								'feedback_message_sender_session' => \Orange\Portal\Core\App\Portal::getInstance()->session->id()
 							])
 							->save();
 						static::sendMessage($message, $form_object);
 						$this->session->set('feedback_spam', null);
 						$this->log('MODULE_FEEDBACK_MESSAGE_SENT', [], 'LOG_FEEDBACK', self::STATUS_OK);
-						if (OPAL_Portal::env('ajax')) {
-							return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
+						if (\Orange\Portal\Core\App\Portal::env('ajax')) {
+							return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
 						} else {
 							return $this->redirect(OP_WWW . '/module/feedback/main/sent');
 						}
 					} else {
 						$this->log('MODULE_FEEDBACK_SPAM_WRONG_TOKEN', [], 'LOG_FEEDBACK', self::STATUS_INFO);
-						return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_SPAM_DETECTED'), self::STATUS_WARNING);
+						return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_SPAM_DETECTED'), self::STATUS_WARNING);
 					}
 				}
 			} else {
-				return $this->msg(OPAL_Lang::t('ADMIN_XSRF'), self::STATUS_WARNING);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_XSRF'), self::STATUS_WARNING);
 			}
 		} else {
 			$this->log('MODULE_FEEDBACK_NO_FORM', [], 'LOG_FEEDBACK', self::STATUS_NOTFOUND);
-			return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_NO_FORM'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_NO_FORM'), self::STATUS_NOTFOUND);
 		}
 	}
 
 	public function sentActionDirect()
 	{
-		return $this->msg(OPAL_Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_MESSAGE_SENT'), self::STATUS_OK);
 	}
 
 	protected function getFormToken($time)
 	{
-		return md5(date("YmdH", $time) . '-' . $this->getIP() . '-feedback-' . OPAL_Portal::config('system_secretkey'));
+		return md5(date("YmdH", $time) . '-' . $this->getIP() . '-feedback-' . \Orange\Portal\Core\App\Portal::config('system_secretkey'));
 	}
 
 	protected function getAllowedTokens()
@@ -137,14 +137,14 @@ class OPMC_Feedback_Main extends OPAL_Controller
 
 	public static function sendMessage($message, $form = null, $template = 'feedback/default-feedback.phtml')
 	{
-		OPAL_Lang::load('modules/feedback/lang/admin', OPAL_Portal::$sitelang);
+		\Orange\Portal\Core\App\Lang::load('modules/feedback/lang/admin', \Orange\Portal\Core\App\Portal::$sitelang);
 		if (is_null($form)) {
 			$form = new OPMM_Feedback_Form($message->get('feedback_message_form_id'));
 		}
-		$email = new OPAL_Email();
+		$email = new \Orange\Portal\Core\Net\Email();
 		$email->subject = $form->get('feedback_form_name') . ' / ' . $message->get('feedback_message_subject');
-		$email->html = OPAL_Portal::getInstance()->templater->fetch('email.phtml', [
-			'html' => OPAL_Portal::getInstance()->templater->fetch($template, [
+		$email->html = \Orange\Portal\Core\App\Portal::getInstance()->templater->fetch('email.phtml', [
+			'html' => \Orange\Portal\Core\App\Portal::getInstance()->templater->fetch($template, [
 				'message' => $message,
 			]),
 		]);
@@ -152,7 +152,7 @@ class OPMC_Feedback_Main extends OPAL_Controller
 		return $email->send(
 			$form->get('feedback_form_send_to')
 				? $form->get('feedback_form_send_to')
-				: OPAL_Portal::config('system_email_public')
+				: \Orange\Portal\Core\App\Portal::config('system_email_public')
 		);
 	}
 

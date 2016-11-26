@@ -2,7 +2,7 @@
 
 if ($blocks){
 	echo $preHTML;
-    /** @var OPAM_Block $block */
+    /** @var \Orange\Portal\Core\Model\Block $block */
     foreach ($blocks as list($block,$block_data)){
 		echo $this->fetch($block->get('content_template'), [
 			'content'  => $block,

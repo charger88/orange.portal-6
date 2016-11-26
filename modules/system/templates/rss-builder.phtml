@@ -8,7 +8,7 @@ $rsstag->setAttribute("xmlns","http://backend.userland.com/rss2");
 
 $channel = $rss->createElement("channel");
 
-$channel->appendChild($rss->createElement("title",OPAL_Portal::config('system_sitename','')));
+$channel->appendChild($rss->createElement("title",\Orange\Portal\Core\App\Portal::config('system_sitename','')));
 $channel->appendChild($rss->createElement("link",OP_WWW));
 
 foreach ($digest as $item){

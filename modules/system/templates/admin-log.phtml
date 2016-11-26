@@ -18,5 +18,5 @@
     <dd><a href="<?php echo OP_WWW.'/admin/users/edit/'.$user->id; ?>"><?php $this->ee($user->get('user_login')); ?></a></dd>
     <?php } ?>
     <dt><?php $this->el('log_message'); ?></dt>
-    <dd><?php $this->ee(OPAL_Lang::t($log->get('log_message'),$log->get('log_vars'))); ?></dd>
+    <dd><?php $this->ee(\Orange\Portal\Core\App\Lang::t($log->get('log_message'),$log->get('log_vars'))); ?></dd>
 </dl>

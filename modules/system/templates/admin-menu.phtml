@@ -8,7 +8,7 @@ if (!function_exists('default_admin_menu')){
 		echo '<ul>';
 		foreach ($sub as $item){
 			echo '<li>';
-			echo '<a href="'.OP_WWW.$templater->esc($item['url']).'" style="background-image: url('.OP_WWW.'/'.$templater->esc($item['icon'] ? $item['icon'] : 'modules/system/static/icons/default.png').');" >'.OPAL_Lang::t($item['name']).'</a>';
+			echo '<a href="'.OP_WWW.$templater->esc($item['url']).'" style="background-image: url('.OP_WWW.'/'.$templater->esc($item['icon'] ? $item['icon'] : 'modules/system/static/icons/default.png').');" >'.\Orange\Portal\Core\App\Lang::t($item['name']).'</a>';
 			if (!empty($item['sub'])){
 				default_admin_menu($item['sub'],$templater);
 			}

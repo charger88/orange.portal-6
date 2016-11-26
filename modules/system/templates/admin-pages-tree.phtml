@@ -68,4 +68,4 @@ if (count($pages) != count($tree)){
 	<a href="<?php echo OP_WWW.'/'.$slug.'/new'; ?>" class="admin-button admin-button-new"><?php $this->el('ADMIN_ADD_NEW'); ?></a>
 </div>
 
-<?php OPAL_Theme::addScriptFile('modules/system/static/js/admin-pages.js');
+<?php \Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/admin-pages.js');

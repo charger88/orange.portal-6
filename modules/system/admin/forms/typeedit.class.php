@@ -13,62 +13,62 @@ class OPMX_System_TypeEdit extends Form
 	protected function init($params)
 	{
 
-		$this->addField((new Text('content_type_name', OPAL_Lang::t('content_type_name'))));
-		$this->addField((new Text('content_type_code', OPAL_Lang::t('content_type_code'))));
-		$this->addField((new Select('content_type_type', OPAL_Lang::t('content_type_type')))
+		$this->addField((new Text('content_type_name', \Orange\Portal\Core\App\Lang::t('content_type_name'))));
+		$this->addField((new Text('content_type_code', \Orange\Portal\Core\App\Lang::t('content_type_code'))));
+		$this->addField((new Select('content_type_type', \Orange\Portal\Core\App\Lang::t('content_type_type')))
 			->requireField()
 			->setOptions([
-				0 => OPAL_Lang::t('ADMIN_TYPE_TYPE_SYSTEM'),
-				1 => OPAL_Lang::t('ADMIN_TYPE_TYPE_PAGE'),
-				2 => OPAL_Lang::t('ADMIN_TYPE_TYPE_BLOCK'),
-				3 => OPAL_Lang::t('ADMIN_TYPE_TYPE_MODULE'),
-				4 => OPAL_Lang::t('ADMIN_TYPE_TYPE_CUSTOM'),
+				0 => \Orange\Portal\Core\App\Lang::t('ADMIN_TYPE_TYPE_SYSTEM'),
+				1 => \Orange\Portal\Core\App\Lang::t('ADMIN_TYPE_TYPE_PAGE'),
+				2 => \Orange\Portal\Core\App\Lang::t('ADMIN_TYPE_TYPE_BLOCK'),
+				3 => \Orange\Portal\Core\App\Lang::t('ADMIN_TYPE_TYPE_MODULE'),
+				4 => \Orange\Portal\Core\App\Lang::t('ADMIN_TYPE_TYPE_CUSTOM'),
 			])
 		);
-		$this->addField((new Text('content_type_sitemap_priority', OPAL_Lang::t('content_type_sitemap_priority'))));
-		$this->addField((new Text('content_type_class', OPAL_Lang::t('content_type_class'))));
+		$this->addField((new Text('content_type_sitemap_priority', \Orange\Portal\Core\App\Lang::t('content_type_sitemap_priority'))));
+		$this->addField((new Text('content_type_class', \Orange\Portal\Core\App\Lang::t('content_type_class'))));
 
 		$content_type_hidden_options = [
-			'content_title' => OPAL_Lang::t('content_title'),
-			'content_parent_id' => OPAL_Lang::t('content_parent_id'),
-			'content_tags' => OPAL_Lang::t('content_tags'),
-			'content_access_groups' => OPAL_Lang::t('content_access_groups'),
-			'content_lang' => OPAL_Lang::t('content_lang'),
-			'content_area' => OPAL_Lang::t('content_area'),
-			'content_slug' => OPAL_Lang::t('content_slug'),
-			'content_default_lang_id' => OPAL_Lang::t('content_default_lang_id'),
-			'content_on_site_mode' => OPAL_Lang::t('content_on_site_mode'),
-			'content_status' => OPAL_Lang::t('content_status'),
-			'content_commands' => OPAL_Lang::t('content_commands'),
-			'content_template' => OPAL_Lang::t('content_template'),
-			'content_image' => OPAL_Lang::t('content_image'),
-			'content_time_published' => OPAL_Lang::t('content_time_published'),
+			'content_title' => \Orange\Portal\Core\App\Lang::t('content_title'),
+			'content_parent_id' => \Orange\Portal\Core\App\Lang::t('content_parent_id'),
+			'content_tags' => \Orange\Portal\Core\App\Lang::t('content_tags'),
+			'content_access_groups' => \Orange\Portal\Core\App\Lang::t('content_access_groups'),
+			'content_lang' => \Orange\Portal\Core\App\Lang::t('content_lang'),
+			'content_area' => \Orange\Portal\Core\App\Lang::t('content_area'),
+			'content_slug' => \Orange\Portal\Core\App\Lang::t('content_slug'),
+			'content_default_lang_id' => \Orange\Portal\Core\App\Lang::t('content_default_lang_id'),
+			'content_on_site_mode' => \Orange\Portal\Core\App\Lang::t('content_on_site_mode'),
+			'content_status' => \Orange\Portal\Core\App\Lang::t('content_status'),
+			'content_commands' => \Orange\Portal\Core\App\Lang::t('content_commands'),
+			'content_template' => \Orange\Portal\Core\App\Lang::t('content_template'),
+			'content_image' => \Orange\Portal\Core\App\Lang::t('content_image'),
+			'content_time_published' => \Orange\Portal\Core\App\Lang::t('content_time_published'),
 		];
 
-		$this->addField((new Select('content_type_hidden', OPAL_Lang::t('content_type_hidden')))
+		$this->addField((new Select('content_type_hidden', \Orange\Portal\Core\App\Lang::t('content_type_hidden')))
 			->setMultiple()
 			->setOptions($content_type_hidden_options));
 
-		$this->addField((new Checkbox('content_type_multilang', OPAL_Lang::t('content_type_multilang')))->setDefault(1));
-		$this->addField((new Checkbox('content_type_status', OPAL_Lang::t('content_type_status')))->setDefault(1));
+		$this->addField((new Checkbox('content_type_multilang', \Orange\Portal\Core\App\Lang::t('content_type_multilang')))->setDefault(1));
+		$this->addField((new Checkbox('content_type_status', \Orange\Portal\Core\App\Lang::t('content_type_status')))->setDefault(1));
 
-		$content_type_fields = new Multirow('content_type_fields', OPAL_Lang::t('content_type_fields'));
+		$content_type_fields = new Multirow('content_type_fields', \Orange\Portal\Core\App\Lang::t('content_type_fields'));
 		{
-			$content_type_fields->addField((new Text('content_type_fields_id', OPAL_Lang::t('content_type_fields:_')))->setName('id'));
-			$content_type_fields->addField((new Text('content_type_fields_type', OPAL_Lang::t('content_type_fields:type')))->setName('type'));
-			$content_type_fields->addField((new Text('content_type_fields_group', OPAL_Lang::t('content_type_fields:group')))->setName('group'));
-			$content_type_fields->addField((new Text('content_type_fields_title', OPAL_Lang::t('content_type_fields:title')))->setName('title'));
+			$content_type_fields->addField((new Text('content_type_fields_id', \Orange\Portal\Core\App\Lang::t('content_type_fields:_')))->setName('id'));
+			$content_type_fields->addField((new Text('content_type_fields_type', \Orange\Portal\Core\App\Lang::t('content_type_fields:type')))->setName('type'));
+			$content_type_fields->addField((new Text('content_type_fields_group', \Orange\Portal\Core\App\Lang::t('content_type_fields:group')))->setName('group'));
+			$content_type_fields->addField((new Text('content_type_fields_title', \Orange\Portal\Core\App\Lang::t('content_type_fields:title')))->setName('title'));
 		}
 		$this->addField($content_type_fields);
 
-		$content_type_texts = new Multirow('content_type_texts', OPAL_Lang::t('content_type_texts'));
+		$content_type_texts = new Multirow('content_type_texts', \Orange\Portal\Core\App\Lang::t('content_type_texts'));
 		{
-			$content_type_texts->addField((new Text('content_type_texts_id', OPAL_Lang::t('content_type_texts:_')))->setName('id'));
-			$content_type_texts->addField((new Text('content_type_texts_value', OPAL_Lang::t('content_type_texts:*')))->setName('value'));
+			$content_type_texts->addField((new Text('content_type_texts_id', \Orange\Portal\Core\App\Lang::t('content_type_texts:_')))->setName('id'));
+			$content_type_texts->addField((new Text('content_type_texts_value', \Orange\Portal\Core\App\Lang::t('content_type_texts:*')))->setName('value'));
 		}
 		$this->addField($content_type_texts);
 
-		$this->addField(new Submit('type_edit_submit', OPAL_Lang::t('ADMIN_SAVE')), 'top');
+		$this->addField(new Submit('type_edit_submit', \Orange\Portal\Core\App\Lang::t('ADMIN_SAVE')), 'top');
 
 		$this->enableXSRFProtection();
 

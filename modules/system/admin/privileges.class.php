@@ -1,26 +1,26 @@
 <?php
 
-class OPMA_System_Privileges extends OPAL_Controller
+class OPMA_System_Privileges extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
 	{
 		$privileges = [];
-		$modules = OPAL_Module::getModules(true);
+		$modules = \Orange\Portal\Core\App\Module::getModules(true);
 		foreach ($modules as $module) {
 			$privileges = array_merge($privileges, $module->getPrivilegesList());
 		}
 		return $this->templater->fetch('system/admin-privileges.phtml', array(
 			'privileges' => $privileges,
-			'privileges_data' => OPAM_Privilege::getPrivilegesByGroup(),
-			'groups' => OPAM_User_Group::getList(),
+			'privileges_data' => \Orange\Portal\Core\Model\Privilege::getPrivilegesByGroup(),
+			'groups' => \Orange\Portal\Core\Model\UserGroup::getList(),
 			'slug' => $this->content->getSlug(),
 		));
 	}
 
 	public function saveAction()
 	{
-		$privileges_old = OPAM_Privilege::getPrivilegesByGroup();
+		$privileges_old = \Orange\Portal\Core\Model\Privilege::getPrivilegesByGroup();
 		$privileges_new = $this->getPost('p');
 		$delete = $add = array();
 		$deleteCounter = $addCounter = 0;
@@ -41,7 +41,7 @@ class OPMA_System_Privileges extends OPAL_Controller
 					$deleteCounter += count($group_data);
 				}
 			}
-			OPAM_Privilege::massPrivilegesDeleting($delete);
+			\Orange\Portal\Core\Model\Privilege::massPrivilegesDeleting($delete);
 		}
 		if ($privileges_new) {
 			foreach ($privileges_new as $group_id => $group_data) {
@@ -60,9 +60,9 @@ class OPMA_System_Privileges extends OPAL_Controller
 					$addCounter += count($group_data);
 				}
 			}
-			OPAM_Privilege::massPrivilegesAdding($add);
+			\Orange\Portal\Core\Model\Privilege::massPrivilegesAdding($add);
 		}
-		return $this->msg(OPAL_Lang::t('%s_PRIVILEGES_ADDED__%s_PRIVILEGES_DELETED', array($addCounter, $deleteCounter)), self::STATUS_OK, $this->content->getURL());
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('%s_PRIVILEGES_ADDED__%s_PRIVILEGES_DELETED', array($addCounter, $deleteCounter)), self::STATUS_OK, $this->content->getURL());
 	}
 
 }

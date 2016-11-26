@@ -1,6 +1,6 @@
 <?php
 
-class OPMI_News extends OPAL_Installer
+class OPMI_News extends \Orange\Portal\Core\App\Installer
 {
 
 	public function installModule()
@@ -40,7 +40,7 @@ class OPMI_News extends OPAL_Installer
 			),
 		);
 		foreach ($content_types_data as $data) {
-			$content = new OPAM_Content_Type();
+			$content = new \Orange\Portal\Core\Model\ContentType();
 			$content->setData($data);
 			$content->set('content_type_status', 1);
 			$results[] = $content->save()->id;
@@ -65,7 +65,7 @@ class OPMI_News extends OPAL_Installer
 			),
 		);
 		foreach ($content_data as $data) {
-			$content = new OPAM_Content();
+			$content = new \Orange\Portal\Core\Model\Content();
 			$content->setData($data);
 			$content->set('content_time_published', time());
 			$content->set('content_user_id', 1);
@@ -79,11 +79,11 @@ class OPMI_News extends OPAL_Installer
 
 	public function createdAdditionalContent()
 	{
-		$lang = OPAL_Portal::config('system_default_lang', 'en');
-		OPAL_Lang::load('modules/news/lang/admin', $lang);
-		$content = new OPAM_Block();
+		$lang = \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en');
+		\Orange\Portal\Core\App\Lang::load('modules/news/lang/admin', $lang);
+		$content = new \Orange\Portal\Core\Model\Block();
 		$content->setData([
-			'content_title' => OPAL_Lang::t('MODULE_NEWS'),
+			'content_title' => \Orange\Portal\Core\App\Lang::t('MODULE_NEWS'),
 			'content_access_groups' => [0],
 			'content_lang' => '',
 			'content_area' => 'column',
@@ -97,7 +97,7 @@ class OPMI_News extends OPAL_Installer
 		$content->save();
 		$content = new OPMM_News_Item();
 		$content->setData([
-			'content_title' => OPAL_Lang::t('INSTALL_NEWS_TITLE_1'),
+			'content_title' => \Orange\Portal\Core\App\Lang::t('INSTALL_NEWS_TITLE_1'),
 			'content_access_groups' => [0],
 			'content_lang' => $lang,
 			'content_slug' => 'welcome-news.html',
@@ -109,15 +109,15 @@ class OPMI_News extends OPAL_Installer
 			'content_user_id' => 1,
 		]);
 		$id = $content->save()->id;
-		$text = new OPAM_Content_Text();
+		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', $id);
 		$text->set('content_text_role', 'excerpt');
-		$text->set('content_text_value', OPAL_Lang::t('INSTALL_NEWS_EXCERPT_1'));
+		$text->set('content_text_value', \Orange\Portal\Core\App\Lang::t('INSTALL_NEWS_EXCERPT_1'));
 		$text->save();
-		$text = new OPAM_Content_Text();
+		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', $id);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', OPAL_Lang::t('INSTALL_NEWS_TEXT_1'));
+		$text->set('content_text_value', \Orange\Portal\Core\App\Lang::t('INSTALL_NEWS_TEXT_1'));
 		$text->save();
 	}
 

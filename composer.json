@@ -11,6 +11,10 @@
   "repositories": [
     {
       "type": "vcs",
+      "url": "https://github.com/charger88/orange.portal-6-core"
+    },
+    {
+      "type": "vcs",
       "url": "https://github.com/charger88/orange.database"
     },
     {
@@ -35,6 +39,7 @@
     }
   ],
   "require": {
+    "charger88/orange.portal-6-core": "dev-master",
     "charger88/orange.database": "dev-master",
     "charger88/orange.image": "dev-master",
     "charger88/orange.forms": "dev-master",

@@ -14,27 +14,27 @@ class OPMX_Feedback_FormEdit extends Form
 	{
 
 		$field_status_ref = [
-			0 => OPAL_Lang::t('MODULE_FEEDBACK_FIELD_STATUS_DISABLED'),
-			1 => OPAL_Lang::t('MODULE_FEEDBACK_FIELD_STATUS_ENABLED'),
-			2 => OPAL_Lang::t('MODULE_FEEDBACK_FIELD_STATUS_REQUIRED'),
+			0 => \Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_FIELD_STATUS_DISABLED'),
+			1 => \Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_FIELD_STATUS_ENABLED'),
+			2 => \Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK_FIELD_STATUS_REQUIRED'),
 		];
 
-		$this->addField((new Select('feedback_form_theme', OPAL_Lang::t('feedback_form_theme')))->setOptions($field_status_ref), 'column');
-		$this->addField((new Select('feedback_form_phone', OPAL_Lang::t('feedback_form_phone')))->setOptions($field_status_ref), 'column');
-		$this->addField((new Select('feedback_form_email', OPAL_Lang::t('feedback_form_email')))->setOptions($field_status_ref), 'column');
-		$this->addField((new Select('feedback_form_uname', OPAL_Lang::t('feedback_form_uname')))->setOptions($field_status_ref), 'column');
-		$this->addField((new Select('feedback_form_text', OPAL_Lang::t('feedback_form_text')))->setOptions($field_status_ref), 'column');
+		$this->addField((new Select('feedback_form_theme', \Orange\Portal\Core\App\Lang::t('feedback_form_theme')))->setOptions($field_status_ref), 'column');
+		$this->addField((new Select('feedback_form_phone', \Orange\Portal\Core\App\Lang::t('feedback_form_phone')))->setOptions($field_status_ref), 'column');
+		$this->addField((new Select('feedback_form_email', \Orange\Portal\Core\App\Lang::t('feedback_form_email')))->setOptions($field_status_ref), 'column');
+		$this->addField((new Select('feedback_form_uname', \Orange\Portal\Core\App\Lang::t('feedback_form_uname')))->setOptions($field_status_ref), 'column');
+		$this->addField((new Select('feedback_form_text', \Orange\Portal\Core\App\Lang::t('feedback_form_text')))->setOptions($field_status_ref), 'column');
 
-		$this->addField((new Text('feedback_form_name', OPAL_Lang::t('feedback_form_name')))->requireField(), 'main');
-		$this->addField((new Textarea('feedback_form_themes', OPAL_Lang::t('feedback_form_themes'))), 'main');
-		$this->addField((new Text('feedback_form_send_to', OPAL_Lang::t('feedback_form_send_to'))), 'main');
+		$this->addField((new Text('feedback_form_name', \Orange\Portal\Core\App\Lang::t('feedback_form_name')))->requireField(), 'main');
+		$this->addField((new Textarea('feedback_form_themes', \Orange\Portal\Core\App\Lang::t('feedback_form_themes'))), 'main');
+		$this->addField((new Text('feedback_form_send_to', \Orange\Portal\Core\App\Lang::t('feedback_form_send_to'))), 'main');
 
-		$multirow = new Multirow('feedback_form_fields', OPAL_Lang::t('feedback_form_fields'));
-		$multirow->addField((new Text('feedback_form_fields_name', OPAL_Lang::t('feedback_form_fields:name')))->setName('name'));
-		$multirow->addField((new Text('feedback_form_fields_status', OPAL_Lang::t('feedback_form_fields:status')))->setName('status'));
+		$multirow = new Multirow('feedback_form_fields', \Orange\Portal\Core\App\Lang::t('feedback_form_fields'));
+		$multirow->addField((new Text('feedback_form_fields_name', \Orange\Portal\Core\App\Lang::t('feedback_form_fields:name')))->setName('name'));
+		$multirow->addField((new Text('feedback_form_fields_status', \Orange\Portal\Core\App\Lang::t('feedback_form_fields:status')))->setName('status'));
 		$this->addField($multirow, 'main');
 
-		$this->addField((new Submit('feedback_form_edit_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
+		$this->addField((new Submit('feedback_form_edit_submit', \Orange\Portal\Core\App\Lang::t('ADMIN_SAVE'))), 'top');
 
 		$this->enableXSRFProtection();
 

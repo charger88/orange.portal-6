@@ -2,7 +2,7 @@
 <?php
     $areas_list = array_unique(array_merge(array_keys($areas),array_keys($list)));
     foreach ($areas_list as $area_code){ ?>
-    <h3><?php $this->ee(isset($areas[$area_code]) ? $areas[$area_code] : $area_code . ' ('.OPAL_Lang::t('UNDEFINED_IN_THEME').')'); ?><a href="<?php echo OP_WWW.'/admin/blocks/new?area='.$area_code; ?>" class="header-inline-button"><?php $this->el('ADMIN_ADD_BLOCK'); ?></a></h3>
+    <h3><?php $this->ee(isset($areas[$area_code]) ? $areas[$area_code] : $area_code . ' ('.$this->lng('UNDEFINED_IN_THEME').')'); ?><a href="<?php echo OP_WWW.'/admin/blocks/new?area='.$area_code; ?>" class="header-inline-button"><?php $this->el('ADMIN_ADD_BLOCK'); ?></a></h3>
     <div class="content-special-list-wrapper">
         <ul data-root="<?php $this->ee($area_code); ?>"><?php
             if (!empty($list[$area_code])){
@@ -39,4 +39,4 @@
 <div class="buttons-area">
     <a href="<?php echo OP_WWW.'/'.$slug.'/new'; ?>" class="admin-button admin-button-new"><?php $this->el('ADMIN_ADD_NEW'); ?></a>
 </div>
-<?php OPAL_Theme::addScriptFile('modules/system/static/js/admin-blocks.js');
+<?php \Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/admin-blocks.js');

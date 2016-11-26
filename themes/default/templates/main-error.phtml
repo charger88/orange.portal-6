@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xml:lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
 	<head><?php
-			OPAL_Theme::addStyleFile('themes/default/static/error.css');
+			\Orange\Portal\Core\App\Theme::addStyleFile('themes/default/static/error.css');
 			echo $this->fetch('head.phtml', ['content' => $content]);
 		?>
 	</head>
 	<body>
-		<header><?php $this->ee(OPAL_Portal::config('system_sitename', 'Orange.Portal 6')); ?></header>
+		<header><?php $this->ee(\Orange\Portal\Core\App\Portal::config('system_sitename', 'Orange.Portal 6')); ?></header>
 		<section>
 			<?php echo $this->fetch($this->theme->getContentTemplate($content), ['content' => $content, 'response' => $response]); ?>
 		</section>

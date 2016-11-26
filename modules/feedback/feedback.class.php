@@ -2,7 +2,7 @@
 
 use Orange\Database\Queries\Parts\Condition;
 
-class OPMO_Feedback extends OPAL_Module
+class OPMO_Feedback extends \Orange\Portal\Core\App\Module
 {
 
 	protected $privileges = [

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xml:lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
 	<head><?php
-            OPAL_Theme::addScriptFile('modules/system/static/js/jquery-ui.min.js');
-			OPAL_Theme::addStyleFile('modules/system/static/css/admin.css');
-			OPAL_Theme::addScriptFile('modules/system/static/js/admin.js');
-			$content->set('content_title',OPAL_Lang::t($content->get('content_title')));
+			\Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/jquery-ui.min.js');
+			\Orange\Portal\Core\App\Theme::addStyleFile('modules/system/static/css/admin.css');
+			\Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/admin.js');
+			$content->set('content_title',\Orange\Portal\Core\App\Lang::t($content->get('content_title')));
 			echo $portal->blockDirect('system/system/head');
 		?>
         <meta name="referrer" content="origin-when-crossorigin" />
@@ -12,7 +12,7 @@
 	<body>
 		<header>
 			<div class="aside" id="logo"><a href="<?php echo $content->get('content_slug') == 'admin/center' ? OP_WWW : OP_WWW.'/admin'; ?>">Orange.Portal 6</a></div>
-			<h1><?php echo OPAL_Lang::t($content->get('content_title')); ?></h1>
+			<h1><?php echo \Orange\Portal\Core\App\Lang::t($content->get('content_title')); ?></h1>
 		</header>
 		<aside id="column">
 			<?php echo $portal->blockDirect('system/admin-center/menu'); ?>

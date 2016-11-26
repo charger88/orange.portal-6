@@ -2,7 +2,7 @@
 
 use Orange\Database\Queries\Parts\Condition;
 
-class OPMO_News extends OPAL_Module
+class OPMO_News extends \Orange\Portal\Core\App\Module
 {
 
 	protected $privileges = array();
@@ -26,7 +26,7 @@ class OPMO_News extends OPAL_Module
 	{
 		$this->set('module_status', 0);
 		$this->save();
-		$content_type = new OPAM_Content_Type('content_type_code', 'news_item');
+		$content_type = new \Orange\Portal\Core\Model\ContentType('content_type_code', 'news_item');
 		$content_type->set('content_type_status', false);
 		$content_type->save();
 		return null;
@@ -43,11 +43,11 @@ class OPMO_News extends OPAL_Module
 		}
 		$admin = new \Orange\Database\Queries\Select('content');
 		$admin->addWhere(new Condition('content_slug', '=', 'admin/news'));
-		$admin = new OPAM_Admin($admin->execute()->getResultNextRow());
+		$admin = new \Orange\Portal\Core\Model\Admin($admin->execute()->getResultNextRow());
 		$admin->delete();
-		$content_type = new OPAM_Content_Type('content_type_code', 'news_item');
+		$content_type = new \Orange\Portal\Core\Model\ContentType('content_type_code', 'news_item');
 		$content_type->delete();
-		$config_option = new OPAM_Config('config_key', 'news_categories');
+		$config_option = new \Orange\Portal\Core\Model\Config('config_key', 'news_categories');
 		$config_option->delete();
 		return null;
 	}

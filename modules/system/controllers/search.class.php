@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_System_Search extends OPAL_Controller
+class OPMC_System_Search extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
@@ -25,55 +25,55 @@ class OPMC_System_Search extends OPAL_Controller
 	private function results($search)
 	{
 		$search = trim($search);
-		OPAL_Portal::getInstance()->content->set('content_title', OPAL_Lang::t('SEARCH'));
+		\Orange\Portal\Core\App\Portal::getInstance()->content->set('content_title', \Orange\Portal\Core\App\Lang::t('SEARCH'));
 		if (empty($search)) {
-			return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_IS_EMPTY'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('SEARCH_REQUEST_IS_EMPTY'), self::STATUS_NOTFOUND);
 		} else if (strlen($search) > 256) {
-			return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_TOO_LARGE'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('SEARCH_REQUEST_TOO_LARGE'), self::STATUS_NOTFOUND);
 		} else if (substr_count($search, ' ') >= 10) {
-			return $this->msg(OPAL_Lang::t('SEARCH_REQUEST_TOO_MUCH_WORDS'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('SEARCH_REQUEST_TOO_MUCH_WORDS'), self::STATUS_NOTFOUND);
 		} else {
-			$searchable_types = OPAL_Portal::getInstance()->processHooks('get_searchable_types');
+			$searchable_types = \Orange\Portal\Core\App\Portal::getInstance()->processHooks('get_searchable_types');
 			$baselimit = $this->arg('limit', 50);
-			$results = OPAM_Page::getList([
+			$results = \Orange\Portal\Core\Model\Page::getList([
 				'types' => $searchable_types,
 				'search' => $search,
 				'searchmode' => 1,
 				'access_user' => $this->user,
-				'lang' => [OPAL_Portal::$sitelang, ''],
-			], 'OPAM_Page');
+				'lang' => [\Orange\Portal\Core\App\Portal::$sitelang, ''],
+			], '\Orange\Portal\Core\Model\Page');
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList([
+				$results += \Orange\Portal\Core\Model\Page::getList([
 					'types' => $searchable_types,
 					'search' => $search,
 					'searchmode' => 2,
 					'access_user' => $this->user,
-					'lang' => [OPAL_Portal::$sitelang, ''],
+					'lang' => [\Orange\Portal\Core\App\Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				], 'OPAM_Page');
+				], '\Orange\Portal\Core\Model\Page');
 			}
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList([
+				$results += \Orange\Portal\Core\Model\Page::getList([
 					'types' => $searchable_types,
 					'search' => str_replace(' ', '%', $search),
 					'searchmode' => 1,
 					'access_user' => $this->user,
-					'lang' => [OPAL_Portal::$sitelang, ''],
+					'lang' => [\Orange\Portal\Core\App\Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				], 'OPAM_Page');
+				], '\Orange\Portal\Core\Model\Page');
 			}
 			if (($limit = ($baselimit - count($results))) > 0) {
-				$results += OPAM_Page::getList([
+				$results += \Orange\Portal\Core\Model\Page::getList([
 					'types' => $searchable_types,
 					'search' => str_replace(' ', '%', $search),
 					'searchmode' => 2,
 					'access_user' => $this->user,
-					'lang' => [OPAL_Portal::$sitelang, ''],
+					'lang' => [\Orange\Portal\Core\App\Portal::$sitelang, ''],
 					'exclude' => array_keys($results),
 					'limit' => $limit,
-				], 'OPAM_Page');
+				], '\Orange\Portal\Core\Model\Page');
 			}
 			//TODO Add some less relevant requests
 			$this->content->set('content_type', 'SEARCH_RESULTS');
@@ -84,7 +84,7 @@ class OPMC_System_Search extends OPAL_Controller
 					'results' => $results
 				]);
 			} else {
-				return $this->msg(OPAL_Lang::t('NOTHING_FOUND'), self::STATUS_NOTFOUND);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('NOTHING_FOUND'), self::STATUS_NOTFOUND);
 			}
 		}
 	}
@@ -106,7 +106,7 @@ class OPMC_System_Search extends OPAL_Controller
 
 	private function form()
 	{
-		if (OPAM_Privilege::hasPrivilege('METHOD_SYSTEM_SEARCH_RESULTS', $this->user)) {
+		if (\Orange\Portal\Core\Model\Privilege::hasPrivilege('METHOD_SYSTEM_SEARCH_RESULTS', $this->user)) {
 			$form = new OPMF_System_Search();
 			$form->setAction(OP_WWW . '/module/system/search/results');
 			$form->setMethod(\Orange\Forms\Form::METHOD_GET);

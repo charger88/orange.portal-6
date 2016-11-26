@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_System_Signin extends OPAL_Controller
+class OPMC_System_Signin extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
@@ -40,7 +40,7 @@ class OPMC_System_Signin extends OPAL_Controller
 
 	public function offActionDirect()
 	{
-		OPAL_Portal::getInstance()->session->set('uid', null);
+		\Orange\Portal\Core\App\Portal::getInstance()->session->set('uid', null);
 		return $this->redirect(OP_WWW);
 	}
 

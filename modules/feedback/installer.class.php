@@ -1,6 +1,6 @@
 <?php
 
-class OPMI_Feedback extends OPAL_Installer
+class OPMI_Feedback extends \Orange\Portal\Core\App\Installer
 {
 
 	public function installModule()
@@ -22,7 +22,7 @@ class OPMI_Feedback extends OPAL_Installer
 	private function createContent()
 	{
 		$result = true;
-		$id = (new OPAM_Content())
+		$id = (new \Orange\Portal\Core\Model\Content())
 			->setData([
 				'content_type' => 'admin',
 				'content_title' => 'MODULE_FEEDBACK',
@@ -57,11 +57,11 @@ class OPMI_Feedback extends OPAL_Installer
 
 	public function createdAdditionalContent()
 	{
-		$lang = OPAL_Portal::config('system_default_lang', 'en');
-		OPAL_Lang::load('modules/feedback/lang/admin', $lang);
-		$content = new OPAM_Page();
+		$lang = \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en');
+		\Orange\Portal\Core\App\Lang::load('modules/feedback/lang/admin', $lang);
+		$content = new \Orange\Portal\Core\Model\Page();
 		$content->setData([
-			'content_title' => OPAL_Lang::t('MODULE_FEEDBACK'),
+			'content_title' => \Orange\Portal\Core\App\Lang::t('MODULE_FEEDBACK'),
 			'content_access_groups' => [0],
 			'content_lang' => $lang,
 			'content_slug' => 'feedback.html',

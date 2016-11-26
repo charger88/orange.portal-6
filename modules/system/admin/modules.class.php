@@ -1,13 +1,13 @@
 <?php
 
-class OPMA_System_Modules extends OPAL_Controller
+class OPMA_System_Modules extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
 	{
-		$list = OPAL_Module::getModules();
+		$list = \Orange\Portal\Core\App\Module::getModules();
 		foreach ($list as $id => $module) {
-			$module->set('module_title', OPAL_Lang::t($module->get('module_title')));
+			$module->set('module_title', \Orange\Portal\Core\App\Lang::t($module->get('module_title')));
 			$list[$id] = $module;
 		}
 		return $this->templater->fetch('system/admin-modules.phtml', array('list' => $list));
@@ -15,34 +15,34 @@ class OPMA_System_Modules extends OPAL_Controller
 
 	public function newAction()
 	{
-		if ($list = OPAL_Module::getNotInstalledModules()) {
+		if ($list = \Orange\Portal\Core\App\Module::getNotInstalledModules()) {
 			foreach ($list as $id => $module) {
 				$list[$id] = $module;
 			}
 			return $this->templater->fetch('system/admin-modules.phtml', array('list' => $list));
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_NOTHING_FOUND'), self::STATUS_NOTFOUND);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_NOTHING_FOUND'), self::STATUS_NOTFOUND);
 		}
 	}
 
 	public function switchAction($code)
 	{
-		$module = new OPAM_Module('module_code', $code);
-		$msg = OPAL_Lang::t('ADMIN_ERROR');
+		$module = new \Orange\Portal\Core\Model\Module('module_code', $code);
+		$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_ERROR');
 		$status = self::STATUS_ERROR;
 		if ($module->id) {
 			if ($module->id === 1) {
-				$msg = OPAL_Lang::t('ADMIN_SYSTEM_MODULE_NOT_EDITABLE');
+				$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_SYSTEM_MODULE_NOT_EDITABLE');
 			} else {
 				$module = $module->getModuleObject();
 				if ($module->get('module_status')) {
 					$module->disable();
-					$msg = OPAL_Lang::t('ADMIN_DISABLED');
+					$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_DISABLED');
 					$status = self::STATUS_COMPLETE;
-					OPAL_Portal::getInstance()->cache->remove('modules_', true);
+					\Orange\Portal\Core\App\Portal::getInstance()->cache->remove('modules_', true);
 				} else {
 					$module->enable();
-					$msg = OPAL_Lang::t('ADMIN_ENABLED');
+					$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_ENABLED');
 					$status = self::STATUS_COMPLETE;
 				}
 			}
@@ -52,19 +52,19 @@ class OPMA_System_Modules extends OPAL_Controller
 
 	public function installAction($code)
 	{
-		$module = new OPAM_Module('module_code', $code);
-		$msg = OPAL_Lang::t('ADMIN_ERROR');
+		$module = new \Orange\Portal\Core\Model\Module('module_code', $code);
+		$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_ERROR');
 		$status = self::STATUS_ERROR;
 		if (!$module->id) {
 			$module->set('module_code', $code);
 			$module = $module->getModuleObject();
 			$errors = $module->installModule();
 			if (empty($errors)) {
-				$msg = OPAL_Lang::t('ADMIN_MODULE_INSTALLED');
+				$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_MODULE_INSTALLED');
 				$status = self::STATUS_COMPLETE;
-				OPAL_Portal::getInstance()->cache->remove('modules_', true);
+				\Orange\Portal\Core\App\Portal::getInstance()->cache->remove('modules_', true);
 			} else {
-				$msg = OPAL_Lang::t('ADMIN_MODULE_FAILED') . ': ' . implode(', ', $errors) . '.';
+				$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_MODULE_FAILED') . ': ' . implode(', ', $errors) . '.';
 				$status = self::STATUS_ERROR;
 			}
 		}
@@ -73,23 +73,23 @@ class OPMA_System_Modules extends OPAL_Controller
 
 	public function uninstallAction($code)
 	{
-		$module = new OPAM_Module('module_code', $code);
-		$msg = OPAL_Lang::t('ADMIN_ERROR');
+		$module = new \Orange\Portal\Core\Model\Module('module_code', $code);
+		$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_ERROR');
 		$status = self::STATUS_ERROR;
 		if ($module->id) {
 			$module = $module->getModuleObject();
 			$module->uninstallModule();
-			$msg = OPAL_Lang::t('ADMIN_MODULE_UNINSTALLED');
+			$msg = \Orange\Portal\Core\App\Lang::t('ADMIN_MODULE_UNINSTALLED');
 			$status = self::STATUS_COMPLETE;
 		}
-		OPAL_Portal::getInstance()->cache->remove('modules_', true);
+		\Orange\Portal\Core\App\Portal::getInstance()->cache->remove('modules_', true);
 		return $this->msg($msg, $status, OP_WWW . '/admin/modules');
 	}
 
 
 	public function discoverAction()
 	{
-		return $this->msg(OPAL_Lang::t('Functionality is under construction.'), self::STATUS_NOTFOUND);
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('Functionality is under construction.'), self::STATUS_NOTFOUND);
 	}
 
 }

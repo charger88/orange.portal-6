@@ -15,7 +15,7 @@
                 <td style="font-weight: bold;"><?php $this->el($privilege); ?></td>
                 <td class="table-td-checkbox"><label><input type="checkbox" <?php if (!empty($privileges_data[0]) && in_array($privilege, $privileges_data[0])){ ?>checked="checked"<?php } ?> name="p[<?php $this->ee(0); ?>][]" value="<?php $this->ee($privilege); ?>"></label></td>
                 <?php foreach ($groups as $group) {
-                    $readonly = ($group->id == OPAM_User::GROUP_ADMIN);
+                    $readonly = ($group->id == \Orange\Portal\Core\Model\User::GROUP_ADMIN);
                     $checked = $readonly || (!empty($privileges_data[$group->id]) && in_array($privilege, $privileges_data[$group->id]));
                     ?>
                     <td class="table-td-checkbox"><label><input type="checkbox" <?php if ($checked){ ?>checked="checked"<?php } ?> <?php if ($readonly){ ?>readonly="readonly" disabled="disabled"<?php } ?> name="p[<?php $this->ee($group->id); ?>][]" value="<?php $this->ee($privilege); ?>"></label></td>

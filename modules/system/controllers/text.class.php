@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_System_Text extends OPAL_Controller
+class OPMC_System_Text extends \Orange\Portal\Core\App\Controller
 {
 
 	protected $cachemap = [

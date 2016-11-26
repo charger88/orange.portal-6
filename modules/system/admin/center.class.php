@@ -1,12 +1,12 @@
 <?php
 
-class OPMA_System_Center extends OPAL_Controller
+class OPMA_System_Center extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
 	{
 		return $this->templater->fetch('system/admin-center.phtml', array(
-			'blocks' => OPAL_Portal::getInstance()->processHooks('admin_center_index'),
+			'blocks' => \Orange\Portal\Core\App\Portal::getInstance()->processHooks('admin_center_index'),
 		));
 	}
 
@@ -20,7 +20,7 @@ class OPMA_System_Center extends OPAL_Controller
 
 	public function systemBlockDirect()
 	{
-		$version = new \Orange\FS\File('core', 'version.txt');
+		$version = new \Orange\FS\File('version.txt');
 		return $this->templater->fetch('system/admin-center-system.phtml', array(
 			'version' => $version->getData(),
 			'server' => $this->getServer('SERVER_SOFTWARE', ''),
@@ -30,7 +30,7 @@ class OPMA_System_Center extends OPAL_Controller
 	public function menuBlockDirect()
 	{
 		$menu = array();
-		if ($modules = OPAM_Module::getModules(true)) {
+		if ($modules = \Orange\Portal\Core\Model\Module::getModules(true)) {
 			foreach ($modules as $module) {
 				if ($module_menu = $module->getAdminMenu()) {
 					$menu = array_merge($menu, $module_menu);

@@ -1,6 +1,6 @@
 <?php
 
-class OPMA_System_Users extends OPAL_Controller
+class OPMA_System_Users extends \Orange\Portal\Core\App\Controller
 {
 
 	protected $refs = [];
@@ -20,7 +20,7 @@ class OPMA_System_Users extends OPAL_Controller
 	public function indexAction()
 	{
 		$params = [];
-		$params['groups'] = OPAM_User_Group::getRef(true);
+		$params['groups'] = \Orange\Portal\Core\Model\UserGroup::getRef(true);
 		$form = new OPMX_System_UserSearch($params);
 		$form->setMethod(\Orange\Forms\Form::METHOD_GET);
 		$form->setAction(OP_WWW . '/' . $this->content->getSlug() . '/list');
@@ -46,14 +46,14 @@ class OPMA_System_Users extends OPAL_Controller
 			$params['limit'] = 1000;
 			$params['offset'] = null;
 		}
-		$params['list'] = OPAM_User::getList($params);
+		$params['list'] = \Orange\Portal\Core\Model\User::getList($params);
 		$params['class_fields'] = ['user_status'];
 		$params['columns'] = $this->list_columns;
 		$params['refs'] = $this->getFormOptions();
 		$params['columns']['_edit'] = [
 			'title' => '',
-			'text' => OPAL_Lang::t('ADMIN_EDIT'),
-			'hint' => OPAL_Lang::t('ADMIN_EDIT'),
+			'text' => \Orange\Portal\Core\App\Lang::t('ADMIN_EDIT'),
+			'hint' => \Orange\Portal\Core\App\Lang::t('ADMIN_EDIT'),
 			'class' => 'icon icon-edit',
 			'link' => '/' . $this->content->getSlug() . '/edit/%id%',
 		];
@@ -65,22 +65,22 @@ class OPMA_System_Users extends OPAL_Controller
 
 	public function newAction()
 	{
-		return $this->edit(new OPAM_User());
+		return $this->edit(new \Orange\Portal\Core\Model\User());
 	}
 
 	public function editAction($id)
 	{
 		$id = intval($id);
-		$item = new OPAM_User($id);
+		$item = new \Orange\Portal\Core\Model\User($id);
 		if ($item->id) {
 			return $this->edit($item);
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_WARNING_NEW_USER'), self::STATUS_WARNING);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_WARNING_NEW_USER'), self::STATUS_WARNING);
 		}
 	}
 
 	/**
-	 * @param OPAM_User $item
+	 * @param \Orange\Portal\Core\Model\User $item
 	 * @return string
 	 */
 	protected function edit($item)
@@ -96,7 +96,7 @@ class OPMA_System_Users extends OPAL_Controller
 	public function saveAction($id = 0)
 	{
 		$id = intval($id);
-		$item = new OPAM_User($id);
+		$item = new \Orange\Portal\Core\Model\User($id);
 		$form = new OPMX_System_UserEdit();
 		$form->setValues($this->getPostArray());
 		$item->setData($data = $form->getValuesWithXSRFCheck());
@@ -109,13 +109,13 @@ class OPMA_System_Users extends OPAL_Controller
 		$this->log('USER_%s_SAVED', [
 			$item->get('user_login')
 		], 'LOG_CONTENT', self::STATUS_OK, $item);
-		return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, OP_WWW . '/' . $this->content->getSlug() . '/edit/' . $item->id);
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_SAVED'), self::STATUS_OK, OP_WWW . '/' . $this->content->getSlug() . '/edit/' . $item->id);
 	}
 
 	protected function getFormOptions()
 	{
 		$options = [
-			'user_groups' => OPAM_User_Group::getRef(),
+			'user_groups' => \Orange\Portal\Core\Model\UserGroup::getRef(),
 		];
 		return $options;
 	}

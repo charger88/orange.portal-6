@@ -23,7 +23,7 @@ class OPMX_System_ContentEdit extends Form
 	protected function init($params)
 	{
 
-		/** @var OPAM_Content_Type $type */
+		/** @var \Orange\Portal\Core\Model\ContentType $type */
 		$type = $params['type'];
 
 		$this->lang_overwrite = isset($params['lang_overwrite']) ? $params['lang_overwrite'] : [];
@@ -188,13 +188,13 @@ class OPMX_System_ContentEdit extends Form
 
 		if (!in_array('content_commands', $params['hide'])) {
 
-			$multirow = new Multirow('content_commands', OPAL_Lang::t('content_commands'));
+			$multirow = new Multirow('content_commands', \Orange\Portal\Core\App\Lang::t('content_commands'));
 			{
-				$multirow->addField((new Text('content_commands_controller', OPAL_Lang::t('content_commands:module')))->setName('module'));
-				$multirow->addField((new Text('content_commands_method', OPAL_Lang::t('content_commands:controller')))->setName('controller'));
-				$multirow->addField((new Text('content_commands_static', OPAL_Lang::t('content_commands:method')))->setName('method'));
-				$multirow->addField((new Text('content_commands_module', OPAL_Lang::t('content_commands:static')))->setName('static'));
-				$multirow->addField((new Text('content_commands_args', OPAL_Lang::t('content_commands:args')))->setName('args'));
+				$multirow->addField((new Text('content_commands_controller', \Orange\Portal\Core\App\Lang::t('content_commands:module')))->setName('module'));
+				$multirow->addField((new Text('content_commands_method', \Orange\Portal\Core\App\Lang::t('content_commands:controller')))->setName('controller'));
+				$multirow->addField((new Text('content_commands_static', \Orange\Portal\Core\App\Lang::t('content_commands:method')))->setName('method'));
+				$multirow->addField((new Text('content_commands_module', \Orange\Portal\Core\App\Lang::t('content_commands:static')))->setName('static'));
+				$multirow->addField((new Text('content_commands_args', \Orange\Portal\Core\App\Lang::t('content_commands:args')))->setName('args'));
 			}
 			$this->addField($multirow, 'main');
 
@@ -206,18 +206,18 @@ class OPMX_System_ContentEdit extends Form
 
 		$this->addField((new Hidden('content_type')), 'top');
 
-		$this->addField((new Submit('content_edit_submit', OPAL_Lang::t('ADMIN_SAVE'))), 'top');
+		$this->addField((new Submit('content_edit_submit', \Orange\Portal\Core\App\Lang::t('ADMIN_SAVE'))), 'top');
 
 		/* Buttons END */
 
-		$this->addField(new Html(OPAL_Portal::getInstance()->templater->fetch(
+		$this->addField(new Html(\Orange\Portal\Core\App\Portal::getInstance()->templater->fetch(
 			'system/admin-media-init.phtml'
 		)));
 
 		$this->enableXSRFProtection();
 
-		OPAL_Theme::addScriptFile('module/admin/system/content/commands?type=' . $type->get('content_type_code') . '&key=' . \Orange\Forms\XSRFProtection::getInstance()->key([OP_WWW, OPAL_Portal::config('system_secretkey'), 'content_commands'], null, true));
-		OPAL_Theme::addScriptFile('modules/system/static/js/admin-content-form.js');
+		\Orange\Portal\Core\App\Theme::addScriptFile('module/admin/system/content/commands?type=' . $type->get('content_type_code') . '&key=' . \Orange\Forms\XSRFProtection::getInstance()->key([OP_WWW, \Orange\Portal\Core\App\Portal::config('system_secretkey'), 'content_commands'], null, true));
+		\Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/admin-content-form.js');
 
 	}
 
@@ -269,7 +269,7 @@ class OPMX_System_ContentEdit extends Form
 
 	private function lng($key)
 	{
-		return OPAL_Lang::t(isset($this->lang_overwrite[$key]) ? $this->lang_overwrite[$key] : $key);
+		return \Orange\Portal\Core\App\Lang::t(isset($this->lang_overwrite[$key]) ? $this->lang_overwrite[$key] : $key);
 	}
 
 }

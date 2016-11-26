@@ -11,7 +11,7 @@ $build_menu = function(&$menu,$root,&$templater,$build_menu,$levels){
         echo '<ul>';
         foreach ($menu[$root] as $page) {
             echo '<li>';
-            echo '<a href="' . $page->getURL(OPAL_Portal::config('system_default_lang'), OPAL_Portal::$sitelang) . '">' . $templater->esc($page->get('content_title')) . '</a>';
+            echo '<a href="' . $page->getURL(\Orange\Portal\Core\App\Portal::config('system_default_lang'), \Orange\Portal\Core\App\Portal::$sitelang) . '">' . $templater->esc($page->get('content_title')) . '</a>';
             if ($show_next_level && !empty($menu[$page->id])) {
                 $build_menu($menu, $page->id, $templater, $build_menu, $levels);
             }

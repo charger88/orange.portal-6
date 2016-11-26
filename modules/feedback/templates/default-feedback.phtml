@@ -1,23 +1,23 @@
 <?php
 if ($message->get('feedback_message_sender_user_id')) {
-    $user = new OPAM_User($message->get('feedback_message_sender_user_id'));
-    echo '<b>' . OPAL_Lang::t('feedback_message_sender_user_id') . '</b>: ' . $this->esc($user->get('user_login')) . ' (ID: ' . $user->id . ')';
+    $user = new \Orange\Portal\Core\Model\User($message->get('feedback_message_sender_user_id'));
+    echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_sender_user_id') . '</b>: ' . $this->esc($user->get('user_login')) . ' (ID: ' . $user->id . ')';
     echo "<br/>\n";
 }
 if ($message->get('feedback_message_sender_name')) {
-    echo '<b>' . OPAL_Lang::t('feedback_message_sender_name') . '</b>: ' . $this->esc($message->get('feedback_message_sender_name'));
+    echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_sender_name') . '</b>: ' . $this->esc($message->get('feedback_message_sender_name'));
     echo "<br/>\n";
 }
 if ($message->get('feedback_message_sender_ip')) {
-    echo '<b>' . OPAL_Lang::t('feedback_message_sender_ip') . '</b>: ' . $this->esc($message->get('feedback_message_sender_ip'));
+    echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_sender_ip') . '</b>: ' . $this->esc($message->get('feedback_message_sender_ip'));
     echo "<br/>\n";
 }
 if ($message->get('feedback_message_sender_email')) {
-    echo '<b>' . OPAL_Lang::t('feedback_message_sender_email') . '</b>: ' . $this->esc($message->get('feedback_message_sender_email'));
+    echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_sender_email') . '</b>: ' . $this->esc($message->get('feedback_message_sender_email'));
     echo "<br/>\n";
 }
 if ($message->get('feedback_message_sender_phone')) {
-    echo '<b>' . OPAL_Lang::t('feedback_message_sender_phone') . '</b>: ' . $this->esc($message->get('feedback_message_sender_phone'));
+    echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_sender_phone') . '</b>: ' . $this->esc($message->get('feedback_message_sender_phone'));
     echo "<br/>\n";
 }
 if ($fields = $message->get('feedback_message_fields')){
@@ -27,6 +27,6 @@ if ($fields = $message->get('feedback_message_fields')){
     }
 }
 echo "<br/>\n";
-echo '<b>' . OPAL_Lang::t('feedback_message_text') . '</b>:';
+echo '<b>' . \Orange\Portal\Core\App\Lang::t('feedback_message_text') . '</b>:';
 echo "<br/>\n";
 echo $message->get('feedback_message_text');

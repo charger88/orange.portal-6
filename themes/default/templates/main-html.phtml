@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="<?php echo OPAL_Portal::$sitelang; ?>" xml:lang="<?php echo OPAL_Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xml:lang="<?php echo \Orange\Portal\Core\App\Portal::$sitelang; ?>" xmlns="http://www.w3.org/1999/xhtml">
 	<head><?php
-			if (in_array(2,OPAL_Portal::getInstance()->user->get('user_groups'))){
-				OPAL_Theme::addStyleFile('modules/system/static/css/admin-front.css');
+			if (in_array(2,\Orange\Portal\Core\App\Portal::getInstance()->user->get('user_groups'))){
+				\Orange\Portal\Core\App\Theme::addStyleFile('modules/system/static/css/admin-front.css');
 			}
-			OPAL_Theme::addStyleFile('themes/default/static/system.css');
-			OPAL_Theme::addStyleFile('themes/default/static/style.css');
+			\Orange\Portal\Core\App\Theme::addStyleFile('themes/default/static/system.css');
+			\Orange\Portal\Core\App\Theme::addStyleFile('themes/default/static/style.css');
 			echo $portal->blockDirect('system/system/head');
 		?>
 	</head>

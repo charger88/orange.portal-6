@@ -33,8 +33,8 @@
     </tfoot>
 </table>
 <?php
-    OPAL_Theme::addScriptFile('modules/system/static/js/jquery.mkfilemanager.js');
-    OPAL_Theme::addStyleFile('modules/system/static/css/custom.mkfilemanager.css');
+    \Orange\Portal\Core\App\Theme::addScriptFile('modules/system/static/js/jquery.mkfilemanager.js');
+    \Orange\Portal\Core\App\Theme::addStyleFile('modules/system/static/css/custom.mkfilemanager.css');
 ?>
 <script type="text/javascript">
     var $filemanager = $('#filemanager').mkfilemanager({

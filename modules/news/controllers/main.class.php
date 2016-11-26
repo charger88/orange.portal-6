@@ -1,6 +1,6 @@
 <?php
 
-class OPMC_News_Main extends OPAL_Controller
+class OPMC_News_Main extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
@@ -34,7 +34,7 @@ class OPMC_News_Main extends OPAL_Controller
 			'offset' => $offset,
 			'limit' => $limit,
 			'digestlink' => $this->arg('digestlink', false),
-			'category' => $categoryID ? new OPAM_Page($categoryID) : ($is_block ? new OPAM_Page() : $this->content),
+			'category' => $categoryID ? new \Orange\Portal\Core\Model\Page($categoryID) : ($is_block ? new \Orange\Portal\Core\Model\Page() : $this->content),
 		]);
 	}
 

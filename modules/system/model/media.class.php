@@ -30,7 +30,7 @@ class OPMM_System_Media extends \Orange\Database\ActiveRecord
 
 	public function getDir($th = null)
 	{
-		$path = 'sites/' . OPAL_Portal::$sitecode . '/static/';
+		$path = 'sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/';
 		$path .= $this->get('media_protected') ? 'protected' : 'media';
 		$path .= '/';
 		$path .= ($th && isset(self::$th_sizes[$th])) ? 'th/' . $th : 'org';

@@ -1,6 +1,6 @@
 <?php
 
-class OPMA_System_Content extends OPAL_Controller
+class OPMA_System_Content extends \Orange\Portal\Core\App\Controller
 {
 
 	protected $refs = array();
@@ -24,29 +24,29 @@ class OPMA_System_Content extends OPAL_Controller
 
 	public function indexAction()
 	{
-		$type = new OPAM_Content_Type('content_type_code', $this->content_type);
+		$type = new \Orange\Portal\Core\Model\ContentType('content_type_code', $this->content_type);
 		$params = array();
 		$params['limit'] = $this->arg('limit', 25);
 		$params['order'] = $this->getGet('order', $this->arg('order', 'content_time_published'));
 		$params['desc'] = (bool)$this->getGet('desc', $this->arg('desc', true));
 		$params['offset'] = intval($this->getGet('offset', 0));
-		$params['status_min'] = OPAM_Content::STATUS_CANCELED;
-		$params['types'] = OPAM_Content_Type::getTypes($this->allowed_type_type, $this->content_type);
+		$params['status_min'] = \Orange\Portal\Core\Model\Content::STATUS_CANCELED;
+		$params['types'] = \Orange\Portal\Core\Model\ContentType::getTypes($this->allowed_type_type, $this->content_type);
 		$params['access_level'] = $this->user->get('user_status');
-		$params['list'] = OPAM_Content::getList($params, $type->getClass());
+		$params['list'] = \Orange\Portal\Core\Model\Content::getList($params, $type->getClass());
 		$params['class_fields'] = $this->list_class_fields;
 		$params['refs'] = $this->getFormOptions();
 		if (isset($this->list_columns['content_user_id'])) {
 			$params['refs']['content_user_id'] = array_map(function ($item) {
 				return $item->get('content_user_id');
 			}, $params['list']);
-			$params['refs']['content_user_id'] = OPAM_User::getRef($params['refs']['content_user_id']);
+			$params['refs']['content_user_id'] = \Orange\Portal\Core\Model\User::getRef($params['refs']['content_user_id']);
 		}
 		$params['columns'] = $this->list_columns;
 		$params['columns']['_edit'] = array(
 			'title' => '',
-			'text' => OPAL_Lang::t('ADMIN_EDIT'),
-			'hint' => OPAL_Lang::t('ADMIN_EDIT'),
+			'text' => \Orange\Portal\Core\App\Lang::t('ADMIN_EDIT'),
+			'hint' => \Orange\Portal\Core\App\Lang::t('ADMIN_EDIT'),
 			'class' => 'icon icon-edit',
 			'link' => '/' . $this->content->getSlug() . '/edit/%id%/',
 		);
@@ -61,36 +61,36 @@ class OPMA_System_Content extends OPAL_Controller
 		if (!$type) {
 			$type = $this->content_type;
 		}
-		$type = new OPAM_Content_Type('content_type_code', $type);
+		$type = new \Orange\Portal\Core\Model\ContentType('content_type_code', $type);
 		$classname = $type->getClass();
-		/** @var OPAM_Content $item */
+		/** @var \Orange\Portal\Core\Model\Content $item */
 		$item = new $classname();
 		$item->set('content_type', $type->get('content_type_code'));
 		if ($item->isNewAllowed()) {
 			return $this->edit($item, $type);
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_WARNING_NEW_CONTENT'), self::STATUS_WARNING);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_WARNING_NEW_CONTENT'), self::STATUS_WARNING);
 		}
 	}
 
 	public function editAction($id = 0)
 	{
 		$id = intval($id);
-		$item = new OPAM_Content($id);
-		$type = new OPAM_Content_Type('content_type_code', $item->get('content_type'));
+		$item = new \Orange\Portal\Core\Model\Content($id);
+		$type = new \Orange\Portal\Core\Model\ContentType('content_type_code', $item->get('content_type'));
 		$classname = $type->getClass();
-		/** @var OPAM_Content $item */
+		/** @var \Orange\Portal\Core\Model\Content $item */
 		$item = new $classname($id);
 		if ($item->isEditable($this->user->get('user_groups'))) {
 			return $this->edit($item, $type);
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_WARNING_EDIT_CONTENT'), self::STATUS_WARNING);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_WARNING_EDIT_CONTENT'), self::STATUS_WARNING);
 		}
 	}
 
 	/**
-	 * @param OPAM_Content $item
-	 * @param OPAM_Content_Type $type
+	 * @param \Orange\Portal\Core\Model\Content $item
+	 * @param \Orange\Portal\Core\Model\ContentType $type
 	 * @param bool $validate
 	 * @return array|null|string
 	 */
@@ -99,7 +99,7 @@ class OPMA_System_Content extends OPAL_Controller
 		if ($this->checkIsTypeAllowed($type)) {
 			if (!$item->id) {
 				$item->set('content_status', 5);
-				$item->set('content_lang', $type->get('content_type_multilang') ? OPAL_Portal::config('system_default_lang', 'en') : '');
+				$item->set('content_lang', $type->get('content_type_multilang') ? \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en') : '');
 				$item->set('content_type', $type->get('content_type_code'));
 			} else {
 				$item->set('content_slug', urldecode($item->get('content_slug')));
@@ -128,7 +128,7 @@ class OPMA_System_Content extends OPAL_Controller
 			return $form->getHTML();
 		} else {
 			$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-			return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
 		}
 	}
 
@@ -150,19 +150,19 @@ class OPMA_System_Content extends OPAL_Controller
 	 */
 	protected function save($id)
 	{
-		$type = new OPAM_Content_Type('content_type_code', $this->getPost('content_type', $this->content_type));
+		$type = new \Orange\Portal\Core\Model\ContentType('content_type_code', $this->getPost('content_type', $this->content_type));
 		$classname = $type->getClass();
-		/** @var OPAM_Content $item */
+		/** @var \Orange\Portal\Core\Model\Content $item */
 		$item = new $classname($id);
 		$cacheids = [];
 		if (($item->id && $item->isEditable($this->user->get('user_groups'))) || (!$item->id && $item->isNewAllowed())) {
 			if (!$item->id) {
 				$item->set('content_type', $type->get('content_type_code'));
-				$item->set('content_user_id', OPAL_Portal::getInstance()->user->id);
+				$item->set('content_user_id', \Orange\Portal\Core\App\Portal::getInstance()->user->id);
 			} else {
 				$cacheids[] = $item->get('content_parent_id');
 			}
-			$type = new OPAM_Content_Type('content_type_code', $item->get('content_type'));
+			$type = new \Orange\Portal\Core\Model\ContentType('content_type_code', $item->get('content_type'));
 			if ($this->checkIsTypeAllowed($type)) {
 				$form = new OPMX_System_ContentEdit([
 					'options' => $this->getFormOptions($item),
@@ -175,7 +175,7 @@ class OPMA_System_Content extends OPAL_Controller
 					if ($type->get('content_type_type') == 2){
 						$values['content_lang'] = '';
 					} else {
-						$values['content_lang'] = $type->get('content_type_multilang') ? OPAL_Portal::config('system_default_lang', 'en') : '';
+						$values['content_lang'] = $type->get('content_type_multilang') ? \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en') : '';
 					}
 				}
 				$item->setData($values);
@@ -202,31 +202,31 @@ class OPMA_System_Content extends OPAL_Controller
 						$cacheids[] = $item->get('content_parent_id');
 						$this->deleteRelatedCache($cacheids);
 						$this->log('CONTENT_%s_SAVED', array($item->get('content_title')), 'LOG_CONTENT', self::STATUS_OK, $item);
-						return $this->msg(OPAL_Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL() . '/edit/' . $item->id);
+						return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_SAVED'), self::STATUS_OK, $this->content->getURL() . '/edit/' . $item->id);
 					} else {
 						$this->log('CONTENT_SAVING_FAILED', array(), 'LOG_CONTENT', self::STATUS_ALERT);
-						return $this->msg(OPAL_Lang::t('ADMIN_UNEXPECTED_ERROR'), self::STATUS_ALERT, $this->content->getURL());
+						return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_UNEXPECTED_ERROR'), self::STATUS_ALERT, $this->content->getURL());
 					}
 				} else {
 					return $this->edit($item, $type, true);
 				}
 			} else {
 				$this->log('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-				return $this->msg(OPAL_Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('CONTENT_TYPE_NOT_ALLOWED_FOR_CONTROLLER'), self::STATUS_ERROR, $this->content->getURL());
 			}
 		} else {
 			$this->log('CONTENT_NEW_NOT_ALLOWED', array(), 'LOG_CONTENT', self::STATUS_ERROR);
-			return $this->msg(OPAL_Lang::t('CONTENT_NEW_NOT_ALLOWED'), self::STATUS_ERROR, $this->content->getURL());
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('CONTENT_NEW_NOT_ALLOWED'), self::STATUS_ERROR, $this->content->getURL());
 		}
 	}
 
 	/**
-	 * @param OPAM_Content|null $item
+	 * @param \Orange\Portal\Core\Model\Content|null $item
 	 * @return array
 	 */
 	protected function getFormOptions($item = null)
 	{
-		$type = $item ? new OPAM_Content_Type('content_type_code', $item->get('content_type')) : null;
+		$type = $item ? new \Orange\Portal\Core\Model\ContentType('content_type_code', $item->get('content_type')) : null;
 		if ($type && $type->id) {
 			if ($type->get('content_type_type') == 3) {
 				$template_prefix = '';
@@ -241,35 +241,35 @@ class OPMA_System_Content extends OPAL_Controller
 		}
 		$options = array(
 			'content_template' => $this->templater->theme->getTemplatesList($template_prefix),
-			'content_lang' => OPAL_Lang::langs(),
-			'content_status' => array(0 => OPAL_Lang::t('STATUS_REMOVED'), OPAL_Lang::t('STATUS_CANCELED'), OPAL_Lang::t('STATUS_DISABLED'), OPAL_Lang::t('STATUS_DRAFT'), OPAL_Lang::t('STATUS_MODERATION'), OPAL_Lang::t('STATUS_ENABLED'), OPAL_Lang::t('STATUS_APPROVED')),
-			'content_text_format' => array(0 => OPAL_Lang::t('CONTENT_TEXT_FORMAT_0'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_1'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_2'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_3'), OPAL_Lang::t('CONTENT_TEXT_FORMAT_4')),
-			'content_access_groups' => OPAM_User_Group::getRef(),
+			'content_lang' => \Orange\Portal\Core\App\Lang::langs(),
+			'content_status' => array(0 => \Orange\Portal\Core\App\Lang::t('STATUS_REMOVED'), \Orange\Portal\Core\App\Lang::t('STATUS_CANCELED'), \Orange\Portal\Core\App\Lang::t('STATUS_DISABLED'), \Orange\Portal\Core\App\Lang::t('STATUS_DRAFT'), \Orange\Portal\Core\App\Lang::t('STATUS_MODERATION'), \Orange\Portal\Core\App\Lang::t('STATUS_ENABLED'), \Orange\Portal\Core\App\Lang::t('STATUS_APPROVED')),
+			'content_text_format' => array(0 => \Orange\Portal\Core\App\Lang::t('CONTENT_TEXT_FORMAT_0'), \Orange\Portal\Core\App\Lang::t('CONTENT_TEXT_FORMAT_1'), \Orange\Portal\Core\App\Lang::t('CONTENT_TEXT_FORMAT_2'), \Orange\Portal\Core\App\Lang::t('CONTENT_TEXT_FORMAT_3'), \Orange\Portal\Core\App\Lang::t('CONTENT_TEXT_FORMAT_4')),
+			'content_access_groups' => \Orange\Portal\Core\Model\UserGroup::getRef(),
 			'content_area' => array_merge($this->templater->theme->getThemeAreas(), $this->templater->theme->getAdminAreas()),
 		);
 		if (is_null($type) || $type->get('content_type_type') == 1){
-			$options['content_status'][] = OPAL_Lang::t('STATUS_HOMEPAGE');
+			$options['content_status'][] = \Orange\Portal\Core\App\Lang::t('STATUS_HOMEPAGE');
 		}
 		foreach ($options['content_access_groups'] as $key => $value) {
-			$options['content_access_groups'][$key] = OPAL_Lang::t($value);
+			$options['content_access_groups'][$key] = \Orange\Portal\Core\App\Lang::t($value);
 		}
 		if ($item) {
 			$controllerReflection = new ReflectionClass($item);
 			try {
 				$options['content_parent_id'] = $controllerReflection->getMethod('getParentsRef')->invokeArgs($item, array());
-			} catch (ReflectionException $e) {
+			} catch (\ReflectionException $e) {
 				$options['content_parent_id'] = null;
 			}
 			try {
-				$options['content_default_lang_id'] = $controllerReflection->getMethod('getDefaultLanguageRef')->invokeArgs($item, array(OPAL_Portal::config('system_default_lang')));
-			} catch (ReflectionException $e) {
+				$options['content_default_lang_id'] = $controllerReflection->getMethod('getDefaultLanguageRef')->invokeArgs($item, array(\Orange\Portal\Core\App\Portal::config('system_default_lang')));
+			} catch (\ReflectionException $e) {
 				$options['content_default_lang_id'] = null;
 			}
 			$options['content_area'] = (strpos($item->get('content_slug'), 'admin/') === 0 ? $this->templater->theme->getAdminAreas() : $this->templater->theme->getThemeAreas());
 			foreach ($options as $key => &$ref) {
 				if ($key != 'content_text_format') {
 					$value = $item->get($key);
-					$value = is_array($value) ? $value : array($value);
+					$value = is_array($value) ? $value : [$value];
 					foreach ($value as $val) {
 						if (!isset($ref[$val])) {
 							if (!empty($val)) {
@@ -285,10 +285,10 @@ class OPMA_System_Content extends OPAL_Controller
 
 	public function commandsActionDirect()
 	{
-		OPAL_Portal::getInstance()->data_type = 'application/javascript';
-		if (\Orange\Forms\XSRFProtection::getInstance()->check($this->getGet('key'), [OP_WWW, OPAL_Portal::config('system_secretkey'), 'content_commands'], true)) {
+		\Orange\Portal\Core\App\Portal::getInstance()->data_type = 'application/javascript';
+		if (\Orange\Forms\XSRFProtection::getInstance()->check($this->getGet('key'), [OP_WWW, \Orange\Portal\Core\App\Portal::config('system_secretkey'), 'content_commands'], true)) {
 			$commands = [];
-			$modules = OPAL_Module::getModules(true);
+			$modules = \Orange\Portal\Core\App\Module::getModules(true);
 			foreach ($modules as $module) {
 				$commands_file = new \Orange\FS\File('modules/' . $module->get('module_code') . '/commands.php');
 				if ($commands_file->exists()) {
@@ -327,7 +327,7 @@ class OPMA_System_Content extends OPAL_Controller
 	}
 
 	/**
-	 * @param OPAM_Content_Type $type
+	 * @param \Orange\Portal\Core\Model\ContentType $type
 	 * @return bool
 	 */
 	protected function checkIsTypeAllowed($type)

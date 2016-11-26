@@ -1,6 +1,6 @@
 <?php
 
-class OPMA_System_Files extends OPAL_Controller
+class OPMA_System_Files extends \Orange\Portal\Core\App\Controller
 {
 
 	public function indexAction()
@@ -21,7 +21,7 @@ class OPMA_System_Files extends OPAL_Controller
 			]);
 			return $form->getHTML();
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 		}
 	}
 
@@ -46,21 +46,21 @@ class OPMA_System_Files extends OPAL_Controller
 						$file->save($this->getPost('file_data'));
 					}
 					return $this->redirect($this->content->getURL() . '/edit?file=' . urlencode($new_filename));
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					return $this->msg($e->getMessage(), self::STATUS_ERROR);
 				}
 			} else {
-				return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 			}
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_XSRF'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_XSRF'), self::STATUS_ERROR);
 		}
 	}
 
 	private function getFileObject($filename){
 		try {
 			$file = \Orange\FS\FS::open($this->getPathBase() . $filename);
-		} catch (Exception $e){
+		} catch (\Exception $e){
 			$file = new \Orange\FS\File($this->getPathBase() . $filename);
 		}
 		return $file;
@@ -92,7 +92,7 @@ class OPMA_System_Files extends OPAL_Controller
 						$fileData = array(
 							'name' => $file->getName(),
 							'ext' => $file instanceof \Orange\FS\Dir ? '.' : $file->getExt(),
-							'mtime' => date(OPAL_Portal::config('system_time_format', 'Y-m-d H:i:s'), $mtime),
+							'mtime' => date(\Orange\Portal\Core\App\Portal::config('system_time_format', 'Y-m-d H:i:s'), $mtime),
 							'mtime_raw' => $mtime,
 							'size' => $this->templater->getFilesize($filesize),
 							'size_raw' => $filesize,
@@ -103,10 +103,10 @@ class OPMA_System_Files extends OPAL_Controller
 				}
 				return $this->msg('', self::STATUS_OK, null, array('dir' => $list));
 			} else {
-				return $this->msg(OPAL_Lang::t('ADMIN_FILES_NOT_DIR'), self::STATUS_WARNING);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILES_NOT_DIR'), self::STATUS_WARNING);
 			}
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 		}
 	}
 
@@ -123,15 +123,15 @@ class OPMA_System_Files extends OPAL_Controller
 					$status = $status && $file->saveUpload($files['tmp_name'][$fIndex]);
 				}
 				if ($status) {
-					return $this->msg(OPAL_Lang::t('ADMIN_UPLOADED'), self::STATUS_OK);
+					return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_UPLOADED'), self::STATUS_OK);
 				} else {
-					return $this->msg(OPAL_Lang::t('ADMIN_ERROR'), self::STATUS_WARNING);
+					return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_ERROR'), self::STATUS_WARNING);
 				}
 			} else {
-				return $this->msg(OPAL_Lang::t('ADMIN_EMPTY_REQUEST'), self::STATUS_WARNING);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_EMPTY_REQUEST'), self::STATUS_WARNING);
 			}
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 		}
 	}
 
@@ -141,9 +141,9 @@ class OPMA_System_Files extends OPAL_Controller
 		if ($this->checkFilepath($path)) {
 			$dir = new \Orange\FS\Dir($path);
 			$dir->create();
-			return $this->msg(OPAL_Lang::t('ADMIN_FOLDER_CREATED'), self::STATUS_OK);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FOLDER_CREATED'), self::STATUS_OK);
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 		}
 	}
 
@@ -153,12 +153,12 @@ class OPMA_System_Files extends OPAL_Controller
 		if ($this->checkFilepath($path)) {
 			try {
 				\Orange\FS\FS::open($path)->remove();
-				return $this->msg(OPAL_Lang::t('ADMIN_FILE_DELETED'), self::STATUS_OK);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILE_DELETED'), self::STATUS_OK);
 			} catch (\Orange\FS\FSException $e) {
-				return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+				return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 			}
 		} else {
-			return $this->msg(OPAL_Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
+			return $this->msg(\Orange\Portal\Core\App\Lang::t('ADMIN_FILEPATH_FAIL'), self::STATUS_ERROR);
 		}
 	}
 
@@ -174,13 +174,13 @@ class OPMA_System_Files extends OPAL_Controller
 			}
 		}
 		if ($status) {
-			$status = ((count($path) >= 3) && ($path[0] == 'sites') && ($path[1] == OPAL_Portal::$sitecode) && ($path[2] == 'static'));
+			$status = ((count($path) >= 3) && ($path[0] == 'sites') && ($path[1] == \Orange\Portal\Core\App\Portal::$sitecode) && ($path[2] == 'static'));
 		}
 		return $status;
 	}
 
 	private function getPathBase(){
-		return 'sites/' . OPAL_Portal::$sitecode . '/static/';
+		return 'sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/';
 	}
 
 }

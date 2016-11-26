@@ -1,31 +1,31 @@
 <?php
 
-class OPMA_System_Sitemap extends OPAL_Controller
+class OPMA_System_Sitemap extends \Orange\Portal\Core\App\Controller
 {
 
 	public function rebuildAction()
 	{
 		self::rebuild();
-		return $this->msg(OPAL_Lang::t('SITEMAP_WAS_REBUILT'), self::STATUS_OK, OP_WWW . '/admin');
+		return $this->msg(\Orange\Portal\Core\App\Lang::t('SITEMAP_WAS_REBUILT'), self::STATUS_OK, OP_WWW . '/admin');
 	}
 
 	public static function rebuild()
 	{
 		$index = new \Orange\Sitemap\Index();
-		if ($sitemaps = OPAL_Portal::getInstance()->processHooks('build_sitemaps')) {
+		if ($sitemaps = \Orange\Portal\Core\App\Portal::getInstance()->processHooks('build_sitemaps')) {
 			foreach ($sitemaps as $sitemapsByHook) {
 				foreach ($sitemapsByHook as $sitemap_name => $lastmod) {
 					$index->addSitemap(OP_WWW . '/sitemap_' . $sitemap_name . '.xml', $lastmod);
 				}
 			}
 		}
-		$indexFile = new \Orange\FS\File('sites/' . OPAL_Portal::$sitecode . '/static/root', 'sitemap.xml');
+		$indexFile = new \Orange\FS\File('sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/root', 'sitemap.xml');
 		$indexFile->save($index->build());
 	}
 
 	public function sitemapBlockDirect()
 	{
-		$index = new \Orange\FS\File('sites/' . OPAL_Portal::$sitecode . '/static/root', 'sitemap.xml');
+		$index = new \Orange\FS\File('sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/root', 'sitemap.xml');
 		if ($index->exists()) {
 			$sitemap = simplexml_load_string($index->getData());
 			$files = array();
@@ -36,7 +36,7 @@ class OPMA_System_Sitemap extends OPAL_Controller
 			if ($sitemap) {
 				foreach ($sitemap as $element) {
 					$name = basename($element->loc);
-					$sfile = new \Orange\FS\File('sites/' . OPAL_Portal::$sitecode . '/static/root', $name);
+					$sfile = new \Orange\FS\File('sites/' . \Orange\Portal\Core\App\Portal::$sitecode . '/static/root', $name);
 					if ($sfile) {
 						$sitemapXML = simplexml_load_string($sfile->getData());
 						$items = $sitemapXML ? count($sitemapXML) : 0;
