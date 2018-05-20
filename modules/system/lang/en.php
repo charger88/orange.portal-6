@@ -25,4 +25,9 @@ return [
 
 	'ADMIN_XSRF' => 'Form session is expired',
 
+    'INSTALL_HOMEPAGE' => 'Homepage',
+    'INSTALL_HOMEPAGE_TEXT_1' => 'Hi! We are glad to show you homepage of new portal.',
+    'INSTALL_HOMEPAGE_TEXT_2' => 'Welcome to new instance of Orange.Portal 6.',
+    'INSTALL_HOMEPAGE_TEXT_3' => 'If you need more information, go to',
+
 ];

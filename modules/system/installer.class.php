@@ -10,7 +10,7 @@ class OPMI_System extends \Orange\Portal\Core\App\Installer
 
 	public function installModule($params)
 	{
-		\Orange\Portal\Core\App\Portal::$sitecode = $params['sitecode'];
+	    \Orange\Portal\Core\App\Portal::$sitecode = $params['sitecode'];
 		$configname = isset($params['configname']) ? $params['configname'] : 'default.php';
 		$this->params = array_merge($this->params, $params);
 		$this->errors = [];
@@ -252,13 +252,12 @@ class OPMI_System extends \Orange\Portal\Core\App\Installer
 	private function createContent()
 	{
 		$result = true;
-		$lang = \Orange\Portal\Core\App\Portal::config('system_default_lang', 'en');
 		$content_data = [
 			[
 				'content_type' => 'page',
-				'content_title' => \Orange\Portal\Core\App\Lang::t('Homepage'),
+				'content_title' => \Orange\Portal\Core\App\Lang::t('INSTALL_HOMEPAGE'),
 				'content_access_groups' => [0],
-				'content_lang' => $lang,
+				'content_lang' => \Orange\Portal\Core\App\Portal::$sitelang,
 				'content_slug' => 'homepage',
 				'content_on_site_mode' => 3,
 				'content_status' => 7,
@@ -570,7 +569,7 @@ class OPMI_System extends \Orange\Portal\Core\App\Installer
 		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 1);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', \Orange\Portal\Core\App\Lang::t('Hi! We are glad to show you homepage of new portal.'));
+		$text->set('content_text_value', \Orange\Portal\Core\App\Lang::t('INSTALL_HOMEPAGE_TEXT_1'));
 		$text->save();
 		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 2);
@@ -580,7 +579,7 @@ class OPMI_System extends \Orange\Portal\Core\App\Installer
 		$text = new \Orange\Portal\Core\Model\ContentText();
 		$text->set('content_id', 3);
 		$text->set('content_text_role', 'text');
-		$text->set('content_text_value', '<p>' . \Orange\Portal\Core\App\Lang::t('Welcome to new instance of Orange.Portal 6.') . '</p><p>' . \Orange\Portal\Core\App\Lang::t('If you need more information, go to') . ' <a href="http://orange-portal.org">orange-portal.org</a>' . '.</p>');
+		$text->set('content_text_value', '<p>' . \Orange\Portal\Core\App\Lang::t('INSTALL_HOMEPAGE_TEXT_2') . '</p><p>' . \Orange\Portal\Core\App\Lang::t('INSTALL_HOMEPAGE_TEXT_3') . ' <a href="http://orange-portal.org">orange-portal.org</a>' . '.</p>');
 		$text->save();
 		return $result;
 	}
